@@ -58,28 +58,28 @@ define_webjump("bookmark", function(term) {return term;},
                $description = "Visit a Conkeror bookmark.");
 
 // webjumps
-define_webjump("fb", "http://www.facebook.com"); // account (not logged in)
-define_webjump("g+", "http://plus.google.com"); // account (logged in)
-define_webjump("gi", "http://google.com/ig"); // account (logged in)
-define_webjump("reddit", "http://www.reddit.com"); // account (logged in)
-define_webjump("uf", "http://ubuntuforums.org"); // account (logged in)
-define_webjump("afl", "http://www.afl.com.au");
+define_webjump("fb", "http://www.facebook.com", $description = "Facebook"); // account (not logged in)
+define_webjump("g+", "http://plus.google.com", $description = "Google+"); // account (logged in)
+define_webjump("gi", "http://google.com/ig", $description = "iGoogle"); // account (logged in)
+define_webjump("reddit", "http://www.reddit.com", $description = "Reddit"); // account (logged in)
+define_webjump("uf", "http://ubuntuforums.org", $description = "Ubuntu Forums"); // account (logged in)
+define_webjump("afl", "http://www.afl.com.au", $description = "Australian Football League");
 
-define_webjump("conk", "http://conkeror.org");
-define_webjump("ew", "http://emacswiki.org");
-define_webjump("stumpwmwiki", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl");
+define_webjump("conk", "http://conkeror.org", $description = "Conkeror Wiki");
+define_webjump("ew", "http://emacswiki.org", $description = "Emacs Wiki");
+define_webjump("stumpwmwiki", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description = "StumpWM Wiki");
 
-define_webjump("pp", "http://philpapers.org"); // account (not logged in)
-define_webjump("stanford", "http://plato.stanford.edu");
+define_webjump("pp", "http://philpapers.org", $description = "Philosophy Papers"); // account (not logged in)
+define_webjump("stanford", "http://plato.stanford.edu", $description = "Stanford Encyclopedia of Philosophy");
 
 // define_webjump("jstor", "http://www.jstor.org");
-define_webjump("jstor", "http://www.jstor.org.virtual.anu.edu.au");
-define_webjump("anu", "http://www.anu.edu.au");
-define_webjump("library", "http://anulib.anu.edu.au");
-define_webjump("wattle", "https://wattle.anu.edu.au");
-define_webjump("webmail", "https://anumail.anu.edu.au");
-define_webjump("isis", "https://esapps.anu.edu.au/sscsprod/psp/sscsprod");
-define_webjump("aarnet", "http://www.aarnet.edu.au");
+define_webjump("jstor", "http://www.jstor.org.virtual.anu.edu.au", $description = "Journal Storage");
+define_webjump("anu", "http://www.anu.edu.au", $description = "Australian National University");
+define_webjump("library", "http://anulib.anu.edu.au", $description = "ANU Library");
+define_webjump("wattle", "https://wattle.anu.edu.au", $description = "ANU Wattle");
+define_webjump("webmail", "https://anumail.anu.edu.au", $description = "ANU Webmail");
+define_webjump("isis", "https://esapps.anu.edu.au/sscsprod/psp/sscsprod", $description = "ANU ISIS and HORUS");
+define_webjump("aarnet", "http://www.aarnet.edu.au", $description = "Australia's Academic and Reseach Network");
 
 // smartlinks
 define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search=Search", $alternative="http://www.youtube.com");
@@ -112,20 +112,20 @@ read_url_handler_list = [read_url_make_default_webjump_handler("google")]; // de
 // ===========
 /// quickjumps
 // ===========
-// interactive("open-gmail", "Open gmail inbox.", "follow", $browser_object = "http://gmail.com/"); // open gmail (an alias of the follow command)
+interactive("open-gmail", "Open gmail inbox.", "follow", $browser_object = "http://gmail.com/"); // open gmail (an alias of the follow command)
 
-// interactive("open-school-all","Open school related web-sites.",
-// 	    function(I){
-// 	      load_url_in_new_buffer("http://www.UrlNr1.com",I.window);
-// 	      load_url_in_new_buffer("http://www.UrlNr2.org",I.window);
-// 	      load_url_in_new_buffer("http://www.UrlNr3.org",I.window);
-// 	    });
+interactive("open-school-all","Open school related web-sites.",
+	    function(I){
+	      load_url_in_new_buffer("http://wattle.anu.edu.au",I.window); // wattle
+	      load_url_in_new_buffer("http://anumail.anu.edu.au",I.window); // webmail
+	    });
 
 // ==================
 /// emacs integration
 // ==================
 editor_shell_command = "emacsclient -c"; // edit form text with emacs
 
+// TODO: fix this up
 function org_capture (url, title, selection, window) { // org-protocol stuff
   var cmd_str = 'emacsclient \"org-protocol:/capture:/w/'+url+'/'+title+'/'+selection+'\"';
   if (window != null) {
@@ -179,9 +179,8 @@ define_key(default_global_keymap, "C-c u", "copy-url"); // copy url with C-c u
 define_key(default_global_keymap, "C-c r", "reload-config"); // reload config with C-c r
 define_key(content_buffer_normal_keymap, "C-c c", "org-capture"); // capture with C-c c
 define_key(content_buffer_normal_keymap, "C-c t", "url-completion-toggle"); // url completion with C-c t
-
-// define_key(content_buffer_normal_keymap, "f1", "open-school-all"); // open school urls with f1
-// define_key(content_buffer_normal_keymap, "f2", "open-gmail"); // open gmail inbox with f2
+define_key(content_buffer_normal_keymap, "f1", "open-school-all"); // open school urls with f1
+define_key(content_buffer_normal_keymap, "f2", "open-gmail"); // open gmail inbox with f2
 
 // ==========
 /// xkcd mode

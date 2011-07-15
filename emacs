@@ -504,7 +504,7 @@
 		    (filename . ".irssi/config")
 		    (filename . ".aptitude/config")
 		    (filename . ".ncmpcpp/config")
-		    (filename . ".conkerorrc/*")))
+		    (filename . "conkeror-dir/*")))
 	       ("Project (Introduction to Computer Science)" ;; introduction to computer science related buffers
 		(filename . "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/"))
 	       ("Project (Metaphysics)" ;; metaphysics related buffers

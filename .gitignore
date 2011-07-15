@@ -1,2 +1,14 @@
 mutt-dir/
 passwords/
+emacs-dir/auto-save-list/
+emacs-dir/save-files/
+emacs-dir/auto-complete-config.elc
+emacs-dir/auto-complete.elc
+emacs-dir/popup.elc
+emacs-dir/fuzzy.elc
+emacs-dir/google-reader-subscriptions.xml
+emacs-dir/history
+emacs-dir/recentf
+emacs-dir/.emacs.desktop.lock
+emacs-dir/.emms-history
+emacs-dir/.emms-history.elc
