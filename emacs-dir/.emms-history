@@ -1,8 +1,0 @@
-(
-;; active playlist
-" *EMMS Playlist*"
-;; playlists: ((BUFFER_NAME SELECT_POSITION TRACKS) ...)
-((" *EMMS Playlist*<2>" 1 ((*track* (type . file) (name . "/home/chu/Music/An evening with John Petrucci & Jordan Rudess/Petrucci - Rudess - An Evening with John Petrucci & Jordan Rudess - 02. Truth.mp3") (metadata)))) (" *EMMS Playlist*" 1 ((*track* (type . file) (name . "/home/chu/Music/An evening with John Petrucci & Jordan Rudess/Petrucci - Rudess - An Evening with John Petrucci & Jordan Rudess - 02. Truth.mp3") (metadata)))) (" *EMMS Playlist*<3>" 1 ((*track* (type . file) (name . "/home/chu/Music/An evening with John Petrucci & Jordan Rudess/Petrucci - Rudess - An Evening with John Petrucci & Jordan Rudess - 02. Truth.mp3") (metadata)))))
-;; play method
-((emms-repeat-track) (emms-repeat-playlist))
-)

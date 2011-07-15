@@ -1,8 +1,0 @@
-Aptitude "";
-Aptitude::UI "";
-Aptitude::UI::Package-Status-Format "";
-Aptitude::UI::Package-Display-Format "";
-Aptitude::UI::HelpBar "false";
-Aptitude::UI::Menubar-Autohide "true";
-Aptitude::UI::Version "false";
-Aptitude::Delete-Unused-Pattern "";
