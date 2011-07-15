@@ -1,0 +1,486 @@
+;; -*- coding: utf-8 -*-
+(("gmane.emacs.help" nil "http://permalink.gmane.org/gmane.emacs.help" (19774 19792 982504) feed 0 nil nil ((title nil "gmane.emacs.help") (link nil "http://permalink.gmane.org/gmane.emacs.help") (description nil) (syn:updatePeriod nil "hourly") (syn:updateFrequency nil "1") (syn:updateBase nil "1901-01-01T00:00+00:00") (items nil (rdf:Seq nil (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78727"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78726"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78725"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78724"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78723"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78722"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78721"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78720"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78719"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78718"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78717"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78716"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78715"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78714"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78713"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78712"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78711"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78710"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78709"))) (rdf:li ((rdf:resource . "http://permalink.gmane.org/gmane.emacs.help/78708"))))) (image ((rdf:resource . "http://gmane.org/img/gmane-25t.png"))) (textinput ((rdf:resource . " "))))) ("RE: [[[...(org)...]]] in the mode line" "<pre>In addition to what Tim and others have said, do `C-x C-b' and see if you have a
+nonempty *Backtrace* buffer.
+If so, visit it to see what happened: typically an error led to a backtrace
+stack display.  You can quit the debugger (*Backtrace*) by hitting `q'. But if
+this is happening often then it can be a good idea to at least check what kind
+of error is being raised.
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78727" (19773 62899) new 1 nil nil ((title nil "RE: [[[...(org)...]]] in the mode line") (link nil "http://permalink.gmane.org/gmane.emacs.help/78727") (description nil "<pre>In addition to what Tim and others have said, do `C-x C-b' and see if you have a
+nonempty *Backtrace* buffer.
+
+If so, visit it to see what happened: typically an error led to a backtrace
+stack display.  You can quit the debugger (*Backtrace*) by hitting `q'. But if
+this is happening often then it can be a good idea to at least check what kind
+of error is being raised.
+
+
+
+</pre>") (dc:creator nil "Drew Adams") (dc:date nil "2011-01-24T21:57:07"))) ("Re: white is #e5e5e5" "<pre>
+On Jan 24, 2011, at 3:11 PM, Warren Harris wrote:
+I'm trying to recreate this as close as I can... your original post said you do
+\"emacsclient -nw\"
+but that would tie back to an existing emacs (I think).  Is that part correct?
+Also, what version of emacs is on Ubuntu?  (And just for curiosity, what version
+do you have on your Mac?
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78726" (19773 65042) new 2 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78726") (description nil "<pre>
+On Jan 24, 2011, at 3:11 PM, Warren Harris wrote:
+
+
+I'm trying to recreate this as close as I can... your original post said you do
+
+\"emacsclient -nw\"
+
+but that would tie back to an existing emacs (I think).  Is that part correct?
+
+Also, what version of emacs is on Ubuntu?  (And just for curiosity, what version
+do you have on your Mac?
+
+
+</pre>") (dc:creator nil "Perry Smith") (dc:date nil "2011-01-24T22:32:50"))) ("Re: white is #e5e5e5" "<pre>Perry,
+Thanks for your help. I'm glad you were at least able to reproduce the problem. I'll try experimenting with removing things from my .emacs file to see if that makes a difference.
+BTW, sounds like our monitors display the grey a little differently. My second monitor is much lighter, but my macbook pro seems dark. The green or magenta text on a grey background is virtually unreadable.
+Warren
+On Jan 24, 2011, at 3:12 PM, Perry Smith wrote:
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78725" (19774 2668) new 3 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78725") (description nil "<pre>Perry, 
+
+Thanks for your help. I'm glad you were at least able to reproduce the problem. I'll try experimenting with removing things from my .emacs file to see if that makes a difference. 
+
+BTW, sounds like our monitors display the grey a little differently. My second monitor is much lighter, but my macbook pro seems dark. The green or magenta text on a grey background is virtually unreadable. 
+
+Warren
+
+On Jan 24, 2011, at 3:12 PM, Perry Smith wrote:
+
+</pre>") (dc:creator nil "Warren Harris") (dc:date nil "2011-01-24T23:25:32"))) ("Re: white is #e5e5e5" "<pre>
+On Jan 24, 2011, at 4:38 PM, Warren Harris wrote:
+I telnet'ed to a Unix system and then back to my laptop (Mac).
+Started Emacs -nw and it came up in the terminal.
+I get the same list for list-color-display that you got.  I have a
+black menu with white text at the top.  My mode lines are black with
+white.  My normal text is black on white background.  The *scratch*
+butter starts with a \"red\" messages on white background.
+All of these are muted slightly... the red is not full on and the
+write is very slightly grey.  But it sounds like your grey is darker.
+My guess is the terminfo on Ubuntu is not exactly compatible with
+Mac's Terminal.app... but that seems rather unlikely.
+My second guess is Ubuntu has modified emacs in this area but that
+also seems unlikely.
+I don't know enough about how the colors and faces all interact or how
+to customize them.  Hopefully someone else on this list will pipe up.
+You might try not using the daemon approach and, in particular, try
+starting without using your init file</pre>" "http://permalink.gmane.org/gmane.emacs.help/78724" (19774 1860) new 4 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78724") (description nil "<pre>
+On Jan 24, 2011, at 4:38 PM, Warren Harris wrote:
+
+
+I telnet'ed to a Unix system and then back to my laptop (Mac).
+Started Emacs -nw and it came up in the terminal.
+
+I get the same list for list-color-display that you got.  I have a
+black menu with white text at the top.  My mode lines are black with
+white.  My normal text is black on white background.  The *scratch*
+butter starts with a \"red\" messages on white background.
+
+All of these are muted slightly... the red is not full on and the
+write is very slightly grey.  But it sounds like your grey is darker.
+
+My guess is the terminfo on Ubuntu is not exactly compatible with
+Mac's Terminal.app... but that seems rather unlikely.
+
+My second guess is Ubuntu has modified emacs in this area but that
+also seems unlikely.
+
+I don't know enough about how the colors and faces all interact or how
+to customize them.  Hopefully someone else on this list will pipe up.
+
+You might try not using the daemon approach and, in particular, try
+starting without using your init file</pre>") (dc:creator nil "Perry Smith") (dc:date nil "2011-01-24T23:12:04"))) ("Re: white is #e5e5e5" "<pre>
+On Jan 24, 2011, at 2:32 PM, Perry Smith wrote:
+Yes. I previously ran emacs --daemon.
+GNU Emacs 23.1.1 (x86_64-pc-linux-gnu, GTK+ Version 2.20.1) of 2010-11-23 on yellow, modified by Debian  </pre>" "http://permalink.gmane.org/gmane.emacs.help/78723" (19773 65398) new 5 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78723") (description nil "<pre>
+On Jan 24, 2011, at 2:32 PM, Perry Smith wrote:
+
+
+Yes. I previously ran emacs --daemon.
+
+GNU Emacs 23.1.1 (x86_64-pc-linux-gnu, GTK+ Version 2.20.1) of 2010-11-23 on yellow, modified by Debian  </pre>") (dc:creator nil "Warren Harris") (dc:date nil "2011-01-24T22:38:46"))) ("Re: [[[...(org)...]]] in the mode line" "<pre>
+As mentioned by others, the [[ ]] indicate emacs is in a recursive edit
+state. There are numerous things that can cause this, some indicating
+problems and others which are not so bad. For example, if you have many
+frames open and you do something that causes emacs to start the debugger
+and you are put into a backtrace, but then you change to another
+window/frame without quitting the debugger and continue doing some other
+work, such as reading your mail, you will likely see that emacs is in a
+recursive edit.
+One way that may help to track down the point at which the recursive
+session starts is to close all windows and frames except 1, then hit the
+escape key 3 times. Note the window and what is happening now. This will
+often represent the point at which emacs was in just prior to the start
+of the last recursive edit. If you still have [ ] in the modeline, hit
+escape another 3 times and note where you are at. Again, this should
+have unwound the stack to where that recursive edit began. Continue the
+process</pre>" "http://permalink.gmane.org/gmane.emacs.help/78722" (19773 60477) new 6 nil nil ((title nil "Re: [[[...(org)...]]] in the mode line") (link nil "http://permalink.gmane.org/gmane.emacs.help/78722") (description nil "<pre>
+
+As mentioned by others, the [[ ]] indicate emacs is in a recursive edit
+state. There are numerous things that can cause this, some indicating
+problems and others which are not so bad. For example, if you have many
+frames open and you do something that causes emacs to start the debugger
+and you are put into a backtrace, but then you change to another
+window/frame without quitting the debugger and continue doing some other
+work, such as reading your mail, you will likely see that emacs is in a
+recursive edit. 
+
+One way that may help to track down the point at which the recursive
+session starts is to close all windows and frames except 1, then hit the
+escape key 3 times. Note the window and what is happening now. This will
+often represent the point at which emacs was in just prior to the start
+of the last recursive edit. If you still have [ ] in the modeline, hit
+escape another 3 times and note where you are at. Again, this should
+have unwound the stack to where that recursive edit began. Continue the
+process</pre>") (dc:creator nil "Tim X") (dc:date nil "2011-01-24T21:16:45"))) ("Re: white is #e5e5e5" "<pre>
+On Jan 24, 2011, at 1:03 PM, Perry Smith wrote:
+TERM is set to xterm-color.
+Warren</pre>" "http://permalink.gmane.org/gmane.emacs.help/78721" (19773 60159) new 7 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78721") (description nil "<pre>
+On Jan 24, 2011, at 1:03 PM, Perry Smith wrote:
+
+TERM is set to xterm-color.
+
+Warren</pre>") (dc:creator nil "Warren Harris") (dc:date nil "2011-01-24T21:11:27"))) ("Re: white is #e5e5e5" "<pre>
+On Jan 24, 2011, at 11:36 AM, Warren Harris wrote:
+I wish I could play with it and see what you are talking about and experiment around some.
+What is TERM set to?  You might be able to set it do something more fitting to get better colors.
+Also, the Mac has X11.  You could ssh with -Y over to the Ubuntu box and start up emacs as an X11 client.
+Perry
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78720" (19773 59706) new 8 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78720") (description nil "<pre>
+On Jan 24, 2011, at 11:36 AM, Warren Harris wrote:
+
+
+
+I wish I could play with it and see what you are talking about and experiment around some.
+
+What is TERM set to?  You might be able to set it do something more fitting to get better colors.
+
+Also, the Mac has X11.  You could ssh with -Y over to the Ubuntu box and start up emacs as an X11 client.
+
+Perry
+
+
+
+</pre>") (dc:creator nil "Perry Smith") (dc:date nil "2011-01-24T21:03:54"))) ("Re: white is #e5e5e5" "<pre>I should add that my Apple Terminal is ssh'd to a Ubuntu 10.04.1 workstation when this happens... so the problem may be related to the linux configuration interacting with an 8-color terminal.
+Warren
+On Jan 23, 2011, at 9:53 PM, Warren Harris wrote:
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78719" (19773 47275) new 9 nil nil ((title nil "Re: white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78719") (description nil "<pre>I should add that my Apple Terminal is ssh'd to a Ubuntu 10.04.1 workstation when this happens... so the problem may be related to the linux configuration interacting with an 8-color terminal.
+
+Warren
+
+On Jan 23, 2011, at 9:53 PM, Warren Harris wrote:
+
+
+
+
+</pre>") (dc:creator nil "Warren Harris") (dc:date nil "2011-01-24T17:36:43"))) ("Re: [[[...(org)...]]] in the mode line" "<pre>Hi,
+...
+Jeff Horn &lt;jrhorn424&lt; at &gt;gmail.com&gt; writes:
+FWIW, I see this sometimes, too.
+I can fix it killing the frame and getting a new one.
+Additional brackets are gone in a fresh frame.
+(I run emacs as daemon.)
+Memnon
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78718" (19773 56775) new 10 nil nil ((title nil "Re: [[[...(org)...]]] in the mode line") (link nil "http://permalink.gmane.org/gmane.emacs.help/78718") (description nil "<pre>Hi,
+
+...
+
+Jeff Horn &lt;jrhorn424&lt; at &gt;gmail.com&gt; writes:
+
+FWIW, I see this sometimes, too. 
+I can fix it killing the frame and getting a new one.
+Additional brackets are gone in a fresh frame.
+(I run emacs as daemon.)
+
+Memnon
+
+
+
+</pre>") (dc:creator nil "Memnon Anon") (dc:date nil "2011-01-24T20:15:03"))) ("Re: autoload" "<pre>
+On Jan 24, 2011, at 11:28 AM, Stefan Monnier wrote:
+Ahh... I saw that on another post on this thread but I never
+thought about it.  I figured there must be a way to do it, otherwise,
+why would it take an argument?
+Thanks... now I have another tool in my bag.
+Perry
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78717" (19773 54834) new 11 nil nil ((title nil "Re: autoload") (link nil "http://permalink.gmane.org/gmane.emacs.help/78717") (description nil "<pre>
+On Jan 24, 2011, at 11:28 AM, Stefan Monnier wrote:
+
+
+Ahh... I saw that on another post on this thread but I never
+thought about it.  I figured there must be a way to do it, otherwise,
+why would it take an argument?
+
+Thanks... now I have another tool in my bag.
+
+Perry
+
+
+
+</pre>") (dc:creator nil "Perry Smith") (dc:date nil "2011-01-24T19:42:42"))) ("Re: grep options" "<pre>
+grep seems even worse than lgrep.  At least lgrep fills in the word
+under the point as the search string.
+I'm looking for an equivalent to the old igrep - default to the word
+under the point, the files with the same mode, and the current directory
+--- with no prompting.
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78716" (19773 50391) new 12 nil nil ((title nil "Re: grep options") (link nil "http://permalink.gmane.org/gmane.emacs.help/78716") (description nil "<pre>
+grep seems even worse than lgrep.  At least lgrep fills in the word 
+under the point as the search string.
+
+I'm looking for an equivalent to the old igrep - default to the word 
+under the point, the files with the same mode, and the current directory 
+--- with no prompting.
+
+
+
+
+</pre>") (dc:creator nil "Ken Goldman") (dc:date nil "2011-01-24T18:28:39"))) ("Re: grep options" "<pre>
+I hesitate to file a bug report because I assume it's not a bug, just me
+missing an option or some customization.
+So does anyone know how to make lgrep default to the files in
+grep-files-aliases and default to the current directory without prompting?
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78715" (19773 50170) new 13 nil nil ((title nil "Re: grep options") (link nil "http://permalink.gmane.org/gmane.emacs.help/78715") (description nil "<pre>
+I hesitate to file a bug report because I assume it's not a bug, just me 
+missing an option or some customization.
+
+So does anyone know how to make lgrep default to the files in 
+grep-files-aliases and default to the current directory without prompting?
+
+
+
+
+
+</pre>") (dc:creator nil "Ken Goldman") (dc:date nil "2011-01-24T18:24:58"))) ("help needed in installing and invoking oo-browser" "<pre>Hi,
+I got the oo-browser tar  ball and unzipped it in /home/asd/tools directory.
+The oo-browser directory is created. and all the files are
+created inside that directory.
+i added the following code im my .emacs file
+(setq load-path (append
+'(\"/home/asd/tools/oo-browser/\"
+\"/home/asd/tools/oo-browser/hypb/\")
+load-path))
+(load \"br-start\")
+(global-set-key \"\\C-c\\C-o\" 'oo-browser)
+Then i restarted emacs.
+i am not able to invoke it by M-x oo-browser.
+Did i miss some steps?
+please tell me.
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78714" (19773 40714) new 14 nil nil ((title nil "help needed in installing and invoking oo-browser") (link nil "http://permalink.gmane.org/gmane.emacs.help/78714") (description nil "<pre>Hi,
+I got the oo-browser tar  ball and unzipped it in /home/asd/tools directory.
+The oo-browser directory is created. and all the files are 
+created inside that directory.
+
+i added the following code im my .emacs file
+
+(setq load-path (append
+         '(\"/home/asd/tools/oo-browser/\"
+           \"/home/asd/tools/oo-browser/hypb/\")
+         load-path))
+(load \"br-start\")
+(global-set-key \"\\C-c\\C-o\" 'oo-browser)
+
+Then i restarted emacs.
+i am not able to invoke it by M-x oo-browser.
+Did i miss some steps?
+please tell me.
+
+
+      
+
+
+</pre>") (dc:creator nil "Anand Dhanakshirur") (dc:date nil "2011-01-24T15:47:22"))) ("Re: Can I recover my .emacs?" "<pre>
+The two are \"equivalent\" in the sense that Emacs understands them just
+as well, but maybe not humans.  So the comments your had in .emacs
+aren't carried over in the .emacs.elc, but a lot of the rest is.
+I recommend you open the .emacs.elc file in Emacs and look at it.
+You'll probably see a lot of \"garbage\" (like \\NNN chars), but you should
+also see lots of variable names (all the variable names you had in
+.emacs should appear in .emacs.elc and all the values as well as
+most/all of the functions you called there).  So the main work will be
+for you to try and figure out what value corresponds to which variable
+and things like that.  If you have trouble understanding what you see,
+post some samples here for people to decode it for you.
+Note also that a lot of what's in the .emacs.elc can be placed in the
+.emacs as well.
+Stefan
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78713" (19773 47291) old 15 nil nil ((title nil "Re: Can I recover my .emacs?") (link nil "http://permalink.gmane.org/gmane.emacs.help/78713") (description nil "<pre>
+The two are \"equivalent\" in the sense that Emacs understands them just
+as well, but maybe not humans.  So the comments your had in .emacs
+aren't carried over in the .emacs.elc, but a lot of the rest is.
+
+
+I recommend you open the .emacs.elc file in Emacs and look at it.
+You'll probably see a lot of \"garbage\" (like \\NNN chars), but you should
+also see lots of variable names (all the variable names you had in
+.emacs should appear in .emacs.elc and all the values as well as
+most/all of the functions you called there).  So the main work will be
+for you to try and figure out what value corresponds to which variable
+and things like that.  If you have trouble understanding what you see,
+post some samples here for people to decode it for you.
+
+Note also that a lot of what's in the .emacs.elc can be placed in the
+.emacs as well.
+
+
+        Stefan
+
+</pre>") (dc:creator nil "Stefan Monnier") (dc:date nil "2011-01-24T17:36:59"))) ("Re: autoload" "<pre>
+IIRC you can use
+--eval \"(batch-byte-recompile-directory 0)\"
+so you don't have to define a new function.
+Right, and there as well you can use
+--eval \"(setq generated-autoload-file \\\"`pwd`/myloaddefs.el\\\")\"
+Good point.
+Stefan
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78712" (19773 46752) new 16 nil nil ((title nil "Re: autoload") (link nil "http://permalink.gmane.org/gmane.emacs.help/78712") (description nil "<pre>
+
+IIRC you can use
+
+    --eval \"(batch-byte-recompile-directory 0)\"
+
+so you don't have to define a new function.
+
+
+Right, and there as well you can use
+
+  --eval \"(setq generated-autoload-file \\\"`pwd`/myloaddefs.el\\\")\"
+
+
+Good point.
+
+
+        Stefan
+
+</pre>") (dc:creator nil "Stefan Monnier") (dc:date nil "2011-01-24T17:28:00"))) ("Re: autoload" "<pre>
+On Jan 24, 2011, at 12:51 AM, e20100633 wrote:
+My git repository for my .emacs.d directory is here: https://github.com/pedz/emacs-lisp
+It is very disorganized but folks are welcome to poke around it and take what is useful to them.
+Perry
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78711" (19773 43553) new 17 nil nil ((title nil "Re: autoload") (link nil "http://permalink.gmane.org/gmane.emacs.help/78711") (description nil "<pre>
+On Jan 24, 2011, at 12:51 AM, e20100633 wrote:
+
+
+My git repository for my .emacs.d directory is here: https://github.com/pedz/emacs-lisp
+
+It is very disorganized but folks are welcome to poke around it and take what is useful to them.
+
+Perry
+
+
+
+</pre>") (dc:creator nil "Perry Smith") (dc:date nil "2011-01-24T16:34:41"))) ("Can I recover my .emacs?" "<pre>Hi,
+I lost my .emacs (and some other files) due to disk failure. I have my
+.emacs.elc so thankfully I can continue my work.
+Is there any way to recover the .emacs from the .emacs.elc? I tried saving
+options in Emacs and it does get many but not all of the settings I had. I
+had some loadpaths and other statements and I can't remember them all. And
+I'm not any good with Emacs Lisp or any Lisp so I can't figure how to get
+everything back the way it was.
+Thanks if anyone can help.
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78710" (19773 27930) new 18 nil nil ((title nil "Can I recover my .emacs?") (link nil "http://permalink.gmane.org/gmane.emacs.help/78710") (description nil "<pre>Hi,
+
+I lost my .emacs (and some other files) due to disk failure. I have my
+.emacs.elc so thankfully I can continue my work.
+
+Is there any way to recover the .emacs from the .emacs.elc? I tried saving
+options in Emacs and it does get many but not all of the settings I had. I
+had some loadpaths and other statements and I can't remember them all. And
+I'm not any good with Emacs Lisp or any Lisp so I can't figure how to get
+everything back the way it was.
+
+Thanks if anyone can help.
+
+
+
+</pre>") (dc:creator nil "Fritz Wuehler") (dc:date nil "2011-01-24T12:14:18"))) ("fill-paragraph and LaTeX comments" "<pre>Hello all,
+I have a problem with fill-paragraph (M-q) in LaTeX mode.
+For example, consider this text:
+%
+very long line that should be filled
+If my cursor is in this line and I fill it with M-q, I get something
+like:
+% very long line
+that should be
+filled
+So, some of my text is now commented, which is really a problem! The
+same occur with $$.
+I've tried to customise paragraph-separate to \"[ \\t]*\\(%.*\\)?$\" and
+similar regexps but this does not help.
+Can anyone help me with this?
+Many thanks in advance!
+Franck
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78709" (19773 17396) new 19 nil nil ((title nil "fill-paragraph and LaTeX comments") (link nil "http://permalink.gmane.org/gmane.emacs.help/78709") (description nil "<pre>Hello all,
+
+I have a problem with fill-paragraph (M-q) in LaTeX mode.
+For example, consider this text:
+
+%
+very long line that should be filled
+
+If my cursor is in this line and I fill it with M-q, I get something
+like:
+
+% very long line
+that should be
+filled
+
+So, some of my text is now commented, which is really a problem! The
+same occur with $$.
+I've tried to customise paragraph-separate to \"[ \\t]*\\(%.*\\)?$\" and
+similar regexps but this does not help.
+
+Can anyone help me with this?
+
+Many thanks in advance!
+Franck
+
+</pre>") (dc:creator nil "Franck Pommereau") (dc:date nil "2011-01-24T09:18:44"))) ("Re: autoload" "<pre>Hello,
+On Jan 24, 2011, at 5:49 AM, Perry Smith wrote:
+Oh god, I was searching for that all day long yesterday. I can't
+believe there's nothing in emacs since all those years to byte-
+compile a whole directory for the first time -- yeah +1 batch-byte-
+recompile-directory is for *recompile*.
+Thank you very much for this.
+Regards,
+~ #ID: e20100633 &lt;e20100633()inbox!lv&gt; #TTY: 9-8M 4554
+~ TYPE 1707-A3 S/N L3-M2812 SLACKWARE 13.0 RLU #527034
+------------------------------------------------{,_,\"&gt;
+They say that an incubus whose initial is F- sometimes
+makes women feel sensitive.          --- Play NetHack!
+</pre>" "http://permalink.gmane.org/gmane.emacs.help/78708" (19773 8542) new 20 nil nil ((title nil "Re: autoload") (link nil "http://permalink.gmane.org/gmane.emacs.help/78708") (description nil "<pre>Hello,
+
+On Jan 24, 2011, at 5:49 AM, Perry Smith wrote:
+
+
+Oh god, I was searching for that all day long yesterday. I can't
+believe there's nothing in emacs since all those years to byte-
+compile a whole directory for the first time -- yeah +1 batch-byte-
+recompile-directory is for *recompile*.
+
+Thank you very much for this.
+
+Regards,
+
+~ #ID: e20100633 &lt;e20100633()inbox!lv&gt; #TTY: 9-8M 4554
+~ TYPE 1707-A3 S/N L3-M2812 SLACKWARE 13.0 RLU #527034
+------------------------------------------------{,_,\"&gt;
+They say that an incubus whose initial is F- sometimes
+makes women feel sensitive.          --- Play NetHack!
+
+
+</pre>") (dc:creator nil "e20100633") (dc:date nil "2011-01-24T06:51:10"))) ("white is #e5e5e5" "<pre>When I run emacsclient -nw in my Apple Terminal, I get a dark grey background instead of white like I expect. Here's what list-colors-display shows:
+black                  black                                                                #000000
+red                    red                                                                  #cd0000
+green                  green                                                                #00cd00
+yellow                 yellow                                                               #cdcd00
+blue                   blue                                  </pre>" "http://permalink.gmane.org/gmane.emacs.help/78707" (19773 5063) new 21 nil nil ((title nil "white is #e5e5e5") (link nil "http://permalink.gmane.org/gmane.emacs.help/78707") (description nil "<pre>When I run emacsclient -nw in my Apple Terminal, I get a dark grey background instead of white like I expect. Here's what list-colors-display shows:
+
+black                  black                                                                #000000                                                                                                       
+red                    red                                                                  #cd0000                                                                                                       
+green                  green                                                                #00cd00                                                                                                       
+yellow                 yellow                                                               #cdcd00                                                                                                       
+blue                   blue                                  </pre>") (dc:creator nil "Warren Harris") (dc:date nil "2011-01-24T05:53:11"))))

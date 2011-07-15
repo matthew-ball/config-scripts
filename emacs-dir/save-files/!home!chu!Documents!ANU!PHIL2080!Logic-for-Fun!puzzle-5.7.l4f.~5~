@@ -1,0 +1,81 @@
+sort {
+     % blocks {}.
+     blocks enum: b0, b1, b2, b3.
+     states {}.
+}
+
+function {
+     clear: states, blocks -> bool {hidden}.
+
+     on: states, blocks -> blocks {}.
+     move: states, blocks, blocks -> blocks {hidden}.
+
+     support: states, blocks -> blocks {partial hidden}.
+
+     % skolem_blocks: blocks -> blocks {hidden}.
+     table: blocks. {hidden}
+     start: states. {hidden}
+     finish: states. {hidden}
+}
+
+clause {
+
+     % strict ordering ...
+     table = MIN. % of blocks ...
+     start = MIN AND finish = MAX. % of states ...
+
+     % initial state
+     on(start, b1) = table.
+     on(start, b2) = table.
+     on(start, b3) = b2.
+
+     % final state
+     on(finish, b3) = table.
+     on(finish, b1) = b3.
+     on(finish, b2) = b1.
+
+     % only one block moves per turn
+     move(s, a, b) = c AND move(s+1, x, y) = z -> (a = x) AND (y = b) AND (c = z).
+
+     % block a is on block b iff block b is block a's support ...
+     (on(s, a) = b) = (support(s, a) = b).
+
+     % block a is clear iff a = table or there does not exist a block b, such that a is on b ...
+     (clear(s, a)) = (a = table OR NOT(EST(b) OR on(s, b) = a)).
+
+     % a move is a pair of blocks a and b, such that clear(a) and clear(b) hold, and a is not on block b
+     move(s, a, b) = c AND NOT(a = table OR a = b) AND clear(s, a) AND clear(s, b) AND NOT(on(s, a) = b) -> support(s+1, a) = b AND support(s+1, x) = support(s, x) AND NOT(x = table OR x = a).
+}
+
+end
+
+% #sorts#
+% blocks {}.
+% states {}.
+
+
+% #functions#
+% on: blocks, blocks -> bool {}.
+% clear: blocks -> bool {}.
+% move: blocks, blocks -> blocks {}.
+
+% support: blocks -> blocks {partial}.
+
+% table: blocks. {hidden}
+% start: states. {hidden}
+% finish: states. {hidden}
+
+
+% #clauses#
+% % strict ordering ...
+% table = MIN. % of blocks ...
+% start = MIN AND finish = MAX. % of states ...
+
+% % block a is on block b iff block b is block a's support ...
+% (on(a, b)) = (support(a) = b).
+
+% % block a is clear iff a = table or there does not exist a block b, such that a is on b ...
+% (clear(a)) = (a = table OR NOT(EST(b) OR on(b, a))).
+
+% % a move is a pair of blocks a and b, such that clear(a) and clear(b) hold, and a is not on block b
+% move(a, b) = c AND NOT(a = table OR a = b) AND clear(a) AND clear(b) AND NOT(on(a, b)) -> support(a)+1 = b AND support(x)+1 = support(x) AND NOT(x = table OR x = a).

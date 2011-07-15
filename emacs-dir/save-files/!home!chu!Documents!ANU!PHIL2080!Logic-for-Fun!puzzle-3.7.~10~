@@ -1,0 +1,125 @@
+#user#
+chu
+
+#sorts#
+scientist enum: alan, geoffrey, margaret, agnes, sophie, james, sonia, henry, tom, zoe.
+scientist_gender enum: male, female.
+scientist_position enum: full_professor, associate_professor, assistant.
+scientist_team enum: pure, applied, history, metrics, comparative, meta.
+
+committee {}.
+
+
+#functions#
+position: scientist -> scientist_position {hidden}.
+team: scientist, scientist_team -> bool {hidden}.
+gender: scientist -> scientist_gender {hidden}.
+gender_count: scientist_gender -> int {hidden}.
+scientist_count: scientist -> int {hidden}.
+couple: scientist, scientist -> bool {commutative hidden}.
+
+member: scientist -> committee {partial}.
+
+A: scientist. {hidden} % pure footling
+B: scientist. {hidden} % applied footling
+C: scientist. {hidden} % footling history
+D: scientist. {hidden} % footlometrics
+E: scientist. {hidden} % comparative footling
+F: scientist. {hidden} % metafootling
+G: scientist. {hidden} % full professor
+H: scientist. {hidden} % associate professor
+I: scientist. {hidden} % assistant
+%J: scientist. {hidden} % skolem male from couple
+%K: scientist. {hidden} % skolem female from couple
+
+
+#clauses#
+% positions
+% ---
+(position(x) = full_professor) = (x = alan OR x = geoffrey OR x = margaret).
+(position(x) = associate_professor) = (x = agnes OR x = sophie OR x = james OR x = sonia).
+(position(x) = assistant) = (x = henry OR x = tom OR x = zoe).
+
+% teams
+% ---
+team(geoffrey, x) = (x = pure OR x = comparative).
+team(zoe, x) = (x = pure OR x = history).
+team(sophie, x) = (x = pure OR x = meta).
+team(henry, x) = (x = pure OR x = metrics OR x = meta).
+team(margaret, x) = (x = applied OR x = comparative).
+team(agnes, x) = (x = applied OR x = metrics).
+team(james, x) = (x = applied OR x = metrics).
+team(alan, x) = (x = history OR x = meta).
+team(sonia, x) = (x = history OR x = meta).
+team(tom, x) = (x = history OR x = comparative).
+
+% genders
+% ---
+(gender(x) = male) = (x = alan OR x = geoffrey OR x = james OR x = henry OR x = tom).
+NOT (gender(x) = male) -> gender(x) = female.
+
+% couples
+% ---
+couple(x, y) -> NOT (gender(x) = gender(y)).
+couple(x, y) AND NOT (z = x OR z = y) -> NOT (couple(x, z) OR couple(z, y)).
+couple(geoffrey, zoe).
+couple(james, sophie).
+NOT (couple(henry, y)).
+position(x) = full_professor AND couple(x, y) -> x = geoffrey.
+couple(tom, agnes) OR couple(tom, sonia).
+
+% counts
+% ---
+EST(member(x)) -> scientist_count(x) = 1.
+NOT (EST(member(x))) -> scientist_count(x) = 0.
+gender_count(male) = scientist_count(alan) + scientist_count(geoffrey) + scientist_count(james) + scientist_count(henry) + scientist_count(tom).
+gender_count(female) = scientist_count(margaret) + scientist_count(agnes) + scientist_count(sophie) + scientist_count(sonia) + scientist_count(zoe).
+
+% stop returning solutions with 4 people or more.
+gender_count(male) + gender_count(female) < 4.
+
+% the committee must contain:
+% ---
+% at least one from each team
+EST(member(A)) -> team(A, pure).
+EST(member(B)) -> team(B, applied).
+EST(member(C)) -> team(C, history).
+EST(member(D)) -> team(D, metrics).
+EST(member(E)) -> team(E, comparative).
+EST(member(F)) -> team(F, meta).
+
+% at least one of each rank
+EST(member(G)) -> position(G) = full_professor.
+EST(member(H)) -> position(H) = associate_professor.
+EST(member(I)) -> position(I) = assistant.
+
+% the same number of men as women
+DIF(gender_count(male), gender_count(female)) < 2.
+
+% no married couple
+EST(member(x)) AND EST(member(y)) -> NOT (couple(x, y)).
+
+
+#mode#
+SAVE
+
+
+#problem#
+Equity   
+
+
+#settings#
+solutions: 3
+time_limit: 3
+pre_test: 3
+verbosity {
+ job:none
+  models:full
+  stats:none
+}
+cv_limit:100000
+stack:LARGE
+
+
+
+#end#

@@ -1,0 +1,104 @@
+#!/bin/bash
+
+# =====================
+# custom backup script.
+# - installed packages
+# - system fstab
+# - system sources.list
+# - user .emacs
+# - user .screenrc
+# - user .bashrc
+# - user irssi config
+# =====================
+
+# variables ...
+BCKP_PCKGLST="package-list"
+BCKP_FSTB="fstab"
+FSTB="/etc/fstab"
+BCKP_SRCS="sources.list"
+SRCS="/etc/apt/sources.list"
+BCKP_MCS="emacs"
+MCS="/home/"$USER"/.emacs"
+BCKP_SCRN="screenrc"
+SCRN="/home/"$USER"/.screenrc"
+BCKP_BSH="bashrc"
+BSH="/home/"$USER"/.bashrc"
+BCKP_IRSSI="config"
+IRSSI="/home/"$USER"/.irssi/config"
+VER=0.6
+
+# process
+echo system backup v$VER
+echo ==================
+
+function backup_file {
+    SRC=$1
+    DST=$2
+    # copy SRC to DEST
+    #cp $SRC $DEST
+    echo file \"$SRC\" copied to \"$DST\".
+}
+
+function backup_packages {
+    SRC=$1
+    # export package list
+    #dpkg --get-selections | grep -v deinstall > $SRC
+    echo package list exported to \"$SRC\".
+}
+
+# export package list
+backup_packages $BCKP_PCKGLST
+
+# copy /etc/fstab
+backup_file $FSTB $BCKP_FSTB
+
+# copy /etc/apt/sources.list
+backup_file $SRCS $BCKP_SRCS
+
+# copy ~/.emacs
+backup_file $MCS $BCKP_MCS
+
+# copy ~/.screenrc
+backup_file $SCRN $BCKP_SCRN
+
+# copy ~/.bashrc
+backup_file $BSH $BCKP_BSH
+
+# copy ~/.irssi/config
+backup_file $IRSSI $BCKP_IRSSI
+
+
+
+
+# ===
+# OLD
+# ===
+# echo backup package list: $BCKP_PCKGLST
+# echo ====================
+# echo backup fstab file: $BCKP_FSTB
+# echo \"fstab\" location: $FSTB
+# echo ====================
+# echo backup sources.list file: $BCKP_SRCS
+# echo \"sources.list\" location: $SRCS
+# echo ====================
+# echo backup .emacs file: ../$BCKP_EMACS
+# echo \".emacs\" location: $BCKP_EMACS
+# echo ====================
+# echo backup .screenrc file: ../$BCKP_SCREEN
+# echo \".screenrc\" location: $BCKP_SCREEN
+# echo ====================
+# echo backup .bashrc file: ../$BCKP_BASH
+# echo \".bashrc\" location: $BCKP_BASH
+# echo ====================
+# echo backup .irssi/config file: ../$BCKP_IRSSI
+# echo \"config\" location: $BCKP_IRSSI
+# echo ====================
+
+#dpkg --get-selections | grep -v deinstall > $BCKP_PCKGLST
+#echo package list export to $BCKP_PCKGLST succesfully
+
+#cp $FSTB $BCKP_FSTB
+#echo $FSTB copied to $BCKP_FSTB succesfully
+
+#cp $SRCS $BCKP_SRCS
+#echo $SRCS copied to $BCKP_SRCS succesfully

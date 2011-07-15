@@ -1,0 +1,746 @@
+# Dust theme
+# by Rico Sta. Cruz and Ricardo (Kido) Mariano III
+# Edited by Taylor "Ripps" L-Wren
+
+# Set GtkSettings color scheme property.
+# This can be overriden (via an xsetting) with eg. the gnome-appearance-properties.
+#gtk_color_scheme = "fg_color:#323232\nbg_color:#e4e0d8\nbase_color:#fff\ntext_color:#323232\nselected_bg_color:#996B5C\nselected_fg_color:#fff\ntooltip_bg_color:#ebeab8\ntooltip_fg_color:#323232"
+gtk_color_scheme = "fg_color:#323232\nbg_color:#CCD4D9\nbase_color:#fff\ntext_color:#323232\nselected_bg_color:#5C6B99\nselected_fg_color:#fff\ntooltip_bg_color:#ebeab8\ntooltip_fg_color:#323232"
+
+include "scrollbars/scrollbar.rc"
+
+style "murrine-default"
+{
+	########
+	# Style Properties
+	########
+	GtkScrolledWindow ::scrollbar-spacing = 0
+	GtkScrolledWindow ::scrollbar-within-bevel = 0
+    
+	GtkButton      ::child-displacement-x = 1
+	GtkButton      ::child-displacement-y = 1
+	GtkButton      ::default-border       = { 0, 0, 0, 0 }
+	GtkButton      ::focus-padding        = 0
+	GtkCheckButton ::indicator-size       = 14
+
+	GtkPaned       ::handle-size          = 6
+
+	GtkRange       ::trough-border        = 0
+	GtkRange       ::slider-width         = 15
+	GtkRange       ::stepper-size         = 15
+
+	GtkScale       ::slider-length        = 20
+	GtkScale       ::trough-side-details  = 0	# 0 = thin slider, >0 = thick slider
+	GtkScrollbar   ::min-slider-length    = 30
+
+	GtkMenuBar     ::internal-padding     = 0
+	GtkExpander    ::expander-size        = 16
+	GtkToolbar     ::internal-padding     = 1
+	GtkTreeView    ::expander-size        = 14
+	GtkTreeView    ::vertical-separator   = 0
+	
+	GtkMenu        ::horizontal-padding   = 0
+	GtkMenu        ::vertical-padding     = 0
+	WnckTasklist   ::fade-overlay-rect    = 0
+    
+	xthickness = 1
+	ythickness = 1
+
+	fg[NORMAL]        = @fg_color
+	fg[PRELIGHT]      = @fg_color
+	fg[SELECTED]      = @selected_fg_color
+	fg[ACTIVE]        = @fg_color
+	fg[INSENSITIVE]   = darker (@bg_color)
+
+	bg[NORMAL]        = @bg_color
+	bg[PRELIGHT]      = shade (1.02, @bg_color)
+	bg[SELECTED]	  = @selected_bg_color
+	bg[INSENSITIVE]   = @bg_color
+	bg[ACTIVE]        = shade (0.9, @bg_color)
+
+	base[NORMAL]      = @base_color
+	base[PRELIGHT]    = shade (0.95, @bg_color)
+	base[ACTIVE]      = mix (0.7, @selected_bg_color, @bg_color)
+	base[SELECTED]    = @selected_bg_color
+	base[INSENSITIVE] = @bg_color
+
+	text[NORMAL]      = @text_color
+	text[PRELIGHT]    = @text_color
+	text[ACTIVE]      = @selected_fg_color
+	text[SELECTED]    = @selected_fg_color
+	text[INSENSITIVE] = darker (@bg_color)
+
+	engine "murrine" 
+	{
+		animation           = TRUE  # FALSE = disabled, TRUE = enabled
+		colorize_scrollbar  = TRUE  # FALSE = disabled, TRUE = enabled
+		contrast            = 1.0   # 0.8 for less contrast, more than 1.0 for more contrast on borders
+		glazestyle          = 0     # 0 = flat highlight, 1 = curved highlight, 2 = concave style, 3 = top curved highlight, 4 = beryl highlight
+		gradient_shades     = {1.1,1.0,1.0,0.87} # default: {1.1,1.0,1.0,1.1}
+		gradients           = TRUE  # FALSE = disabled, TRUE = enabled
+		highlight_ratio     = 1.0  # set highlight amount for buttons or widgets
+		lightborder_ratio   = 1.0   # sets lightborder amount for buttons or widgets
+		lightborderstyle    = 0     # 0 = lightborder on top side, 1 = lightborder on all sides
+		listviewheaderstyle = 1     # 0 = flat, 1 = glassy, 2 = raised
+		listviewstyle       = 0     # 0 = nothing, 1 = dotted
+		menubaritemstyle    = 0     # 0 = menuitem look, 1 = button look
+		menubarstyle        = 1     # 0 = flat, 1 = glassy, 2 = gradient, 3 = striped
+		menuitemstyle       = 1     # 0 = flat, 1 = glassy, 2 = striped
+		menustyle           = 0     # 0 = no vertical menu stripe, 1 = display vertical menu stripe
+		reliefstyle	    = 2     # 0 = flat, 1 = inset, 2 = shadow
+		rgba		    = FALSE  # FALSE = disabled, TRUE = enabled
+		roundness           = 2     # 0 = squared, 1 = old default, more will increase roundness
+		scrollbarstyle      = 2     # 0 = nothing, 1 = circles, 2 = handles, 3 = diagonal stripes, 4 = diagonal stripes and handles, 5 = horizontal stripes, 6 = horizontal stripes and handles
+		sliderstyle         = 0     # 0 = nothing added, 1 = handles
+		stepperstyle        = 1     # 0 = standard, 1 = integrated stepper handles, 2 = unknown
+		style		    = MURRINE # engine style options: CANDIDO, CLEARLOOKS, MIST, MURRINE, NODOKA
+		toolbarstyle	    = 0     # 0 = flat, 1 = glassy, 2 = gradient
+	}
+}
+
+style "murrine-wide"
+{
+	xthickness = 2
+	ythickness = 2
+}
+
+style "murrine-wider"
+{
+	xthickness = 3
+	ythickness = 3
+}
+
+style "murrine-dark"
+{
+	bg[NORMAL]	= "#303334"
+	bg[SELECTED]    = shade(0.9,@selected_bg_color)
+	bg[PRELIGHT]    = shade (0.5, @selected_bg_color)
+	bg[ACTIVE]	= mix (0.5, @selected_bg_color, "#343330")
+	bg[INSENSITIVE] = "#2C2F30"
+	
+	
+	fg[NORMAL] = mix (0.7,  '#efffff', @fg_color)
+	fg[PRELIGHT] = mix (0.8,  '#efffff', @fg_color)
+	fg[SELECTED] = mix (0.8,  '#efffff', @fg_color)
+	fg[ACTIVE] = mix (0.8,  '#efffff', @fg_color)
+	fg[INSENSITIVE] = mix (0.4,  '#efffff', @fg_color)	
+}
+
+style "murrine-button" = "murrine-default"
+{
+	xthickness   = 3
+	ythickness   = 3
+
+	bg[NORMAL]   = shade (1.2, @bg_color)
+	bg[PRELIGHT] = shade (0.9, @bg_color) #mix(0.82,shade (1.3, @bg_color),@selected_bg_color)
+	bg[ACTIVE]   = shade (0.85, @bg_color)
+	
+	# SZ07: button engine changed to clearlooks.
+	# Change back to murrine to get the old dotted focus ring.
+	engine "clearlooks" {
+		contrast = 1.0
+		radius = 2.0
+		style = GUMMY
+		reliefstyle = 1
+	}
+}
+
+style "murrine-toolbar" = "murrine-default"
+{
+    xthickness = 3
+    ythickness = 3
+    
+	bg[NORMAL]       = "#9FA9AF" #shade(0.88,@bg_color)
+	bg[PRELIGHT]     = "#9FA9AF" #shade(0.88,@bg_color)
+	bg[ACTIVE]       = "#9FA9AF" #shade(0.88,@bg_color)
+	bg[SELECTED]     = "#9FA9AF" #shade(0.88,@bg_color)
+	bg[INSENSITIVE]  = "#9FA9AF" #shade(0.88,@bg_color)
+	
+	fg[NORMAL] = @text_color
+	fg[PRELIGHT] = @text_color
+	fg[SELECTED] = @text_color
+	fg[ACTIVE] = @text_color
+	fg[INSENSITIVE] = @text_color
+	
+	fg[NORMAL] = @text_color
+	text[NORMAL] = @text_color
+	#engine "murrine" {
+	#	gradient_shades = {1.1,1.0,1.0,0.85}
+	#}
+	
+	engine "pixmap"
+	{
+		image {
+	  		function = BOX
+	  		file = "toolbar_light.png"
+	  		border = {1,1,1,1}
+	  	}
+	  	image {
+		      function				= HANDLE
+		      overlay_file			= "handlebox.png"
+		      overlay_stretch 	= FALSE
+		      orientation			= HORIZONTAL
+		}
+        image {
+		      function				= HANDLE
+		      overlay_file			= "handlebox.png"
+		      overlay_stretch 	= FALSE
+		      orientation			= VERTICAL
+		}
+    }
+}
+
+style "murrine-toolbar-item" = "murrine-toolbar"
+{
+
+	bg[NORMAL]   = "#9FA9AF" #shade(0.88,@bg_color)
+	bg[PRELIGHT] = "#DFE9EF" #shade(1.1,@bg_color)
+	bg[ACTIVE]   = "#BFC9CF" #shade(0.6,@bg_color)
+	
+	fg[INSENSITIVE] = shade(0.6,@bg_color)
+	
+	fg[ACTIVE] = @fg_color
+	text[ACTIVE] = @fg_color
+	
+	engine "clearlooks" {
+		contrast = 1.0
+		radius = 2.0
+		style = GUMMY
+		reliefstyle = 1
+	}
+}
+style "murrine-toolbar-sep" = "murrine-toolbar-item"
+{
+    bg[NORMAL] = shade(0.5, @bg_color)
+}
+
+style "murrine-dark-toolbar" = "murrine-dark"
+{	
+    xthickness = 6
+    	bg[NORMAL] = "#303334"
+	bg[PRELIGHT] =  mix (0.3, @selected_bg_color, "#303334")
+	bg[SELECTED] =  mix (0.3, @selected_bg_color, "#303334")#shade(0.2,@bg_color))
+	bg[ACTIVE] =  mix (0.5, @selected_bg_color, "#303334")
+	
+	engine "murrine"{
+		gradient_shades = {1.3,1.1,1.1,0.9}
+		style = MURRINE
+	}
+}
+style "murrine-dark-toolbar-sep" = "murrine-dark-toolbar"
+ { xthickness = 2 }
+
+
+style "pixmap-dark-toolbar" = "murrine-dark-toolbar"
+{
+	# To-do: make the toolbar recolorable, possibly without using pixmaps
+	# We only like this because of the top line, anyway.
+	engine "pixmap"{
+		image {
+	  		function = BOX
+	  		file = "toolbar_o.png"
+	  		border = {1,1,1,1}
+	  	}
+	  	image
+		{
+		      function				= HANDLE
+		      overlay_file			= "handlebox.png"
+		      overlay_stretch 	= FALSE
+		      orientation			= HORIZONTAL
+    		}
+    		image
+		{
+		      function				= HANDLE
+		      overlay_file			= "handlebox.png"
+		      overlay_stretch 	= FALSE
+		      orientation			= VERTICAL
+    		}
+	}
+}
+
+style "murrine-notebook-bg" = "murrine-wide"
+{
+	bg[NORMAL] = shade (1.05, @bg_color)
+	bg[SELECTED]   = shade (1.05, @bg_color)
+}
+
+style "murrine-notebook" = "murrine-notebook-bg"
+{
+}
+
+style "murrine-tasklist"
+{
+	xthickness = 3
+	ythickness = 3
+}
+
+style "murrine-panel" = "murrine-dark" {
+	bg[NORMAL] = "#292B2C"
+	engine "murrine" {
+	}
+}
+
+style "murrine-menu" = "murrine-dark"
+{
+	xthickness = 0
+	ythickness = 2
+
+	#Keep it this dark since OOo likes it
+	bg[NORMAL] = "#2C2F30"
+	text[NORMAL] = @bg_color
+	text[PRELIGHT]	= @selected_fg_color
+}
+
+style "murrine-menu-item" = "murrine-dark"
+{
+	xthickness = 0
+	ythickness = 3
+	
+	engine "murrine" {
+	    roundness = 0
+	    contrast = 0.1
+	    gradient_shades = {1.0,0.9,0.9,0.7}
+	}
+}
+
+style "murrine-separator-menu-item"
+{
+	GtkSeparatorMenuItem::horizontal-padding = 0
+	GtkWidget::wide-separators = 1
+	GtkWidget::separator-width = 1
+	GtkWidget::separator-height = 2
+	xthickness = 4
+	ythickness = 0
+	bg[NORMAL] = "#404344"
+}
+
+style "murrine-treeview"
+{
+}
+
+# Based on the default style so that the colors from the button
+# style are overriden again.
+style "murrine-treeview-header" = "murrine-default"
+{
+	xthickness = 2
+	ythickness = 1
+
+    bg[NORMAL] = shade(0.9, @bg_color)
+    bg[PRELIGHT] = shade(1.0, @bg_color)
+    bg[ACTIVE] = shade(0.8, @bg_color)
+    
+    GtkWidget::focus-line-width = 0
+    
+	engine "murrine" {
+		gradient_shades     = {1.3,1.0,1.0,1.1}
+		style = MURRINE
+		contrast = 0.5
+		glazestyle = 1
+		listviewheaderstyle = 1
+	}
+}
+
+# SZ07: This is added to tell the theme how to color checkmarks and radio items that are not in menus.
+style "murrine-radiocheck" = "murrine-default"
+{
+	text[NORMAL]	= shade (1.15, @bg_color) # Color for checks/radio items.
+	text[PRELIGHT]	= @selected_fg_color	# Color for selected checks/radio items.
+	engine "murrine"{
+	}
+}
+
+style "murrine-tooltips"
+{
+	xthickness = 4
+	ythickness = 4
+
+	bg[NORMAL] = @tooltip_bg_color
+	fg[NORMAL] = @tooltip_fg_color
+}
+
+style "murrine-progressbar"
+{
+	xthickness = 1
+	ythickness = 1
+
+	fg[PRELIGHT] = @selected_fg_color
+
+	engine "murrine"
+	{
+		style	= NODOKA
+		#I want my shiny progressbar!
+		#gradient_shades     = {1.3,1.1,0.9,1.0}
+	}
+}
+
+style "pixmap-statusbar" = "murrine-default"
+{
+	ythickness = 3
+	xthickness = 3
+
+    engine "pixmap"
+    {
+        image
+        {
+            function = RESIZE_GRIP
+            recolorable = TRUE
+            detail = "statusbar"
+            overlay_file = "statusgrip.png"
+            overlay_border = {0,0,0,0}
+            overlay_stretch = TRUE
+        }
+        image
+	{
+	   function			= SHADOW
+	   shadow			= IN
+	   file				= "blank.png"
+	}
+	image
+	{
+	   function			= SHADOW
+	   shadow			= OUT
+	   file				= "blank.png"
+	}
+	image
+	{
+	   function		= SHADOW
+	   shadow			= ETCHED_IN
+	   file				= "blank.png"	
+	}
+	image
+	{
+	   function		= SHADOW
+	   shadow			= ETCHED_OUT
+	   file				= "blank.png"
+	}
+    }
+}
+
+style "murrine-comboboxentry" 
+{
+}
+
+style "murrine-spinbutton"
+{
+}
+
+style "murrine-scale"
+{
+	bg[PRELIGHT] = shade(0.9,@bg_color)
+	engine "murrine"{
+		gradient_shades     = {1.3,1.1,0.9,1.0}
+	}
+}
+
+style "murrine-hscale" = "murrine-scale"
+{
+}
+
+style "murrine-vscale" = "murrine-scale"
+{
+}
+
+
+style "murrine-scrollbar"
+{
+	bg[ACTIVE] = "#fff"
+	bg[NORMAL] = @bg_color
+	bg[PRELIGHT] = shade(0.9,@bg_color)
+	engine "murrine"{
+		gradient_shades = {1.1,1.0,1.0,0.9}
+		contrast = 1.4
+	}
+}
+
+style "murrine-hscrollbar" = "murrine-scrollbar"
+{
+}
+
+style "murrine-vscrollbar" = "murrine-scrollbar"
+{
+}
+
+style "murrine-menubar" = "murrine-dark"
+{
+	# Static dark color so continuity doesn't break with toolbars
+	# when color changes
+	bg[NORMAL] = "#303334"
+	engine "murrine"{
+		gradient_shades = {1.0,0.9,0.9,0.75}
+	}
+}
+
+style "murrine-frame"
+{
+	#Uncomment for dark statusbars. Breaks some apps.
+	#bg[ACTIVE] = shade(0.2,@bg_color)
+	#fg[NORMAL] = mix (1.5, @fg_color, '#ffffff')
+	#fg[PRELIGHT] = mix (1.4, @fg_color, '#ffffff')
+}
+
+style "murrine-frame-title" = "murrine-frame"
+{
+	fg[NORMAL] = lighter (@fg_color)
+}
+
+style "murrine-nautilus-location"
+{
+	bg[NORMAL] = mix(0.60, @bg_color, @selected_bg_color)
+}
+
+#########################################
+# Matches
+#########################################
+
+# murrine default style is applied to every widget
+class "GtkWidget"    style "murrine-default"
+
+# Increase the x/ythickness in some widgets
+class "GtkRange"     style "murrine-default"
+class "GtkFrame"     style "murrine-frame"
+class "GtkSeparator" style "murrine-wide"
+class "GtkEntry"     style "murrine-wider"
+class "GtkStatusbar" style "pixmap-statusbar"
+class "GtkMenuBar"   style:highest "murrine-menubar"
+
+# Toolbar default: dark
+#class "*HandleBox" style "pixmap-dark-toolbar"
+#class "GtkToolbar"   style "pixmap-dark-toolbar" 
+#widget_class "*HandleBox" style "pixmap-dark-toolbar"
+#widget_class "*<GtkToolbar>.*"   style "murrine-dark-toolbar"
+
+# Toolbar default: light
+class "*HandleBox" style "murrine-toolbar"
+class "GtkToolbar"   style "murrine-toolbar" 
+widget_class "*HandleBox" style "murrine-toolbar"
+widget_class "*<GtkToolbar>.*"   style "murrine-toolbar-item"
+
+#
+# Toolbar exceptions:
+# Browser-type and viewer-type applications get a dark toolbar.
+# Everything below the toolbar for these apps are the content. This will make
+# a separation on function (toolbar) and content (client area).
+#
+
+# Work around for http://bugzilla.gnome.org/show_bug.cgi?id=382646
+style "murrine-text-is-fg-color-workaround"
+{
+	text[NORMAL]      = @fg_color
+	text[PRELIGHT]    = @fg_color
+	text[SELECTED]    = @selected_fg_color
+	text[ACTIVE]      = @fg_color
+	text[INSENSITIVE] = darker (@bg_color)
+}
+widget_class "*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround"
+
+style "murrine-text-is-fg-color-workaround-dark"
+{
+	#Make it work with this theme!
+	text[NORMAL] = mix (1.5, @fg_color, '#ffffff')
+	text[PRELIGHT] = mix (1.4, @fg_color, '#ffffff')
+}
+
+#  Nautilus toolbar: dark
+widget_class "*Nautilus*Toolbar*" style "pixmap-dark-toolbar"
+widget_class "*Nautilus*Tool*GtkButton" style "murrine-dark-toolbar"
+widget_class "*Nautilus*Tool*.*.*" style "murrine-dark-toolbar"
+widget_class "*Nautilus*Tool*GtkToggleButton" style "murrine-dark-toolbar"
+widget_class "*Nautilus*Tool*Separator*" style "murrine-dark-toolbar-sep"
+widget_class "*Nautilus*Tool*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+
+# Evince/EOG: dark
+widget_class "*EggEditable*Toolbar*" style "pixmap-dark-toolbar"
+widget_class "*EggEditable*Toolbar*.*.*.*" style "murrine-dark-toolbar"
+widget_class "*EggEditable*Tool*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+
+widget "*fullscreen-toolbar" style "pixmap-dark-toolbar"
+widget "*fullscreen-toolbar.*" style "murrine-dark-toolbar"
+widget "*fullscreen-toolbar*.GtkComboBox.GtkCellView"   style "murrine-text-is-fg-color-workaround-dark"
+
+# Epiphany: dark
+widget_class "*EphyToolbar*" style "pixmap-dark-toolbar"
+widget_class "*EphyToolbar*.*.*.*" style "murrine-dark-toolbar"
+widget_class "*EphyTool*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+
+# F-Spot(?): dark
+widget_class "*Spot*Toolbar*" style "pixmap-dark-toolbar"
+widget_class "*Spot*Toolbar*.*.*.*" style "murrine-dark-toolbar"
+widget_class "*Spot*Toolbar*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+ 
+# Gedit: Dark
+widget_class "*edit*Toolbar*"   style "pixmap-dark-toolbar" 
+widget_class "*edit*Toolbar*.*"   style "murrine-dark-toolbar" 
+widget_class "*edit*Toolbar*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+
+# Brasero: Dark
+widget_class "*rasero*Toolbar*"   style "pixmap-dark-toolbar" 
+widget_class "*rasero*Toolbar*.*"   style "murrine-dark-toolbar" 
+widget_class "*rasero*Toolbar*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+
+#gThumb: dark
+widget_class "*Gth*Toolbar*"   style "pixmap-dark-toolbar" 
+widget_class "*Gth*Toolbar*.*"   style "murrine-dark-toolbar" 
+widget_class "*Gth*Toolbar*.<GtkComboBox>.<GtkCellView>"   style "murrine-text-is-fg-color-workaround-dark"
+widget_class "*GthFull*"   style "pixmap-dark-toolbar" #Doesn't work
+
+class "GtkSpinButton"  style "murrine-spinbutton"
+class "GtkScale"       style "murrine-scale"
+class "GtkVScale"      style "murrine-vscale"
+class "GtkHScale"      style "murrine-hscale"
+#class "GtkScrollbar"   style "murrine-scrollbar"
+#class "GtkVScrollbar"  style "murrine-vscrollbar"
+#class "GtkHScrollbar"  style "murrine-hscrollbar"
+class "GtkButton"      style "murrine-button"
+class "GtkRadioButton*"	style "murrine-radiocheck"	# SZ07: Added for the checkmarks/radio
+class "GtkCheckButton"	style "murrine-radiocheck"	# SZ07: Added for the checkmarks/radio
+
+# General matching following, the order is choosen so that the right styles override each other
+# eg. progressbar needs to be more important then the menu match.
+
+widget_class "*<GtkNotebook>*<GtkEventBox>"     style "murrine-notebook-bg"
+widget_class "*<GtkNotebook>*<GtkDrawingArea>"  style "murrine-notebook-bg"
+widget_class "*<GtkNotebook>*<GtkLayout>"       style "murrine-notebook-bg"
+widget_class "*<GtkNotebook>"    style "murrine-notebook"
+
+widget_class "*<GtkComboBoxEntry>*" style "murrine-comboboxentry"
+widget_class "*<GtkCombo>*"         style "murrine-comboboxentry"
+
+widget_class "*<GtkMenu>*"              style "murrine-menu"
+widget_class "*<GtkMenuItem>*"          style "murrine-menu-item"
+widget_class "*<GtkSeparatorMenuItem>*" style "murrine-separator-menu-item"
+
+widget_class "*<GtkFrame>"  style "murrine-frame"
+widget_class "*.<GtkFrame>.<GtkLabel>" style "murrine-frame-title"
+widget_class "*.<GtkTreeView>*"        style "murrine-treeview"
+
+widget_class "*<GtkStatusbar>*"  style "murrine-wider"
+widget_class "*<GtkProgressBar>"       style "murrine-progressbar"
+
+# Treeview header
+widget_class "*.<GtkTreeView>.<GtkButton>" style "murrine-treeview-header"
+widget_class "*.<GtkCTree>.<GtkButton>"    style "murrine-treeview-header"
+widget_class "*.<GtkList>.<GtkButton>"     style "murrine-treeview-header"
+widget_class "*.<GtkCList>.<GtkButton>"    style "murrine-treeview-header"
+
+# Panel stuff
+widget "*PanelWidget*" 					style "murrine-panel"
+widget "*PanelApplet*" 					style "murrine-panel"
+widget "*fast-user-switch*"				style "murrine-panel" # Workaround for Fast User Switch applet
+class "PanelApp*" 					style "murrine-panel"
+class "PanelToplevel*" 					style "murrine-panel"
+widget_class "*Panel*<GtkMenuBar>*"           		style:highest "murrine-panel" # The panel menubar
+widget "*TomboyTray*"					style "murrine-panel" # Workaround for Tomboy
+widget "*TomboyApplet*"					style "murrine-panel"
+
+#XFCE panel
+widget_class "*notif*"		style "murrine-panel"
+widget_class "*Notif*"		style "murrine-panel"
+widget_class "*Tray*"		style "murrine-panel"
+widget_class "*tray*"		style "murrine-panel"
+widget "*Xfce*Panel*"		style "murrine-panel"
+class "*Xfce*Panel*"		style "murrine-panel"
+
+# The window of the tooltip is called "gtk-tooltip"
+widget "gtk-tooltip*" style "murrine-tooltips"
+
+###################################################
+# Special cases and work arounds
+###################################################
+
+# Workarounds for Evolution
+widget_class "*.ETable.ECanvas"    style "murrine-treeview-header"
+widget_class "*.ETree.ECanvas"    style "murrine-treeview-header"
+
+# Firefox isn't nice to dark themes, so unset the dark stuff.
+widget "MozillaGtkWidget*Toolbar*"	style "murrine-toolbar-item"
+#widget "MozillaGtkWidget*Frame*"	style "murrine-default"
+
+# Thunderbird too. But since Thunderbird uses the same theming engine as FF2,
+# things are worse for us.
+
+# Monodevelop uses an OptionPanel widget, which incidentally is dark in our theme.
+# Undo it:
+widget "*OptionPanel*"		style "murrine-button"
+widget "*optionPanel*"		style "murrine-button"
+
+# Special case the nautilus-extra-view-widget
+# ToDo: A more generic approach for all applications that have a widget like this.
+widget "*.nautilus-extra-view-widget" style : highest "murrine-nautilus-location"
+
+style "murrine-menuitem-text-is-fg-color-workaround" 
+{
+	#text[NORMAL]        = @fg_color
+	#text[PRELIGHT]      = @selected_fg_color
+	#text[SELECTED]      = @selected_fg_color
+	#text[ACTIVE]        = @fg_color
+	#text[INSENSITIVE]   = darker (@bg_color)
+	#Make it work with this theme!
+	text[NORMAL] = mix (1.5, @fg_color, '#ffffff')
+	text[PRELIGHT] = mix (1.4, @fg_color, '#ffffff')
+}
+widget "*.gtk-combobox-popup-menu.*"   style "murrine-menuitem-text-is-fg-color-workaround"
+
+# Work around the usage of GtkLabel inside GtkListItems to display text.
+# This breaks because the label is shown on a background that is based on the
+# base color set.
+style "murrine-fg-is-text-color-workaround"
+{
+	fg[NORMAL]      = @text_color
+	fg[PRELIGHT]    = @text_color
+	fg[ACTIVE]      = @selected_fg_color
+	fg[SELECTED]    = @selected_fg_color
+	fg[INSENSITIVE] = darker (@bg_color)
+}
+widget_class "*<GtkListItem>*" style "murrine-fg-is-text-color-workaround"
+# The same problem also exists for GtkCList and GtkCTree
+# Only match GtkCList and not the parent widgets, because that would also change the headers.
+widget_class "*<GtkCList>" style "murrine-fg-is-text-color-workaround"
+
+style "murrine-evo-new-button-workaround" 
+{
+	engine "murrine"
+	{
+		toolbarstyle = 0
+	}
+}
+
+widget_class "EShellWindow.GtkVBox.BonoboDock.BonoboDockBand.BonoboDockItem*" style "murrine-evo-new-button-workaround"
+
+#Rhythmbox toolbar near the search entry. Use default + wide so that it doesn't turn dark.
+style "murrine-rhythmbox-header" = "murrine-default"
+{
+	xthickness = 3
+	ythickness = 3
+	engine "murrine" {
+	}
+}
+widget "*RBSourceHeader*"	style:highest "murrine-rhythmbox-header"
+widget "*HeaderToolbar*"	style:highest "murrine-rhythmbox-header"
+widget "*FooterToolbar*"	style:highest "murrine-rhythmbox-header"
+
+widget "*swt*toolbar*"	style "murrine-default"
+
+# RSC: Fix for CPU frequency applet
+style "applet-text" = "murrine-panel"
+{
+	fg[NORMAL] = @bg_color
+}
+
+widget_class "*CPUFreqApplet*" style:highest "applet-text"
+
+style "murrine-dialog" = "murrine-dark"
+{
+    bg[NORMAL] = mix(0.4, @selected_bg_color, shade(0.7, @bg_color))
+    fg[NORMAL] = shade(0.5, @fg_color)
+    text[NORMAL] = shade(0.5, @text_color)
+}
+style "murrine-dialog-button" = "murrine-dark"
+{
+    bg[NORMAL] = shade(0.15, @bg_color)
+    bg[PRELIGHT] = shade(0.18, @bg_color)
+}
+
+# Dialog boxes...?
+# widget_class "*Dialog*" style "murrine-dialog"
+# widget_class "*Dialog*.*" style "murrine-dialog"
+# widget_class "*Dialog*.*Button*" style "murrine-dialog-button"

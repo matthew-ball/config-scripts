@@ -1,0 +1,159 @@
+
+:PROPERTIES:
+:COOKIE_DATA: 'checkbox'
+:END:
+
+* General
+** DONE Logic Summer School					   :GENERAL:
+ SCHEDULED: <2010-12-06 Mon 9:00-17:00>-<2010-12-17 Fri 9:00-15:00>
+ CLOSED: [2010-12-18 Sat 22:25]
+
+*** DONE Registration Due
+ DEADLINE: <2010-11-05 Fri>
+
+*** DONE Social Barbecue
+ SCHEDULED: <2010-12-05 Sun 19:00-23:00>
+ CLOSED: [2010-12-09 Thu 12:52]
+ 
+** Honours Projects 						    :GENERAL:
+*** Linear Temporal Logic (Runtime Verification)	       :UNIVERSITY:
+ READ: Papers on LTL and Runtime Verification
+
+*** Metaphysics (Objects and Types)			       :UNIVERSITY:
+ READ: Books/Papers/Websites on Metaphysics
+
+
+* Reading
+** Books							   :READING:
+|-----------------------------------------+----------------------|
+| Title                                   | Author               |
+|-----------------------------------------+----------------------|
+| Introduction to Mathematical Philosophy | Bertrand Russell     |
+| The Problems of Philosophy              | Bertrand Russell     |
+| What is this thing called metaphysics?  | Brian Garrett        |
+| Language, Truth & Logic                 | Alfred Jules Ayer    |
+| Naming and Necessity                    | Saul Kripke          |
+| On the Origin of Objects                | Brian Cantwell-Smith |
+|-----------------------------------------+----------------------|
+| Linux Programming                       | Kurt Wall            |
+|-----------------------------------------+----------------------|
+| Proof Theory and Philosophy             | Greg Restall         |
+|-----------------------------------------+----------------------|
+
+
+*** To Acquire
+http://www.amazon.com/Frege-G%C3%B6del-Mathematical-1879-1931-History/dp/158348597X
+
+** Papers							   :READING:
+|------------------------------------------------------------------------------------------------+------------------+---------+------|
+| Title                                                                                          | Author           | Journal | Year |
+|------------------------------------------------------------------------------------------------+------------------+---------+------|
+| On Denoting                                                                                    | Bertrand Russell | Mind    | 1905 |
+| On Sense and Reference                                                                         | Gottlob Frege    |         | 1892 |
+|------------------------------------------------------------------------------------------------+------------------+---------+------|
+| MOP: An efficient and Generic Runtime Verification Framework                                   |                  |         | 2007 |
+| Java-MOP: A Monitoring Oriented Programming Environment for Java                               |                  |         |      |
+| Comparing LTL Semantics for Runtime Verification                                               |                  |         |      |
+| Runtime Verification for LTL and TLTL                                                          |                  |         |      |
+| Towards Monitoring-Oriented Programming: A Paradigm Combining Specification and Implementation |                  |         |      |
+| [[/home/chu/Documents/Papers/other/algebra-underConstruction.pdf][Algebra - Under Construction]]                                                                   | Anthony Voutas   |         | 2010 |
+|------------------------------------------------------------------------------------------------+------------------+---------+------|
+
+
+** Websites							   :WEBSITE:
+|------------------------------------|
+| Title and Link                     |
+|------------------------------------|
+| [[http://plato.stanford.edu/entries/properties][Properties]]                         |
+| [[http://mally.stanford.edu/theory.html][The Theory of Abstract Objects]]     |
+| [[http://plato.stanford.edu/entries/universals-medieval/][The Medieval Problem of Universals]] |
+|------------------------------------|
+| [[http://www.emacswiki.org][EmacsWiki]]                          |
+|------------------------------------|
+| [[http://orgmode.org][Org-Mode (Official)]]                |
+| [[http://orgmode.org/manual/index.html][Org-Mode (Manual)]]                  |
+| [[http://doc.norang.ca/org-mode.html][Org-Mode (Personal planner)]]        |
+| [[http://members.optusnet.com.au/~charles57/GTD/org_dates/][Org-Mode (Dates and Times)]]         |
+| [[http://members.optusnet.com.au/~charles57/GTD/orgmode.html][Org-Mode (GTD)]]                     |
+|------------------------------------|
+| [[http://alexott.net/en/writings/emacs-vcs/EmacsMercurial.html][Mercurial with GNU Emacs]]           |
+|------------------------------------|
+
+
+** Reading Notes
+
+*** On Sense and Reference
+According to Frege, sense and reference are two different aspects of the meaning of at least some kinds of terms.
+Roughly, a term's reference is the object it refers to and its sense is the way in which it refers to that object.
+
+
+* Notes
+** Phone Numbers
+|-----------------+--------------|
+| Name            | Number       |
+|-----------------+--------------|
+| Potter (mobile) | 0449 747 277 |
+| Potter (home)   | 6251 61 71   |
+| James (mobile)  | 0434 496 997 |
+|-----------------+--------------|
+
+
+* Org-Mode
+|----------+--------------------------|
+| Command: | Description:             |
+|----------+--------------------------|
+| C-c C-c  | Context sensitive        |
+| C-c C-q  | Set tags                 |
+| C-c C-o  | Follow Link              |
+| C-c c    | Insert task              |
+| C-c C-s  | Insert schedule          |
+| C-c C-d  | Insert deadline          |
+| C-c C-t  | Insert TODO              |
+| C-c C-v  | Generate sparse tree     |
+| C-c C-w  | Show deadlines           |
+| C-c .    | Prompt for active date   |
+| C-c !    | Prompt for inactive date |
+| C-c a    | View agenda              |
+| C-c \    | Search tags              |
+| C-c C-o  | Visit Hyperlink          |
+|----------+--------------------------|
+  
+
+* Video Lectures
+** MIT Algorithms [3/23]
+ - [X] [[http://www.youtube.com/watch?v%3DJPyuH4qXLZ0][Lecture 1]] - Charles Leiserson
+ - [X] [[http://www.youtube.com/watch?v%3Dwhjt_N9uYFI][Lecture 2]] - Erik Demaine
+ - [X] [[http://www.youtube.com/watch?v%3D-EQTVuAhSFY&feature%3Dchannel][Lecture 3]] - Erik Demaine
+ - [ ] [[http://www.youtube.com/watch?v%3DvK_q-C-kXhs&feature%3Dchannel][Lecture 4]] - Charles Leiserson
+ - [ ] Lecture 5 - Erik Demaine
+ - [ ] Lecture 6
+ - [ ] Lecture 7
+ - [ ] Lecture 8
+ - [ ] Lecture 9
+ - [ ] Lecture 10
+ - [ ] Lecture 11
+ - [ ] Lecture 12
+ - [ ] Lecture 13
+ - [ ] Lecture 14
+ - [ ] Lecture 15
+ - [ ] Lecture 16
+ - [ ] Lecture 17
+ - [ ] Lecture 18
+ - [ ] Lecture 19
+ - [ ] Lecture 20
+ - [ ] Lecture 21
+ - [ ] Lecture 22
+ - [ ] Lecture 23
+
+
+** MIT Gödel, Escher, Bach: A Mental Space Odyssey [0/6]
+ - [[/home/chu/Videos/MIT%20OCW/Godel,%20Escher,%20Bach/][Lectures 1-6]]
+   - [ ] Lecture 1
+   - [ ] Lecture 2
+   - [ ] Lecture 3
+   - [ ] Lecture 4
+   - [ ] Lecture 5
+   - [ ] Lecture 6
+
+
+

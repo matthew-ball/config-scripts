@@ -1,0 +1,50 @@
+-- Haskell (Fibonacci) Library
+
+identity = \x -> x
+
+-- Produces the next sequence in the fibonacci occurence
+fibStep :: (Num a) => (a, a) -> (a, a)
+fibStep (u, v) = (v, u+v)
+
+-- Produces a pair from a single integer argument
+fibPair :: (Num a) => a -> (a, a)
+fibPair n
+    | n == 0 	= (0, 1)
+    | otherwise = fibStep (fibPair (n - 1))
+
+fibSeq :: (Num a, Enum a) => a -> [a]
+fibSeq n = [fastFib x | x <- [0 .. (n - 1)]]
+
+-- Produces the fibonacci number at place designated by the first
+-- Argument in the fibonacci sequence 
+fastFib :: (Num a) => a -> a
+fastFib = fst . fibPair
+
+-- Produces a list of fibonacci numbers, specified by a range:
+-- The first argument corresponds to the minimum value of the range.
+-- The second argument to the maximum value of the range.
+fibList :: (Num a, Ord a, Enum a) => (a, a) -> [a]
+fibList (n, x)
+    | n <= x 	= [fastFib n | n <- [n .. x]]
+    | otherwise = []
+
+-- Produces the factors of a number specified by the first argument
+factor :: (Integral n) => n -> [n]
+factor n = [ x | x <- [1 .. n], mod n x == 0]
+
+-- Algorithm for producing a list of Prime numbers
+-- WARNING: infinite list
+primes :: (Integral n) => [n]
+primes = sieve [2 ..]
+         where
+           sieve (p:xs) = p : sieve [ x | x <- xs, mod x p > 0]
+
+-- Factorial function
+factorial :: (Num a) => a -> a
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+
+-- Factorial on the length of a list
+listFactorial :: (Num a) => [a] -> a -> a
+listFactorial [] = factorial 0
+listFactorial (x:xs) = factorial (length xs)

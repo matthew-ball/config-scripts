@@ -1,0 +1,55 @@
+\documentclass[12pt,a4paper,oneside]{paper}
+
+%% \usepackage{url}
+\usepackage{hyperref}
+
+\title{PHIL2074 - Modern Theories of Knowledge}
+\author{Matthew Ball, u4537508}
+\date{Semester 1, 2011}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\maketitle\newpage
+
+%% \emph{What is the problem of induction?  Can it be solved?}
+
+%% This essay will attempt to explain just what exactly the problem of induction entails, before explaining various responses to the argument.
+
+%% The classic philosophical treatment of the problem of induction was given by the Scottish philosopher David Hume. Hume highlighted the fact that our everyday functioning depends on drawing uncertain conclusions from our relatively limited experiences rather than on deductively valid arguments. For example, we believe that bread will nourish us because it has done so in the past, despite no guarantee that it will do so. However, Hume argued that it is impossible to justify inductive reasoning. Inductive reasoning certainly cannot be justified deductively, and so our only option is to justify it inductively. However, to justify induction inductively is circular. Therefore, it is impossible to justify induction.
+
+%% However, Hume immediately argued that even if induction were proved unreliable, we would have to rely on it. So he took a middle road. Rather than approach everything with severe skepticism, Hume advocated a practical skepticism based on common sense, where the inevitability of induction is accepted.
+
+\section{The Problem of Induction}
+In the context of epistemology, an inductive argument is essentially the forming of a belief (either general or particular) from a collection of \emph{similar} sub-beliefs which lend some varying degree of support in favour of the end belief; in this way it can be seen as the \emph{inverse} of forming beliefs through deductive inferences. Classically, there are two main forms of an inductive argument:
+
+\begin{enumerate}
+  \item \emph{Enumerative induction} - from a set of individual premises (which give some degree of support to the conclusion) we derive some \emph{general} fact.
+  \item \emph{Singular predicative induction} - from a set of individual premises (which give some degree of support to the conclusion) we derive some \emph{singular} fact.
+\end{enumerate}
+
+The \emph{problem} of induction is the philosophical question of whether induction can at all lead to knowledge. In particular, it refers to how an individual is able to justify (and can ultimately know) beliefs formed from these inferences; to show that the truth of the premises supported (or even entail), the truth of the conclusion.\\
+
+The issue is that none of the premises contain the conclusion (or that the conclusion says \emph{more} than its premises)  and all of the premises are moreover the same in form, so the process essentially relies on a kind of brute force of numbers. This shows a potential void in empirical knowledge (since most of what we (claim to) ``know'' is based on observations, or experiments, testing some particular fact over and over again.\\
+
+One thing we can do is restate the problem; instead of asking when an individual is justified in saying that all $F$s are $G$, we can wonder instead when it would be \emph{reasonable} to assume it.
+
+%% Suppose we saw another thousand sheep, all of which were also white. Are we justified then? Again, apparently we aren't because in fact some sheep aren't white? Is there any way around this difficulty?
+
+%% If we see but one white sheep, it seems unreasonable to insist that all sheep are white. However, once we've seen several hundred of the walking sweaters we may be reasonable in supposing that they all are. The subsequent finding that some sheep are black doesn't change the fact that we were justified in supposing them to be white.
+
+%% In recent times, Goodman has posed what is called the ``new riddle of induction''. Rather than using his example, let's stay with the sheep and reconsider what we have. Our observations of hundreds of white sheep has led us to propose the theory that all sheep are white. Suppose now that we offer another theory: all sheep until some time T in the future will be white, but the next one will be purple. The evidence we have to date supports our theory, but it also fits this new (but silly-sounding) theory too. How do we decide which is the more reasonable, given that both are equally well grounded? Moreover, we could create plenty of other theories of the same form, involving sheep of all the colours of the rainbow and more besides. We can't say that we have to go with the white theory because we've only seen white so far because that is assuming what is to be proven; i.e. that we expect to see new sheep that are also white. This interesting and perplexing problem is notoriously difficult to escape. In scientific terms it's called the underdetermination of theories.
+
+% Suppose we saw another thousand sheep, all of which were also white. Are we justified then? Again, apparently we aren't because in fact some sheep aren't white? Is there any way around this difficulty?
+
+\subsection{Strong vs Weak Induction}
+
+\subsection{Reliability}
+
+\subsection{Conclusion}
+Philosophically, inductive reasoning differs from mathematical induction only in that the latter incorporates a \emph{base case} into its inference step (by knowing that there is some smallest structure for which a certain property holds, together with the fact this property holds of any structure larger than some specific size, we are justified in showing that it holds of \emph{all} structures in some domain).\\
+
+This base case is what makes mathematical induction \emph{sound} - it is not possible to derive a true conclusion from a fase premise. Hence mathematical induction is \emph{deductive} in nature. In an abstract realm where we easily know certain properties which are applicable to some structure, finding a base case is often a trivial process. However, in reality, this base case is \emph{very} elusive.
+
+\end{document}

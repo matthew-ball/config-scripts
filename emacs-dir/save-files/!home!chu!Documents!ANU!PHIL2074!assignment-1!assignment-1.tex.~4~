@@ -1,0 +1,101 @@
+\documentclass[12pt,a4paper,oneside]{paper}
+
+\usepackage{url}
+
+\title{PHIL2074 - Modern Theories of Knowledge}
+\author{Matthew Ball, u4537508}
+\date{Semester 1, 2011}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\maketitle\newpage
+
+%% \emph{Outline Coherentist and Foundationalist accounts of the structure of justified belief.  Which is the more plausible?}
+
+\section{Justification and Belief}
+This essay will attempt to explain just what is meant by the notion of ``justified belief'', before analysing how two opposing points of reference - that of a \emph{Foundationalist} and that of a \emph{Coherentist} - use justified belief in their account of the structure of knowledge. In contemporary epistemology, these two positions play the dominant role in a theory of \emph{how} knowledge is constructed from the beliefs of an individual.\\
+
+The concept of \emph{justification} is having sufficient evidence (such as the knowledge of a fact, or an empirical insight) to conclude that something (an action, or a proposition) is reasonable or necessary; it is a mental process of which the result is having an explanation for something, through generally accepted reasoning. A \emph{belief} is any cognitive content held to be of value; it is a mental impression, or a (perhaps vague) idea, in which some confidence is placed. Furthermore, it has been shown that a belief itself does not have to be \emph{true} to be justified.\footnote{Insert reference...}\\ % 166
+
+A \emph{justified belief} is that of having sufficient evidence to hold some conviction in regards to a subject. Thus, a justified belief is, in some sense, the underlying support from which knowledge can be inferred. % 35
+ 
+%% \noindent \emph{201/200 words.} % 166 + 35 = 201
+
+%% \emph{The Analysis of Knowledge}: \url{http://plato.stanford.edu/entries/knowledge-analysis/}
+
+\subsection{The Nature of Justification}
+We have presented a definition for what justified belief is, and the question now becomes \emph{what} allows an individual to justify their beliefs. To analyse this question further, three questions have been proposed: % 33
+\begin{enumerate}
+  \item Is it possible to (rationally) form a belief with \emph{no} justification? % 11
+  \item Is an individual entitled to justify their beliefs on the basis of another individual's beliefs? % 15
+  \item Is it possible for an individual's own beliefs to somehow justify the beliefs of the individual? % 16
+\end{enumerate} % 11 + 15 = 26 + 16 = 42
+
+These three questions all lead to unacceptable conclusions regarding the nature of justified belief:\footnote{D. Pritchard, \emph{``What is this thing called knowledge?''}, (Routledge, 2006), pp. 35-37.} % 14 words
+\begin{enumerate}
+  \item Our beliefs are unsupported; or % 5 words
+  \item Our beliefs are supported by an infinite chain of justification; or % 11 words
+  \item Our beliefs are supported by a circular chain of justification. % 10 words
+\end{enumerate} % 5 + 11 = 16 + 10 = 26 words
+
+To answer these questions, and take account of the ``trilemma'' we are faced with, we will now compare and contrast the two most-popular views concerning the structure of justification; they describes the process through which an individual is able to say of some belief that it is sufficiently well-supported that it can be justified. % 54
+
+%% \noindent \emph{115/150 words.} % 33 + 42 = 75 + 14 = 89 + 26 = 115 + 54 = 169 words
+
+%% For a theory of knowledge, the notion of justified belief is of utmost importance; even though we now know that justification of belief does not itself lead to knowledge (i.e.\ justified belief is not \emph{sufficient} for knowledge)\footnote{``The Gettier Problem'', \emph{Stanford Encyclopedia of Philosophy}, retrieved from\\ \url{http://plato.stanford.edu/entries/knowledge-analysis/#GET}}, we can appreciate that at the very least being justified in believing something is \emph{necessary} for knowledge (i.e.\ we do not have knowledge of something unless we are justified in believing it to be so).\\ % 37 + 35 = 72 words.
+
+%% Can belief be understood as a sort of appeal to authority? An individual is justified in believing something which someone says because the someone was justified in what they said. In this way, the individual justifies their belief in terms of a further belief. This highlights a potential problem; whatever reason an individual gives for the justification of their belief, itself requires some form of justification, which in turn itself requires justification, and so on \emph{ad infinitum}.\\ % 77
+
+%% Are we justified in our beliefs by appealing to a sort of ``higher'' authority; we are justified in believing something which someone (presumably noteworthy) says because they were justified in what they said. The idea that we can have a belief which has no support seems ridiculous, but this aforementioned process attempts to justify our beliefs by appealing to a further belief, which, in some sense, just pushes the question back - we are then required to ``know'' what justified them in their original conjecture.\\ % 85
+
+\subsection{Foundationalist}
+The foundationalist's thesis, in short, is that all knowledge (and thus, justified belief) rest ultimately on a foundation of non-inferential knowledge or justified belief (that is, not based on interpretation; those simple facts which can be directly expressed). A foundationalist adheres to the claim that there are certain ``axiomatic'' basic beliefs (these are self-evident truths) from which \emph{all} other non-basic beliefs of an individual can be built upon (and in this way, the individual is justified in believing).\\
+
+Traditionally, foundationalism has its roots in Descartes' ``Meditations on First Philosophy''. Here Descartes wishes to examine those beliefs he feels he is justified in believing and set aside all those beliefs of which there might be some doubt.\footnote{Insert Reference ...} % 116
+
+\subsubsection{Inferential and Non-inferential Justification}
+At its core, foundationalism is strictly governed by two principles; the ``Principle of Inferential Justification'' and the ``Principle of Non-inferential Justification''.\\
+
+\emph{Inferential} justification is, roughly, two conditions which must be satisfied before an individual can be justified in believing some proposition $P$ on the basis of some other belief (or proposition) $E$. These two conditions are: % 56
+\begin{enumerate}
+  \item Justified in believing $E$; and also % 6
+  \item Justified in believing that $E$ makes probable $P$. % 8
+\end{enumerate} % 6 + 8 = 14
+
+\emph{Non-inferential} justification is ...\\ % 4
+
+%% \emph{Foundationalist Theories of Epistemic Justification}: \url{http://plato.stanford.edu/entries/justep-foundational/}
+
+\noindent \emph{190/450 words.} % 116 + 56 = 172 + 14 = 186 + 4 = 190
+
+\subsection{Coherentist}
+The coherentist's thesis is normally formulated in terms of a denial of its contrary foundationalism. Coherentism thus claims, minimally, that not all knowledge and justified belief rest ultimately on a foundation of non-inferential knowledge or justified belief. A coherentist believes that each belief rests upon another (perhaps ``stronger'') belief; beliefs are justified if they cohere with other beliefs a person holds, each belief is justified if it coheres with the overall system of beliefs.\\
+
+The notion of a Coherentist approach to how knowledge is formed from beliefs is proposed in Quine's seminal work ``Two Dogmas of Empiricism''\footnote{Insert Reference ...}\\
+
+%% \emph{Coherentist Theories of Epistemic Justification}: \url{http://plato.stanford.edu/entries/justep-coherence/}
+
+\noindent \emph{97/450 words.}
+
+\subsection{Conclusion}
+
+\noindent \emph{0/250 words.}\\
+
+\noindent \textbf{\emph{Total: 653/1500 words.}} % 201 + 190 = 391 + 177 = 568 + 85 = 653 words
+\end{document}
+
+%% The objective of the analysis of knowledge is to state the conditions that are individually necessary and jointly sufficient for propositional knowledge; knowledge that such-and-such is the case (as opposed to knowledge of a certain location or person, or knowledge of how to do something - neither of which are we concerned with).\\
+
+%% The traditional formulation of propositional knowledge (in Western philosophy) involves three key components: justification, truth, and belief. Accordingly, propositional knowledge is a \emph{justified belief held about a truth}. That is, this formulation holds that an individual $S$ knows that a proposition $P$ is true if and only if the following conditions are all satisfied: % 160 words
+%% \begin{enumerate}
+%%   \item $P$ is true (belief in a falsehood is a delusion or misapprehension, not knowledge); % 14 words
+%%   \item $S$ believes that $P$ is true (if you do not believe it, then you do not know it); and % 19 words
+%%   \item $S$ is justified in believing that $P$ is true (there must be sufficient evidence for the belief). % 17 words
+%% \end{enumerate} % 14 + 19 = 33 + 17 = 50 words
+
+%% The ``Gettier Problem'' has shown that there are cases of beliefs that are both true and an individual is justified in believing so (thus, satisfying the three conditions for knowledge above), but that do not appear to be genuine cases of knowledge.\footnote{``The Gettier Problem'', \emph{Stanford Encyclopedia of Philosophy}, at\\ \url{http://plato.stanford.edu/entries/knowledge-analysis/#GET}}\\ % 4 + 39 = 43 words
+
+%% \emph{The Analysis of Knowledge}: \url{http://plato.stanford.edu/entries/knowledge-analysis/}
+%% \emph{Justified True Belief}: \url{http://www.nutters.org/log/jtb}

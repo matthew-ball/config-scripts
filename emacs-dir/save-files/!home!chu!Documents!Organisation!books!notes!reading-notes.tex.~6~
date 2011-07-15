@@ -1,0 +1,90 @@
+% Created 2011-06-06 Mon 14:12
+\documentclass[12pt,a4paper,oneside]{paper}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{amsmath}
+\setcounter{secnumdepth}{0}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Reading Notes}
+\author{Matthew Ball}
+\date{2011}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\vspace*{1cm}
+
+
+
+
+
+\section{Introduction}
+\label{sec-1}
+
+This document comprises the notes of the major philosophical texts (books or papers) I have read during my time as a philosophy student at the \emph{Australian National University}.
+
+\begin{quote}
+\emph{Readers wallow in their own aura. Any influence that comes from the words that they are scanning comes from within. If they form a belief from those words, they are comfortable in understanding how they linked towards that belief.}
+\end{quote}
+\section{Books}
+\label{sec-2}
+
+This section includes notes from various philosophical books I have read.
+\subsection{The Logical Basis of Metaphysics}
+\label{sec-2_1}
+
+
+\begin{itemize}
+\item Michael Dummett
+\end{itemize}
+\subsection{An Introduction to G\"odel's Theorems}
+\label{sec-2_2}
+
+
+\begin{itemize}
+\item Peter Smith
+\end{itemize}
+\subsubsection{Chapter 1}
+\label{sec-2_2_1}
+
+
+\begin{itemize}
+\item What is the real content of the thought that the truth-values of all basic arithmetic propositions are ``fixed''?
+\item The idea of an axiomatic system \ldots{}
+\end{itemize}
+\section{Papers}
+\label{sec-3}
+
+This section includes notes from various papers in philosophy I have read.
+\subsection{On Sense and Reference}
+\label{sec-3_1}
+
+
+\begin{itemize}
+\item Gottlob Frege
+\item According to Frege, sense and reference are two different aspects of the meaning of at least some kinds of terms.
+\item Roughly, a term's reference is the object it refers to and its sense is the way in which it refers to that object.
+\end{itemize}
+\section{Example Logic}
+\label{sec-4}
+
+If $\phi \models \psi$ then $\phi \vdash \psi$
+
+\end{document}

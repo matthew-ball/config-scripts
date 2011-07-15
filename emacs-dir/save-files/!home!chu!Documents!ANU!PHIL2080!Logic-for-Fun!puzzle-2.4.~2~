@@ -1,0 +1,59 @@
+#user#
+chu
+
+#sorts#
+alien enum: vrrkth, wffmp, xq^rp, ydd, ykggh.
+drink enum: supernova, black_hole, nebula, white_dwarf, warp_five.
+planet enum: cc!txibb, edrrgh, bcqei, dph.
+job enum: prospector, mercenary, gambler, robot_master, other.
+
+
+#functions#
+has_job: alien -> job {injective}.
+is_drinking: alien -> drink {injective}.
+is_from: alien -> planet {}.
+
+
+#clauses#
+% vrrkth is from cc!txibb
+is_from(vrrkth) = cc!txibb.
+
+% xq^rp, the roboticist
+has_job(xq^rp) = robot_master.
+
+% the aliens' whose job is other is from edrrgh
+
+% zkggh is from edrrgh (not sure if this is legit)
+is_from(zkggh) = edrrgh.
+
+% ydd drank the supernova, and cannot come from edrrgh
+is_drinking(ydd) = supernova AND NOT (is_from(ydd) = edrrgh).
+
+% wffmp is from neither dph nor edrrgh
+NOT (is_from(wffmp) = dph) AND NOT (is_from(wffmp) = edrrgh).
+
+
+
+#mode#
+SAVE
+
+
+#problem#
+Aliens   
+
+
+#settings#
+solutions: 3
+time_limit: 3
+pre_test: 3
+verbosity {
+ job:none
+  models:full
+  stats:none
+}
+cv_limit:100000
+stack:LARGE
+
+
+
+#end#

@@ -1,0 +1,24 @@
+sort {
+     length cardinality = 6.
+     height cardinality = 6.
+
+     position cardinality = 1.
+}
+
+function {
+     move: length, height -> position {}.
+
+     position_length: position -> length {}.
+     position_height: position -> height {}.
+
+     robot: position. {hidden} % skolem for robot
+}
+
+clause {
+     % start position ...
+     position_length(robot) = 4 AND position_height(robot) = 1.
+
+
+}
+
+end

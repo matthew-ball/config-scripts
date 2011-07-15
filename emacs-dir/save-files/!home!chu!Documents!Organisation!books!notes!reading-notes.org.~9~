@@ -1,0 +1,47 @@
+
+#+LaTeX_CLASS: paper
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper,oneside]
+
+#+LATEX_HEADER: \usepackage{amsmath}
+
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+
+Reading Notes
+
+#+AUTHOR: Matthew Ball
+#+DATE: 2011
+
+* Introduction
+This document comprises the notes of the major philosophical texts (books or papers) I have read during my time as a philosophy student at the /Australian National University/.
+
+#+BEGIN_QUOTE
+/Readers wallow in their own aura. Any influence that comes from the words that they are scanning comes from within. If they form a belief from those words, they are comfortable in understanding how they linked towards that belief./
+#+END_QUOTE
+
+
+* Books
+This section includes notes from various philosophical books I have read.
+
+** The Logical Basis of Metaphysics
+ - Michael Dummett
+
+*** Metaphysical Disputes Over Realism 
+ + The starting point of philosophy has to be an analysis of the /fundamental structure/ of our thoughts.
+ + The central concern of logic is with /inference/, but there can be no analysis of inferences without a prior analysis of the structure of the statements which serve as the premises and conclusion.
+
+** An Introduction to G\"odel's Theorems
+- Peter Smith
+*** Chapter 1
++ What is the real content of the thought that the truth-values of all basic arithmetic propositions are "fixed"?
+- The idea of an axiomatic system ...
+
+
+* Papers
+This section includes notes from various papers in philosophy I have read.
+
+** On Sense and Reference
+- Gottlob Frege
++ According to Frege, sense and reference are two different aspects of the meaning of at least some kinds of terms.
++ Roughly, a term's reference is the object it refers to and its sense is the way in which it refers to that object.
+

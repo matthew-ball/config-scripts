@@ -1,0 +1,78 @@
+
+#+LaTeX_CLASS: paper
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper,oneside]
+
+#+LATEX_HEADER: \usepackage{amsmath}
+
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+
+Reading Notes
+
+#+AUTHOR: Matthew Ball
+#+DATE: 2011
+
+* Introduction
+This document comprises the notes of the major texts (books or papers) I have read during my time as a joint philosophy and computer science student at the /Australian National University/.
+
+#+BEGIN_QUOTE
+/Readers wallow in their own aura. Any influence that comes from the words that they are scanning comes from within. If they form a belief from those words, they are comfortable in understanding how they linked towards that belief./
+#+END_QUOTE
+
+The following topics are contained in each subject:
+** Philosophy
+*** Metaphysics
+- Ontology
+- Modality
+
+*** Philosophy of Language
+- Truth and Meaning
+- Reference and Descriptions
+- Names and Demonstratives
+- Propositional Attitudes
+
+*** Epistemology
+
+** Computer science
+*** Verification
+*** Programming Languages
+** Mathematics
+*** Number Theory
+*** Discrete Mathematics
+*** Foundations of Mathematics
+*** Category Theory
+
+* Books
+This section includes notes from various books I have read.
+** Philosophy
+1. [[file:the-logical-basis-of-metaphysics.org][The Logical Basis of Metaphysics]]
+2. Naming and Necessity
+3. Sameness and Substance
+4. On the Origin of Objects
+5. The Problems of Philosophy
+6. Language, Truth and Logic
+7. Scientific Method in Practice
+
+** Computer Science
+
+** Mathematics
+1. [[file:an-introduction-to-godels-theorems.org][An Introduction to Godel's Theorems]]
+2. An Introduction to Non-Classical Logic
+
+* Papers
+This section includes notes from various papers in philosophy I have read.
+** Philosophy
+1. [[file:on-sense-and-reference.org][On Sense and Reference]] - Gottlob Frege
+2. On Denoting - Bertrand Russell
+3. On Referring - Peter Strawson
+4. Two Dogmas of Empiricism - Willard Quine
+5. Semantic Conception of Truth and the Foundation of Semantics - Alfred Tarski
+6. A Puzzle about Beliefs - Saul Kripke
+7. Meaning - Herbert Grice
+
+** Computer Science
+
+** Mathematics
+
+
+

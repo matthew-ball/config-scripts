@@ -1,0 +1,54 @@
+
+:PROPERTIES:
+:COOKIE_DATA: 'checkbox'
+:END:
+
+* Backup System:
+** Backup Procedure:
+- run:
+  + user@linux:~/.backup$ chmod +x backup-script
+  + user@linux:~/.backup$ ./backup-script
+
+* Restore System:
+** Restore Procedure:
+- run:
+  + user@linux:~/.backup$ chmod +x restore-script
+  + user@linux:~/.backup$ sudo ./restore-script
+
+* List of Files (and Directories):
+|---------------------------+-------------------------|
+| Source:                   | Destination:            |
+|---------------------------+-------------------------|
+| ~/Documents/ANU/          | ~/.backup/school/       |
+| ~/Documents/Organisation/ | ~/.backup/org/          |
+| ~/Documents/Papers/PDFs/  | ~/.backup/papers/       |
+| ~/.conf-scripts/          | ~/.backup/conf-scripts/ |
+|---------------------------+-------------------------|
+| <installed packages>      | ~/.backup/package.list  |
+| /etc/apt/sources.list     | ~/.backup/sources.list  |
+| /etc/fstab                | ~/.backup/fstab         |
+|---------------------------+-------------------------|
+
+* To Do:
+** Important [0/1]:
+- [ ] Create ~/.org-mode/ directory
+  + Move (and backup) relevant org-files into said directory
+
+** Non-important [0/1]:
+- [ ] Create ~/.backup/archives directory
+  + Backup /var/cache/apt/archives/ into said directory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

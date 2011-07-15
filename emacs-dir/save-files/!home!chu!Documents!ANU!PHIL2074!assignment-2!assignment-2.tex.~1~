@@ -1,0 +1,18 @@
+\documentclass[12pt,a4paper,oneside]{paper}
+
+%% \usepackage{url}
+\usepackage{hyperref}
+
+\title{PHIL2074 - Modern Theories of Knowledge}
+\author{Matthew Ball, u4537508}
+\date{Semester 1, 2011}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\maketitle\newpage
+
+%% \emph{What is the problem of induction?  Can it be solved?}
+
+\end{document}

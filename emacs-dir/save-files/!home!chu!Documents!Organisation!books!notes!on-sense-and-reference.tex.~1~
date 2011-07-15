@@ -1,0 +1,50 @@
+% Created 2011-07-08 Fri 11:32
+\documentclass[12pt,a4paper,oneside]{paper}
+               
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{On Sense and Reference by Gottlob Frege: Reading Notes}
+\author{Matthew Ball}
+\date{2011}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+
+\begin{quote}
+\emph{Equality gives rise to challenging questions which are not altogether easy to answer. Is it a relation? A relation between objects, or between names or signs of objects?}\footnote{Gottlob Frege, \emph{On Sense and Reference}, (1892), p. 36 (1). }
+\end{quote}
+
+The two statements $a = a$ and $a = b$ have, obviously, different cognitive value; $a = a$ holds \emph{a priori} (and is therefore labelled \emph{analytic}), while a statement of the form $a = b$ contains some information which \emph{extends} our knowledge and cannot always be established from reason alone (i.e. \emph{a priori}). If we take equality as a relation between those objects which the names `$a$' and `$b$' designate, it would appear that $a = b$ could not differ from $a = a$ in truth-value. Therefore, the relation would be \emph{reflexive} (i.e. the relation would be expressed of a thing to itself), one in which each thing stands to itself and no other. The notion which $a = b$ appears to \emph{capture} is that the two objects denoted by the signs (or names) `$a$' and `$b$' designate the \emph{same} thing.
+
+\begin{quote}
+\emph{Let $a, b, c$ be the lines connecting the vertices of triangle with the midpoints of the opposite sides, The point of intersection of $a$ and $b$ is then the same as the point of intersection of $b$ and $c$. So we have different designations for the same point, and these names (`point of intersection of $a$ and $b$', `point of intersection of $b$ and $c$') likewise indicate the mode of presentation; and hence the statement contains actual knowledge.}\footnote{\emph{ibid}, p. 37 (2). }
+\end{quote}
+
+It is intuitive to think of a name as being connected to a referent of the sign; this is what Frege calls the \emph{sense} of a name. The mode of presentation is contained within this sign. In the example quoted above the \emph{reference} of the expressions `the point of intersection of $a$ and $b$' and `the point of intersection of $b$ and $c$' would be the same, but not their senses.
+
+\begin{quote}
+\emph{The reference of `the evening star' would be the same as that of `the morning star' but not their sense.}\footnote{\emph{ibid}, p. 37 (2). }
+\end{quote}
+
+In this analysis, Frege has used the `sign' (or `name') of an object to designate a \emph{proper name}, whose reference is always a \emph{definite object}\footnote{\emph{Note}: See Russell's ``On Denoting''. }.
+
+
+According to Frege, \emph{sense} and \emph{reference} are two different aspects of the meaning of at least some kinds of terms.
+
+Roughly, a term's reference is the object it refers to and its sense is the way in which it refers to that object.
+
+
+
+
+
+
+
+
+
+\end{document}

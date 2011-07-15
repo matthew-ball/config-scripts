@@ -1,0 +1,203 @@
+# =================================
+# custom .muttrc file
+# Matthew Ball (copyleft 2008-2011)
+# =================================
+
+# ================
+# personal details
+# ================
+set realname = "Matthew Ball"
+set editor = "emacsclient %s" # edit messages with emacs
+
+# ===============
+# account details
+# ===============
+# account-hook . 'unset imap_user imap_pass' # clear accounts (make selection)
+# account-hook 'imaps://mathew.ball@gmail.com/' "set imap_user=mathew.ball imap_pass=$my_pass1" # gmail account
+# account-hook 'imaps://u4537508@imap.anu.edu.au/' "set imap_user=u4537508 imap_pass=$my_pass2" # university account
+
+# =======
+# folders
+# =======
+# set folder="imaps://mathew.ball@imap.gmail.com/" # gmail account ...
+# mailboxes =INBOX =[Gmail]/Drafts =[Gmail]/'Sent Mail' =[Gmail]/Spam
+# folder-hook 'imaps://mathew.ball@imap.gmail.com' " \
+# 	    set folder=imaps://mathew.ball@imap.gmail.com/ \
+# 	    postponted=+[Gmail]/Drafts \
+# 	    record=+[Gmail]/'Sent Mail' \
+# 	    smtp_url=smtps://mathew.ball@smtp.gmail.com \
+# 	    smtp_pass=$my_pass1 \
+# 	    from='Matthew Ball <mathew.ball@gmail.com> ' "
+
+# set folder ="imaps://u4525731@imap.anu.edu.au/"
+# mailboxes =INBOX =Drafts =Sent =Spam
+# folder-hook 'imaps://u4525731@imap.anu.edu.au/' " \
+# 	    setfolder=imaps://u4525731@imap.anu.edu.au/ \
+# 	    postponed=+Drafts \
+# 	    record=+Sent \
+# 	    smtp_url=smtp://smtphost.anu.edu.au \
+# 	    signature=~/.mutt/anu.sig \
+# 	    from='Joshua Chubb <u4525731@anu.edu.au> ' \
+# 	    realname='Joshua Chubb' "
+
+# ====================
+# system configuration
+# ====================
+set ssl_ca_certificates_file="/etc/ssl/certs/ca-certificates.crt" # system-wide CA file managed by the ca-certificates package
+
+unset help # turn off menu bar
+set markers # mark wrapped lines of text in the pager with a +
+set smart_wrap # don't wrap mid-word
+set pager_context=5 # retain 5 lines of previous page when scrolling
+set pager_index_lines= 5 # how large is the index window
+set sort = 'threads' # primarily sort by threads
+set sort_aux = 'last-date-received' # secondarily sort by last date
+push <show-version> # shows mutt version at startup
+
+# =====================
+# general configuration
+# =====================
+set my_muttrc = "~/.muttrc" # path to configuration file
+set my_manual = "/usr/share/doc/mutt/manual.txt.gz" # path to mutt manual
+
+macro generic,index,pager,browser <f9> "<enter-command> source $my_muttrc<enter>" 'reread configuration file' # reread configuration file
+macro generic,index,pager,browser <f10> "<shell-escape> zcat $my_manual | sensible-pager<enter>" 'show mutt documentation' # show documentation when pressing f10
+
+# ===================
+# alias configuration
+# ===================
+set sort_alias=alias # sort aliases in alpha order by alias name
+
+alias mwsb Matthew Ball <mathew.ball@gmail.com>
+alias ejo Elliot Osborne <crowbarjames@gmail.com>
+alias lce Luke English <fourtyfour.saka@gmail.com>
+alias jpc Joshua Chubb <chubb.jp@gmail.com>
+
+# =============
+# gmail details
+# =============
+set from = "mathew.ball@gmail.com"
+set imap_user = "mathew.ball@gmail.com"
+set imap_pass = "1derful1"
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+set imap_check_subscribed
+set hostname = gmail.com
+set mail_check = 120
+set timeout = 100
+set imap_keepalive = 900
+set postponed = "+[Gmail]/Drafts"
+set record = "Sent"
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/bodies
+set certificate_file=~/.mutt/certificates
+set move = no
+set include
+set auto_tag = yes
+set edit_headers = yes
+
+set trash = "imaps://imap.gmail.com/[Gmail]/Trash"
+set smtp_url = "smtp://mathew.ball@smtp.gmail.com:587/"
+set smtp_pass = "1derful1"
+
+alternative_order text/plain text/html *
+auto_view text/html
+
+# =================
+# keyboard bindings
+# =================
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox" # gmail style keyboard shortcuts ...
+macro index,pager ga "<change-folder>=[Gmail]/All Mail<enter>" "go to all mail" # ...
+macro index,pager gs "<change-folder>=[Gmail]/Sent Mail<enter>" "go to sent mail" # ...
+macro index,pager tp "<change-folder>=[Gmail]/Important<enter>" "go to priority inbox" # ...
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>" "go to drafts" # ...
+
+macro index,pager S "<save-message>=[Gmail]/Spam<enter>" "mark message as spam" # spam keyboard shortcuts ...
+macro index,pager H "<save-message>=INBOX<enter>" "mark message as ham (not spam)" # ...
+
+bind editor <space> noop
+bind editor <Tab> complete-query
+bind editor ^T complete
+
+# ============
+# header stuff
+# ============
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+
+# default list of header fields when displaying
+ignore * # ignore all lines by default ...
+unignore from: subject to cc date x-mailer x-url user-agent # ... then allow these through
+hdr_order date from to cc subject # display the fields in this order
+
+# ======================
+# automatic notification
+# ======================
+# mailboxes "=inbox"
+
+# =====
+# hooks
+# =====
+folder-hook . "set sort=threads" # sort by threads (keep threads together)
+folder-hook . "set sort_aux=last-date-received" # sort secondarily by last date received
+folder-hook . "push '<collapse-all>'" # collapse all threads
+folder-hook . "push '<last-entry>'" # move to the most recent (i.e. last) message
+folder-hook . "set index_format='%3C: [%Z, %N, %2M] %-88.84s [ %-25.25F] (%{%d %b %Y})'"
+
+# customise how various features appear
+# folder-hook . "set index_format='%5C. [%Z, %N, %2M] %-84.84s [ %-25.25F ] (%{Date: %d %b}) (%l)'"
+# folder-hook . "set status_format='--[[ %f ]]--[[ New:%n Old:%o Del:%d Post:%p ]]--(%s/%S)--[%V]--%>-(%P)---'"
+# folder-hook . "set pager_format='--[[ %C/%m ]]--( %-30.30n )--\> %s \<----%>-(%P)---'"
+
+# ============
+# theme colors
+# ============
+color header brightblue default "^date:"
+color header green default "^cc"
+color header brightblue default "^organi[sz]ation"
+color header brightblue default "^x-newsreader"
+color header brightblue default "^x-mailing-list"
+color header brightblue default "^posted-to"
+color header brightblue default "^message-id"
+color header cyan default "^user-agent"
+color header cyan default "^x-mailer"
+color header green default "^To:"
+color header brightyellow default "^subject"
+color header red default "^From:"
+
+color signature red default
+color tilde red default
+color attachment magenta default
+
+color quoted green default
+color quoted1 cyan default
+color quoted2 brightblue default
+color quoted3 blue default
+
+color body yellow default "(finger|ftp|http|https|news|telnet)://[^ >]*"
+color body yellow default "<URL:[^ ]*>"
+color body yellow default "www\\.[-.a-z0-9]+\\.[a-z][a-z][a-z]?([-_./~a-z0-9]+)?"
+color body yellow default "mailto: *[^ ]+\(\\i?subject=[^ ]+\)?"
+color body yellow default "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# ======================
+# highlight special text
+# ======================
+color body brightwhite default "[^[:alnum:]][*_/][-_&!.,[:alnum:]]+[*_/][^[:alnum:]]" # *bold*
+color body brightwhite default "^[*_/][-_&!.,[:alnum:]]+[*_/][^[:alnum:]]" # _underlined_
+color body brightwhite default "^[*_/][-_&!.,[:alnum:]]+[*_/]$" # /italic/
+
+color tree red default
+
+# ================
+# inline pgp stuff
+# ================
+color body magenta default "-----BEGIN PGP SIGNED MESSAGE-----"
+color body magenta default "-----BEGIN PGP SIGNATURE-----"
+color body magenta default "-----END PGP SIGNED MESSAGE-----"
+color body magenta default "-----END PGP SIGNATURE-----"
+
+color body brightyellow default "(^| )[;:8]-?[][)(PDp/|\]+($| )"
+color body brightyellow default "<[Bb]?[Gg]>"

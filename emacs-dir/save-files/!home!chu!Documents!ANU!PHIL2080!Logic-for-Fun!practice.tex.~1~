@@ -1,0 +1,15 @@
+\documentclass[12pt,a4paper,oneside]{paper}
+
+\usepackage{url}
+
+\title{PHIL2080 - Practice Proofs}
+%% \author{Matthew Ball, u4537508}
+%% \date{Semester 1, 2011}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\maketitle\newpage
+
+\end{document}

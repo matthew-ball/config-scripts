@@ -1,0 +1,22 @@
+
+sort {
+     street enum: first_street, second_street, third_street, fourth_street, fifth_street, sixth_street.
+     avenue enum: first_avenue, second_avenue, third_avenue, fourth_avenue, fifth_avenue, sixth_avenue, seventh_avenue, eighth_avenue.
+     monument enum: hauptsatz_monument, cantors_paradise, hilberts_hotel, domain, co_domain, homomorphic_image.
+
+     vertical enum: north, south.
+     horizontal enum: west, east.
+}
+
+function {
+     streets: vertical. {hidden} % maybe won't need ...
+     avenues: horizontal. {hidden} % ...
+
+     co_ordinates: street, avenue -> ... {injective hidden}.
+}
+
+clause {
+     % some restrictions ...
+}
+
+end

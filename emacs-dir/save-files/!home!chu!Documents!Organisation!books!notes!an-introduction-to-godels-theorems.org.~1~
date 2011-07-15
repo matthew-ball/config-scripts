@@ -1,0 +1,18 @@
+
+#+LaTeX_CLASS: paper
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper,oneside]
+
+#+LATEX_HEADER: \usepackage{amsmath}
+
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+
+An Introduction to G\"odel's Theorems by Peter Smith: Reading Notes
+
+#+AUTHOR: Matthew Ball
+#+DATE: 2011
+
+* Chapter 1
+What is the real content of the thought that the truth-values of all basic arithmetic propositions are "fixed"?
+
+The idea of an axiomatic system ...

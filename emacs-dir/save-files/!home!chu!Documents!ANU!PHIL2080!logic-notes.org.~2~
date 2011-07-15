@@ -1,0 +1,46 @@
+
+#+LaTeX_CLASS: paper
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper,oneside]
+
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \setcounter{secnumdepth}{0}
+
+Logic Notes
+
+#+AUTHOR: Matthew Ball, u4537508
+#+DATE: 2011
+
+* Section 1
+** Introduction
+*** Inference, Truth and Validity
+
+*** Inference in the Abstract
+
+** Connectives
+
+* Section 2
+** Deduction
+** If's and And's
+*** Conjunction
+*** Implication
+** Counting Assumptions
+*** Theorems
+*** Weakening
+*** Contraction
+
+* Section 3
+
+* Section 4
+
+* Section 5
+
+* Section 6
+
+* Section 7
+
+* Section 8
+
+* Section 9
+
+* Section 10
+

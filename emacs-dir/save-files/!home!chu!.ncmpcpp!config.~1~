@@ -1,0 +1,15 @@
+# ============================
+# custom .ncmpcpp file
+# Matthew Ball (copyleft 2011)
+# ============================
+
+## ====================
+### connection settings
+## ====================
+mpd_host = "localhost"
+mpd_port = "6600"
+
+## =================
+### general settings
+## =================
+mpd_music_dir = "~/Music"

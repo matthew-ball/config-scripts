@@ -1,0 +1,32 @@
+
+:PROPERTIES:
+:COOKIE_DATA: 'checkbox'
+:END:
+
+* Home
+** DONE Set up ELPA in GNU Emacs				       :HOME:
+
+** TODO Configure GNU Emacs					       :HOME:
+ [[http://www.emacswiki.org/][Emacs Wiki]]
+
+** TODO Set up org-mode in GNU Emacs				       :HOME:
+ [[http://orgmode.org/org.html][org-mode manual]]
+
+** TODO Set up mutt [0/3] 					       :HOME:
+ + [ ] Passwords - Set up gpg
+ + [ ] Configure - Gmail account
+ + [ ] Configure - Uni account
+ + [[http://wiki.mutt.org/][MuttWiki]]
+ + [[http://feeding.cloud.geek.nz/2008/04/handling-multiple-identitiesaccounts-in.html][Handling Multiple Identities/Accounts in Mutt]]
+ + [[http://nixtricks.wordpress.com/2010/05/20/mutt-multiple-email-accounts-using-hooks/][Multiple Email Accounts with Hooks in Mutt]] 
+
+** TODO Set up mpd [2/3]					       :HOME:
+ + [X] Install - mpd
+ + [X] Configure - StumpWM
+ + [ ] Configure - mpd
+ + [[http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki][mpdWiki]]
+ + [[http://mpd.wikia.com/wiki/Configuration][mpdWiki: Configuration]]
+ + [[http://mpd.wikia.com/wiki/PulseAudio][mpdWiki: PulseAudio]]
+ + [[https://wiki.archlinux.org/index.php/Music_Player_Daemon][ArchWiki: Music Player Daemon]]
+
+** TODO "Misawa Radomes" for Dad				       :HOME:

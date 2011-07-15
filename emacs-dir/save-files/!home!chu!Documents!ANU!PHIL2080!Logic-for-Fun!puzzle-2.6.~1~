@@ -1,0 +1,46 @@
+#user#
+chu
+
+#sorts#
+people enum: anneka, bertie, claude, debbie.
+entree enum: salad, pate, soup, salmon.
+main_dish enum: duck, beef, fish, veal.
+dessert enum: brulee, mousse, cheese, ice_cream.
+drink enum: sauterne, bordeaux, mineral_water, beaujolais.
+
+
+#functions#
+ate_entree: people -> entree {injective}.
+ate_main: people -> main_dish {injective}.
+ate_dessert: people -> dessert {injective}.
+drank: people -> drink {injective}.
+
+
+#clauses#
+ate_entree(debbie) = soup AND ate_main(debbie) = fish.
+ate_entree(x) = pate -> (ate_main(x) = duck AND drank(x) = bordeaux).
+
+
+#mode#
+SAVE
+
+
+#problem#
+
+
+
+#settings#
+solutions: 3
+time_limit: 3
+pre_test: 3
+verbosity {
+ job:none
+  models:full
+  stats:none
+}
+cv_limit:100000
+stack:LARGE
+
+
+
+#end#

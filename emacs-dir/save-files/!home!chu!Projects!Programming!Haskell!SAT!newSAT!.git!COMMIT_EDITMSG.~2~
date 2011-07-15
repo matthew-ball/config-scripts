@@ -1,0 +1,19 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	deleted:    CNF.hs~
+#	deleted:    DNF.hs~
+#	deleted:    Expr.hs~
+#	deleted:    Main.hs~
+#	deleted:    NNF.hs~
+#	deleted:    Parse.hs~
+#	deleted:    cnf.hs~
+#	deleted:    expr.hs~
+#	deleted:    main.hs~
+#	deleted:    newSAT.tar
+#	deleted:    nnf.hs~
+#

@@ -1,0 +1,194 @@
+% Created 2011-07-07 Thu 08:08
+\documentclass[12pt,a4paper,oneside]{paper}
+               
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{The Logical Basis of Metaphysics by Michael Dummett: Reading Notes}
+\author{Matthew Ball}
+\date{2011}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+
+\section*{Chapter 0: Metaphysical Disputes Over Realism}
+\label{sec-1}
+
+The starting point of philosophy has to be an analysis of the \emph{fundamental structure} of our thoughts.
+
+\emph{With} logic we can model the concept of human thought. The central concern of logic is with \emph{inference}, but there can be no analysis of inferences without a prior analysis of the structure of the statements which serve as the premises and conclusion. Thus, if we do use logic to model human thoughts, we first need to understand the structure (and an appropriate interpretation) of the mental entities which create human thoughts. When one approaches the philosophy of thought through language, they arrive at a theory of meaning.
+
+In showing how logic \emph{can} be used to model an interpretation of we distinguish between \emph{realist} and \emph{anti-realist} perspectives:
+
+
+\begin{itemize}
+\item In the context of \emph{mathematics}, a realist (or \emph{platonist}) believes that propositions describe (either truly or falsely) an abstract realm which exists independently of our physical reality. In this context, anti-realism takes a variety of flavours; on the one hand \emph{formalists} deny that there are any genuine propositions at all; only the sentences which bare a formal resemblance to propositions, which we manipulate with rules governed by some deductive apparatus reflecting the operations of ordinary, meaningful propositions. On the other hand, \emph{constructivists}, retain a somewhat internal realism, accordingly propositions \emph{do} exist, but only insofar as they relate to our own mental operations.
+\item In the context of the \emph{mind}, a realist advocates the view that an individuals observable behaviour is \emph{evidence} of the individuals inner-states; their beliefs, desires, purposes and feelings. An anti-realist would adopt a form of \emph{behaviourism}, whereby ascribing to an individual a mental state (a belief, desire, etc) or attributing them a physical state (such as a pain or other sensation) is simply to say something about the \emph{pattern} of their behaviour.
+\item In the context of the \emph{natural sciences} (in particular physics), a realist believes that science \emph{progressively} uncovers what the world is like in itself, explaining in the process why we see things the way we do. The anti-realist equivalent here is an \emph{instrumentalist} who simply regards the theoretical entities as useful fictions, enabling us to predict observable events.
+\item In the context of time this distinction is quite significant \ldots{}
+\end{itemize}
+
+These examples to highlight the fact (and develop an argument) that rejecting realism means rejecting classical orthodox logic. Anti-realist views (in the typical case) have appropriate grounds to reject bivalence, and accordingly reject the \emph{law of the excluded middle}.
+
+The law of the excluded middle is the logical statement $A \lor \neg A$ - either a statement holds, or its negation holds - this form of argument allows one to reason with the \emph{simple constructive dilemma}\footnote{\emph{Note}: I think this is meant to be the \emph{disjunctive syllogism}. } (i.e. $P \lor Q, \neg Q \vdash P$). When the law of the excluded middle is rejected as invalid, this line of reasoning no longer works.
+
+\begin{quote}
+\emph{Those who first clearly grasped [the idea] that rejecting realism entailed rejecting classical logic were the intuitionists, constructive mathematicians of the school of Brouwer}.\footnote{Michael Dummett, \emph{The Logical Basis of Metaphysics}, (Harvard University Press, 1991), p. 9. }
+\end{quote}
+
+If a mathematical statement is true, \emph{only} if we are able to prove said statement, then we have no grounds to assume that \emph{every} mathematical statement is either true or false. This is rejecting bivalence, and as mentioned above, also rejecting the law of the excluded middle. Thus, by employing stricter rules on what count as a \emph{valid} inference, Brouwer (and others) devised an \emph{intuitionistic logic} - a system of non-classical logic which (obviously) rejects bivalence.
+
+Disagreements over \emph{meaning} to a realist an anti-realist concern not just meaning of particular expressions, but a whole partition of vocabulary, a linguistic operation (tense inflection, etc). This difference is not to be understood in terms of how a particular expression is explained but over the \emph{correct} general model for the meaning of a particular kind of sentence (namely, the kind of sentence under dispute). It is also possible to describe this difference in terms of an appropriate notion of \emph{truth}.
+
+\begin{quote}
+\emph{A constructivist holds, for example, that what renders a mathematical statement true is the existence of a proof. a platonist that it is a certain configuration of mathematical reality}.\footnote{\emph{ibid}, p. 12. }
+\end{quote}
+
+Frege was the first to explicitly recognise that notions (or concepts) of truth and meaning are intimately connected; so much so that \emph{no} adequate philosophical explanation can be given for one which assumes the other is already understood.
+
+In philosophical investigation, there are two approaches; one is a \emph{top-down} approach, the other a \emph{bottom-up}.
+
+Traditionally problems have always been approached from the top-down, in this process we first attempt to resolve the metaphysical problem, and then, using the solution to the problem, derive a correct model of meaning (and appropriate notion of truth). There are two major disadvantages to this line of attack:
+
+
+\begin{enumerate}
+\item It is not entirely clear how we can actually resolve these disputes; we can make arguments for (and arguments against) a certain doctrine, but there is no real criterion to decide which is the correct argument.
+\item In attempting to evaluate some metaphysical argument, it is necessary to treat the opposing view's theses as being well-understood, and therefore deciding which is correct is just the same as deciding which is true, however, as seen above we have no criterion for deciding which is true.
+\end{enumerate}
+
+On the other hand, approaching some problem from the bottom-up means that we first \emph{start} analysing the disagreements between two opposing points of view over the correct model of meaning, ignoring the metaphysical problem. After all, we are dealing with forms of statements we \emph{do} already understand; their meanings are known to us. They mean what they mean in virtue of the way we use these statements. The point here is, though we know what a statement means, we do not know how to \emph{represent} the meaning of this statement; that is, we learn when to use some statement, but we do not know precisely what we learn when we learn to use that statement.
+
+Consider, for example mathematicians who have a great command of mathematical statements; they certainly understand these statements sufficiently enough to operate with them, make conjecture and try to establish or refute these conjectures, to follow and derive proofs. But when asked to explain what the \emph{meaning} of mathematics is, whether mathematics is a quest for truth or not, there is no reply. Likewise, consider a physicist, they know \emph{how} to use quantum mechanics, they can clearly see its predictions and feel confident that it is true, but there is no one definitive interpretation, which shows that while they believe it is the case that quantum mechanics accurately reflects a certain aspect of reality, they do not know what it \emph{means}.
+
+Is it the case that \emph{we} really know what words mean? In certain well-defined contexts we have sufficient knowledge of what a word means to correctly use them, but we do not fully grasp their meaning. These words mean what they do only because of the use to which we put them. To fully comprehend, analyse, and develop a systematic description of the ways in which these words function - how we can build complex sentences which \emph{have} some meaning - we need to first understand our own linguistic practices. This analysis will entail a \emph{meaning-theory}, in doing so we need not consider any metaphysical presuppositions. Thus, it appears that devising a meaning-theory will help resolve the disputes apparent in realism.
+
+To develop a meaning-theory, we need to start off from a firm base; a set of general principles which govern this meaning-theory. The origins of devising such a concept are to be found in the works of Frege - in particular his theories of \emph{sense} and \emph{reference}, or more precisely, his theory of reference understood in terms of his account of the relation of sense to reference. In the process of developing a meaning-theory, especially in the context of any metaphysical issues involved, one must make a choice concerning various means of what makes a deductive argument valid; a choice between classical (orthodox) logic, or a non-classical logic (inuitionistic logic for instance). In the case when a non-classical logic is selected for the descriptive system to be employed, a distinction must be made between the proposed \emph{formalisation} of the way we generally reason, and the \emph{way} we generally reason.
+
+When the intuitionists challenged the law of the excluded middle, they did so on the grounds that certain methods of reasoning used in the classical sense are considered invalid to an intuitionist, or that in no way do the premises of an argument entail (or even support) the conclusion. But this brings about another issue, in what way are we to \emph{justify} our reasoning? On what grounds can either side argue some matter, if neither side agrees to what constitutes a valid argument? 
+\section*{Chapter 1: Semantic Values}
+\label{sec-2}
+\subsection*{How the Theory of Meaning Differs from Logic}
+\label{sec-2_1}
+
+Something one
+\subsection*{Model Theory}
+\label{sec-2_2}
+
+Something two
+\subsection*{Straightforward Explanations}
+\label{sec-2_3}
+
+Something three
+\subsection*{Internal Interpretations}
+\label{sec-2_4}
+
+Something four
+\subsection*{Statement-Values}
+\label{sec-2_5}
+
+Something five
+\subsection*{The Central Notion of a Meaning-Theory}
+\label{sec-2_6}
+
+Something six
+\subsection*{Types of Semantic Theory}
+\label{sec-2_7}
+
+Something seven
+\subsection*{Classical Semantics}
+\label{sec-2_8}
+
+Something eight
+\section*{Chapter 2: Inference and Truth}
+\label{sec-3}
+\subsection*{Is Truth Really the Salient Notion for Logic?}
+\label{sec-3_1}
+
+Something one
+\subsection*{Philosophical Consequences}
+\label{sec-3_2}
+
+Something two
+\subsection*{Many Absolute Truth-Values}
+\label{sec-3_3}
+
+Something three
+\subsection*{Assertoric Content and Ingredient Sense}
+\label{sec-3_4}
+
+Something four
+\subsection*{Degeneration of Probabilities}
+\label{sec-3_5}
+
+Something five
+\subsection*{What is Truth?}
+\label{sec-3_6}
+
+Something six
+\subsection*{How to Explain the Logical Constants}
+\label{sec-3_7}
+
+Something seven
+\subsection*{The Significance of Internal Interpretations}
+\label{sec-3_8}
+
+Something eight
+\subsection*{An Objection}
+\label{sec-3_9}
+
+Something nine
+\section*{Chapter 3: Theories of Truth}
+\label{sec-4}
+\subsection*{Meaning-Theories}
+\label{sec-4_1}
+\subsection*{Truth and the (T) Schema}
+\label{sec-4_2}
+\subsection*{A Non-Classical Logic for Natural Language?}
+\label{sec-4_3}
+\subsection*{Knowledge of a Proposition and Knowledge of the Truth of a Sentence}
+\label{sec-4_4}
+\subsection*{Classical Logic as the Logic for Natural Language}
+\label{sec-4_5}
+\subsection*{Vagueness}
+\label{sec-4_6}
+\subsection*{Bivalence}
+\label{sec-4_7}
+\subsection*{The Adverb 'Determinately'}
+\label{sec-4_8}
+\subsection*{Semantic versus Algebraic Characterisations}
+\label{sec-4_9}
+\section*{Chapter 4: Meaning, Knowledge and Understanding}
+\label{sec-5}
+\subsection*{Meaning and Knowledge}
+\label{sec-5_1}
+\subsection*{The Social Character of Language}
+\label{sec-5_2}
+\section*{Chapter 5: Ingredients of Meaning}
+\label{sec-6}
+\section*{Chapter 6: Truth and Meaning-Theories}
+\label{sec-7}
+\section*{Chapter 7: The Origin and Role of the Concept of Truth}
+\label{sec-8}
+\section*{Chapter 8: The Justification of Deduction}
+\label{sec-9}
+\section*{Chapter 9: Circularity, Consistency and Harmony}
+\label{sec-10}
+\section*{Chapter 10: Holism}
+\label{sec-11}
+\section*{Chapter 11: Proof-Theoretic Justifications of Logical Laws}
+\label{sec-12}
+\section*{Chapter 12: The Fundamental Assumption}
+\label{sec-13}
+\section*{Chapter 13: Stability}
+\label{sec-14}
+\section*{Chapter 14: Truth-Conditional Meaning-Theories}
+\label{sec-15}
+\section*{Chapter 15: Realism and the Theory of Meaning}
+\label{sec-16}
+
+\end{document}

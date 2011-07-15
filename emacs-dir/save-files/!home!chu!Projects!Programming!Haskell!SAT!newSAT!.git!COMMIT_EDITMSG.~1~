@@ -1,0 +1,32 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: Matthew Ball <chu@Lucy.(none)>
+#
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached <file>..." to unstage)
+#
+#	new file:   CNF.hs
+#	new file:   CNF.hs~
+#	new file:   DNF.hs
+#	new file:   DNF.hs~
+#	new file:   Expr.hs
+#	new file:   Expr.hs~
+#	new file:   Main.hs
+#	new file:   Main.hs~
+#	new file:   NNF.hs
+#	new file:   NNF.hs~
+#	new file:   Parse.hs
+#	new file:   Parse.hs~
+#	new file:   README
+#	new file:   cnf.hs~
+#	new file:   expr.hs~
+#	new file:   main.hs~
+#	new file:   newSAT.tar
+#	new file:   nnf.hs~
+#

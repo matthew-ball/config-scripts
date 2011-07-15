@@ -1,0 +1,12 @@
+\documentclass[12pt,a4paper,oneside]{article}
+
+\begin{document}
+
+\title{{\Huge \emph{ANU Philosophy Guild}} \rule{380pt}{1pt}\\ \textsc{{\large Analytic Reading Group}}}
+\author{Jay Fradkin and Matthew Ball}
+\date{}
+\maketitle
+
+\setcounter{secnumdepth}{4}
+
+\end{document}

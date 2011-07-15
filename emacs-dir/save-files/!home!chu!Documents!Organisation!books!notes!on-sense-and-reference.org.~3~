@@ -1,0 +1,46 @@
+
+#+LaTeX_CLASS: paper
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper,oneside]
+
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+
+On Sense and Reference by Gottlob Frege: /Reading Notes/
+
+#+AUTHOR: Matthew Ball
+#+DATE: 2011
+
+#+BEGIN_QUOTE
+/Equality gives rise to challenging questions which are not altogether easy to answer. Is it a relation? A relation between objects, or between names or signs of objects?/[fn:1]
+#+END_QUOTE
+
+The two statements $a = a$ and $a = b$ have, obviously, different cognitive value; $a = a$ holds /a priori/ (and is therefore labelled /analytic/), while a statement of the form $a = b$ contains some information which /extends/ our knowledge and cannot always be established from reason alone (i.e. /a priori/). If we take equality as a relation between those objects which the names '$a$' and '$b$' designate, it would appear that $a = b$ could not differ from $a = a$ in truth-value. Therefore, the relation would be /reflexive/ (i.e. the relation would be expressed of a thing to itself), one in which each thing stands to itself and no other. The notion which $a = b$ appears to /capture/ is that the two objects denoted by the signs (or names) '$a$' and '$b$' designate the /same/ thing.
+
+#+BEGIN_QUOTE
+/Let $a, b, c$ be the lines connecting the vertices of triangle with the midpoints of the opposite sides, The point of intersection of $a$ and $b$ is then the same as the point of intersection of $b$ and $c$. So we have different designations for the same point, and these names ('point of intersection of $a$ and $b$', 'point of intersection of $b$ and $c$') likewise indicate the mode of presentation; and hence the statement contains actual knowledge./[fn:2]
+#+END_QUOTE
+
+It is intuitive to think of a name as being connected to a referent of the sign; this is what Frege calls the /sense/ of a name. The mode of presentation is contained within this sign. In the example quoted above the /reference/ of the expressions 'the point of intersection of $a$ and $b$' and 'the point of intersection of $b$ and $c$' would be the same, but not their senses.
+
+#+BEGIN_QUOTE
+/The reference of 'the evening star' would be the same as that of 'the morning star' but not their sense./[fn:3]
+#+END_QUOTE
+
+In this analysis, Frege has used the 'sign' (or 'name') of an object to designate a /proper name/, whose reference is always a /definite object/[fn:4].
+
+To each sign there corresponds a definite sense, and to that sense, in turn, a definite reference. While to a given reference (an object), there may exist more than one sign - the /same/ sense has different expressions (representations) in different languages (or even the same language).
+
+
+
+
+According to Frege, /sense/ and /reference/ are two different aspects of the meaning of at least some kinds of terms.
+
+Roughly, a term's reference is the object it refers to and its sense is the way in which it refers to that object.
+
+[fn:1] Gottlob Frege, /On Sense and Reference/, (1892), p. 36 (1).
+
+[fn:2] /ibid/, p. 37 (2).
+
+[fn:3] /ibid/, p. 37 (2).
+
+[fn:4] /Note/: See Bertrand Russell's "On Denoting".

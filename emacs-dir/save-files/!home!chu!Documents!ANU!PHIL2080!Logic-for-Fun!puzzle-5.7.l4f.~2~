@@ -1,0 +1,20 @@
+sort {
+     block {}.
+     state {}.
+}
+
+function {
+     on: state, block -> block {}.
+     move: state, block -> block {}.
+
+     table: block {hidden}.
+}
+
+clause {
+     % initial state ...
+     
+     % goal state ...
+
+}
+
+end

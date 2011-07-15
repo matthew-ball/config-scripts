@@ -1,0 +1,45 @@
+
+:PROPERTIES:
+:COOKIE_DATA: 'checkbox'
+:END:
+
+* Configuration Files:
+- This directory houses the configuration files I consider to be most important.
+- This directory can be put on github (or another service) and pulled/pushed as required.
+
+- Just provide a symlink from this directory to the appropriate files (ideally, this will be handled by a script). This allows the configuration to be handled from one location (and thus, is hopefully easier to run a backup/restore process with).
+- The symlink command is: "ln -s <src> <dst>"
+- Example: "cd; ln -s .conf-scripts/bashrc .bashrc"
+
+** TODO Create a bash script which will automatically symlink the files from this directory to their correct locations.
+** TODO Rename files to '<app-name>' and directories to '<add-name>.d/'.
+
+** List of link files:
+|---------------+----------------+---------------------------------------------------|
+| Source:       | Destination:   | Command:                                          |
+|---------------+----------------+---------------------------------------------------|
+| aptitude-dir/ | ~/.aptitude/   | cd; ln -s .conf-scripts/aptitude-dir/ .aptitude   |
+| conkeror-dir/ | ~/.conkerorrc/ | cd; ln -s .conf-scripts/conkeror-dir/ .conkerorrc |
+| emacs-dir/    | ~/.emacs.d/    | cd; ln -s .conf-scripts/emacs-dir/ .emacs.d       |
+| irssi-dir/    | ~/.irssi/      | cd; ln -s .conf-scripts/irssi-dir/ .irssi         |
+| mutt-dir/     | ~/.mutt/       | cd; ln -s .conf-scripts/mutt-dir/ .mutt           |
+| ncmpcpp-dir/  | ~/.ncmpcpp/    | cd; ln -s .conf-scripts/ncmpcpp-dir/ .ncmpcpp     |
+| stumpwm-dir/  | ~/.stumpwm.d/  | cd; ln -s .conf-scripts/stumpwm-dir/ .stumpwm.d   |
+|---------------+----------------+---------------------------------------------------|
+| bashrc        | ~/.bashrc      | cd; ln -s .conf-scripts/bashrc .bashrc            |
+| emacs         | ~/.emacs       | cd; ln -s .conf-scripts/emacs .emacs              |
+| mpd.conf      | ~/.mpdconf     | cd; ln -s .conf-scripts/mpd.conf .mpdconf         |
+| muttrc        | ~/.muttrc      | cd; ln -s .conf-scripts/muttrc .muttrc            |
+| screenrc      | ~/.screenrc    | cd; ln -s .conf-scripts/screenrc .screenrc        |
+| stumpwmrc     | ~/.stumpwmrc   | cd; ln -s .conf-scripts/stumpwmrc .stumpwmrc      |
+|---------------+----------------+---------------------------------------------------|
+
+** List of non-link files:
+|---------------|
+| File Name:    |
+|---------------|
+| .gitignore    |
+| bash\_aliases |
+| passwords/    |
+| README        |
+|---------------|

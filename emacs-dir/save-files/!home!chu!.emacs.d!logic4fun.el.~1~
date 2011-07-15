@@ -1,0 +1,77 @@
+;;; logic4fun.el --- Major mode for "Logic for Fun" - an interface to John Slaney's "Finite Domain Enumerator"
+
+;; Copyright (C) 2011  Matthew Ball
+
+;; Author: Matthew Ball <mathew.ball@gmail.com>
+;; Keywords: extensions, languages
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; This will add syntax highlighting and appropriate code folding to a file to be used as input to FINDER.
+
+;;; Code:
+
+;; (defconst logic4fun-font-lock-keywords-1
+;;   (list
+;;    '("\\<\\(A\\(CTIVITY\\|PPLICATION\\)\\|DATA\\|END_\\(A\\(CTIVITY\\|PPLICATION\\)\\|DATA\\|MODEL\\|PARTICIPANT\\|T\\(OOL_LIST\\|RANSITION\\)\\|WORKFLOW\\)\\|MODEL\\|PARTICIPANT\\|T\\(OOL_LIST\\|RANSITION\\)\\|WORKFLOW\\)\\>" . font-lock-builtin-face)
+;;    '("\\('\\w*'\\)" . font-lock-variable-name-face))
+;;   "Minimal highlighting expressions for logic4fun mode")
+
+(defvar logic4fun-mode-hook nil)
+
+(defvar logic4fun-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-j") 'newline-and-indent)
+    map)
+  "Keymap for `logic4fun-mode'.")
+
+(defvar logic4fun-mode-syntax-table
+  (let ((st (make-syntax-table)))
+    (modify-syntax-entry ?_ "w" st)
+    ;; (modify-syntax-entry ?# "<" st)
+    ;; (modify-syntax-entry ?\n ">" st)
+    st)
+  "Syntax table for `logic4fun-mode'.")
+
+(defvar logic4fun-font-lock-keywords ;; WARNING: This is not optimised, could cause issues!!!
+  '(("\\<\\#\\user\\mode\\problem\\settings\\end\\sorts\\functions\\clauses\\#\\>\\(\\sw+\\)" (1 font-lock-function-name-face)))
+  "Keyword highlighting specification for `logic4fun-mode'.")
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.l4f\\'" . logic4fun-mode))
+
+;;;###autoload
+(define-derived-mode sample-mode fundamental-mode "logic4fun"
+  "A major mode for editing logic4fun files."
+  :syntax-table logic4fun-mode-syntax-table
+  (set (make-local-variable 'comment-start) "% ")
+  (set (make-local-variable 'comment-start-skip) "%+\\s-*")
+  (set (make-local-variable 'font-lock-defaults)
+       '(logic4fun-font-lock-keywords)))
+
+(define-derived-mode logic4fun-mode fundamental-mode "logic4fun"
+  "Major mode for editing FINDER files."
+  (set (make-local-variable 'font-lock-defaults) '(logic4fun-font-lock-keywords)))
+
+(setq major-mode 'logic4fun-mode
+      mode-name "logic4fun")
+
+(run-hooks 'logic4fun-mode-hook))
+
+(provide 'logic4fun)
+;;; logic4fun.el ends here

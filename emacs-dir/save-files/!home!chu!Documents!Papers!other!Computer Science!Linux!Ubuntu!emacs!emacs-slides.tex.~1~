@@ -1,0 +1,245 @@
+\documentclass[12pt,a4paper,oneside]{beamer}
+
+%% \usetheme{default} % kind of dull
+%% \usetheme{Boadilla} % meh
+%% \usetheme{Madrid} % sort of Boadilla / Copenhagen
+%% \usetheme{Pittsburgh} % right aligned default
+%% \usetheme[height=7mm]{Rochester} % Copenhagen-esque without the bottom bar
+%% \usetheme{Copenhagen} % nice
+\usetheme{Warsaw} % very nice
+%% \usetheme{Singapore} % relaxed
+%% \usetheme{Malmoe} % default / Copenhagen
+
+\usepackage{url}
+\usepackage{listings}
+
+\title{Introduction to GNU Emacs 23.1.1}
+\subtitle{An Advanced Lisp Environment}
+\author{Luke English, Joshua Chubb and Matthew Ball}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Overview}
+This is a tutorial presentation on using GNU Emacs. Included with this presentation is a short article which expands on the concepts introduced here.\newline
+
+\begin{itemize}
+  \item Download GNU Emacs: \url{http://www.gnu.org/software/emacs/}\newline
+  \item Information and Community: \url{http://www.emacswiki.org/}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Introduction}
+\begin{itemize}
+  \item ``The extensible, customizable, self-documenting, real-time display editor''\newline
+  \item Long and extensive history - starting in the 70's and continuing to this present day\newline
+  \item First and foremost an \emph{interactive toplevel} programming environment for \texttt{lisp}\newline
+  \item This environment provides the user with real-time control of the application; a constant cycle of \texttt{read}, \texttt{evaluate}, \texttt{print} and \texttt{loop}
+\end{itemize}
+\end{frame}
+
+ %% code \emph{is} data and data \emph{is} code
+
+\begin{frame}{Features}
+\begin{itemize}
+  \item Commands to manipulate words and paragraphs (deleting them, moving them, moving through them, and so forth)\newline
+  \item Intelligent syntax highlighting for making source code easier to read\newline
+  \item ``Keyboard macros'' for performing arbitrary batches of editing commands defined by the user\newline
+  \item Completely customisable advanced editing environment
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Terminology}
+\begin{itemize}
+  \item The single character \texttt{C} represents the \emph{control} key (usually denoted by \texttt{ctrl})\newline
+  \item The single character \texttt{M} represents the \emph{meta} key (usually denoted by \texttt{alt})\footnote{The key \texttt{ESC} was originally the \emph{meta} key, and can still be used for such a purpose, however it is easier for a user to reach the standard \texttt{alt} key}\newline
+  \item The single character \texttt{S} represents the \emph{shift} key (usually denoted by \texttt{Shift})
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Terminology}
+\begin{itemize}
+  \item \textbf{Buffers} - GNU Emacs loads files into internal buffers; it \emph{loads} files, but \emph{saves} buffers.\newline
+  \item \textbf{Frames} - One GNU Emacs process can produce a number of \texttt{X} windows. In GNU Emacs' terminology, each of these windows is called a frame.\newline
+  \item \textbf{Windows} - Each frame can be split into multiple sections which GNU Emacs calls windows.\newline
+  \item \textbf{Point} - In GNU Emacs, the point is the current location of the cursor.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Commands and Functions}
+\begin{itemize}
+  \item Everything is a \emph{command}\newline
+  \item Interactive commands are \emph{functions}\newline
+  \item Global actions: \texttt{C-x} prefix\newline
+  \item Local actions: \texttt{C-c} prefix\newline
+  \item Command menu: \texttt{M-x} (all interactive commands are accessible from here)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Commands and Functions}
+\begin{itemize}
+  \item GNU Emacs behaves like other text editors: the character keys (\texttt{a}, \texttt{b}, \texttt{c}, \texttt{1}, \texttt{2}, \texttt{3}, etc) insert characters, the arrow keys move the cursor, backspace deletes text, and so forth\newline
+  \item Users invoke other commands with modified keystrokes (called ``chords''): pressing the \texttt{ctrl} key (or \texttt{alt}, \texttt{ESC} keys) in conjunction with a regular key\newline
+  \item Some commands work by calling an external program, parsing the program's output, and displaying the results in a GNU Emacs buffer
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Navigation}
+\begin{itemize}
+  \item Move forward a character: \texttt{C-f}\newline
+  \item Move backwards a character: \texttt{C-b}\newline
+  \item Move forward a word: \texttt{M-f}\newline
+  \item Move backwards a word \texttt{M-b}\newline
+  \item Move to the beginning of a line: \texttt{C-a}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Navigation}
+\begin{itemize}
+  \item Move to the end of a line: \texttt{C-e}\newline
+  \item Move to the beginning of a sentence: \texttt{M-a}\newline
+  \item Move to the end of a sentence: \texttt{M-e}\newline
+  \item Move to the beginning of a buffer: \texttt{M-<}\newline
+  \item Move to the end of a buffer: \texttt{M->}
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Navigation}
+\begin{itemize}
+  \item Move down a line: \texttt{C-n}\newline
+  \item Move up a line: \texttt{C-p}\newline
+  \item Move down half a page: \texttt{C-v}\newline
+  \item Move up half a page: \texttt{M-v}\newline
+  \item Set cursor in buffer: \texttt{C-l}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Manipulating Text}
+\begin{itemize}
+  \item Delete the next character: \texttt{C-d} (or \texttt{Del})\newline
+  \item Delete the previous character: \texttt{Backspace}\newline
+  \item Delete the next word: \texttt{M-d} (or \texttt{M-Backspace})\newline
+  \item Delete a whole line (or \emph{yank}\footnote{Deleting anything bigger than a character will copy the text to a buffer (the \emph{kill-ring}), the user can paste from this buffer with \texttt{C-y} or cycle through the buffer with \texttt{M-y}.}): \texttt{C-k}\newline
+  \item Delete a whole sentence: \texttt{M-k}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Search and Replace}
+\begin{itemize}
+  \item Incremental search: \texttt{C-s}\newline
+  \item Decremental search: \texttt{C-r}\newline
+  \item Most recently searched item: \texttt{C-s C-s}\newline
+  \item Previous item in search history: \texttt{C-s M-p}\newline
+  \item Next item in search history: \texttt{C-s M-n}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Modes}
+\begin{itemize}
+  \item Two kinds of modes in GNU Emacs: \emph{Major} modes, and \emph{Minor} modes\newline
+  \item Major modes change the \emph{function} of GNU Emacs; for instance the mode \texttt{dired} provides a directory editor in GNU Emacs\newline
+  \item Minor modes \emph{enhance} major modes; for instance \texttt{flyspell-mode} provides a dynamic spell-check\newline
+  \item Modes are what GNU Emacs equally useful for writing documentation, programming in a variety of languages, sending e-mail, reading usenet postings, tracking appointments, and even playing games\newline
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Major Modes}
+\begin{itemize}
+  \item Major modes fall into three groups:\newline
+  \item The first group contains modes for normal text; it includes: \texttt{text-mode}, \texttt{html-mode}, \texttt{latex-mode}, \texttt{outline-mode}, etc\ \newline
+  \item The second group contains modes for specific programming languages; it includes: \texttt{lisp-mode}, \texttt{c-mode}, \texttt{haskell-mode}, etc\ \newline
+  \item The third group contains modes not intended for use on files; it includes: \texttt{dired-mode}, \texttt{mail-mode}, \texttt{shell-mode}, \texttt{erc-mode}, etc\
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Major Modes}
+\begin{itemize}
+  \item Popular major modes include:
+\end{itemize}
+\begin{multicols}
+  \begin{tabular}{@{}ll@{}}
+    \texttt{fundamental-mode} & default major mode\\
+    \texttt{text-mode} & for writing text documents\\
+    \texttt{c-mode} & for programming in C\\
+    \texttt{c++-mode} & for programming in C++\\
+    \texttt{python-mode} & for programming in Python\\
+    \texttt{haskell-mode} & for programming in Haskell\\
+    \texttt{lisp-mode} & for programming in Lisp\\
+    \texttt{latex-mode} & for writing {\LaTeX} documents\\
+    \texttt{org-mode} & for organising tasks
+  \end{tabular}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Minor Modes}
+\begin{itemize}
+  \item Minor modes may affect documents directly; for instance, the major mode for the C programming language defines a different minor mode for each of the popular indentation styles.\newline
+  \item Minor modes may affect the editing environment; for example, \texttt{winner-mode} adds the ability to undo changes to the window configuration.\newline
+  \item Minor modes can give mode-specific behaviour; \texttt{flyspell-mode} on a text buffer checks the spelling of a document as it is being typed. In a source file however, the spell check is only applied over the comments.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Minor Modes}
+\begin{itemize}
+  \item Popular minor modes include:
+\end{itemize}
+\begin{multicols}
+  \begin{tabular}{@{}ll@{}}
+  \texttt{flyspell-mode} & for spell-checking documents\\
+  \texttt{flymake-mode} & for compiler-checking of source code\\
+  \texttt{auto-complete-mode} & will auto-complete snippets of text\\
+  \texttt{ibuffer} & filters and then groups the list of buffers\\
+  \texttt{autopair-mode} & for automatically inserting parenthesis\\
+  \texttt{hs-minor-mode} & for code folding\\
+  \texttt{reftex-mode} & for preparing {\LaTeX} references
+  \end{tabular}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Extensions}
+\begin{itemize}
+  \item Extensions are \emph{global} minor modes which change (or enhance) GNU Emacs' feature-set.\newline
+  \item Popular extensions include:
+\end{itemize}
+\begin{multicols}
+  \begin{tabular}{@{}ll@{}}
+    \texttt{ido-mode} & improves user interaction with the minibuffer\\
+    \texttt{smex} & improves user interaction with the minibuffer\\
+    \texttt{iswitchb} & improves user interaction with the buffer list\\
+    \texttt{ibuffer} & ibuffer is a replacement for the default \texttt{buffermenu}\\
+    \texttt{dired} & a file and directory manager for GNU Emacs
+  \end{tabular}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Help}
+\begin{itemize}
+  \item Some useful help commands are listed below:
+\end{itemize}
+\begin{tabular}{@{}ll@{}}
+  \texttt{C-h t} & runs the GNU Emacs tutorial\\
+  \texttt{C-h i} & runs the GNU Emacs info system\\
+  \texttt{C-h f} & describes an Emacs Lisp function\\
+  \texttt{C-h v} & describes an Emacs Lisp variable\\
+  \texttt{C-h k} & describes a command bound to a key-binding\\
+  \texttt{C-h c} & shows what command a key is bound to\\
+  \texttt{C-h a} & search command names using a regular expression\\
+  \texttt{C-h m} & describes the current buffer's major mode\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Customising}
+\begin{itemize}
+  \item Configuring the GNU Emacs extension \texttt{ELPA} (the ``Emacs Lisp Package Archive'') is useful for searching for packages\newline
+  \item The package \texttt{emacs-goodies.el} provides a number of new (and improved) modes and features\newline
+  \item The \texttt{.emacs} file is used to customise GNU Emacs\newline
+  \item Powered by the \texttt{Emacs Lisp} programming language (a variant of the popular \texttt{lisp}): \texttt{Elisp} is used to write extensions and to customise GNU Emacs
+\end{itemize}
+\end{frame}
+
+\end{document}

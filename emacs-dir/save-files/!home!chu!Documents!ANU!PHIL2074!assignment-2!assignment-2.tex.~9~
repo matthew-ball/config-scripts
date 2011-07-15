@@ -1,0 +1,132 @@
+\documentclass[12pt,a4paper,oneside]{paper}
+
+%% \usepackage{url}
+\usepackage{hyperref}
+
+\title{PHIL2074 - Modern Theories of Knowledge}
+\author{Matthew Ball, u4537508}
+\date{Semester 1, 2011}
+
+\setcounter{secnumdepth}{0}
+
+\begin{document}
+
+\maketitle\newpage
+
+%% \emph{What is the problem of induction?  Can it be solved?}
+
+\section{The Problem of Induction}
+The \emph{problem} of induction is a philosophical question posed by David Hume. Essentially Hume questioned how it was that our everyday progression, which depends on drawing uncertain conclusions from our relatively limited experiences rather than on deductively valid arguments, could at all be justified; how is an individual able to justify the conclusion formed from these uncertain beliefs? Are we really justified when we infer from the observed behavior of objects some conclusion about their behavior when unobserved  and thus, can we ultimately form knowledge about the unobserved? Moreover, if we cannot justify \emph{why} we hold certain beliefs, are we entitled to infer knowledge from such beliefs? Most (rational) people would surely deny this.\\
+
+Hume argued that inductive reasoning cannot be justified via a deductive argument, and so the only option is to justify it via an inductive argument. However, to justify induction \emph{with} induction is obviously circular. Hume immediately declared that even if induction were proved unreliable, we would \emph{have} to rely on it. So, rather than approach everything with a severe doubt, Hume advocated a practical skepticism based on common sense, where inductive inferences are unavoidable, and thus accepted.\\
+
+To justify induction, one would hope that there is some way to show that the truth of the premises support (or even entail), the truth of the conclusion. In what follows we will attempt to explain just what exactly the problem of induction \emph{means}, before giving a (potential) response to this problem.
+
+% word count: 243 words
+
+\subsection{Inductive Knowledge}
+In the context of epistemology, an inductive belief is essentially the forming of a belief from a collection of \emph{similar} sub-beliefs which lend some varying degree of support in favour of the end belief. Classically, there are two main forms of an inductive argument: % 44 words
+
+\begin{enumerate}
+  \item \emph{Enumerative}: from a set of individual premises (which give some degree of support to the conclusion) we derive some \emph{general} fact. % 21 words
+  \item \emph{Singular predicative}: from a set of individual premises (which give some degree of support to the conclusion) we derive some \emph{singular} fact. % 22 words
+\end{enumerate}
+
+In modern epistemology, the scope of this definition has been extended; some have argued that necessary inferences are deductive in nature and further claim that \emph{any} contingent inference is inductive, including abductive inferences. It has also been show there are (bad) inductive inferences which go from some general premise to a particular conclusion; analogous to the way a deductive inference proceeds.\footnote{insert reference.} % 44 + 21 = 65 + 22 = 87 + 61 = 148 words
+
+% word count: 148 words
+
+\subsection{Validity and Justification}
+The issue is that, collectively none of the premises \emph{embody} the conclusion (or that the conclusion says \emph{more} than its premises) and all of the premises are moreover the same in form, so the process essentially relies on a kind of brute force of numbers. This shows a potential void in empirical knowledge; most of what we (claim to) ``know'' is based on observations, or experiments, testing some particular fact over and over again. This problem would suggest that are we are not entitled to justify the conclusion from the premises.\\
+
+Popular responses to the problem of induction have been around since Hume first formulated this problem, and, like most questions in philosophy, there has been little consensus on which response provides the best answer. Karl Popper provided an account which (arguably) justified inductive \emph{knowledge}. Briefly, Popper agrees with Hume; it's not possible to justify an \emph{inductive} inference. Where Popper differs from Hume is that Popper claimed that knowledge gained from an empirical basis, in particular scientific knowledge, is not inductive, but rather deductive in nature.\\
+
+Popper essentially showed that for \emph{any} epistemological conjecture which is inductive in form, it is possible to reformulate the aforementioned conjecture so that it is deductive. Rather than confirm some conclusion from a set of premises (i.e.\ inductively), the idea is to refute some premise (i.e.\ deductively); to be precise, the argument is a form of \emph{modus tollens}, in this form, we are \emph{denying} the consequent of some implicational assumption we conjectured. For example, suppose we claim that ...\\
+
+Popper argued that the main role of observations and experiments is in their attempts to criticize and refute existing theories.\footnote{insert reference.} Thus, though he didn't give an answer to \emph{the} problem of induction, he argued that \emph{what} we commonly call inductive knowledge is not inductive in nature; and hence, the critical issues attached with knowledge through induction appear to be resolved.\\
+
+Of course, Popper's proposed solution is not without issues, the most devastating issues are how Popper's theory deals with Goodman's paradox and the notion of the contraposition.
+
+% word count: 243 + 67 = 310 words
+
+%% Modus tollens became well known when it was used by Karl Popper in his proposed response to the problem of induction, falsificationism. However, here the use of modus tollens is much more controversial, as ``truth'' or ``falsity'' are inappropriate concepts to apply to theories (which are generally approximations to reality) and experimental findings (whose interpretation is often contingent on other theories).
+
+\subsubsection{The New Riddle of Induction}
+Goodman\footnote{Fact, Fiction and Forecast, Nelson Goodman, 1954} proposed a new predicate he called ``grue''; something is grue if and only if it has been observed to be green before a certain time or blue after that time. Using this device, he proposed the ``new'' problem of induction as: since all emeralds we have seen up to this point have been both green and grue, why do we assume that after time $t$ we will only find green (but not grue) emeralds?
+
+% word count: 75 words
+
+\subsubsection{The Paradox of the Ravens}
+The paradox of the ravens shows where an enumerative inductive inference can be \emph{unsound}; that is, the inference itself is not based on good evidence or reasoning and therefore unreliable or unacceptable. The reasoning behind this paradox is the contraposition of an argument, a form of immediate inference where an equivalence holds between an argument in the form of an implication and the denial of such an implication; as an example, the contraposition of a proposition of the form $(A \rightarrow B)$ is the proposition $(\neg B \rightarrow \neg A)$.\\ % 90 words
+
+Consider the following argument by enumerative induction: % 7 words
+\begin{enumerate}
+  \item $a$ is a raven and $a$ is black; % 8 words
+  \item All ravens are black. % 4 words
+\end{enumerate}
+
+Premise 1 lends support to the more general claim made in premise 2 by an application of \emph{instance confirmation}. The contrapositive of such an argument is: % 26 words
+\begin{enumerate}
+  \item $a$ is non-black and $a$ is a non-raven; % 8 words
+  \item All non-black things are non-ravens. % 5 words
+\end{enumerate}
+
+The conclusion of these two arguments is logically equivalent. It follows therefore, that the observation of a non-black, non-raven object confirms the claim that ``all ravens are black''. But as stated above, this is a bad induction.
+
+% word count: 90 + 7 = 97 + 8 = 105 + 4 = 109 + 26 = 135 + 8 = 143 + 5 = 148 + 37 = 185 words
+
+%% The paradox resides in the conflict of this counterintuitive result with our strong intuitive attachment to enumerative induction, both in everyday life and in the methodology of science. This conflict looks to require that we must either reject enumerative induction or agree that the observation of a white shoe confirms “all ravens are black”.
+
+\subsection{Conclusion}
+Of course, Popper did not show how we could justify induction; only that our method for developing knowledge may not be inductive. Accordingly, the issue is not as extreme as Hume made it out to be. On the other hand, if we were to accept Popper's analysis, then it would be the case that what we call \emph{knowledge} gained from an inductive inference is not so much knowledge as it is an \emph{approximation}. The only knowledge we could possibly gain from Popper's theory is knowledge of what is \emph{not} the case.\\
+
+Epistemological relativism is the thesis that ``there is no objective truth'' or that there are certain central \emph{standards} employed when one evaluates an empirical claim. This ties in quite nicely with Popper's view of inductive knowledge; at the end of an inductive inquiry is not an objective \emph{fact} per se, rather, inductive inquiry is a process of continual revision, the result of which is an approximation of reality which, in some sense, is \emph{closer} to this unattainable objective fact. This is reminiscent the Quinian view that ``no statement is immune to revision''.\\ 
+
+To some individuals this may be hard to accept. % 190 words.
+
+% Total words: 243 + 148 = 391 + 310 = 701 + 75 = 776 + 185 = 961 + 190 = 1151 words
+
+%% Philosophically, inductive reasoning differs from mathematical induction only in that the latter incorporates a \emph{base case} into its inference step (by knowing that there is some smallest structure for which a certain property holds, together with the fact this property holds of any structure larger than some specific size, we are justified in showing that it holds of \emph{all} structures in some domain).\\
+
+%% This base case is what makes mathematical induction \emph{sound} - it is not possible to derive a true conclusion from a fase premise - and therefore \emph{deductive} in nature. In an abstract realm where we easily know certain properties which are applicable to some structure, finding a base case is often a trivial process. However, in reality, this base case is \emph{very} elusive.\\
+
+\end{document}
+
+% Intro section:
+% ----
+%% There are (good) inductions with general premises and particular conclusions:
+%% All observed emeralds have been green.
+%% Therefore, the next emerald to be observed will be green.
+
+%% There are valid deductions with particular premises and general conclusions:
+%% New York is east of the Mississippi.
+%% Delaware is east of the Mississippi.
+%% Therefore, everything that is either New York or Delaware is east of the Mississippi.
+
+%% Suppose we saw another thousand sheep, all of which were also white. Are we justified then? Again, apparently we aren't because in fact some sheep aren't white? Is there any way around this difficulty?
+
+%% If we see but one white sheep, it seems unreasonable to insist that all sheep are white. However, once we've seen several hundred of the walking sweaters we may be reasonable in supposing that they all are. The subsequent finding that some sheep are black doesn't change the fact that we were justified in supposing them to be white.
+
+%% In recent times, Goodman has posed what is called the ``new riddle of induction''. Rather than using his example, let's stay with the sheep and reconsider what we have. Our observations of hundreds of white sheep has led us to propose the theory that all sheep are white. Suppose now that we offer another theory: all sheep until some time T in the future will be white, but the next one will be purple. The evidence we have to date supports our theory, but it also fits this new (but silly-sounding) theory too. How do we decide which is the more reasonable, given that both are equally well grounded? Moreover, we could create plenty of other theories of the same form, involving sheep of all the colours of the rainbow and more besides. We can't say that we have to go with the white theory because we've only seen white so far because that is assuming what is to be proven; i.e. that we expect to see new sheep that are also white. This interesting and perplexing problem is notoriously difficult to escape. In scientific terms it's called the underdetermination of theories.
+
+% Suppose we saw another thousand sheep, all of which were also white. Are we justified then? Again, apparently we aren't because in fact some sheep aren't white? Is there any way around this difficulty?
+
+%% In fact, Hume would even argue that we cannot claim it is ``more probable'', since this still requires the assumption that the past predicts the future.
+
+%% One thing we can do is restate the problem; instead of asking when an individual is justified in saying that all $F$s are $G$, we can wonder instead when it would be \emph{reasonable} to assume it.
+
+%% For example, according to the more modern definitions given above, the following argument, even though it reasons from the specific to general, is deductive, because the truth of the premises guarantees the truth of the conclusion:
+
+%% The members of the Williams family are Susan, Nathan and Alexander.
+%% Susan wears glasses.
+%% Nathan wears glasses.
+%% Alexander wears glasses.
+%% Therefore, all members of the Williams family wear glasses.
+%% Moreover, the following argument, even though it reasons from the general to specific, is inductive:
+
+%% It has snowed in Massachusetts every December in recorded history.
+%% Therefore, it will snow in Massachusetts this coming December.
+
+%% There is a simple argument, due in its first form to Hume (Hume THN, I.III.VI) that induction (not Hume's word) cannot be justified. The argument is a dilemma: Since induction is a contingent method—even good inductions may lead from truths to falsehoods—there can be no deductive justification for induction. Any inductive justification of induction would, on the other hand, be circular. Hume himself takes the edge off this argument later in the Treatise. “In every judgment,” he writes, “…we ought always to correct the first judgment, deriv'd from the nature of the object, by another judgment, deriv'd from the nature of the understanding” (Hume THN, 181f.).
+
+

@@ -1,0 +1,58 @@
+#user#
+chu
+
+#sorts#
+% people
+scientist enum: alan_dodder, geoffrey_strange, margaret_witter, agnes_fidgett, sophie_feinlein, james_feinlein, sonia_littlepoint, henry_pratte, tom_potter, zoe_strange.
+
+#functions#
+% positions
+full_prof: scientist -> bool {hidden}.
+assoc_prof: scientist -> bool {hidden}.
+assist: scientist -> bool {hidden}.
+
+% teams
+pure_footling: scientist -> bool {hidden}.
+applied_footling: scientist -> bool {hidden}.
+footling_history: scientist -> bool {hidden}.
+footlometrics: scientist -> bool {hidden}.
+comparative_footling: scientist -> bool {hidden}.
+metafootling: scientist -> bool {hidden}.
+
+% gender
+man: scientist -> bool {hidden}.
+woman: scientist -> bool {hidden}.
+
+#clauses#
+man(alan_dodder) = TRUE AND man(geoffrey_strange) = TRUE AND man(james_feinlein) = TRUE AND man(henry_pratte) = TRUE AND man(tom_potter) = TRUE.
+woman(margaret_witter) = TRUE AND woman(agnes_fidgett) = TRUE AND woman(sophie_feinlein) = TRUE AND woman(sonia_littlepoint) = TRUE AND woman(zoe_strange) = TRUE.
+
+full_prof(alan_dodder) = TRUE AND full_prof(geoffrey_strange) = TRUE AND full_prof(margaret_witter) = TRUE.
+assoc_prof(agnes_fidgett) = TRUE AND assoc_prof(sophie_feinlein) = TRUE AND assoc_prof(james_feinlein) = TRUE AND assoc_prof(sonia_littlepoint) = TRUE.
+assist(henry_pratte) = TRUE AND assist(tom_potter) = TRUE AND assist(zoe_strange) = TRUE.
+
+% rules require that the committee contain the same number of men as women (plus or minus one if the total is odd), at least one representative of each team, at least one of each rank (full prof, associate, assistant) and no married couple.
+
+#mode#
+SAVE
+
+
+#problem#
+Equity
+
+
+#settings#
+solutions: 3
+time_limit: 3
+pre_test: 3
+verbosity {
+ job:none
+  models:full
+  stats:none
+}
+cv_limit:100000
+stack:LARGE
+
+
+
+#end#
