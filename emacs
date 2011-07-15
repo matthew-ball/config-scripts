@@ -362,6 +362,34 @@
 (require 'smex)
 (smex-initialize) ;; super-charge ido mode
 
+;; ========
+;;; flymake
+;; ========
+;; TODO: set this up
+;; (require 'flymake)
+
+;; (setq flymake-no-changes-timeout 3)
+
+;; (when (load "flymake" t)
+;;   (load "flymake-cursor")
+;;   (defun flymake-pyflakes-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))
+;;       (list "pyflakes" (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;;                '("devel.+\\.py$" flymake-pyflakes-init)))
+
+;; (add-hook 'python-mode-hook
+;;           (lambda () ;; activate flymake unless buffer is a tmp buffer for the interpreter
+;;             (if (not (eq buffer-file-name nil))
+;;                 (progn
+;;                   (flymake-mode t)
+;;                   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
+;;                   (local-set-key (kbd "M-p") 'flymake-goto-prev-error)))))
+
 ;; =========
 ;;; flyspell
 ;; =========
@@ -1425,5 +1453,6 @@
 ;;; start emacs server
 ;; ===================
 (require 'server) ;; TODO: change to an autoload
+(server-mode) ;; enter server mode
 (when (and (functionp 'server-running-p) (not (server-running-p))) ;; don't start the server unless we can verify it isn't running
   (server-start)) ;; FIXME: fix (should be handled in .stumpwmrc)

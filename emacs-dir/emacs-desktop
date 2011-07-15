@@ -2,7 +2,7 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Fri Jul 15 22:45:51 2011
+;; Created Fri Jul 15 23:17:08 2011
 ;; Desktop file format version 206
 ;; Emacs version 23.1.1
 
@@ -11,7 +11,7 @@
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring '("bookm" " ibuffer" "integ" "alsa" "cpm" "default" "mpd" "vol" "title" "mus" "irssi" "mime" "mpd" "volu" "setf" "volume-do"))
+(setq search-ring '(" ibuffer" "bookm" " ibuffer" "integ" "alsa" "cpm" "default" "mpd" "vol" "title" "mus" "irssi" "mime" "mpd" "volu" "setf"))
 (setq regexp-search-ring '(";; =.*" "s.*q" "(.*)))"))
 (setq register-alist (list (desktop-list* 13 (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk)) (list 82 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk))))
 
@@ -28,48 +28,15 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.mpdconf"
-  ".mpdconf"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(7431 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs"
+  "/home/chu/.conf-scripts/emacs"
   ".emacs"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
-  1
-  '(21678 nil)
+  21530
+  '(1 nil)
   nil
   nil
   '((show-trailing-whitespace . 1) (indicate-empty-lines . t) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/notes.org"
-  "notes.org"
-  'org-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
-  45
-  '(2 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.stumpwmrc"
-  ".stumpwmrc"
-  'lisp-interaction-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode stumpwm-mode)
-  1
-  '(8716 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Documents/Organisation/books/notes/on-sense-and-reference.org"
@@ -83,7 +50,40 @@
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.bashrc"
+  "/home/chu/Documents/Organisation/notes.org"
+  "notes.org"
+  'org-mode
+  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
+  45
+  '(2 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/mpd.conf"
+  ".mpdconf"
+  'sh-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  1
+  '(7431 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/stumpwmrc"
+  ".stumpwmrc"
+  'lisp-interaction-mode
+  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode stumpwm-mode)
+  1
+  '(8716 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/bashrc"
   ".bashrc"
   'sh-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
@@ -94,7 +94,7 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.screenrc"
+  "/home/chu/.conf-scripts/screenrc"
   ".screenrc"
   'sh-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
@@ -105,7 +105,7 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.muttrc"
+  "/home/chu/.conf-scripts/muttrc"
   ".muttrc"
   'muttrc-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
@@ -270,7 +270,7 @@
   '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.emacs.d/logic4fun.el"
+  "/home/chu/.conf-scripts/emacs-dir/logic4fun.el"
   "logic4fun.el"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
