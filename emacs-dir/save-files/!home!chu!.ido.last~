@@ -62,21 +62,24 @@
  ("/home/chu/Documents/ANU/PHIL2016/" . "essay2/")
  ("/home/chu/Documents/ANU/" . "PHIL2080/")
  ("/home/chu/Documents/" . "ANU/")
- ("/home/chu/" . ".irssi/")
+ ("/home/chu/" . ".backup/")
 )
 
 ;; ----- ido-work-directory-list -----
 (
+ "/home/chu/.backup/"
+ "/home/chu/Backup/"
+ "/home/chu/.conf-scripts/"
  "~/"
  "~/Documents/ANU"
 )
 
 ;; ----- ido-work-file-list -----
 (
+ "README"
  "main.js"
  ".mpdconf"
  "config"
- "README"
  ".conkerorrc"
  ".emacs"
  "semantic-values.org"
@@ -127,15 +130,19 @@
 
 ;; ----- ido-dir-file-cache -----
 (
- ("/home/chu/" (19999 33969) "Podcasts/" ".dbus/" ".inkscape/" ".gpilotd/" ".Skype/" ".bash_history" ".smex-items" ".update-manager-core/" ".emacs.desktop" "Ubuntu One/" ".icons/" ".recentf" "Videos/" ".ncmpcpp/" ".bashrc" ".mcop/" ".gnome/" "debug.log" ".emms-cache" ".pulse/" ".texmf-var/" ".bash_logout" ".google/" ".gnupg/" ".gtodo/" "Backup/" ".mcoprc" "Music/" ".openoffice.org/" ".cache/" ".tomboy.log" "log.txt" ".octave_hist" "maxout.gnuplot" ".screen-profiles/" ".aptitude/" "logic.org" ".w3m/" ".gstreamer-0.10/" ".bogofilter/" ".local/" ".recently-used.xbel" ".hgrc" ".tuxguitar-1.2/" ".conkeror.mozdev.org/" ".compiz/" ".slime-history.eld" ".ido.last" ".lynxrc" ".rnd" ".qt/" "Projects/" ".mutt/" ".gnomenu/" ".wxglade/" ".gps/" ".debtags/" ".gksu.lock" ".htoprc" "compiz.profile" ".face" ".lesshst" ".update-notifier/" ".gtk-bookmarks" ".profile" ".purple/" ".asus_acpi/" ".xdvirc" ".gconfd/" ".helix/" ".tuxguitar-1.1/" ".mailrc" ".config/" ".kseg" ".filezilla/" ".printer-groups.xml" ".cabal/" ".fonts/" ".emacs.bmk" ".gtranslator/" ".ipython/" ".stellarium/" ".sudoku/" ".xine/" "News/" ".fontconfig/" ".compiz-gnomecompat" ".emacs-places" ".gnuplot_history" ".blender/" ".synaptic/" "Mail/" "Templates/" ".ecereIDErc" ".TeXmacs/" "dos/" ".e/" ".screenrc" ".drgeo" "workspace/" ".jackdrc" "ssh2partch" ".sok/" ".GnoMenuSettings.xml" ".musePrj" ".subversion/" ".esd_auth" ".conkerorrc/" "Audiobooks/" ".cups/" ".glade2" ".covers/" ".macromedia/" ".gnuplot-wxt" ".linuxmint/" ".recently-used" ".irssi/" ".lincity-ng/" ".nvidia-bug-report.log" ".ICEauthority" ".emacs" ".metacity/" ".bmp/" ".xscreensaver-getimage.cache" ".dmrc" ".gervill/" ".nautilus/" ".tasque.log" ".FBReader/" ".gitconfig" ".mozilla-thunderbird/" ".registry" ".nvidia-settings-rc" ".xsession-errors.old" ".gegl-0.0/" ".emacs.d/" ".me-tv/" ".hplip/" ".sbcl/" ".gvfs/" ".xchat2/" ".ssh/" ".muttrc" ".stumpwm.d/" "Pictures/" ".xinitrc" ".conkyrc" ".mono/" ".recentf~" ".tomboy/" ".gtkpod/" ".aspell.en.pws" ".googleearth/" "Sent" ".leksah-0.8/" ".xorg.conf.new" "stumpwm" ".wapi/" ".java/" ".wxMaxima" ".eshell/" ".mission-control/" ".netxrc" ".opera/" ".conf-scripts/" ".gtkrc-2.0" ".mpdconf" ".sudo_as_admin_successful" "Downloads/" ".gpilotd.pid" ".wxFormBuilder" ".Xauthority" ".eclipse/" ".quakelive/" "Desktop/" ".selected_editor" ".ubuntu-tweak/" ".gnome2_private/" ".aspell.en.prepl" ".openoffice.org2/" ".hidden" "Public/" ".emerald/" ".xsession-errors" ".newsrc.eld" ".gnus" ".gimp-2.6/" ".fonts.conf" ".mailcap" ".netx/" "archive_key.asc" ".pulse-cookie" ".pki/" ".xchm" ".mozilla/" ".kde/" ".gconf/" ".icedteaplugin/" ".stumpwmrc" ".adobe/" ".themes/" "sent" "Documents/" ".sane/" ".thumbnails/" ".gnome2/" ".evolution/" "../" "./")
+ ("/home/chu/" (19999 58881) "Podcasts/" ".dbus/" ".inkscape/" ".gpilotd/" ".Skype/" ".bash_history" ".smex-items" ".update-manager-core/" ".emacs.desktop" "Ubuntu One/" ".icons/" ".recentf" "Videos/" ".ncmpcpp/" ".bashrc" ".mcop/" ".gnome/" "debug.log" ".emms-cache" ".pulse/" ".texmf-var/" ".bash_logout" ".google/" ".gnupg/" ".gtodo/" ".mcoprc" "Music/" ".openoffice.org/" ".cache/" ".tomboy.log" "log.txt" ".octave_hist" "maxout.gnuplot" ".screen-profiles/" ".aptitude/" "logic.org" ".w3m/" ".gstreamer-0.10/" ".bogofilter/" ".local/" ".recently-used.xbel" ".hgrc" ".tuxguitar-1.2/" ".conkeror.mozdev.org/" ".compiz/" ".slime-history.eld" ".ido.last" ".lynxrc" ".rnd" ".qt/" "Projects/" ".mutt/" ".gnomenu/" ".wxglade/" ".gps/" ".debtags/" ".gksu.lock" ".htoprc" "compiz.profile" ".face" ".lesshst" ".update-notifier/" ".gtk-bookmarks" ".profile" ".purple/" ".asus_acpi/" ".xdvirc" ".gconfd/" ".helix/" ".backup/" ".tuxguitar-1.1/" ".mailrc" ".config/" ".kseg" ".filezilla/" ".printer-groups.xml" ".cabal/" ".fonts/" ".emacs.bmk" ".gtranslator/" ".ipython/" ".stellarium/" ".sudoku/" ".xine/" "News/" ".fontconfig/" ".compiz-gnomecompat" ".emacs-places" ".gnuplot_history" ".blender/" ".synaptic/" "Mail/" "Templates/" ".ecereIDErc" ".TeXmacs/" "dos/" ".e/" ".screenrc" ".drgeo" "workspace/" ".jackdrc" "ssh2partch" ".sok/" ".GnoMenuSettings.xml" ".musePrj" ".subversion/" ".esd_auth" ".conkerorrc/" "Audiobooks/" ".cups/" ".glade2" ".covers/" ".macromedia/" ".gnuplot-wxt" ".linuxmint/" ".recently-used" ".irssi/" ".lincity-ng/" ".nvidia-bug-report.log" ".ICEauthority" ".emacs" ".metacity/" ".bmp/" ".xscreensaver-getimage.cache" ".dmrc" ".gervill/" ".nautilus/" ".tasque.log" ".FBReader/" ".gitconfig" ".mozilla-thunderbird/" ".registry" ".nvidia-settings-rc" ".xsession-errors.old" ".gegl-0.0/" ".emacs.d/" ".me-tv/" ".hplip/" ".sbcl/" ".gvfs/" ".xchat2/" ".ssh/" ".muttrc" ".stumpwm.d/" "Pictures/" ".xinitrc" ".conkyrc" ".mono/" ".recentf~" ".tomboy/" ".gtkpod/" ".aspell.en.pws" ".googleearth/" "Sent" ".leksah-0.8/" ".xorg.conf.new" "stumpwm" ".wapi/" ".java/" ".wxMaxima" ".eshell/" ".mission-control/" ".netxrc" ".opera/" ".conf-scripts/" ".gtkrc-2.0" ".mpdconf" ".sudo_as_admin_successful" "Downloads/" ".gpilotd.pid" ".wxFormBuilder" ".Xauthority" ".eclipse/" ".quakelive/" "Desktop/" ".selected_editor" ".ubuntu-tweak/" ".gnome2_private/" ".aspell.en.prepl" ".openoffice.org2/" ".hidden" "Public/" ".emerald/" ".xsession-errors" ".newsrc.eld" ".gnus" ".gimp-2.6/" ".fonts.conf" ".mailcap" ".netx/" "archive_key.asc" ".pulse-cookie" ".pki/" ".xchm" ".mozilla/" ".kde/" ".gconf/" ".icedteaplugin/" ".stumpwmrc" ".adobe/" ".themes/" "sent" "Documents/" ".sane/" ".thumbnails/" ".gnome2/" ".evolution/" "../" "./")
+
+ ("/home/chu/.backup/" (19999 57715) "README" "Backup.tar" "fstab" "sources.list" "../" "backup-script" "package-list" "restore-script" "./")
+
+ ("/home/chu/Backup/" (19999 56332) "README" "Backup.tar" "fstab" "sources.list" "../" "backup-script" "package-list" "restore-script" "./" "README~" "backup-script~" "restore-script~")
+
+ ("/home/chu/.conf-scripts/" (19999 54980) "ncmpcpp-dir/" "README" "aptitude-dir/" "passwords/" "mutt-dir/" "irssi-dir/" "emacs-dir/" "../" "bashrc" ".gitignore" "emacs" "muttrc" "bash_aliases" "./" "mpd.conf" "stumpwmrc" "stumpwm-dir/" "screenrc" "conkeror-dir/")
 
  ("/home/chu/.conkerorrc/" (19998 44473) "main.js" "../" "./")
 
  ("/home/chu/.ncmpcpp/" (19998 45604) "config" "../" "./")
 
  ("/home/chu/.irssi/" (19998 49806) "parenthetical.theme" "config" "default.theme" "../" "scripts/" "./")
-
- ("/home/chu/.conf-scripts/" (19998 50115) "ncmpcpp-dir/" "README" "aptitude-dir/" "passwords/" "mutt-dir/" "conkerorrc" "irssi-dir/" "emacs-dir/" "../" "bashrc" "emacs" "muttrc" ".#README" "bash_aliases" "./" "#README#" "mpd.conf" "stumpwmrc" "stumpwm-dir/" "screenrc" "conkeror-dir/")
 
  ("/home/chu/.conf-scripts/ncmpcpp-dir/" (19998 45361) "../" "./")
 
@@ -202,8 +209,6 @@
  ("/home/chu/.themes/" (19943 38037) "Dust Cold Clearlooks/" "Win2-7(Pixmap)/" "Win2-7(Pixmap)-old/" "aero-clone/" "gtk-mist-engine-0.8/" "gnome-theme--1709496870.gtp" "LUNA-EVO/" "Arbeit AE Darker/" "2000 Look/" "gnome-theme-1772379947.gtp" "Clearlooks Dark/" "Elementary Light/" "old/" "absolute-center/" "Elementary Mistified Light/" "Elementary Mistified Faenza/" "elementary ng/" "Win2-7(Pixmap)-older/" "WLM9Purple/" "Elementary Equinox/" "../" "PrudenceMonochrome/" "absolute/" "Win2-7Darth-Vader/" "Glossy Equinox/" "absolute-center-alt/" "WLM9Green/" "Prudence/" "WLM9Black/" "WLM9Pink/" "Win2-7Basic/" "Windows 2k/" "Chromey/" "Win2-7Murrine-Aero/" "Win2-7Murrine-AeroBlue/" "WLM9Human/" "XP-2002/" "Win2-7/" "MurrinaCobalt/" "Elementary Monochrome/" "Vista Basic/" "Equinox Glossy Dark/" "Dust Cold Simplebox/" "XPLuna/" "gtkclean/" "Clearlooks Dark Dust/" "Murrina Redmond/" "WLM9/" "Cold Plastic/" "Murrina-5.1/" "./" "Win2-7Murrine-AeroPink/" "Equinox Mistified Faenza-Dark/" "Turrican/" "Win7.Basic.02/" "Truth/" "absolute-alt/" "gnome-theme-19536738.gtp" "gnome-theme--2020787689.gtp" "elementary-elmod/" "gnome-theme-2130807364.gtp" "Dust Cold/" "PrudenceDark/" "Win2-7Original/" "Dust Cold Mistified Dark/" "Clearlooks Dark Pink/" "Simplebox/" "Bluebird-Clearlooks (Light)/" "Perfect Gnome m. 1/" "Windows XP-clone/")
 
  ("/home/chu/Documents/ANU/PHIL1005/" (19943 10265) "1st essay.doc" "Info about Exam on August 11.doc" "Lecture 15 Paradoxes of Motion.ppt" "../" "Lecture 2.doc" "Lecture 1.doc" "Book/" "1005 Course.doc" "2nd essay.doc" "./" "G.doc" "Phil1005 2009 1st essay question.odt" "PHIL 1005.doc" "2010/")
-
- ("/home/chu/Backup/" (19937 60929) "README" "Backup.tar" "fstab" "sources.list" "../" "backup-script" "package-list" "restore-script" "./" "README~" "backup-script~" "application/" "restore-script~")
 
  ("/home/chu/Audiobooks/" (19666 35346) "../" "./")
 
@@ -326,8 +331,6 @@
  ("/home/chu/Backup/application/src/" (19692 28167) "main.pyc" "main.py~" "../" "main.py" "./")
 
  ("/home/chu/Documents/ANU/PHIL1005/2010/doc/truth-table generator/" (19616 4428) "../" "generator.py~" "./" "generator.py" "gui.py" "generator.pyc" "gui.py~")
-
- ("/home/chu/Documents/ANU/PHIL1005/2010/doc/" (19600 27350) "ct-pr.aux" "ct-pr.log" "ct-pr.toc" "truth-table generator/" "../" "ct-pr.pdf" "./" "chapters/" "ct-pr.tex" "ct-pr.tex~")
 )
 
 ;; ----- ido-unc-hosts-cache -----

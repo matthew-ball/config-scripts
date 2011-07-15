@@ -500,7 +500,7 @@
 		    (filename . ".screenrc$")
 		    (filename . ".inputrc$")
 		    (filename . ".muttrc$")
-		    (filename . ".mpdconf$")
+		    (filename . ".mpd.conf$")
 		    (filename . ".irssi/config")
 		    (filename . ".aptitude/config")
 		    (filename . ".ncmpcpp/config")
