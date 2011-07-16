@@ -78,7 +78,8 @@
 ;;; default browser
 ;; ================
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
+      browse-url-generic-program "conkeror") ;; default web browser set to conkeror
+      ;; browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
 
 ;; =======================
 ;;; default auto-mode list
@@ -366,29 +367,84 @@
 ;;; flymake
 ;; ========
 ;; TODO: set this up
-;; (require 'flymake)
+;; (require 'flymake) ;; TODO: change this to an autoload
 
 ;; (setq flymake-no-changes-timeout 3)
 
-;; (when (load "flymake" t)
-;;   (load "flymake-cursor")
-;;   (defun flymake-pyflakes-init ()
-;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
-;;                        'flymake-create-temp-inplace))
-;;            (local-file (file-relative-name
-;;                         temp-file
-;;                         (file-name-directory buffer-file-name))))
-;;       (list "pyflakes" (list local-file))))
-;;   (add-to-list 'flymake-allowed-file-name-masks
-;;                '("devel.+\\.py$" flymake-pyflakes-init)))
+;; TODO: comment out these lines in haskell-mode.el:
+;; (eval-after-load "flymake"
+;;       '(add-to-list 'flymake-allowed-file-name-masks
+;;                 '("\\.l?hs\\'" haskell-flymake-init)))
 
-;; (add-hook 'python-mode-hook
-;;           (lambda () ;; activate flymake unless buffer is a tmp buffer for the interpreter
-;;             (if (not (eq buffer-file-name nil))
-;;                 (progn
-;;                   (flymake-mode t)
-;;                   (local-set-key (kbd "M-n") 'flymake-goto-next-error)
-;;                   (local-set-key (kbd "M-p") 'flymake-goto-prev-error)))))
+;; (defun flymake-Haskell-init () ;; flymake for haskell
+;;   (flymake-simple-make-init-impl
+;;    'flymake-create-temp-with-folder-structure nil nil
+;;    (file-name-nondirectory buffer-file-name)
+;;    'flymake-get-Haskell-cmdline))
+
+;; (defun flymake-get-Haskell-cmdline (source base-dir)
+;;   (list "ghc" (list "--make" "-fbyte-code"
+;; 		    (concat "-i" base-dir) ;; can be expanded for additional -i options as in the Perl script
+;;               source)))
+
+;; (defvar multiline-flymake-mode nil)
+;; (defvar flymake-split-output-multiline nil)
+
+;; ;; this needs to be advised as flymake-split-string is used in other places and I don't know of a better way to get at the caller's details
+;; (defadvice flymake-split-output
+;;   (around flymake-split-output-multiline activate protect)
+;;   (if multiline-flymake-mode
+;;       (let ((flymake-split-output-multiline t))
+;; 	ad-do-it)
+;;     ad-do-it))
+
+;; (defadvice flymake-split-string
+;;   (before flymake-split-string-multiline activate)
+;;   (when flymake-split-output-multiline
+;;     (ad-set-arg 1 "^\\s *$")))
+
+;; (eval-after-load "flymake"
+;;   '(progn
+;;      (add-to-list 'flymake-allowed-file-name-masks
+;;                   '("\\.l?hs$" flymake-Haskell-init flymake-simple-java-cleanup))
+;;      (add-to-list 'flymake-err-line-patterns
+;;                   '("^\\(.+\\.l?hs\\):\\([0-9]+\\):\\([0-9]+\\):\\(\\(?:.\\|\\W\\)+\\)"
+;;                     1 2 3 4))))
+
+;; (add-hook 'haskell-mode-hook '(lambda () (set (make-local-variable 'multiline-flymake-mode) t)))
+
+;; (defun flymake-elisp-init () ;; flymake for elisp
+;;   (unless (string-match "^ " (buffer-name))
+;;     (let* ((temp-file   (flymake-init-create-temp-buffer-copy
+;;                          'flymake-create-temp-inplace))
+;;            (local-file  (file-relative-name
+;;                          temp-file
+;;                          (file-name-directory buffer-file-name))))
+;;       (list
+;;        (expand-file-name invocation-name invocation-directory)
+;;        (list
+;;         "-Q" "--batch" "--eval"
+;;         (prin1-to-string
+;;          (quote
+;;           (dolist (file command-line-args-left)
+;;             (with-temp-buffer
+;;               (insert-file-contents file)
+;;               (condition-case data
+;;                   (scan-sexps (point-min) (point-max))
+;;                 (scan-error
+;;                  (goto-char(nth 2 data))
+;;                  (princ (format "%s:%s: error: Unmatched bracket or quote\n"
+;;                                 file (line-number-at-pos)))))))))
+;;         local-file)))))
+
+;; (push '("\\.el$" flymake-elisp-init) flymake-allowed-file-name-masks)
+
+;; (add-hook 'emacs-lisp-mode-hook
+;;           ;; workaround for (eq buffer-file-name nil)
+;;           (function (lambda () (if buffer-file-name (flymake-mode))))))
+
+;; (defun flymake-get-tex-args (file-name) ;; flymake for latex
+;;     (list "pdflatex" (list "-file-line-error" "-draftmode" "-interaction=nonstopmode" file-name)))
 
 ;; =========
 ;;; flyspell
@@ -416,7 +472,7 @@
       ido-create-new-buffer 'always ;; create new buffers (if name does not exist)
       ido-ignore-extensions t ;; ignore extentions
       ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; ignore these buffers
-      ido-work-directory-list '("~/" "~/Documents/ANU")
+      ido-work-directory-list '("~/" "~/Documents/ANU/" "~/Documents/Organisation/")
       ido-case-fold t ;; enable case-insensitivity
       ido-enable-last-directory-history t ;; enable directory history
       ido-max-work-directory-list 30 ;; remember last used directories
@@ -805,12 +861,13 @@
 ;; =========
 (autoload 'org-install "Organise tasks with Org-Mode." t)
 (autoload 'org-entities "Enable unicode support for Org-Mode." t)
-(autoload 'org-protocol "Use org-mode with emacsclient." t)
+;; (autoload 'org-protocol "Use org-mode with emacsclient." t)
+(require 'org-protocol) ;; FIXME: change this to an autoload
 
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
       org-read-date-display-live nil ;; disable the live date-display
-      org-log-done 'time ;; capture a timestamp for when a task chnges state
+      org-log-done 'time ;; capture a timestamp for when a task changes state
       org-insert-mode-line-in-empty-file t
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
@@ -892,10 +949,10 @@
 				     "| %^{Title} | %^{Author} |" :immediate-finish 1)
 				    ("p" "Paper to Read" table-line (file+headline "books/books.org" "Papers to Read")
 				     "| %^{Title} | %^{Author} |  %^{Journal} | %^{Year} |" :immediate-finish 1)
+				    ("k" "Bookmark" table-line (file+headline "books/books.org" "Bookmarks")
+				     "| %c | %u |" :immediate-finish 1)
 				    ("w" "Website" table-line (file+headline "books/books.org" "Websites")
-				     "| [[%^{Link}][%^{Title}]] | Source: %u | %c |  %i |" :immediate-finish 1)
-				    ;; ("w" "Website" table-line (file+headline "books/books.org" "Websites")
-				    ;;  "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
+				     "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
 				    ("j" "Project" entry (file+headline "projects.org" "Projects")
 				     "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
 				    ("g" "General" entry (file+headline "notes.org" "General")
@@ -1453,6 +1510,6 @@
 ;;; start emacs server
 ;; ===================
 (require 'server) ;; TODO: change to an autoload
-(server-mode) ;; enter server mode
 (when (and (functionp 'server-running-p) (not (server-running-p))) ;; don't start the server unless we can verify it isn't running
+  (server-mode t) ;; enter server mode
   (server-start)) ;; FIXME: fix (should be handled in .stumpwmrc)

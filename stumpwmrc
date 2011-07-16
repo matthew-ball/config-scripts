@@ -235,6 +235,10 @@
       (run-app (cat *terminal* " -t \"" ttl "\" -e \"" cmd "\"") (list :title ttl))
     (run-app (cat *terminal* " -t \"" ttl "\" -e \"" cmd " " args "\"") (list :title ttl))))
 
+;; TODO: clean this up
+;; (defcommand exec-in-terminal (cmd) ((:string "Command: "))
+;;   (run-shell-command (format nil "~A -e ~A" *terminal* cmd)))
+
 (defcommand run-editor () () "Run an instance of `*editor*' with property `:instance'." (run-app *editor* (list :instance *editor*)))
 (defcommand run-browser () () "Run an instance of `*browser*' with property `:instance'." (run-app *browser* (list :instance *browser*)))
 (defcommand run-terminal () () "Run an instance of `*terminal*' with property `:title'." (run-app *terminal* (list :title *terminal*)))
@@ -438,20 +442,24 @@
 ;; ====================
 (setf *mpd-port* 7700
       *mpd-volume-step* 10
-      *mpd-modeline-fmt* "%S: %a - %t (%n/%p)")
+      ;; *mpd-status-fmt* "" ;; message display by mpd-status
+      ;; *mpd-current-song-fmt* "" ;; message displayed by mpd-current-song
+      *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; mode-line format for mpd
 
 ;; ===============
 ;;; volume control
 ;; ===============
 (defcommand volume-up () ()
   "Increase volume level."
-  (run-commands "amixer-Master-1+")) ;; increase master volume
+  (dotimes (n 10)
+    (run-commands "amixer-Master-1+"))) ;; increase master volume +10
 
 (defcommand volume-down () ()
   "Decrease volume level."
-  (run-commands "amixer-Master-1-")) ;; decrease master volume
+  (dotimes (n 10)
+    (run-commands "amixer-Master-1-"))) ;; decrease master volume -10
 
-(defcommand volume-print () ()
+(defcommand volume-print () () ;; TODO: fix
   "Print volume level."
   (message "Print volume."))
 

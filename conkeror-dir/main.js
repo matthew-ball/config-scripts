@@ -8,8 +8,9 @@
 // ==========
 load_paths.unshift("chrome://conkeror-contrib/content/"); // load path: allow for 'contrib' stuff
 homepage = "http://www.google.com/ig"; // homepage
-dowload_buffer_automatic_open_target = OPEN_NEW_BUFFER_BACKGROUND; // open downloads in a new buffer
+dowload_buffer_automatic_open_target = [OPEN_NEW_BUFFER_BACKGROUND, OPEN_NEW_WINDOW]; // open downloads in a new buffer
 minibuffer_auto_complete_default = true; // auto-completion in the mini-buffer
+minibuffer_read_url_select_initial = false; // T and O shouldn't keave the URL highlighted
 url_completion_use_webjumps = true; // complete webjumps
 url_completion_use_history = true; // should work since (bf05c87405)
 url_completion_use_bookmarks = false; // bookmarks are now done through webjump
@@ -17,6 +18,7 @@ url_remoting_fn = load_url_in_new_buffer; // open external links in a new buffer
 hints_display_url_panel = true; // display properties of the current selected node during the hints interaction
 can_kill_last_buffer = false;
 view_source_use_external_editor = true; // view page source in editor
+isearch_keep_selection = true; // keep found item selected after search-mode ends
 
 // ===========
 /// MIME types
@@ -64,6 +66,7 @@ define_webjump("gi", "http://google.com/ig", $description = "iGoogle"); // accou
 define_webjump("reddit", "http://www.reddit.com", $description = "Reddit"); // account (logged in)
 define_webjump("uf", "http://ubuntuforums.org", $description = "Ubuntu Forums"); // account (logged in)
 define_webjump("afl", "http://www.afl.com.au", $description = "Australian Football League");
+define_webjump("modem", "http://gateway.2wire.net", $description = "Telstra Modem Information");
 
 define_webjump("conk", "http://conkeror.org", $description = "Conkeror Wiki");
 define_webjump("ew", "http://emacswiki.org", $description = "Emacs Wiki");
@@ -127,7 +130,8 @@ editor_shell_command = "emacsclient -c"; // edit form text with emacs
 
 // TODO: fix this up
 function org_capture (url, title, selection, window) { // org-protocol stuff
-  var cmd_str = 'emacsclient \"org-protocol:/capture:/w/'+url+'/'+title+'/'+selection+'\"';
+  // var cmd_str = 'emacsclient \"org-protocol:/capture:/w/'+url+'/'+title+'/'+selection+'\"';
+  var cmd_str = 'emacsclient \"org-protocol:/capture:/k/'+url+'/'+title+'/"';
   if (window != null) {
     window.minibuffer.message('Issuing: ' + cmd_str);
   }
@@ -186,6 +190,12 @@ define_key(content_buffer_normal_keymap, "f2", "open-gmail"); // open gmail inbo
 /// xkcd mode
 // ==========
 xkcd_add_title = true;
+
+// ===============
+/// wikipedia mode
+// ===============
+require("page-modes/wikipedia.js")
+wikipedia_enable_didyoumean = true; // automatically follow "did you mean" links on wikipedia search pages
 
 // ========================
 /// auto-hide the mode-line
@@ -261,11 +271,14 @@ xkcd_add_title = true;
 // ========
 /// session
 // ========
-require("session");
-session_auto_save_auto_load = "prompt";
+require("session.js");
+// session_auto_save_file = "./session"
+session_auto_save_auto_load = true; // autmoatically load saved session on startup
+// session_auto_save_auto_load = "prompt";
 
 // =======
 /// daemon
 // =======
-require('daemon');
-daemon_mode(1);
+// NOTE: apparently the session module does not work correctly with daemon
+// require('daemon');
+// daemon_mode(1);
