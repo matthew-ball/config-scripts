@@ -1107,6 +1107,13 @@
       (list (list "\\.pdf$" "evince")
 	    (list "\\.PDF$" "evince")))
 
+(add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map "b" 'dired-browser-find-file)))
+
+(defun dired-browser-find-file ()
+  "Dired function to view a file in default web browser."
+  (interactive)
+  (browse-url (browse-url-file-url (dired-get-filename))))
+
 ;; ==========
 ;;; logic4fun
 ;; ==========

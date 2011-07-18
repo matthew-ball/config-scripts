@@ -28,14 +28,15 @@
 |---------------+----------------+---------------------------------------------------|
 
 ** List of non-link files:
-|---------------|
-| File Name:    |
-|---------------|
-| .gitignore    |
-| bash\_aliases |
-| passwords/    |
-| README        |
-|---------------|
+|-----------------|
+| File Name:      |
+|-----------------|
+| .gitignore      |
+| bash\_aliases   |
+| passwords/      |
+| README          |
+| config-setup.sh |
+|-----------------|
 
 * TODO:
 ** TODO Automatically symlink files from this directory to their correct locations.

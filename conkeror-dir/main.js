@@ -54,68 +54,84 @@ clicks_in_new_buffer_button = 1; //  middle-click opens links in new buffers
 /// webjumps and smartlinks
 // ========================
 define_webjump("bookmark", function(term) {return term;},
-               $completer = history_completer($use_history = false,
-                                              $use_bookmarks = true,
-                                              $match_required = true),
+               $completer = history_completer($use_history = false, $use_bookmarks = true, $match_required = true),
                $description = "Visit a Conkeror bookmark.");
 
-// webjumps
-define_webjump("fb", "http://www.facebook.com", $description = "Facebook"); // account (not logged in)
-define_webjump("g+", "http://plus.google.com", $description = "Google+"); // account (logged in)
-define_webjump("gi", "http://google.com/ig", $description = "iGoogle"); // account (logged in)
-define_webjump("reddit", "http://www.reddit.com", $description = "Reddit"); // account (logged in)
-define_webjump("uf", "http://ubuntuforums.org", $description = "Ubuntu Forums"); // account (logged in)
-define_webjump("afl", "http://www.afl.com.au", $description = "Australian Football League");
-define_webjump("modem", "http://gateway.2wire.net", $description = "Telstra Modem Information");
+// procrastination stuff
+define_webjump("fb", "http://www.facebook.com", $description="Facebook");
+define_webjump("g+", "http://plus.google.com", $description="Google+");
+define_webjump("gi", "http://google.com/ig", $description="iGoogle");
+define_webjump("reddit", "http://www.reddit.com", $description="Reddit");
+define_webjump("uf", "http://ubuntuforums.org", $description="Ubuntu Forums");
+define_webjump("afl", "http://www.afl.com.au", $description="Australian Football League");
+define_webjump("modem", "http://gateway.2wire.net", $description="Telstra Modem Information");
 
-define_webjump("conk", "http://conkeror.org", $description = "Conkeror Wiki");
-define_webjump("ew", "http://emacswiki.org", $description = "Emacs Wiki");
-define_webjump("stumpwmwiki", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description = "StumpWM Wiki");
+// computer stuff
+define_webjump("conk", "http://conkeror.org", $description="Conkeror Wiki");
+define_webjump("ew", "http://emacswiki.org", $description="Emacs Wiki");
+define_webjump("stumpwmwiki", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description="StumpWM Wiki");
 
-define_webjump("pp", "http://philpapers.org", $description = "Philosophy Papers"); // account (not logged in)
-define_webjump("stanford", "http://plato.stanford.edu", $description = "Stanford Encyclopedia of Philosophy");
+// school stuff
+define_webjump("pp", "http://philpapers.org", $description="Philosophy Papers");
+define_webjump("stanford", "http://plato.stanford.edu", $description="Stanford Encyclopedia of Philosophy");
+define_webjump("jstor", "http://www.jstor.org.virtual.anu.edu.au", $description="Journal Storage");
+define_webjump("anu", "http://www.anu.edu.au", $description="Australian National University");
+define_webjump("library", "http://anulib.anu.edu.au", $description="ANU Library");
+define_webjump("wattle", "https://wattle.anu.edu.au", $description="ANU Wattle");
+define_webjump("webmail", "https://anumail.anu.edu.au", $description="ANU Webmail");
+define_webjump("isis", "https://esapps.anu.edu.au/sscsprod/psp/sscsprod", $description="ANU ISIS and HORUS");
+define_webjump("aarnet", "http://www.aarnet.edu.au", $description="Australia's Academic and Reseach Network");
 
-// define_webjump("jstor", "http://www.jstor.org");
-define_webjump("jstor", "http://www.jstor.org.virtual.anu.edu.au", $description = "Journal Storage");
-define_webjump("anu", "http://www.anu.edu.au", $description = "Australian National University");
-define_webjump("library", "http://anulib.anu.edu.au", $description = "ANU Library");
-define_webjump("wattle", "https://wattle.anu.edu.au", $description = "ANU Wattle");
-define_webjump("webmail", "https://anumail.anu.edu.au", $description = "ANU Webmail");
-define_webjump("isis", "https://esapps.anu.edu.au/sscsprod/psp/sscsprod", $description = "ANU ISIS and HORUS");
-define_webjump("aarnet", "http://www.aarnet.edu.au", $description = "Australia's Academic and Reseach Network");
+// search stuff
+define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search=Search", $alternative="http://www.youtube.com", $description="Search YouTube");
+define_webjump("emacswiki", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=emacswiki.org%2F", $alternative="http://www.emacswiki.org", $description="Search EmacsWiki");
+define_webjump("org-mode","https://www.google.com/cse?cx=002987994228320350715%3Az4glpcrritm&q=%s&sa=Search&siteurl=orgmode.org%2Fworg", $alternative="http://orgmode.org", $description="Search Org-Mode");
 
-// smartlinks
-define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search=Search", $alternative="http://www.youtube.com");
-define_webjump("emacswiki", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=emacswiki.org%2F", $alternative="http://www.emacswiki.org");
-define_webjump("org-mode","https://www.google.com/cse?cx=002987994228320350715%3Az4glpcrritm&q=%s&sa=Search&siteurl=orgmode.org%2Fworg", $alternative="http://orgmode.org");
-
-define_webjump("hoogle", "http://haskell.org/hoogle/?hoogle=%s", $alternative = "http://haskell.org/hoogle/");
-define_webjump("commandlinefu", 
-	       function(term) {
-		 return 'http://www.commandlinefu.com/commands/matching/' +
-		   term.replace(/[^a-zA-Z0-9_\-]/g, '')
-		   .replace(/[\s\-]+/g, '-') + '/' + btoa(term);
-	       }, $argument = 'optional', $alternative = "http://www.commandlinefu.com/");
+define_webjump("hoogle", "http://haskell.org/hoogle/?hoogle=%s", $alternative="http://haskell.org/hoogle/", $description="Search Hoogle");
 
 // google specialised searching
-define_webjump("scholar", "http://scholar.google.com/scholar?q=%s", $alternative = "http://scholar.google.com");
-define_webjump("books", "http://www.google.com/search?q=%s&tbm=bks", $alternative = "http://books.google.com");
+define_webjump("scholar", "http://scholar.google.com/scholar?q=%s", $alternative="http://scholar.google.com", $description="Search Google Scholar");
+define_webjump("books", "http://www.google.com/search?q=%s&tbm=bks", $alternative="http://books.google.com", $description="Search Google Books");
+define_webjump("code", "http://www.code.google.com/query/#q=%s", $description="Search Google Code");
 
-// ubuntu (launchpad) package search
-define_webjump("ubuntupkg", "http://packages.ubuntu.com/%s");
-define_webjump("ubuntufile", "http://packages.ubuntu.com/search?searchon=contents&keywords=%s&mode=path&arch=any");
-define_webjump("ubuntubugs", "http://bugs.launchpad.net/ubuntu/+source/%s");
-define_webjump("launchpad", "https://launchpad.net/+search?field.text=%s");
+// ubuntu (and launchpad) specialised search
+define_webjump("ubuntupkg", "http://packages.ubuntu.com/%s", $description="Search Ubuntu Packages");
+define_webjump("ubuntubugs", "http://bugs.launchpad.net/ubuntu/+source/%s", $description="Search Ubuntu Bugs");
+define_webjump("launchpad", "https://launchpad.net/+search?field.text=%s", $description="Search Launchpad");
 
-define_webjump("github", "http://github.com/search?q=%s", $alternative="http://github.com"); // github search
-define_webjump("gitorious", "http://gitorious.org/search?q=%s", $alternative="http://gitorious.org"); // gitorious search
+define_webjump("github", "http://github.com/search?q=%s", $alternative="http://github.com", $description="Search GitHub"); // github search
+define_webjump("gitorious", "http://gitorious.org/search?q=%s", $alternative="http://gitorious.org", $description="Search Gitorious"); // gitorious search
+
+// selection searches
+// TODO: fix
+// function create_selection_search(webjump, key) {
+//   interactive(webjump+"-selection-search",
+// 	      "Search " + webjump + " with selection contents",
+// 	      "find-url-new-buffer",
+// 	      $browser_object = function (I) {
+// 		return webjump + " " + I.buffer.top_frame.getSelection();
+// 	      });
+//   define_key(content_buffer_normal_keymap, key.toUpperCase(), webjump + "-selection-search");
+
+//   interactive("prompted-"+webjump+"-search", null,
+// 	      function (I) {
+// 		var term = yield I.minibuffer.read_url($prompt = "Search "+webjump+":", $initial_value = webjump+" ");
+// 		browser_object_follow(I.buffer, FOLLOW_DEFAULT, term);
+// 	      });
+//   define_key(content_buffer_normal_keymap, key, "prompted-" + webjump + "-search");
+// }
+
+// create_selection_search("google","g");
+// create_selection_search("wikipedia","w");
+// create_selection_search("amazon","a");
+// create_selection_search("youtube","y");
 
 read_url_handler_list = [read_url_make_default_webjump_handler("google")]; // default webjump
 
 // ===========
 /// quickjumps
 // ===========
-interactive("open-gmail", "Open gmail inbox.", "follow", $browser_object = "http://gmail.com/"); // open gmail (an alias of the follow command)
+interactive("open-gmail", "Open gmail inbox.", "follow-new-buffer", $browser_object = "http://gmail.com/"); // open gmail (an alias of the follow-new-buffer command)
 
 interactive("open-school-all","Open school related web-sites.",
 	    function(I){
@@ -128,27 +144,50 @@ interactive("open-school-all","Open school related web-sites.",
 // ==================
 editor_shell_command = "emacsclient -c"; // edit form text with emacs
 
-// TODO: fix this up
-function org_capture (url, title, selection, window) { // org-protocol stuff
-  // var cmd_str = 'emacsclient \"org-protocol:/capture:/w/'+url+'/'+title+'/'+selection+'\"';
-  var cmd_str = 'emacsclient \"org-protocol:/capture:/k/'+url+'/'+title+'/"';
+function org_capture(key, text, window) { // org-protocol capture
+  var command_string = 'emacsclient \"org-protocol:/capture:/'+key+'/'+text+'\"';
   if (window != null) {
-    window.minibuffer.message('Issuing: ' + cmd_str);
+    window.minibuffer.message('Issuing: ' + command_string);
   }
-  shell_command_blind(cmd_str);
+  shell_command_blind(command_string);
 }
 
-interactive("org-capture", "Clip url, title, and selection to capture via org-protocol.",
+interactive("bookmark-capture", "Capture a bookmark via org-protocol.",
 	    function (I) {
-              org_capture(encodeURIComponent(I.buffer.display_uri_string),
-			  encodeURIComponent(I.buffer.document.title),
-			  encodeURIComponent(I.buffer.top_frame.getSelection()),
-			  I.window);
+	      var bookmark_url = (yield I.buffer.display_uri_string);
+	      var bookmark_title = (yield I.buffer.document.title);
+	      var bookmark_string = encodeURIComponent(bookmark_url) + '/' + encodeURIComponent(bookmark_title);
+	      org_capture("k", bookmark_string, I.window);
+	    });
+
+// FIXME: not sure why this doesn't work ...
+interactive("book-capture", "Capture a book via org-protocol.",
+	    function (I) {
+	      var book_url = (yield I.buffer.display_uri_string);
+	      var book_title = (yield I.minibuffer.read($prompt = "Title: "));
+	      var book_author = (yield I.minibuffer.read($prompt = "Author: "));
+	      var book_price = (yield I.minibuffer.read($prompt = "Price: "));
+	      var book_string = encodeURIComponent(book_url) + '/' + book_title + '/' + book_author + '/' + book_price;
+	      org_capture("b", book_string, I.window);
 	    });
 
 // ===============
 /// user functions
 // ===============
+function echo_message(window, message) {
+  window.minibuffer.message(message);
+}
+
+function url_completion_toggle (I) {
+  if (url_completion_use_bookmarks) {
+    url_completion_use_bookmarks = false;
+    url_completion_use_history = true;
+  } else {
+    url_completion_use_bookmarks = true;
+    url_completion_use_history = false;
+  }
+}
+
 interactive("copy-url", "Copy the current buffer's URL to the clipboard.",
 	    function(I) {
 	      var text = I.window.buffers.current.document.location.href;
@@ -162,17 +201,30 @@ interactive("reload-config", "Reload ~/.conkerorrc file.",
 	      I.window.minibuffer.message("Config file reloaded.");
 	    });
 
-function url_completion_toggle (I) {
-  if (url_completion_use_bookmarks) {
-    url_completion_use_bookmarks = false;
-    url_completion_use_history = true;
-  } else {
-    url_completion_use_bookmarks = true;
-    url_completion_use_history = false;
+interactive("url-completion-toggle", "toggle between bookmark and history completion", url_completion_toggle);
+
+// TODO: this doesn't appear to work
+url_completion_toggle; // open only bookmarks by default (toggle to using history with C-c t)
+
+// ===================
+/// download directory
+// ===================
+{
+  let _save_path = get_home_directory();
+
+  function update_save_path(info) {
+    _save_path = info.target_file.parent.path;
+  }
+
+  add_hook("download_added_hook", update_save_path);
+
+  suggest_save_path_from_file_name = function (filename, buffer) {
+    let file = make_file(_save_path);
+    file.append(filename);
+    return file.path;
   }
 }
 
-interactive("url-completion-toggle", "toggle between bookmark and history completion", url_completion_toggle);
 
 // =============
 /// key bindings
@@ -181,6 +233,9 @@ key_bindings_ignore_capslock = true;
 
 define_key(default_global_keymap, "C-c u", "copy-url"); // copy url with C-c u
 define_key(default_global_keymap, "C-c r", "reload-config"); // reload config with C-c r
+define_key(default_global_keymap, "C-x f", "find-url"); // find url in current buffer with C-x f
+define_key(default_global_keymap, "C-x M-f", "find-alternate-url"); // modify url with C-x M-f
+define_key(content_buffer_normal_keymap, "d", "follow-new-buffer"); // follow link in a new buffer
 define_key(content_buffer_normal_keymap, "C-c c", "org-capture"); // capture with C-c c
 define_key(content_buffer_normal_keymap, "C-c t", "url-completion-toggle"); // url completion with C-c t
 define_key(content_buffer_normal_keymap, "f1", "open-school-all"); // open school urls with f1

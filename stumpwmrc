@@ -174,7 +174,7 @@
   ("M-i" "show-window-properties")) ;; show current window's properties
 
 (defkeys-top ;; define top-map keys (these don't require prefix key)
-  ("s-M" '*mpd-map*) ;; TODO: setup
+  ("s-M" '*mpd-map*)
   ("s-E" '*emacs-map*)
   ("s-S" '*sudo-map*)
   ("s-V" '*volume-map*)
@@ -208,7 +208,6 @@
 (fill-keymap *volume-map*
 	     (kbd "u") "volume-up"
 	     (kbd "d") "volume-down"
-	     (kbd "p") "volume-print"
 	     (kbd "m") "volume-toggle-mute")
 
 ;; =================
@@ -458,10 +457,6 @@
   "Decrease volume level."
   (dotimes (n 10)
     (run-commands "amixer-Master-1-"))) ;; decrease master volume -10
-
-(defcommand volume-print () () ;; TODO: fix
-  "Print volume level."
-  (message "Print volume."))
 
 (defcommand volume-toggle-mute () ()
   "Toggle between mute/unmute volume level."
