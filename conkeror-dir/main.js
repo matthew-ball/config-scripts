@@ -69,7 +69,12 @@ define_webjump("modem", "http://gateway.2wire.net", $description="Telstra Modem 
 // computer stuff
 define_webjump("conk", "http://conkeror.org", $description="Conkeror Wiki");
 define_webjump("ew", "http://emacswiki.org", $description="Emacs Wiki");
-define_webjump("stumpwmwiki", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description="StumpWM Wiki");
+define_webjump("swmw", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description="StumpWM Wiki");
+
+// mailing lists
+define_webjump("orgml", "http://lists.gnu.org/mailman/listinfo/emacs-orgmode", $description="Org-Mode Mailing List");
+define_webjump("gnuml", "http://lists.gnu.org/mailman/listinfo", $description="GNU Mailing Lists");
+define_webjump("gnumla", "http://lists.gnu.org/archive/html/", $description="GNU Mailing Lists Archive (Most Recent to Oldest)");
 
 // school stuff
 define_webjump("pp", "http://philpapers.org", $description="Philosophy Papers");

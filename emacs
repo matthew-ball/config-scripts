@@ -895,13 +895,14 @@
 			       "~/Documents/Organisation/school.org"
 			       "~/Documents/Organisation/home.org"
 			       "~/Documents/Organisation/books/books.org"
+			       "~/Documents/Organisation/bookmarks.org"
 			       "~/Documents/Organisation/projects.org")))
 
 (setq org-todo-keywords (quote ((sequence "TODO(t)" "|" "DONE(d!\!)")
 				(sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))) ;; custom states a task could be in
 
       org-tag-alist (quote (("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r)
-			    ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n) ("WEBSITE" . ?w))) ;; tags for org-set-tags (C-c C-q)
+			    ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n) ("WEBSITE" . ?w) ("BOOKMARK" . ?b))) ;; tags for org-set-tags (C-c C-q)
 
       org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
 				     ("DONE" :foreground "green" :weight bold)
@@ -951,8 +952,10 @@
 				     "| %^{Title} | %^{Author} |" :immediate-finish 1)
 				    ("p" "Paper to Read" table-line (file+headline "books/books.org" "Papers to Read")
 				     "| %^{Title} | %^{Author} |  %^{Journal} | %^{Year} |" :immediate-finish 1)
-				    ("k" "Bookmark" table-line (file+headline "books/books.org" "Bookmarks")
-				     "| %c | %u |" :immediate-finish 1)
+				    ("k" "Internet Bookmark" table-line (file+headline "bookmarks.org" "Internet Bookmarks")
+				     "| %c |" :immediate-finish 1)
+				    ("f" "File Bookmark" table-line (file+headline "bookmarks.org" "File Bookmarks")
+				     "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |" :immediate-finish 1)
 				    ("w" "Website" table-line (file+headline "books/books.org" "Websites")
 				     "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
 				    ("j" "Project" entry (file+headline "projects.org" "Projects")
@@ -961,6 +964,14 @@
 				     "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
 				    ("n" "Note" entry (file+headline "notes.org" "Notes")
 				     "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1))))
+
+(defun file-path (&rest junk)
+  "Return the path of a file."
+  (buffer-file-name (get-buffer (car buffer-name-history))))
+
+(defun dir-path (&rest junk)
+  "Return the path of a directory."
+  (car (rassq (get-buffer (car buffer-name-history)) dired-buffers)))
 
 (defun course-code (&rest junk)
   "Search for a COURSE-CODE appearing in 'school.org' and if found move the point to that location."
