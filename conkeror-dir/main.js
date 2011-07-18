@@ -160,14 +160,15 @@ interactive("bookmark-capture", "Capture a bookmark via org-protocol.",
 	      org_capture("k", bookmark_string, I.window);
 	    });
 
-// FIXME: not sure why this doesn't work ...
+// FIXME: doesn't capture the price ...
 interactive("book-capture", "Capture a book via org-protocol.",
 	    function (I) {
 	      var book_url = (yield I.buffer.display_uri_string);
 	      var book_title = (yield I.minibuffer.read($prompt = "Title: "));
 	      var book_author = (yield I.minibuffer.read($prompt = "Author: "));
-	      var book_price = (yield I.minibuffer.read($prompt = "Price: "));
-	      var book_string = encodeURIComponent(book_url) + '/' + book_title + '/' + book_author + '/' + book_price;
+	      // var book_price = (yield I.minibuffer.read($prompt = "Price: "));
+	      // var book_string = encodeURIComponent(book_url) + '/' + book_title + '/' + book_author + '/' + book_price;
+	      var book_string = encodeURIComponent(book_url) + '/' + book_title + '/' + book_author;
 	      org_capture("b", book_string, I.window);
 	    });
 
@@ -225,7 +226,6 @@ url_completion_toggle; // open only bookmarks by default (toggle to using histor
   }
 }
 
-
 // =============
 /// key bindings
 // =============
@@ -236,7 +236,8 @@ define_key(default_global_keymap, "C-c r", "reload-config"); // reload config wi
 define_key(default_global_keymap, "C-x f", "find-url"); // find url in current buffer with C-x f
 define_key(default_global_keymap, "C-x M-f", "find-alternate-url"); // modify url with C-x M-f
 define_key(content_buffer_normal_keymap, "d", "follow-new-buffer"); // follow link in a new buffer
-define_key(content_buffer_normal_keymap, "C-c c", "org-capture"); // capture with C-c c
+define_key(content_buffer_normal_keymap, "C-c k", "bookmark-capture"); // capture bookmark with C-c k
+define_key(content_buffer_normal_keymap, "C-c b", "book-capture"); // capture book (from amazon) with C-c b
 define_key(content_buffer_normal_keymap, "C-c t", "url-completion-toggle"); // url completion with C-c t
 define_key(content_buffer_normal_keymap, "f1", "open-school-all"); // open school urls with f1
 define_key(content_buffer_normal_keymap, "f2", "open-gmail"); // open gmail inbox with f2
@@ -328,7 +329,7 @@ wikipedia_enable_didyoumean = true; // automatically follow "did you mean" links
 // ========
 require("session.js");
 // session_auto_save_file = "./session"
-session_auto_save_auto_load = true; // autmoatically load saved session on startup
+session_auto_save_auto_load = true; // automatically load saved session on startup
 // session_auto_save_auto_load = "prompt";
 
 // =======

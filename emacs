@@ -943,8 +943,10 @@
 				     "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n" :empty-lines 1 :immediate-finish 1)
 				    ("a" "Assignment" plain (file+function "school.org" course-code)
 				     "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+				    ;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase")
+				    ;;  "| [[%^{Link}][%^{Title}]] | %^{Author} | %^{Price} |" :immediate-finish 1) ;; manual version
 				    ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase")
-				     "| [[%^{Link}][%^{Title}]] | %^{Author} | %^{Price} |" :immediate-finish 1)
+				     "| %c | %i | %^{Price} |" :immediate-finish 1) ;; conkeror version
 				    ("r" "Book to Read" table-line (file+headline "books/books.org" "Books to Read")
 				     "| %^{Title} | %^{Author} |" :immediate-finish 1)
 				    ("p" "Paper to Read" table-line (file+headline "books/books.org" "Papers to Read")
