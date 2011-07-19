@@ -239,6 +239,17 @@
 ;; ========
 (autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t)
 
+;; =====
+;;; info
+;; =====
+(require 'info-look) ;; TODO: change this to an autoload
+
+(info-lookup-add-help
+ :mode 'python-mode
+ :regexp "[[:alnum:]_]+"
+ :doc-spec
+ '(("(python)Index" nil "")))
+
 ;; =========
 ;;; antiword
 ;; =========
