@@ -34,11 +34,11 @@
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; hide the tool bar
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ;; hide the scroll bar
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1)) ;; turn off blinking cursor
-(when (fboundp 'tool-tip-mode) (tooltip-mode -1)) ;; turn off tooltip
+(when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; turn off tooltip
 (when (fboundp 'fringe-mode) (fringe-mode -1)) ;; turn off the fringe
 (set-language-environment "UTF-8")
 (delete-selection-mode 1) ;; delete selected region
-;; (display-time-mode t) ;; display time in the mode-bar
+(display-time-mode t) ;; display time in the mode-bar
 ;; (display-battery-mode t) ;; display battery status in the mode-bar
 ;; (which-function-mode t) ;; show the current function in the mode-bar
 
@@ -147,7 +147,7 @@
 ;; =========================
 (global-set-key (kbd "C-c %") 'jump-to-matching-parenthesis) ;; jump to the matching parenthesis
 (global-set-key (kbd "TAB") 'smart-tab) ;; use smart-tab
-;; (global-set-key (kbd "<f3>") 'some-function) ;; ...
+(global-set-key (kbd "<f3>") 'irc) ;; start an ERC session
 (global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file
 ;; (global-set-key (kbd "C-<f3>") 'some-function) ;; ...
 (global-set-key (kbd "<f4>") 'switch-to-dot-emacs) ;; switch to ~/.emacs file (or evaluate-buffer if already present)
@@ -1143,6 +1143,7 @@
 (require 'erc-ring) ;; TODO: change this to an autoload
 (require 'erc-netsplit) ;; TODO: change this to an autoload
 (require 'erc-spelling) ;; TODO: change this to an autoload
+(require 'erc-pcomplete) ;; TODO: change this to an autoload
 
 (defvar erc-insert-post-hook)
 
@@ -1152,18 +1153,24 @@
 (erc-fill-mode t)
 (erc-ring-mode t)
 (erc-netsplit-mode t)
-(erc-timestamp-mode t)
+(erc-timestamp-mode t) ;; enable ERC timestamp on
 (erc-button-mode t)
 (erc-spelling-mode t) ;; enable flyspell in ERC
 
-(setq erc-hide-list '("JOIN" "PART" "QUIT") ;; ignore JOIN, PART and QUIT messages
+(setq erc-fill-column 78
+      erc-kill-buffer-on-part t ;; kill buffers for channels after /part
+      erc-kill-queries-on-quit t ;; kill buffers for queries after quitting the server
+      erc-kill-server-buffer-on-quit t ;; kill buffers for server messages after quitting the server
+      erc-interpret-mirc-color t ;; interpret mIRC-style color commands in IRC chats
+      erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; ignore JOIN, NICK, PART and QUIT messages
       erc-mode-line-format "%t %a" ;; display only the channel name on the mode-line
-      header-line-format nil ;; turn off the topic-bar
+      erc-header-line-format nil ;; turn off the topic (header) bar
+      header-line-format nil ;; turn off the topic (header) bar
       erc-max-buffer-size 20000 ;; truncate buffers (so they don't hog core)
       erc-truncate-buffer-on-save t
       erc-user-full-name "Matthew Ball"
       erc-email-userid "mathew.ball@gmail.com"
-      erc-timestamp-format "[%R-%m/%d]" ;; time format for ERC messages
+      erc-timestamp-format "[%H:%M:%S]" ;; time format for ERC messages
       erc-input-line-position -2 ;; keep input at the bottom
       erc-keywords '("chu" "chu_") ;; highlight nickname
       erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
@@ -1171,24 +1178,16 @@
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
 		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
-      ;; erc-autojoin-channels-alist
-      ;; '(("freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic" "##club-ubuntu"))
-      )
+      erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic")))
 
-(add-hook 'erc-after-connect ;; authentication details
-	  '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify mypassword"))
-	  '(lambda () (require 'erc-pcomplete)
-	     (pcomplete-erc-setup)
-	     (erc-completion-mode 1)))
-
+;; (add-hook 'erc-after-connect '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify password"))) ;; authentication details
+(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1))) ;; FIXME: fix
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
 
-(defun irc-maybe ()
-  "Connect to IRC."
+(defun irc (&rest junk)
+  "Connect to IRC with ERC."
   (interactive)
-  (when (y-or-n-p "IRC? ")
-    (erc :server "irc.freenode.net" :port 6667 :nick "chu_" :full-name erc-user-full-name)))
-
+  (erc :server "irc.freenode.net" :port 6667 :nick "chu_" :full-name erc-user-full-name))
 
 ;; ==========
 ;;; logic4fun

@@ -240,6 +240,7 @@ define_key(default_global_keymap, "C-c u", "copy-url"); // copy url with C-c u
 define_key(default_global_keymap, "C-c r", "reload-config"); // reload config with C-c r
 define_key(default_global_keymap, "C-x f", "find-url"); // find url in current buffer with C-x f
 define_key(default_global_keymap, "C-x M-f", "find-alternate-url"); // modify url with C-x M-f
+define_key(default_global_keymap, "C-x m", "mode-line-mode"); // toggle mode-line with C-x m
 define_key(content_buffer_normal_keymap, "d", "follow-new-buffer"); // follow link in a new buffer
 define_key(content_buffer_normal_keymap, "C-c k", "bookmark-capture"); // capture bookmark with C-c k
 define_key(content_buffer_normal_keymap, "C-c b", "book-capture"); // capture book (from amazon) with C-c b
