@@ -2,6 +2,7 @@
 ;; custom .emacs file
 ;; Matthew Ball (copyleft 2008-2011)
 ;; =================================
+;; TODO: move .emacs into sub-files in ~/.emacs.d/
 
 ;; =============
 ;;; user details
@@ -681,6 +682,8 @@
 	       ("Dired" ;; dired related buffers
 		(or (mode . dired-mode)
 		    (name . "^\\*Dired log\\*$")))
+	       ("ERC" ;; ERC related buffers
+		(mode . erc-mode))
 	       ("Emacs Lisp Package Archiver" ;; ELPA related buffers
 		(or (mode . package-menu-mode)
 		    (name . "^\\*Package Info\\*$")))
@@ -863,6 +866,7 @@
 (autoload 'org-entities "Enable unicode support for Org-Mode." t)
 ;; (autoload 'org-protocol "Use org-mode with emacsclient." t)
 (require 'org-protocol) ;; FIXME: change this to an autoload
+(require 'org-latex) ;; FIXME: change this to an autoload
 
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
@@ -955,7 +959,8 @@
 				    ("k" "Internet Bookmark" table-line (file+headline "bookmarks.org" "Internet Bookmarks")
 				     "| %c |" :immediate-finish 1)
 				    ("f" "File Bookmark" table-line (file+headline "bookmarks.org" "File Bookmarks")
-				     "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |" :immediate-finish 1)
+				     "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |"
+				     :immediate-finish 1)
 				    ("w" "Website" table-line (file+headline "books/books.org" "Websites")
 				     "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
 				    ("j" "Project" entry (file+headline "projects.org" "Projects")
@@ -982,7 +987,6 @@
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
-(require 'org-latex)
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
 
@@ -1127,6 +1131,65 @@
   (interactive)
   (browse-url (browse-url-file-url (dired-get-filename))))
 
+;; ====
+;;; erc
+;; ====
+;; TODO: setup ERC
+(autoload 'erc-select "erc" "IRC client." t)
+(require 'erc-match) ;; TODO: change this to an autoload
+(require 'erc-join) ;; TODO: change this to an autoload
+(require 'erc-track) ;; TODO: change this to an autoload
+(require 'erc-fill) ;; TODO: change this to an autoload
+(require 'erc-ring) ;; TODO: change this to an autoload
+(require 'erc-netsplit) ;; TODO: change this to an autoload
+(require 'erc-spelling) ;; TODO: change this to an autoload
+
+(defvar erc-insert-post-hook)
+
+(erc-autojoin-mode t) ;; enable autojoining
+(erc-track-mode t)
+(erc-match-mode t)
+(erc-fill-mode t)
+(erc-ring-mode t)
+(erc-netsplit-mode t)
+(erc-timestamp-mode t)
+(erc-button-mode t)
+(erc-spelling-mode t) ;; enable flyspell in ERC
+
+(setq erc-hide-list '("JOIN" "PART" "QUIT") ;; ignore JOIN, PART and QUIT messages
+      erc-mode-line-format "%t %a" ;; display only the channel name on the mode-line
+      header-line-format nil ;; turn off the topic-bar
+      erc-max-buffer-size 20000 ;; truncate buffers (so they don't hog core)
+      erc-truncate-buffer-on-save t
+      erc-user-full-name "Matthew Ball"
+      erc-email-userid "mathew.ball@gmail.com"
+      erc-timestamp-format "[%R-%m/%d]" ;; time format for ERC messages
+      erc-input-line-position -2 ;; keep input at the bottom
+      erc-keywords '("chu" "chu_") ;; highlight nickname
+      erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
+      erc-prompt ;; channel specific prompt
+      (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
+		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
+	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
+      ;; erc-autojoin-channels-alist
+      ;; '(("freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic" "##club-ubuntu"))
+      )
+
+(add-hook 'erc-after-connect ;; authentication details
+	  '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify mypassword"))
+	  '(lambda () (require 'erc-pcomplete)
+	     (pcomplete-erc-setup)
+	     (erc-completion-mode 1)))
+
+(add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
+
+(defun irc-maybe ()
+  "Connect to IRC."
+  (interactive)
+  (when (y-or-n-p "IRC? ")
+    (erc :server "irc.freenode.net" :port 6667 :nick "chu_" :full-name erc-user-full-name)))
+
+
 ;; ==========
 ;;; logic4fun
 ;; ==========
@@ -1189,7 +1252,7 @@
 (autoload 'python-mode "python" "Python editing mode." t)
 
 ;; =============
-;;; LaTeX markup
+;;; latex markup
 ;; =============
 (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
 (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" t)
