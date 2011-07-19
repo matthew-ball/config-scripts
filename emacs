@@ -38,7 +38,7 @@
 (when (fboundp 'fringe-mode) (fringe-mode -1)) ;; turn off the fringe
 (set-language-environment "UTF-8")
 (delete-selection-mode 1) ;; delete selected region
-(display-time-mode t) ;; display time in the mode-bar
+;; (display-time-mode t) ;; display time in the mode-bar
 ;; (display-battery-mode t) ;; display battery status in the mode-bar
 ;; (which-function-mode t) ;; show the current function in the mode-bar
 
@@ -1145,6 +1145,8 @@
 (require 'erc-spelling) ;; TODO: change this to an autoload
 (require 'erc-pcomplete) ;; TODO: change this to an autoload
 
+(defface erc-prompt-face '((t (:foreground "yellow" :bold t))) "ERC prompt.")
+
 (defvar erc-insert-post-hook)
 
 (erc-autojoin-mode t) ;; enable autojoining
@@ -1157,7 +1159,18 @@
 (erc-button-mode t)
 (erc-spelling-mode t) ;; enable flyspell in ERC
 
-(setq erc-fill-column 78
+(setq erc-server "irc.freenode.net" ;; default ERC server
+      erc-port 6667 ;; default ERC port
+      erc-nick "chu_"
+      erc-user-full-name user-full-name
+      erc-email-userid "mathew.ball@gmail.com"
+      erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
+      erc-fill-prefix "        " ;; ...
+      erc-fill-column 90
+      erc-timestamp-right-column 61
+      erc-track-showcount t ;; show count of unseen messages
+      erc-timestamp-only-if-changed-flag nil ;; always show timestamp
+      erc-insert-timestamp-function 'erc-insert-timestamp-left ;; insert timestamp in the left column
       erc-kill-buffer-on-part t ;; kill buffers for channels after /part
       erc-kill-queries-on-quit t ;; kill buffers for queries after quitting the server
       erc-kill-server-buffer-on-quit t ;; kill buffers for server messages after quitting the server
@@ -1168,9 +1181,7 @@
       header-line-format nil ;; turn off the topic (header) bar
       erc-max-buffer-size 20000 ;; truncate buffers (so they don't hog core)
       erc-truncate-buffer-on-save t
-      erc-user-full-name "Matthew Ball"
-      erc-email-userid "mathew.ball@gmail.com"
-      erc-timestamp-format "[%H:%M:%S]" ;; time format for ERC messages
+      erc-timestamp-format "[%H:%M] " ;; time format for ERC messages
       erc-input-line-position -2 ;; keep input at the bottom
       erc-keywords '("chu" "chu_") ;; highlight nickname
       erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
@@ -1181,13 +1192,30 @@
       erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic")))
 
 ;; (add-hook 'erc-after-connect '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify password"))) ;; authentication details
-(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1))) ;; FIXME: fix
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
+(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))
+(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
+
+(remove-hook 'erc-text-matched-hook 'erc-hide-fools)
+(setq erc-pals '("rww" "ldunn" "topyli" "jussi" "LjL" "elky" "AtomicSpark")
+      erc-fool-highlight-type 'all ;; highlight entire message
+      erc-fools '("ubottu" "fsbot" "rudybot" "lispaste"))
 
 (defun irc (&rest junk)
   "Connect to IRC with ERC."
   (interactive)
-  (erc :server "irc.freenode.net" :port 6667 :nick "chu_" :full-name erc-user-full-name))
+  (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name)) ;; default connection
+
+(defun switch-to-irc ()
+  "Switch to an IRC buffer, or run `erc-select'. When called repeatedly, cycle through the buffers."
+  (interactive)
+  (let ((buffers (and (fboundp 'erc-buffer-list) (erc-buffer-list))))
+    (when (eq (current-buffer) (car buffers))
+      (bury-buffer)
+      (setq buffers (cdr buffers)))
+    (if buffers
+	(switch-to-buffer (car buffers))
+      (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name))))
 
 ;; ==========
 ;;; logic4fun

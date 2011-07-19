@@ -2,7 +2,7 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Tue Jul 19 17:52:13 2011
+;; Created Wed Jul 20 00:20:19 2011
 ;; Desktop file format version 206
 ;; Emacs version 23.1.1
 
@@ -11,7 +11,7 @@
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring '("ERC" "dis" "ERC" "keyb" "irc-m" "ERC" "irc-m" "irc" "ERC" "keyb" "erc" " ibuffer" "dired" "LaT" "org-cap" "org"))
+(setq search-ring '("erc" "pal" "ERC" "mode-line" "define" "ERC" "dis" "ERC" "keyb" "irc-m" "ERC" "irc-m" "irc" "ERC" "keyb" "erc"))
 (setq regexp-search-ring '(";; =.*" "s.*q" "(.*)))"))
 (setq register-alist (list (desktop-list* 13 (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk)) (list 82 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk))))
 
@@ -21,8 +21,8 @@
   ".emacs"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
-  52895
-  '(52797 nil)
+  53892
+  '(54355 nil)
   nil
   nil
   '((show-trailing-whitespace . 1) (indicate-empty-lines . t) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
@@ -33,10 +33,21 @@
   'org-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
   2336
-  '(143 nil)
+  '(2424 nil)
   nil
   nil
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/conkeror-dir/main.js"
+  "main.js"
+  'javascript-mode
+  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  11469
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Documents/Organisation/school.org"
@@ -45,17 +56,6 @@
   '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
   60
   '(554 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/conkeror-dir/main.js"
-  "main.js"
-  'javascript-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(3835 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
@@ -488,4 +488,15 @@
   nil
   nil
   '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.tex"
+  "effect-before-cause-symposium.tex"
+  'latex-mode
+  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
