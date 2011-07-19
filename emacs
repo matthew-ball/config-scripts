@@ -149,7 +149,7 @@
 (global-set-key (kbd "TAB") 'smart-tab) ;; use smart-tab
 (global-set-key (kbd "<f3>") 'irc) ;; start an ERC session
 (global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file
-;; (global-set-key (kbd "C-<f3>") 'some-function) ;; ...
+(global-set-key (kbd "C-<f3>") 'switch-to-irc) ;; switch to a loop-ring of ERC buffers
 (global-set-key (kbd "<f4>") 'switch-to-dot-emacs) ;; switch to ~/.emacs file (or evaluate-buffer if already present)
 (global-set-key (kbd "C-<f4>") 'show-dot-file-structure) ;; show the file structure
 (global-set-key (kbd "<f5>") 'slime) ;; start slime
@@ -179,7 +179,6 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files) ;; shows a list of recently opened files
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file) ;; use ido to navigate recentf files
 (global-set-key (kbd "C-x w") 'word-count) ;; count the words in the active region
-;; (global-set-key (kbd "C-c TAB") 'auto-complete) ;; auto-complete with C-c TAB
 (global-set-key (kbd "C-c l") 'org-store-link) ;; save file link
 (global-set-key (kbd "C-c b") 'org-switchb) ;; switch through available org buffers
 (global-set-key (kbd "C-z") 'undo) ;; undo some previous change
@@ -739,6 +738,50 @@
 ;; (add-hook 'ibuffer-load-hook 'my-ibuffer-load-hook)
 
 (eval-after-load 'ibuf-ext '(my-ibuffer-load-hook))
+
+;; TODO: fix the following four functions
+;; (defun ibuffer-get-current-buffers (&optional including-empty-groups sort-mode) ;; FIXME: fix
+;;   "Return active ibuffer filter groups."
+;;   (with-temp-buffer
+;;     (flet ((message (f &rest args)))
+;;       (ibuffer nil (current-buffer)))
+;;     (let* ((ibuffer-default-sorting-mode (or sort-mode 'alphabetic))
+;;            (buffers (ibuffer-generate-filter-groups (ibuffer-current-state-list))))
+;;       (remove-if-not (lambda (x) (if including-empty-groups t (cdr x))) buffers))))
+
+;; (defun ibuffer-get-current-group () ;; FIXME: fix
+;;   "Return current ibuffer filter group."
+;;   (remove-if-not (lambda (group)
+;;                    (remove-if-not (lambda (buffer) (equal (current-buffer)
+;;                                                      (car buffer))) (cdr group)))
+;;                  (ibuffer-get-current-buffers)))
+
+;; (defun ibuffer-next-buffer () ;; FIXME: fix
+;;   "Change to the next buffer in the current ibuffer filter group."
+;;   (interactive)
+;;   (let* ((all (ibuffer-get-current-group))
+;;          (buffers (cdar all))
+;;          (current (current-buffer))
+;;          (next (mod (loop for b in buffers summing 1 into i
+;;                           when (equal (car b) current) return i) (length buffers)))
+;;          (names (loop for b in buffers and i = 0 then (1+ i)
+;; 		      collecting (if (= i next) (list (car b)) (car b)))))
+;;     (set-window-buffer (selected-window) (car (nth next buffers)))
+;;     (message "%s: %s" (caar all) names)))
+
+;; (defun ibuffer-next-group () ;; FIXME: fix
+;;   "Change to the next ibuffer filter group."
+;;   (interactive)
+;;   (let* ((group (caar (ibuffer-get-current-group)))
+;;          (groups (ibuffer-get-current-buffers nil 'recency))
+;; 	 (ignore '("Default" "Help" "Completions" "Regular Expressions" "Bookmarks" "Emacs Lisp Package Archiver")) ;; ignore these groups
+;; 	 (groups (remove-if (lambda (n) (member (car n) ignore)) groups))
+;;          (next (nth (loop for g in (mapcar (lambda (n) (car n)) groups) summing 1 into i
+;;                           when (string= g group) return (mod i (length groups))) groups))
+;;          (names (mapcar (lambda (n) (if (string= (car next) (car n))
+;; 				   (list (car n)) (car n))) groups)))
+;;     (set-window-buffer (selected-window) (caadr next))
+;;     (message "%s" names)))
 
 ;; ===========
 ;;; minibuffer
