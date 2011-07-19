@@ -102,6 +102,7 @@
 (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)) ;; open *.cs files in c# mode
 (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; open *.tex files in LaTeX mode
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; open word documents with antiword
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; open *.lua files in lua mode
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; open python files in a psuedo-python interpreter
 
 ;; ===================
@@ -1242,7 +1243,7 @@
 (remove-hook 'erc-text-matched-hook 'erc-hide-fools)
 (setq erc-pals '("rww" "ldunn" "topyli" "jussi" "LjL" "elky" "AtomicSpark")
       erc-fool-highlight-type 'all ;; highlight entire message
-      erc-fools '("ubottu" "fsbot" "rudybot" "lispaste"))
+      erc-fools '("ubottu" "fsbot" "rudybot" "lisppaste"))
 
 (defun irc (&rest junk)
   "Connect to IRC with ERC."
@@ -1320,6 +1321,13 @@
 ;;; python programming
 ;; ===================
 (autoload 'python-mode "python" "Python editing mode." t)
+
+;; ================
+;;; lua programming
+;; ================
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-hook 'lua-mode-hook 'turn-on-font-lock)
+(add-hook 'lua-mode-hook 'hs-minor-mode)
 
 ;; =============
 ;;; latex markup
