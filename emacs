@@ -1319,6 +1319,24 @@
                (doctor-doc text)
                (buffer-string))))))
 
+(defun erc-cmd-SHOW (&rest form)
+  "Eval FORM and send the result and the original form as: FORM => (eval FORM)."
+  (let ((string
+         (with-temp-buffer
+           (mapc #'(lambda (f) (insert f " ")) form)
+           (goto-char (point-min))
+           (setq form (read (current-buffer)))
+           (let ((res (condition-case err
+                          (eval form)
+                        (error
+                         (format "Error: %s" err)))))
+             (insert (format " => %s" res)))
+           (buffer-substring-no-properties
+            (point-min) (1- (point-max))))))
+    (erc-send-message string)))
+
+(add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
+
 (defun erc-start-or-switch (&rest junk)
   "Connect to ERC, or switch to last active buffer"
   (interactive)
