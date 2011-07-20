@@ -1191,6 +1191,9 @@
 ;; ====
 ;; TODO: setup ERC
 (autoload 'erc-select "erc" "IRC client." t)
+(autoload 'doctor-doc "doctor") ;; for use with erc doctor
+(autoload 'make-doctor-variables "doctor") ;; ...
+
 (require 'erc-match) ;; TODO: change this to an autoload
 (require 'erc-join) ;; TODO: change this to an autoload
 (require 'erc-track) ;; TODO: change this to an autoload
@@ -1225,6 +1228,7 @@
       erc-current-nick-highlight-type 'all ;; highlight the entire messahe where current nickname occurs
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
+      erc-full-mode nil ;; again, disable ERC fill (not sure why I have done it in two places)
       erc-fill-column 90
       erc-timestamp-right-column 61
       erc-track-showcount t ;; show count of unseen messages
@@ -1261,6 +1265,59 @@
 (setq erc-pals '()
       erc-fool-highlight-type 'nick ;; highlight entire message
       erc-fools '("ubottu" "fsbot" "rudybot" "lisppaste"))
+
+(setq erc-remove-parsed-property nil)
+
+(defvar erc-doctor-id "{Emacs doctor} ") ;; erc doctor
+
+(defun erc-cmd-DOCTOR (&optional last-sender &rest ignore)
+  "Get the last message in the channel and doctor it."
+  (let ((limit (- (point) 1000))
+        (pos (point))
+        doctor-buffer
+        last-message
+        text)
+    (when (< limit 0) (setq limit 0)) ;; make sure limit is not negative
+    (while (and pos (not (let ((data (get-text-property pos 'erc-parsed))) ;; search backwards for text from someone
+                           (and data
+                                (string= (aref data 3) "PRIVMSG")
+                                (or (not last-sender)
+                                    (string= (car (split-string (aref data 2) "!"))
+                                             last-sender))))))
+      (setq pos (previous-single-property-change
+                 pos 'erc-parsed nil limit))
+      (when (= pos limit)
+        (error "No appropriate previous message to doctor.")))
+    (when pos
+      (setq last-sender (car (split-string
+                              (aref (get-text-property
+                                     pos 'erc-parsed) 2) "!"))
+            doctor-buffer (concat "*ERC Doctor: " last-sender "*")
+            last-message (split-string
+                          (replace-regexp-in-string ;; remove punctuation from end of sentence
+                           "[ .?!;,/]+$" ""
+                           (aref (get-text-property pos
+                                                    'erc-parsed) 5)))
+            text (mapcar (lambda (s)
+                           (intern (downcase s)))
+                         (if (string-match ;; remove salutation if it exists
+                              (concat "^" erc-valid-nick-regexp
+                                      "[:,]*$\\|[:,]+$")
+                              (car last-message))
+                             (cdr last-message)
+                           last-message))))
+    (erc-send-message
+     (concat erc-doctor-id
+             (if (not (erc-query-buffer-p)) ;; only display sender if not in a query buffer
+                 (concat last-sender ": "))
+             (save-excursion
+               (if (get-buffer doctor-buffer)
+                   (set-buffer doctor-buffer)
+                 (set-buffer (get-buffer-create doctor-buffer))
+                 (make-doctor-variables))
+               (erase-buffer)
+               (doctor-doc text)
+               (buffer-string))))))
 
 (defun erc-start-or-switch (&rest junk)
   "Connect to ERC, or switch to last active buffer"
