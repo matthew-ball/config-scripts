@@ -1210,7 +1210,7 @@
 (erc-autojoin-mode t) ;; enable autojoining
 (erc-track-mode t)
 (erc-match-mode t)
-(erc-fill-mode t)
+(erc-fill-mode nil) ;; disable ERC fill
 (erc-ring-mode t)
 (erc-netsplit-mode t)
 (erc-timestamp-mode t) ;; enable ERC timestamp on

@@ -97,7 +97,8 @@ define_webjump("hoogle", "http://haskell.org/hoogle/?hoogle=%s", $alternative="h
 // google specialised searching
 define_webjump("scholar", "http://scholar.google.com/scholar?q=%s", $alternative="http://scholar.google.com", $description="Search Google Scholar");
 define_webjump("books", "http://www.google.com/search?q=%s&tbm=bks", $alternative="http://books.google.com", $description="Search Google Books");
-define_webjump("code", "http://www.code.google.com/query/#q=%s", $description="Search Google Code");
+define_webjump("code", "http://www.code.google.com/query/#q=%s", $alternative="http://www.code.google.com", $description="Search Google Code");
+define_webjump("translate", "http://translate.google.com", $description="Google Translate"); // there is no search here
 
 // ubuntu (and launchpad) specialised search
 define_webjump("ubuntupkg", "http://packages.ubuntu.com/%s", $description="Search Ubuntu Packages");
