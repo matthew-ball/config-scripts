@@ -148,9 +148,9 @@
 ;; =========================
 (global-set-key (kbd "C-c %") 'jump-to-matching-parenthesis) ;; jump to the matching parenthesis
 (global-set-key (kbd "TAB") 'smart-tab) ;; use smart-tab
-(global-set-key (kbd "<f3>") 'irc) ;; start an ERC session
+(global-set-key (kbd "<f3>") 'erc-start-or-switch) ;; start an ERC session (or switch to the most active buffer)
 (global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file
-(global-set-key (kbd "C-<f3>") 'switch-to-irc) ;; switch to a loop-ring of ERC buffers
+;; (global-set-key (kbd "C-<f3>") 'some-function) ;; ...
 (global-set-key (kbd "<f4>") 'switch-to-dot-emacs) ;; switch to ~/.emacs file (or evaluate-buffer if already present)
 (global-set-key (kbd "C-<f4>") 'show-dot-file-structure) ;; show the file structure
 (global-set-key (kbd "<f5>") 'slime) ;; start slime
@@ -1199,6 +1199,9 @@
 (require 'erc-netsplit) ;; TODO: change this to an autoload
 (require 'erc-spelling) ;; TODO: change this to an autoload
 (require 'erc-pcomplete) ;; TODO: change this to an autoload
+(require 'erc-highlight-nicknames) ;; TODO: change this to an autoload
+
+(and (require 'erc-highlight-nicknames) (add-to-list 'erc-modules 'highlight-nicknames) (erc-update-modules))
 
 (defface erc-prompt-face '((t (:foreground "yellow" :bold t))) "ERC prompt.")
 
@@ -1219,6 +1222,7 @@
       erc-nick "chu_"
       erc-user-full-name user-full-name
       erc-email-userid "mathew.ball@gmail.com"
+      erc-current-nick-highlight-type 'all ;; highlight the entire messahe where current nickname occurs
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
       erc-fill-column 90
@@ -1230,6 +1234,7 @@
       erc-kill-queries-on-quit t ;; kill buffers for queries after quitting the server
       erc-kill-server-buffer-on-quit t ;; kill buffers for server messages after quitting the server
       erc-interpret-mirc-color t ;; interpret mIRC-style color commands in IRC chats
+      erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE")
       erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; ignore JOIN, NICK, PART and QUIT messages
       erc-mode-line-format "%t %a" ;; display only the channel name on the mode-line
       erc-header-line-format nil ;; turn off the topic (header) bar
@@ -1244,7 +1249,8 @@
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
 		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
-      erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic")))
+      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic"))
+      erc-join-buffer 'bury)
 
 ;; (add-hook 'erc-after-connect '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify password"))) ;; authentication details
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
@@ -1252,25 +1258,16 @@
 (add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
 
 (remove-hook 'erc-text-matched-hook 'erc-hide-fools)
-(setq erc-pals '("rww" "ldunn" "topyli" "jussi" "LjL" "elky" "AtomicSpark")
-      erc-fool-highlight-type 'all ;; highlight entire message
+(setq erc-pals '()
+      erc-fool-highlight-type 'nick ;; highlight entire message
       erc-fools '("ubottu" "fsbot" "rudybot" "lisppaste"))
 
-(defun irc (&rest junk)
-  "Connect to IRC with ERC."
+(defun erc-start-or-switch (&rest junk)
+  "Connect to ERC, or switch to last active buffer"
   (interactive)
-  (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name)) ;; default connection
-
-(defun switch-to-irc ()
-  "Switch to an IRC buffer, or run `erc-select'. When called repeatedly, cycle through the buffers."
-  (interactive)
-  (let ((buffers (and (fboundp 'erc-buffer-list) (erc-buffer-list))))
-    (when (eq (current-buffer) (car buffers))
-      (bury-buffer)
-      (setq buffers (cdr buffers)))
-    (if buffers
-	(switch-to-buffer (car buffers))
-      (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name))))
+  (if (get-buffer "irc.freenode.net:6667") ;; if ERC is already active ...
+      (erc-track-switch-buffer 1) ;; switch to last active buffer
+    (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name))) ;; else, start ERC
 
 ;; ==========
 ;;; logic4fun
