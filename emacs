@@ -320,6 +320,7 @@
 (eval-after-load "autopair" '(diminish 'autopair-mode ""))
 (eval-after-load "simple" '(diminish 'visual-line-mode ""))
 (eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
+(eval-after-load "hideshow" '(diminish 'hs-minor-mode ""))
 (eval-after-load "yasnippet-bundle" '(diminish 'yas/minor-mode ""))
 
 ;; =================
@@ -330,10 +331,18 @@
 ;; =============
 ;;; code folding
 ;; =============
-;; (hs-minor-mode 1) ;; turn on hide-show mode
+(hs-minor-mode t) ;; turn on hide-show mode
+
+(defvar hs-special-modes-alist
+  (mapcar 'purecopy
+  '((c-mode "{" "}" "/[*/]" nil nil)
+    (c++-mode "{" "}" "/[*/]" nil nil)
+    (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
+    (java-mode "{" "}" "/[*/]" nil nil)
+    (js-mode "{" "}" "/[*/]" nil))))
 
 (setq hs-hide-comments nil ;; hide the comments too when you do a 'hs-hide-all'
-      hs-isearch-open 'code) ;; set whether isearch opens folded comments, code, or both
+      hs-isearch-open 'code) ;; set whether isearch opens folded comments, code, both (t), or neither (nil)
 
 (defun toggle-selective-display (column)
   (interactive "P")
@@ -1303,7 +1312,7 @@
       erc-max-buffer-size 20000 ;; truncate buffers (so they don't hog core)
       erc-truncate-buffer-on-save t
       erc-timestamp-format "[%H:%M] " ;; time format for ERC messages
-      erc-input-line-position -2 ;; keep input at the bottom
+      erc-input-line-position -1 ;; keep input at the bottom
       erc-keywords '("chu" "chu_") ;; highlight nickname
       erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
       erc-prompt ;; channel specific prompt
@@ -1412,6 +1421,11 @@
   (if (featurep 'logic4fun)
       (unload-feature 'logic4fun))
   (logic4fun-mode))
+
+;; ================
+;;; lambda calculus
+;; ================
+(require 'lambdacalc) ;; TODO: change this to an autoload
 
 ;; =======================
 ;;; javascript programming

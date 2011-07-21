@@ -21,7 +21,8 @@ export EDITOR=emacsclient # set the main editor as emacsclient (requiring emacs-
 
 # TODO: configure appropriate environment
 
-export BROWSER="chromium-browser" # export BROWSER as chromium
+export BROWSER="conkeror" # export BROWSER as conkeror
+# export BROWSER="chromium-browser" # export BROWSER as chromium
 export GREP_COLOR="1;33"
 export MOZ_DISABLE_PANGO=1
 
