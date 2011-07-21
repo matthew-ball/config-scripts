@@ -311,6 +311,17 @@
       kep-old-versions 2
       version-control t) ;; use versioned backups
 
+;; ==============
+;;; diminish mode
+;; ==============
+(require 'diminish) ;; turn off the mode indicator in the mode-line
+(eval-after-load "flyspell" '(diminish 'flyspell-mode ""))
+(eval-after-load "auto-complete" '(diminish 'auto-complete-mode ""))
+(eval-after-load "autopair" '(diminish 'autopair-mode ""))
+(eval-after-load "simple" '(diminish 'visual-line-mode ""))
+(eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
+(eval-after-load "yasnippet-bundle" '(diminish 'yas/minor-mode ""))
+
 ;; =================
 ;;; visual line mode
 ;; =================
@@ -426,8 +437,7 @@
 ;; (defvar multiline-flymake-mode nil)
 ;; (defvar flymake-split-output-multiline nil)
 
-;; ;; this needs to be advised as flymake-split-string is used in other places and I don't know of a better way to get at the caller's details
-;; (defadvice flymake-split-output
+;; (defadvice flymake-split-output ;; this needs to be advised as flymake-split-string is used in other places and I don't know of a better way to get at the caller's details
 ;;   (around flymake-split-output-multiline activate protect)
 ;;   (if multiline-flymake-mode
 ;;       (let ((flymake-split-output-multiline t))
@@ -1300,7 +1310,7 @@
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
 		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
-      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic"))
+      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic" "##club-ubuntu"))
       erc-join-buffer 'bury)
 
 ;; (add-hook 'erc-after-connect '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify password"))) ;; authentication details
