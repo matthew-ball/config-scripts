@@ -316,6 +316,30 @@
 ;; =================
 (setq global-visual-line-mode t) ;; enable visual line mode for all buffers
 
+;; =============
+;;; code folding
+;; =============
+;; (hs-minor-mode 1) ;; turn on hide-show mode
+
+(setq hs-hide-comments nil ;; hide the comments too when you do a 'hs-hide-all'
+      hs-isearch-open 'code) ;; set whether isearch opens folded comments, code, or both
+
+(defun toggle-selective-display (column)
+  (interactive "P")
+  (set-selective-display
+   (or column
+       (unless selective-display
+	 (1+ (current-column))))))
+
+(defun toggle-hiding (column)
+  (interactive "P")
+  (if hs-minor-mode
+      (if (condition-case nil
+	      (hs-toggle-hiding)
+	    (error t))
+	  (hs-show-all))
+    (toggle-selective-display column)))
+
 ;; ====================
 ;;; syntax highlighting
 ;; ====================
@@ -1073,6 +1097,29 @@
   "Quote text: "
   "#+BEGIN_QUOTE\n" str "\n#+END_QUOTE")
 
+(defvar org-journal-file "~/Documents/Organisation/journal.org" "Path to org-mode journal file.")
+(defvar org-journal-date-format "%Y-%m-%d" "Date format string for journal headings.")
+
+(defun org-journal-entry ()
+  "Create a new diary entry for today or append to an existing one."
+  (interactive)
+  (switch-to-buffer (find-file org-journal-file))
+  (widen)
+  (let ((today (format-time-string org-journal-date-format)))
+    (beginning-of-buffer)
+    (unless (org-goto-local-search-headings today nil t)
+      ((lambda ()
+         (org-insert-heading)
+         (insert today)
+         (insert "\n\n  \n"))))
+    (beginning-of-buffer)
+    (org-show-entry)
+    (org-narrow-to-subtree)
+    (end-of-buffer)
+    (backward-char 2)
+    (unless (= (current-column) 2)
+      (insert "\n\n  "))))
+
 ;; =======
 ;;; eshell
 ;; =======
@@ -1213,7 +1260,7 @@
 (erc-autojoin-mode t) ;; enable autojoining
 (erc-track-mode t)
 (erc-match-mode t)
-(erc-fill-mode nil) ;; disable ERC fill
+(erc-fill-mode 0) ;; disable ERC fill
 (erc-ring-mode t)
 (erc-netsplit-mode t)
 (erc-timestamp-mode t) ;; enable ERC timestamp on
@@ -1228,7 +1275,7 @@
       erc-current-nick-highlight-type 'all ;; highlight the entire messahe where current nickname occurs
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
-      erc-full-mode nil ;; again, disable ERC fill (not sure why I have done it in two places)
+      erc-full-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
       erc-fill-column 90
       erc-timestamp-right-column 61
       erc-track-showcount t ;; show count of unseen messages
@@ -1748,6 +1795,7 @@
 ;;; highlight special comments
 ;; ===========================
 (setq special-mode-hooks '(emacs-lisp-mode-hook lisp-interaction-mode-hook haskell-mode-hook shell-script-mode muttrc-mode))
+
 (mapc (lambda (mode-hook) (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
 
 ;; ===================

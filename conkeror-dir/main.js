@@ -66,11 +66,6 @@ define_webjump("uf", "http://ubuntuforums.org", $description="Ubuntu Forums");
 define_webjump("afl", "http://www.afl.com.au", $description="Australian Football League");
 define_webjump("modem", "http://gateway.2wire.net", $description="Telstra Modem Information");
 
-// computer stuff
-define_webjump("conk", "http://conkeror.org", $description="Conkeror Wiki");
-define_webjump("ew", "http://emacswiki.org", $description="Emacs Wiki");
-define_webjump("swmw", "http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description="StumpWM Wiki");
-
 // mailing lists
 define_webjump("orgml", "http://lists.gnu.org/mailman/listinfo/emacs-orgmode", $description="Org-Mode Mailing List");
 define_webjump("gnuml", "http://lists.gnu.org/mailman/listinfo", $description="GNU Mailing Lists");
@@ -89,10 +84,11 @@ define_webjump("aarnet", "http://www.aarnet.edu.au", $description="Australia's A
 
 // search stuff
 define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search=Search", $alternative="http://www.youtube.com", $description="Search YouTube");
-define_webjump("emacswiki", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=emacswiki.org%2F", $alternative="http://www.emacswiki.org", $description="Search EmacsWiki");
-define_webjump("org-mode","https://www.google.com/cse?cx=002987994228320350715%3Az4glpcrritm&q=%s&sa=Search&siteurl=orgmode.org%2Fworg", $alternative="http://orgmode.org", $description="Search Org-Mode");
-
 define_webjump("hoogle", "http://haskell.org/hoogle/?hoogle=%s", $alternative="http://haskell.org/hoogle/", $description="Search Hoogle");
+define_webjump("org-mode","https://www.google.com/cse?cx=002987994228320350715%3Az4glpcrritm&q=%s&sa=Search&siteurl=orgmode.org%2Fworg", $alternative="http://orgmode.org", $description="Search Org-Mode");
+define_webjump("conkerorwiki", "http://conkeror.org/FrontPage?action=fullsearch&context=180&value=%s&titlesearch=Text", $alternative="http://conkeror.org", $description="Search Conkeror Wiki");
+define_webjump("stumpwmwiki", "http://stumpwm.svkt.org/cgi-bin/wiki.pl?search=%s&dosearch=Go%21", $alternative="http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description="Search StumpWM Wiki");
+define_webjump("emacswiki", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=emacswiki.org%2F", $alternative="http://www.emacswiki.org", $description="Search Emacs Wiki");
 
 // google specialised searching
 define_webjump("scholar", "http://scholar.google.com/scholar?q=%s", $alternative="http://scholar.google.com", $description="Search Google Scholar");
@@ -140,7 +136,7 @@ read_url_handler_list = [read_url_make_default_webjump_handler("google")]; // de
 interactive("open-gmail", "Open gmail inbox.", "follow-new-buffer", $browser_object = "http://gmail.com/"); // open gmail (an alias of the follow-new-buffer command)
 
 interactive("open-school-all","Open school related web-sites.",
-	    function(I){
+	    function(I) {
 	      load_url_in_new_buffer("http://wattle.anu.edu.au",I.window); // wattle
 	      load_url_in_new_buffer("http://anumail.anu.edu.au",I.window); // webmail
 	    });

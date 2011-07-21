@@ -202,6 +202,7 @@
 	     (kbd "b") "emacs-bookmarks"
              (kbd "c") "emacs-capture"
              (kbd "d") "emacs-dired"
+	     (kbd "e") "emacs-erc"
 	     (kbd "i") "emacs-info"
              (kbd "C") "emacs-calendar")
 
@@ -511,6 +512,13 @@
   (send-emacs-string "calendar")
   (send-emacs-key-command "RET")
   (message "Starting calendar."))
+
+(defcommand emacs-erc () ()
+  "Start an IRC connection in Emacs with ERC."
+  (send-emacs-key-command "M-x")
+  (send-emacs-string "erc-start-or-switch")
+  (send-emacs-key-command "RET")
+  (message "Starting ERC."))
 
 (defcommand emacs-info () ()
   "Open info documentation in Emacs."
