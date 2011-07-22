@@ -8,7 +8,7 @@
 ;; ==================
 ;;; personal settings
 ;; ==================
-(setq user-mail-address "mathew.ball@gmail.com" ;; user mail address
+(setq user-mail-address "mathew.ball@gmail.com" ;; user mail address (could use my school mail)
       user-full-name "Matthew Ball" ;; user full-name
       mail-aliases t ;; enable mail aliases (located in ~/.mailrc)
       message-from-style 'angles ;; specifies how the "From" header appears
@@ -25,7 +25,13 @@
       gnus-always-read-dribble-file t ;; don't bugger me with dribbles
       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
       gnus-posting-styles '(("gmail" (address "mathew.ball@gmail.com"))
-			    ("anu" (address "u4537508@anu.edu.au"))))
+			    ("anumail" (address "u4537508@anu.edu.au"))))
+
+(setq gnus-save-newsrc-file nil
+      gnus-read-newsrc-file nil
+      gnus-interactive-exit nil
+      gnus-save-killed-list nil
+      gnus-check-new-newsgroups nil)
 
 ;; (defun my-message-mode-setup () ;; automatic line breaking
 ;;   (setq fill-column 72)
@@ -43,6 +49,9 @@
 ;; ===========
 ;;; imap setup
 ;; ===========
+;; set ssl
+(setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p")
+
 (setq imap-log t ;; log the imap session
       imap-store-password t ;; store the session password
       gnus-secondary-select-methods
@@ -53,7 +62,7 @@
 		(nnimap-authenticator login)
 		(nnimap-expunge-on-close 'never)
 		(nnimap-stream ssl))
-	(nnimap "anumail" ;; anu login (THIS DOES NOT WORK)
+	(nnimap "anumail" ;; anumail login (THIS DOES NOT WORK)
 		(nnimap-address "anumail.anu.edu.au")
 		(nnimap-server-port 993)
 		;; (nnimap-authinfo-file "~/.authinfo")
@@ -68,59 +77,59 @@
 
 (defvar smtp-accounts ;; available smtp accounts
   '((ssl "mathew.ball@gmail.com" "smtp.gmail.com" 587 "key" nil)
-    (ssl "u4537508@anu.edu.au.com" "smtphost.anu.edu.au" 25 "key" nil)))
+    (ssl "u4537508@anu.edu.au.com" "smtphost.anu.edu.au" 465 "key" nil)))
 
 (setq starttls-use-gnutls t
       starttls-gnutls-program "gnutls-cli"
       starttls-extra-arguments '("--insecure"))
 
 (setq message-send-mail-function 'smtpmail-send-it ;; for gnus
-      ;; smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      ;; smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))
-      ;; smtpmail-default-smtp-server "smtp.gmail.com"
-      ;; smtpmail-smtp-server "smtp.gmail.com"
-      ;; smtpmail-smtp-service 587
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      ;; smtpmail-local-domain "mail.bigpond.com"
       smtpmail-debug-verb t
-      smtpmail-debug-info t ;; to debug
-      smtpmail-local-domain "mail.bigpond.com")
+      smtpmail-debug-info t) ;; to debug
 
-(defun set-smtp-plain (server port)
-  "Set related SMTP variables for supplied parameters."
-  (setq smtpmail-smtp-server server
-	smtpmail-smtp-service port
-	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
-	smtpmail-starttls-credentials nil)
-  (message "Setting SMTP server to `%s:%s'."
-	    server port address))
+;; (defun set-smtp-plain (server port)
+;;   "Set related SMTP variables for supplied parameters."
+;;   (setq smtpmail-smtp-server server
+;; 	smtpmail-smtp-service port
+;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
+;; 	smtpmail-starttls-credentials nil)
+;;   (message "Setting SMTP server to `%s:%s'."
+;; 	    server port address))
 
-(defun set-smtp-ssl (server port key cert)
-  "Set related SMTP and SSL variables for supplied parameters."
-  (setq starttls-use-gnutls t
-	starttls-gnutls-program "gnutls-cli"
-	starttls-extra-arguments nil
-	smtpmail-smtp-server server
-	smtpmail-smtp-service port
-	smtpmail-starttls-credentials (list (list server port key cert))
-	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
-	)
-  (message "Setting SMTP server to `%s:%s' (SSL enabled)."
-	   server port address))
+;; (defun set-smtp-ssl (server port key cert)
+;;   "Set related SMTP and SSL variables for supplied parameters."
+;;   (setq starttls-use-gnutls t
+;; 	starttls-gnutls-program "gnutls-cli"
+;; 	starttls-extra-arguments nil
+;; 	smtpmail-smtp-server server
+;; 	smtpmail-smtp-service port
+;; 	smtpmail-starttls-credentials (list (list server port key cert))
+;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
+;; 	)
+;;   (message "Setting SMTP server to `%s:%s' (SSL enabled)."
+;; 	   server port address))
 
-(defun change-smtp ()
-  "Change the SMTP server according to the current from line."
-  (save-excursion
-    (loop with from = (save-restriction
-			(message-narrow-to-headers)
-			(message-fetch-field "from"))
-	  for (acc-type address . auth-spec) in smtp-accounts
-	  when (string-match address from)
-	  do (cond
-	      ((eql acc-type 'plain)
-	       (return (apply 'set-smtp-plain auth-spec)))
-	      ((eql acc-type 'ssl)
-	       (return (apply 'set-smtp-ssl auth-spec)))
-	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
-	  finally (error "Cannot interfere SMTP information."))))
+;; (defun change-smtp ()
+;;   "Change the SMTP server according to the current from line."
+;;   (save-excursion
+;;     (loop with from = (save-restriction
+;; 			(message-narrow-to-headers)
+;; 			(message-fetch-field "from"))
+;; 	  for (acc-type address . auth-spec) in smtp-accounts
+;; 	  when (string-match address from)
+;; 	  do (cond
+;; 	      ((eql acc-type 'plain)
+;; 	       (return (apply 'set-smtp-plain auth-spec)))
+;; 	      ((eql acc-type 'ssl)
+;; 	       (return (apply 'set-smtp-ssl auth-spec)))
+;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
+;; 	  finally (error "Cannot interfere SMTP information."))))
 
 ;; =============
 ;;; email config

@@ -145,7 +145,7 @@
 ;; =========================
 (global-set-key (kbd "C-c %") 'jump-to-matching-parenthesis) ;; jump to the matching parenthesis
 (global-set-key (kbd "TAB") 'smart-tab) ;; use smart-tab
-(global-set-key (kbd "<f3>") 'erc-start-or-switch) ;; start an ERC session (or switch to the most active buffer)
+(global-set-key (kbd "<f3>") 'erc-start-or-switch) ;; start an ERC session (or switch to the most active buffer) [this is handled in stumpwmrc]
 (global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file
 ;; (global-set-key (kbd "C-<f3>") 'some-function) ;; ...
 (global-set-key (kbd "<f4>") 'switch-to-dot-emacs) ;; switch to ~/.emacs file (or evaluate-buffer if already present)
@@ -158,6 +158,7 @@
 (global-set-key (kbd "<f6>") 'eshell) ;; open (or switch to) an eshell session
 (global-set-key (kbd "M-<f6>") 'ido-goto-symbol) ;; go to a symbol in the current buffer
 (global-set-key (kbd "C-<f6>") 'eval-and-replace) ;; evaluate a lisp expression and replace with the value
+(global-set-key (kbd "<f7>") 'gnus) ;; open gnus (this is handled in stumpwmrc)
 ;; (global-set-key (kbd "<f7>") 'org-agenda) ;; view org-agenda *(taken care of by stumpwm)
 ;; (global-set-key (kbd "M-<f7>") 'org-capture) ;; capture tasks and store them in relative files *(taken care of by stumpwm)
 ;; (global-set-key (kbd "C-<f7>") 'calendar) ;;  view calendar *(taken care of by stumpwm)
@@ -729,7 +730,9 @@
 		    (mode . vc-dir-mode)
 		    (mode . vc-log-entry-mode)))
 	       ("Mail" ;; mail related buffers
-		(or (name . "^\\*Group\\*$")
+		(or (mode . gnus-group-mode)
+		    (mode . gnus-article-mode)
+		    (mode . gnus-summary-mode)
 		    (name . "^\\*imap-log\\*$")
 		    (name . ".newsrc-dribble$")
 		    (mode . message-mode)
@@ -750,6 +753,8 @@
 		    (mode . man-mode)
 		    (mode . woman-mode)
 		    (mode . occur-mode)
+		    (mode . customize-mode)
+		    (mode . Custom-mode)
 		    (name . "\\*Keys\\*$")
 		    (name . "\*Disabled Command\*")))))))
 
