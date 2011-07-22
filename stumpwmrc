@@ -520,6 +520,13 @@
   (send-emacs-key-command "RET")
   (message "Starting ERC."))
 
+(defcommand emacs-gnus () ()
+  "Read mail and RSS feeds in Emacs with GNUS."
+  (send-emacs-key-command "M-x")
+  (send-emacs-string "gnus")
+  (send-emacs-key-command "RET")
+  (message "Starting GNUS."))
+
 (defcommand emacs-info () ()
   "Open info documentation in Emacs."
   (send-emacs-key-command "C-h")
@@ -530,7 +537,7 @@
 ;;; startup applications
 ;; =====================
 (when *initializing*
-  ;; (run-editor) ;; start the editor (FIXME: fix)
+  (run-editor) ;; start the editor
   ;; (run-browser) ;; start the browser (FIXME: fix)
   (swank) ;; start swank
   (run-shell-command "mpd")) ;; launch mpd

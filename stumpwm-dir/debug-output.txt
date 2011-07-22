@@ -2108,3 +2108,314 @@ STYLE-WARNING: command PS-KILL doesn't have a docstring
 STYLE-WARNING: command GOOGLE doesn't have a docstring
 STYLE-WARNING: command WIKIPEDIA doesn't have a docstring
 ;; Swank started at port: 4005.
+* ;; loading #P"/var/cache/common-lisp-controller/1000/sbcl/swank/fasl/sbcl-1.0.29.11.debian-linux-x86/swank-backend.fasl"
+;; loading #P"/var/cache/common-lisp-controller/1000/sbcl/swank/fasl/sbcl-1.0.29.11.debian-linux-x86/swank-source-path-parser.fasl"
+;; loading #P"/var/cache/common-lisp-controller/1000/sbcl/swank/fasl/sbcl-1.0.29.11.debian-linux-x86/swank-source-file-cache.fasl"
+;; loading #P"/var/cache/common-lisp-controller/1000/sbcl/swank/fasl/sbcl-1.0.29.11.debian-linux-x86/swank-sbcl.fasl"
+STYLE-WARNING: redefining EMACS-INSPECT (#<BUILT-IN-CLASS T>) in DEFMETHOD
+;; loading #P"/var/cache/common-lisp-controller/1000/sbcl/swank/fasl/sbcl-1.0.29.11.debian-linux-x86/swank-gray.fasl"
+STYLE-WARNING:
+   Implicitly creating new generic function STREAM-READ-CHAR-WILL-HANG-P.
+;; loading #P"/var/cache/common-lisp-controller/1000/sbcl/swank/fasl/sbcl-1.0.29.11.debian-linux-x86/swank.fasl"
+WARNING: These Swank interfaces are unimplemented:
+ (CALLS-WHO DISASSEMBLE-FRAME SLDB-BREAK-AT-START SLDB-BREAK-ON-RETURN
+  WHO-SPECIALIZES)
+STYLE-WARNING: Implicitly creating new generic function UPDATE-INFO.
+STYLE-WARNING: Implicitly creating new generic function INFO-VALUE.
+STYLE-WARNING: Implicitly creating new generic function INFO-VALUE-INT.
+STYLE-WARNING: command AMIXER-PCM-1- doesn't have a docstring
+STYLE-WARNING: command AMIXER-PCM-1+ doesn't have a docstring
+STYLE-WARNING: command AMIXER-PCM-TOGGLE doesn't have a docstring
+STYLE-WARNING: command AMIXER-FRONT-1- doesn't have a docstring
+STYLE-WARNING: command AMIXER-FRONT-1+ doesn't have a docstring
+STYLE-WARNING: command AMIXER-FRONT-TOGGLE doesn't have a docstring
+STYLE-WARNING: command AMIXER-MASTER-1- doesn't have a docstring
+STYLE-WARNING: command AMIXER-MASTER-1+ doesn't have a docstring
+STYLE-WARNING: command AMIXER-MASTER-TOGGLE doesn't have a docstring
+STYLE-WARNING: command AMIXER-HEADPHONE-1- doesn't have a docstring
+STYLE-WARNING: command AMIXER-HEADPHONE-1+ doesn't have a docstring
+STYLE-WARNING: command AMIXER-HEADPHONE-TOGGLE doesn't have a docstring
+STYLE-WARNING: command AMIXER-SENSE-TOGGLE doesn't have a docstring
+
+; in: LAMBDA NIL
+;     (STUMPWM::MPD-RECEIVE)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-RECEIVE
+; 
+; compilation unit finished
+;   Undefined function:
+;     MPD-RECEIVE
+;   caught 1 STYLE-WARNING condition
+
+;     (STUMPWM::MPD-ERROR-P STUMPWM::STR)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-ERROR-P
+
+;     (STUMPWM::MPD-OK-P STUMPWM::STR)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-OK-P
+; 
+; compilation unit finished
+;   Undefined functions:
+;     MPD-ERROR-P MPD-OK-P
+;   caught 2 STYLE-WARNING conditions
+; in: LAMBDA NIL
+;     (LET ((TIME
+;            (PARSE-INTEGER
+;             (STUMPWM::ASSOC-VALUE :TIME STUMPWM::*MPD-CURRENT-SONG*)))
+;           (STUMPWM::MINUTES)
+;           (STUMPWM::SECONDS))
+;       (STUMPWM::MPD-MINUTES-SECONDS TIME))
+; 
+; caught STYLE-WARNING:
+;   The variable MINUTES is defined but never used.
+; 
+; caught STYLE-WARNING:
+;   The variable SECONDS is defined but never used.
+; 
+; compilation unit finished
+;   caught 2 STYLE-WARNING conditions
+
+;     (STUMPWM::FORMAT-EXPAND STUMPWM:*MPD-FORMATTERS-ALIST*
+;                             STUMPWM:*MPD-STATUS-FMT*)
+; 
+; caught WARNING:
+;   undefined variable: *MPD-FORMATTERS-ALIST*
+
+;     (STUMPWM::FORMAT-EXPAND STUMPWM:*MPD-FORMATTERS-ALIST*
+;                             STUMPWM:*MPD-MODELINE-FMT*)
+; 
+; caught WARNING:
+;   undefined variable: *MPD-MODELINE-FMT*
+
+;     (STUMPWM::FORMAT-EXPAND STUMPWM:*MPD-FORMATTERS-ALIST*
+;                             STUMPWM:*MPD-STATUS-FMT*)
+; 
+; caught WARNING:
+;   undefined variable: *MPD-STATUS-FMT*
+; 
+; compilation unit finished
+;   Undefined variables:
+;     *MPD-FORMATTERS-ALIST* *MPD-MODELINE-FMT* *MPD-STATUS-FMT*
+;   caught 3 WARNING conditions
+; in: LAMBDA NIL
+;     (STUMPWM::MPD-SELECTED-ITEM STUMPWM::MENU)
+; ==>
+;   STUMPWM::MENU
+; 
+; caught STYLE-WARNING:
+;   reading an ignored variable: MENU
+; 
+; compilation unit finished
+;   caught 1 STYLE-WARNING condition
+STYLE-WARNING: command MPD-BROWSE-PLAYLIST doesn't have a docstring
+
+;     (STUMPWM:MPD-PLAY-TRACK STUMPWM::SONG-NUMBER)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-PLAY-TRACK
+
+;     (STUMPWM:MPD-REMOVE-TRACK STUMPWM::SONG-NUMBER)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-REMOVE-TRACK
+
+;     (STUMPWM:MPD-SWAP-TRACKS STUMPWM::SONG-NUMBER (1- STUMPWM::SONG-NUMBER))
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-SWAP-TRACKS
+; 
+; compilation unit finished
+;   Undefined functions:
+;     MPD-PLAY-TRACK MPD-REMOVE-TRACK MPD-SWAP-TRACKS
+;   caught 3 STYLE-WARNING conditions
+STYLE-WARNING: command MPD-BROWSE-ARTISTS doesn't have a docstring
+
+;     (STUMPWM:MPD-BROWSE-ALBUMS STUMPWM::CHOICE STUMPWM::GENRE)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-BROWSE-ALBUMS
+
+;     (STUMPWM:MPD-BROWSE-GENRES)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-BROWSE-GENRES
+
+;     (STUMPWM:MPD-SEARCH-AND-ADD-ARTIST STUMPWM::CHOICE T)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-SEARCH-AND-ADD-ARTIST
+; 
+; compilation unit finished
+;   Undefined functions:
+;     MPD-BROWSE-ALBUMS MPD-BROWSE-GENRES MPD-SEARCH-AND-ADD-ARTIST
+;   caught 3 STYLE-WARNING conditions
+STYLE-WARNING: command MPD-BROWSE-GENRES doesn't have a docstring
+
+;     (STUMPWM:MPD-SEARCH-AND-ADD-GENRE STUMPWM::CHOICE T)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-SEARCH-AND-ADD-GENRE
+; 
+; compilation unit finished
+;   Undefined function:
+;     MPD-SEARCH-AND-ADD-GENRE
+;   caught 1 STYLE-WARNING condition
+STYLE-WARNING: command MPD-BROWSE-ALBUMS doesn't have a docstring
+
+;     (STUMPWM:MPD-BROWSE-TRACKS STUMPWM::CHOICE STUMPWM::ARTIST)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-BROWSE-TRACKS
+
+;     (STUMPWM:MPD-SEARCH-AND-ADD-ALBUM STUMPWM::CHOICE T)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-SEARCH-AND-ADD-ALBUM
+; 
+; compilation unit finished
+;   Undefined functions:
+;     MPD-BROWSE-TRACKS MPD-SEARCH-AND-ADD-ALBUM
+;   caught 2 STYLE-WARNING conditions
+STYLE-WARNING: command MPD-BROWSE-TRACKS doesn't have a docstring
+
+;     (STUMPWM:MPD-SEARCH-AND-ADD-TITLE STUMPWM::CHOICE T)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-SEARCH-AND-ADD-TITLE
+; 
+; compilation unit finished
+;   Undefined function:
+;     MPD-SEARCH-AND-ADD-TITLE
+;   caught 1 STYLE-WARNING condition
+STYLE-WARNING: command MPD-CONNECT doesn't have a docstring
+STYLE-WARNING: command MPD-KILL doesn't have a docstring
+STYLE-WARNING: command MPD-TOGGLE-PAUSE doesn't have a docstring
+
+;     (STUMPWM:MPD-PLAY)
+; 
+; caught STYLE-WARNING:
+;   undefined function: MPD-PLAY
+; 
+; compilation unit finished
+;   Undefined function:
+;     MPD-PLAY
+;   caught 1 STYLE-WARNING condition
+STYLE-WARNING: command MPD-TOGGLE-RANDOM doesn't have a docstring
+STYLE-WARNING: command MPD-TOGGLE-REPEAT doesn't have a docstring
+STYLE-WARNING: command MPD-PLAY doesn't have a docstring
+STYLE-WARNING: command MPD-PLAY-TRACK doesn't have a docstring
+STYLE-WARNING: command MPD-STOP doesn't have a docstring
+STYLE-WARNING: command MPD-NEXT doesn't have a docstring
+STYLE-WARNING: command MPD-PREV doesn't have a docstring
+STYLE-WARNING: command MPD-SET-VOLUME doesn't have a docstring
+STYLE-WARNING: command MPD-VOLUME-UP doesn't have a docstring
+STYLE-WARNING: command MPD-VOLUME-DOWN doesn't have a docstring
+STYLE-WARNING: command MPD-CLEAR doesn't have a docstring
+STYLE-WARNING: command MPD-UPDATE doesn't have a docstring
+STYLE-WARNING: command MPD-CURRENT-SONG doesn't have a docstring
+STYLE-WARNING: command MPD-STATUS doesn't have a docstring
+STYLE-WARNING: command MPD-PLAYLIST doesn't have a docstring
+STYLE-WARNING: command MPD-ADD-FILE doesn't have a docstring
+STYLE-WARNING: command MPD-REMOVE-TRACK doesn't have a docstring
+STYLE-WARNING: command MPD-SWAP-TRACKS doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-AND-ADD-ARTIST doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-AND-ADD-FILE doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-AND-ADD-TITLE doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-AND-ADD-ALBUM doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-AND-ADD-GENRE doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-ARTIST doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-FILE doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-TITLE doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-ALBUM doesn't have a docstring
+STYLE-WARNING: command MPD-SEARCH-GENRE doesn't have a docstring
+; in: DEFUN FMT-WIFI
+;     (IGNORE STUMPWM.CONTRIB.WIFI::ML)
+; 
+; caught STYLE-WARNING:
+;   declaring unknown variable ML to be ignored
+
+;     (DEFUN STUMPWM.CONTRIB.WIFI::FMT-WIFI (STUMPWM.CONTRIB.WIFI::ML)
+;       "Formatter for wifi status. Displays the ESSID of the access point
+;   you're connected to as well as the signal strength. When no valid data
+;   is found, just displays nil."
+;       (LET ((#:NOW1027 (GET-INTERNAL-REAL-TIME)))
+;         (WHEN
+;             (>= (- #:NOW1027 #:PREV-TIME1025)
+;                 (* 5 INTERNAL-TIME-UNITS-PER-SECOND))
+;           (SETF #:PREV-TIME1025 #:NOW1027)
+;           (SETF #:PREV-VAL1026 (LOCALLY # #)))
+;         #:PREV-VAL1026))
+; --> PROGN EVAL-WHEN SB-IMPL::%DEFUN SB-INT:NAMED-LAMBDA 
+; ==>
+;   #'(SB-INT:NAMED-LAMBDA STUMPWM.CONTRIB.WIFI::FMT-WIFI
+;                          (STUMPWM.CONTRIB.WIFI::ML)
+;                          (BLOCK STUMPWM.CONTRIB.WIFI::FMT-WIFI
+;                            (LET ((#:NOW1027 #))
+;                              (WHEN (>= # #)
+;                                (SETF #:PREV-TIME1025 #:NOW1027)
+;                                (SETF #:PREV-VAL1026 #))
+;                              #:PREV-VAL1026)))
+; 
+; caught STYLE-WARNING:
+;   The variable ML is defined but never used.
+; 
+; compilation unit finished
+;   caught 2 STYLE-WARNING conditions
+
+;     (SETF STUMPWM::*MODE-LINE-SCREEN-POSITION* :TOP)
+; ==>
+;   (SETQ STUMPWM::*MODE-LINE-SCREEN-POSITION* :TOP)
+; 
+; caught WARNING:
+;   undefined variable: *MODE-LINE-SCREEN-POSITION*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *MODE-LINE-SCREEN-POSITION*
+;   caught 1 WARNING condition
+
+;     (SETF STUMPWM::*MODE-LINE-FRAME-POSITION* :TOP)
+; ==>
+;   (SETQ STUMPWM::*MODE-LINE-FRAME-POSITION* :TOP)
+; 
+; caught WARNING:
+;   undefined variable: *MODE-LINE-FRAME-POSITION*
+; 
+; compilation unit finished
+;   Undefined variable:
+;     *MODE-LINE-FRAME-POSITION*
+;   caught 1 WARNING condition
+STYLE-WARNING: command REINIT doesn't have a docstring
+; in: LAMBDA NIL
+;     (LAMBDA
+;         (STUMPWM::SCREEN STUMPWM::PROMPT STUMPWM::INPUT
+;          &OPTIONAL STUMPWM::ERRORP)
+;       (LET ((STUMPWM::I (COPY-STRUCTURE STUMPWM::INPUT)))
+;         (SETF (STUMPWM::INPUT-LINE-STRING STUMPWM::I)
+;                 (MAKE-STRING (LENGTH #) :INITIAL-ELEMENT #\*))
+;         (FUNCALL STUMPWM::FN STUMPWM::SCREEN STUMPWM::PROMPT STUMPWM::I)))
+; ==>
+;   #'(LAMBDA
+;         (STUMPWM::SCREEN STUMPWM::PROMPT STUMPWM::INPUT
+;          &OPTIONAL STUMPWM::ERRORP)
+;       (LET ((STUMPWM::I (COPY-STRUCTURE STUMPWM::INPUT)))
+;         (SETF (STUMPWM::INPUT-LINE-STRING STUMPWM::I)
+;                 (MAKE-STRING (LENGTH #) :INITIAL-ELEMENT #\*))
+;         (FUNCALL STUMPWM::FN STUMPWM::SCREEN STUMPWM::PROMPT STUMPWM::I)))
+; 
+; caught STYLE-WARNING:
+;   The variable ERRORP is defined but never used.
+; 
+; compilation unit finished
+;   caught 1 STYLE-WARNING condition
+STYLE-WARNING: command REBOOT doesn't have a docstring
+STYLE-WARNING: command SHUTDOWN doesn't have a docstring
+STYLE-WARNING: command HIBERNATE doesn't have a docstring
+STYLE-WARNING: command PS-KILL doesn't have a docstring
+STYLE-WARNING: command GOOGLE doesn't have a docstring
+STYLE-WARNING: command WIKIPEDIA doesn't have a docstring
+;; Swank started at port: 4005.

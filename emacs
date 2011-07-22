@@ -2,12 +2,10 @@
 ;; custom .emacs file
 ;; Matthew Ball (copyleft 2008-2011)
 ;; =================================
-;; TODO: move .emacs into sub-files in ~/.emacs.d/
 
-;; =============
-;;; user details
-;; =============
-(setq user-mail-address "mathew.ball@gmail.com") ;; user email address
+;; ==========
+;;; load path
+;; ==========
 (add-to-list 'load-path "~/.emacs.d/") ;; user load path
 
 ;; =============
@@ -55,7 +53,6 @@
       completion-ignore-case t ;; ignore case in auto-completing text
       read-file-name-completion-ignore-case t ;; ignore cases in filenames
       auto-compression-mode 1 ;; automatically parse an archive
-      ;; mail-aliases t ;; enable mail aliases (located in ~/.mailrc)
       size-indication-mode t ;; show file size in mode-bar
       display-time-day-and-date t ;; display date in the mode-bar
       display-time-24hr-format t ;; display time in the 24-hour format
@@ -331,7 +328,7 @@
 ;; =============
 ;;; code folding
 ;; =============
-(hs-minor-mode t) ;; turn on hide-show mode
+;; (hs-minor-mode t) ;; turn on hide-show mode
 
 (defvar hs-special-modes-alist
   (mapcar 'purecopy
@@ -633,6 +630,7 @@
 		    (name . "NEWS$")))
 	       ("Configuration" ;; run-time configuration related buffers
 		(or (filename . ".emacs$")
+		    (filename . ".gnus$")
 		    (filename . ".stumpwmrc$")
 		    (filename . ".bashrc$")
 		    (filename . ".bash_aliases$")
@@ -731,7 +729,10 @@
 		    (mode . vc-dir-mode)
 		    (mode . vc-log-entry-mode)))
 	       ("Mail" ;; mail related buffers
-		(or (mode . message-mode)
+		(or (name . "^\\*Group\\*$")
+		    (name . "^\\*imap-log\\*$")
+		    (name . ".newsrc-dribble$")
+		    (mode . message-mode)
 		    (mode . mail-mode)))
 	       ("Dired" ;; dired related buffers
 		(or (mode . dired-mode)
@@ -1170,6 +1171,7 @@
 ;;; mail (and mutt)
 ;; ================
 (autoload 'sendmail "sendmail" "A major mode for reading (and writing) emails." t)
+(require 'gnus) ;; TODO: change this to an autoload
 
 (defun mutt-mail-mode-hook ()
   (turn-on-auto-fill) ;; auto-fill is necessary for mails
@@ -1295,7 +1297,7 @@
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
       erc-full-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
-      erc-fill-column 90
+      ;; erc-fill-column 90
       erc-timestamp-right-column 61
       erc-track-showcount t ;; show count of unseen messages
       erc-timestamp-only-if-changed-flag nil ;; always show timestamp
@@ -1431,6 +1433,7 @@
 ;;; javascript programming
 ;; =======================
 (autoload 'javascript-mode "javascript")
+;; (add-hook 'javascript-mode-hook (lambda () (flyspell-prog-mode)))
 
 ;; ====================
 ;;; haskell programming
@@ -1440,6 +1443,7 @@
 
 (let ((fn-list '(turn-on-haskell-doc-mode turn-on-haskell-indent)))
   (mapc (lambda (fn) (add-hook 'haskell-mode-hook fn)) fn-list)) ;; enable doc-mode and indentation for haskell-mode
+;; (add-hook 'haskell-mode-hook (lambda () (flyspell-prog-mode)))
 
 ;; ==============
 ;;; c programming
@@ -1463,18 +1467,20 @@
           (run-at-time 0.5 nil 'delete-windows-on buf) ;; no errors, dissolve compilation window (0.5 seconds)
           (message "No compilation errors."))))
 
-(add-hook 'c-mode-common-hook
-      '(lambda () (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)))
+(add-hook 'c-mode-common-hook '(lambda () (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)))
+;; (add-hook 'c-mode-hook (lambda () (flyspell-prog-mode)))
 
 ;; ===============
 ;;; c# programming
 ;; ===============
 (autoload 'csharp-mode "csharp-mode" "C# editing code." t)
+;; (add-hook 'csharp-mode-hook (lambda () (flyspell-prog-mode)))
 
 ;; ===================
 ;;; python programming
 ;; ===================
 (autoload 'python-mode "python" "Python editing mode." t)
+;; (add-hook 'python-mode-hook (lambda () (flyspell-prog-mode)))
 
 ;; ================
 ;;; lua programming
@@ -1482,6 +1488,7 @@
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (add-hook 'lua-mode-hook 'turn-on-font-lock)
 (add-hook 'lua-mode-hook 'hs-minor-mode)
+;; (add-hook 'lua-mode-hook (lambda () (flyspell-prog-mode)))
 
 ;; =============
 ;;; latex markup
