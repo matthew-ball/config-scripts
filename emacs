@@ -136,6 +136,7 @@
 (custom-set-faces
  (font-lock-add-keywords 'emacs-lisp-mode
   			 '(("setq" . font-lock-keyword-face)
+			   ("eq" . font-lock-keyword-face)
 			   ("autoload" . font-lock-keyword-face)))
  (font-lock-add-keywords 'lisp-interaction-mode
 			 '(("setf" . font-lock-keyword-face))))
@@ -1048,8 +1049,10 @@
 
       org-capture-templates (quote (("h" "Home" entry (file+headline "home.org" "Home")
 				     "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+				    ;; ("u" "University" entry (file+headline "school.org" "University")
+				    ;;  "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n" :empty-lines 1 :immediate-finish 1)
 				    ("u" "University" entry (file+headline "school.org" "University")
-				     "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n" :empty-lines 1 :immediate-finish 1)
+				     "%(add-course)" :empty-lines 1 :immediate-finish 1)
 				    ("a" "Assignment" plain (file+function "school.org" course-code)
 				     "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
 				    ;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase")
@@ -1076,11 +1079,17 @@
 
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
-  ;; "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n"
-  (let ((course-code ""))
-    (concat course-code "** " (read-from-minibuffer "Enter course code: ") "%?%^g\n"
-	    " " (read-from-minibuffer "Enter course title: ") "\n"
-	    " " (read-from-minibuffer "Enter course lecturer: ") "\n")))
+  (let ((course-details ""))
+    ;; fix the concats with (setq ...)'s
+    (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") " \t%?%^g\n"
+	    " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
+	    " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
+	    " LECTURES: \n + <" (read-from-minibuffer "Lecture Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n"))
+    (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y") ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
+      (setq course-details (concat course-details " + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n")))
+    (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t") ;; this technically lies, t for "tutorial", any other input means "seminar"
+				  "TUTORIAL: "
+				"SEMINAR: ") "\n + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ")"\n")))
 
 (defun file-path (&rest junk)
   "Return the path of a file."
