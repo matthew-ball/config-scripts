@@ -644,11 +644,11 @@
 		    (filename . ".ncmpcpp/config")
 		    (filename . "conkeror-dir/*")))
 	       ("Project (Introduction to Computer Science)" ;; introduction to computer science related buffers
-		(filename . "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/"))
+		(filename . "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/")) ;; unfortunately have to hardcode the user here
 	       ("Project (Metaphysics)" ;; metaphysics related buffers
-		(filename . "/home/chu/Documents/Papers/other/Philosophy/Metaphysics"))
+		(filename . "/home/chu/Documents/Papers/other/Philosophy/Metaphysics")) ;; i.e. Cannot use ~/Documents/...
 	       ("University" ;; buffers related to ANU
-		(filename . "/home/chu/Documents/ANU/"))
+		(filename . "/home/chu/Documents/ANU/")) ;; this is a bit problematic
 	       ("LaTeX" ;; latex related buffers
 		(or (mode . latex-mode)
 		    (mode . LaTeX-mode)
@@ -1295,13 +1295,13 @@
 
 (setq erc-server "irc.freenode.net" ;; default ERC server
       erc-port 6667 ;; default ERC port
-      erc-nick "chu_"
+      erc-nick "chu"
       erc-user-full-name user-full-name
       erc-email-userid "mathew.ball@gmail.com"
       erc-current-nick-highlight-type 'all ;; highlight the entire messahe where current nickname occurs
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
-      erc-full-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
+      ;; erc-full-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
       ;; erc-fill-column 90
       erc-timestamp-right-column 61
       erc-track-showcount t ;; show count of unseen messages
@@ -1320,7 +1320,7 @@
       erc-truncate-buffer-on-save t
       erc-timestamp-format "[%H:%M] " ;; time format for ERC messages
       erc-input-line-position -1 ;; keep input at the bottom
-      erc-keywords '("chu" "chu_") ;; highlight nickname
+      erc-keywords '("chu") ;; highlight nickname
       erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
       erc-prompt ;; channel specific prompt
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
@@ -1337,7 +1337,7 @@
 (remove-hook 'erc-text-matched-hook 'erc-hide-fools)
 (setq erc-pals '()
       erc-fool-highlight-type 'nick ;; highlight entire message
-      erc-fools '("ubottu" "fsbot" "rudybot" "lisppaste"))
+      erc-fools '("ubottu" "fsbot" "rudybot" "lisppaste" "Oxymoron"))
 
 (setq erc-remove-parsed-property nil)
 

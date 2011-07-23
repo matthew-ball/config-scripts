@@ -15,6 +15,9 @@
       read-mail-command 'gnus
       send-mail-function 'smtpmail-send-it) ;; not for gnus
 
+;; (setq custom-mail-dir "~/.mail/") ;; set directory for mail
+;; (setq custom-news-dir "~/.news/") ;; set directory for news
+
 ;; ==============
 ;;; gnus settings
 ;; ==============
@@ -22,9 +25,13 @@
       gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
       gnus-invalid-group-regexp "[:`'\"]\\|^$"
       gnus-permanently-visible-groups "mail"
+      gnus-thread-hide-subtree t
+      gnus-thread-ignore-subject t
       gnus-always-read-dribble-file t ;; don't bugger me with dribbles
       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
-      gnus-posting-styles '(("gmail" (address "mathew.ball@gmail.com"))
+      gnus-posting-styles '((".*"
+			     (name "Matthew Ball"))
+			    ("gmail" (address "mathew.ball@gmail.com"))
 			    ("anumail" (address "u4537508@anu.edu.au"))))
 
 (setq gnus-save-newsrc-file nil
@@ -33,18 +40,13 @@
       gnus-save-killed-list nil
       gnus-check-new-newsgroups nil)
 
-;; (defun my-message-mode-setup () ;; automatic line breaking
-;;   (setq fill-column 72)
-;;   (turn-on-auto-fill))
-
 ;; ================
 ;;; visible headers
 ;; ================
 (setq gnus-visible-headers
-      (concat
-       "^From:\\|^Subject:\\|^Newsgroups:"
-       "\\|^Organization:"
-       "\\|^To:\\|^Cc:\\|^Date:"))
+      (concat "^From:\\|^Subject:\\|^Newsgroups:"
+	      "\\|^Organization:"
+	      "\\|^To:\\|^Cc:\\|^Date:"))
 
 ;; ===========
 ;;; imap setup
@@ -134,9 +136,8 @@
 ;; =============
 ;;; email config
 ;; =============
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode is always active
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
 (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
-;; (add-hook 'message-mode-hook 'my-message-mode-setup) ;; enable automatic line breaking
 ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; add tab completion to name in the "To:" field
 
 ;; ===========

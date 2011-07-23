@@ -2,27 +2,38 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Fri Jul 22 22:08:43 2011
+;; Created Sat Jul 23 13:49:15 2011
 ;; Desktop file format version 206
 ;; Emacs version 23.1.1
 
 ;; Global section:
-(setq file-name-history '("/home/chu/.mailrc" "/home/chu/.gnus" "/home/chu/.conf-scripts/gnus" "/home/chu/.gnus" "/home/chu/.conf-scripts/emacs-dir/lambdacalc.el" "/home/chu/.conf-scripts/emacs-dir/diminish.el" "/home/chu/.conf-scripts/conkeror-dir/ibuffer.js" "/home/chu/.conf-scripts/emacs-dir/erc-highlight-nicknames.el" "/home/chu/.conf-scripts/emacs-dir/lua-mode.el" "/home/chu/Documents/Organisation/bookmarks.org" "~/Projects/" "~/Documents/Papers/other/Philosophy/Metaphysics/" "~/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/" "~/Documents/Papers/PDFs/" "~/.conf-scripts/" "~/Documents/ANU/" "/home/chu/.conf-scripts/.git/config" "/home/chu/.conf-scripts/stumpwm-dir/bookmarks.lisp" "~/.conf-scripts/config-setup.sh" "/home/chu/org-protocol:/capture:/k/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/" "/home/chu/org-protocol:/capture:/w/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/" "/home/chu/org-protocol:/capture:/w/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/Google%2B/" "/home/chu/org-protocol:/capture:/k/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/Google%2B/" "/home/chu/org-protocol:/capture:/k/http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dconkeror%2520and%2520emacs%26ie%3Dutf-8%26oe%3Dutf-8%26aq%3Dt/" "/home/chu/org-protocol:/capture:/k/http%3A%2F%2Fwww.afl.com.au%2F/AFL%20-%20The%20official%20site%20of%20the%20Australian%20Football%20League%20-%20AFL.com.au/" "/home/chu/org-protocol:/capture:/w/http%3A%2F%2Fwww.afl.com.au%2F/AFL%20-%20The%20official%20site%20of%20the%20Australian%20Football%20League%20-%20AFL.com.au/" "/home/chu/.backup/backup-script" "/home/chu/.conf-scripts/config-setup" "/home/chu/.conf-scripts/conkeror-dir/theme.json" "/home/chu/.conf-scripts/conkeror-dir/mini-buffer.css" "/home/chu/.conf-scripts/conkeror-dir/mode-line.css" "/home/chu/.conf-scripts/conkeror-dir/new-tabs.css" "/home/chu/.conf-scripts/conkeror-dir/modeline.css" "/home/chu/.conf-scripts/conkeror-dir/minibuffer.css" "/home/chu/.conf-scripts/conkeror-dir/scrollbars.css" "/home/chu/.conf-scripts/conkeror-dir/hints-url-panel.css" "/home/chu/.conf-scripts/conkeror-dir/scrollbars.js" "~/Documents/ANU/PHIL3072/effect-before-cause-symposium.org" "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org" "~/Documents/ANU/PHIL3072/truth-and-the-past.pdf" "~/Documents/ANU/PHIL3072/truth-and-proof.pdf" "~/Documents/ANU/PHIL3072/bringing-about-the-past.pdf" "~/Documents/ANU/PHIL3072/mctaggarts-proof.pdf" "~/Documents/ANU/PHIL3072/max-blacks-reply.pdf" "~/Documents/ANU/PHIL3072/effect-before-cause-symposium.pdf" "/home/chu/Documents/ANU/PHIL3072/phil3072.org" "/home/chu/.conf-scripts/README" "/home/chu/.conf-scripts/.gitignore" "/home/chu/.backup/README" "/home/chu/Backup/README" "/home/chu/.conf-scripts/README" "/home/chu/.conkerorrc/main.js" "/home/chu/.mpdconf" "/home/chu/.ncmpcpp/config" "/tmp/www-facebook-com-textarea.txt" "/home/chu/.irssi/config" "/home/chu/.conf-scripts/ncmpcpp-dir/config" "/home/chu/.conf-scripts/README" "/tmp/plus-google-com-hl-en-tab-wX-3ef.txt" "/home/chu/.conkerorrc" "/tmp/mutt-Lucy-1000-12059-555ee66284806f390" "/tmp/mutt-Lucy-1000-11792-55af7047526fa0991" "~/Documents/Organisation/books/notes/semantic-values.org" "/tmp/mutt-Lucy-1000-19329-936fdbe5b752974fa" "~/Documents/Papers/PDFs/abstract-objects-case-study.pdf" "/home/chu/Documents/Organisation/books/notes/semantic-values.org" "/home/chu/.w3m/w3mtmp5003-0" "/tmp/mutt-Lucy-1000-20544-4704dfd8a62581e26" "/tmp/mutt-Lucy-1000-20544-21db33e536de66fa3" "/home/chu/.conf-scripts/irssi-dir/config" "/home/chu/.conf-scripts/bash_aliases" "/home/chu/Documents/Organisation/books/notes/on-sense-and-reference.org" "~/Documents/Organisation/books/notes/an-introduction-to-godels-theorems.org" "/home/chu/Documents/Organisation/books/notes/an-introduction-to-godels-theorems.org" "~/Documents/Organisation/books/notes/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Organisation/books/notes/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Organisation/books/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-text.tex" "~/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-slides.tex" "/tmp/mutt-Lucy-1000-16647-752f00f5d54e589e9" "/tmp/mutt-Lucy-1000-16647-314c9c34025d37a6b" "~/Downloads/UMASS-PHIL511" "/usr/share/common-lisp/source/stumpwm/contrib/mpd.lisp" "/home/chu/.mpdconf" "/tmp/mutt-Lucy-1000-28786-96ea5d76e582ab966" "/home/chu/.profile" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/.emacs.d/emacs-desktop" "/home/chu/.emacs.desktop" "/home/chu/.stumpwmrc" "/home/chu/.screenrc" "/home/chu/.bashrc" "/u4537508@partch.anu.edu.au:.emacs" "/home/chu/.emacs.d/elpa/zenburn-1.8/zenburn.el" "/home/chu/%s" "/tmp/mutt-Lucy-1000-32123-56f55a1ca2144e131" "/home/chu/.emacs.d/color-theme-zenburn.el" "~/.emacs.d/color-theme-zenburn.el" "~/.emacs.d/custom-midnight.el" "/tmp/mutt-Lucy-1000-30606-34c1735a9111d7224" "/home/chu/.emacs.d/color-theme-zenburn.el" "/tmp/mutt-Lucy-1000-25468-33f24e0cce831f26" "/tmp/mutt-Lucy-1000-25468-257d119eb438036925" "/tmp/mutt-Lucy-1000-25468-563b704377615b43e" "/tmp/mutt-Lucy-1000-22853-776e6fd7d50f0d01c" "/tmp/mutt-Lucy-1000-20667-52e84401e71241b66" "/home/chu/.aptitude/config" "/home/chu/.gtk2rc-2.0" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/Documents/ANU/PHIL2080/notes.org" "/home/chu/.conf-scripts/bash_aliases" "/tmp/mutt-Lucy-1000-23646-76399ff262fdf2f1e" "/home/chu/.conf-scripts/README" "/home/chu/.fonts.conf" "/home/chu/.themes/Dust Cold/gtk-2.0/gtkrc" "/home/chu/.stumpwmrc"))
+(setq file-name-history '("/home/chu/Projects/Programming/Haskell/library.hs" "/home/chu/.mailrc" "/home/chu/.gnus" "/home/chu/.conf-scripts/gnus" "/home/chu/.gnus" "/home/chu/.conf-scripts/emacs-dir/lambdacalc.el" "/home/chu/.conf-scripts/emacs-dir/diminish.el" "/home/chu/.conf-scripts/conkeror-dir/ibuffer.js" "/home/chu/.conf-scripts/emacs-dir/erc-highlight-nicknames.el" "/home/chu/.conf-scripts/emacs-dir/lua-mode.el" "/home/chu/Documents/Organisation/bookmarks.org" "~/Projects/" "~/Documents/Papers/other/Philosophy/Metaphysics/" "~/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/" "~/Documents/Papers/PDFs/" "~/.conf-scripts/" "~/Documents/ANU/" "/home/chu/.conf-scripts/.git/config" "/home/chu/.conf-scripts/stumpwm-dir/bookmarks.lisp" "~/.conf-scripts/config-setup.sh" "/home/chu/org-protocol:/capture:/k/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/" "/home/chu/org-protocol:/capture:/w/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/" "/home/chu/org-protocol:/capture:/w/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/Google%2B/" "/home/chu/org-protocol:/capture:/k/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/Google%2B/" "/home/chu/org-protocol:/capture:/k/http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dconkeror%2520and%2520emacs%26ie%3Dutf-8%26oe%3Dutf-8%26aq%3Dt/" "/home/chu/org-protocol:/capture:/k/http%3A%2F%2Fwww.afl.com.au%2F/AFL%20-%20The%20official%20site%20of%20the%20Australian%20Football%20League%20-%20AFL.com.au/" "/home/chu/org-protocol:/capture:/w/http%3A%2F%2Fwww.afl.com.au%2F/AFL%20-%20The%20official%20site%20of%20the%20Australian%20Football%20League%20-%20AFL.com.au/" "/home/chu/.backup/backup-script" "/home/chu/.conf-scripts/config-setup" "/home/chu/.conf-scripts/conkeror-dir/theme.json" "/home/chu/.conf-scripts/conkeror-dir/mini-buffer.css" "/home/chu/.conf-scripts/conkeror-dir/mode-line.css" "/home/chu/.conf-scripts/conkeror-dir/new-tabs.css" "/home/chu/.conf-scripts/conkeror-dir/modeline.css" "/home/chu/.conf-scripts/conkeror-dir/minibuffer.css" "/home/chu/.conf-scripts/conkeror-dir/scrollbars.css" "/home/chu/.conf-scripts/conkeror-dir/hints-url-panel.css" "/home/chu/.conf-scripts/conkeror-dir/scrollbars.js" "~/Documents/ANU/PHIL3072/effect-before-cause-symposium.org" "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org" "~/Documents/ANU/PHIL3072/truth-and-the-past.pdf" "~/Documents/ANU/PHIL3072/truth-and-proof.pdf" "~/Documents/ANU/PHIL3072/bringing-about-the-past.pdf" "~/Documents/ANU/PHIL3072/mctaggarts-proof.pdf" "~/Documents/ANU/PHIL3072/max-blacks-reply.pdf" "~/Documents/ANU/PHIL3072/effect-before-cause-symposium.pdf" "/home/chu/Documents/ANU/PHIL3072/phil3072.org" "/home/chu/.conf-scripts/README" "/home/chu/.conf-scripts/.gitignore" "/home/chu/.backup/README" "/home/chu/Backup/README" "/home/chu/.conf-scripts/README" "/home/chu/.conkerorrc/main.js" "/home/chu/.mpdconf" "/home/chu/.ncmpcpp/config" "/tmp/www-facebook-com-textarea.txt" "/home/chu/.irssi/config" "/home/chu/.conf-scripts/ncmpcpp-dir/config" "/home/chu/.conf-scripts/README" "/tmp/plus-google-com-hl-en-tab-wX-3ef.txt" "/home/chu/.conkerorrc" "/tmp/mutt-Lucy-1000-12059-555ee66284806f390" "/tmp/mutt-Lucy-1000-11792-55af7047526fa0991" "~/Documents/Organisation/books/notes/semantic-values.org" "/tmp/mutt-Lucy-1000-19329-936fdbe5b752974fa" "~/Documents/Papers/PDFs/abstract-objects-case-study.pdf" "/home/chu/Documents/Organisation/books/notes/semantic-values.org" "/home/chu/.w3m/w3mtmp5003-0" "/tmp/mutt-Lucy-1000-20544-4704dfd8a62581e26" "/tmp/mutt-Lucy-1000-20544-21db33e536de66fa3" "/home/chu/.conf-scripts/irssi-dir/config" "/home/chu/.conf-scripts/bash_aliases" "/home/chu/Documents/Organisation/books/notes/on-sense-and-reference.org" "~/Documents/Organisation/books/notes/an-introduction-to-godels-theorems.org" "/home/chu/Documents/Organisation/books/notes/an-introduction-to-godels-theorems.org" "~/Documents/Organisation/books/notes/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Organisation/books/notes/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Organisation/books/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-text.tex" "~/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-slides.tex" "/tmp/mutt-Lucy-1000-16647-752f00f5d54e589e9" "/tmp/mutt-Lucy-1000-16647-314c9c34025d37a6b" "~/Downloads/UMASS-PHIL511" "/usr/share/common-lisp/source/stumpwm/contrib/mpd.lisp" "/home/chu/.mpdconf" "/tmp/mutt-Lucy-1000-28786-96ea5d76e582ab966" "/home/chu/.profile" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/.emacs.d/emacs-desktop" "/home/chu/.emacs.desktop" "/home/chu/.stumpwmrc" "/home/chu/.screenrc" "/home/chu/.bashrc" "/u4537508@partch.anu.edu.au:.emacs" "/home/chu/.emacs.d/elpa/zenburn-1.8/zenburn.el" "/home/chu/%s" "/tmp/mutt-Lucy-1000-32123-56f55a1ca2144e131" "/home/chu/.emacs.d/color-theme-zenburn.el" "~/.emacs.d/color-theme-zenburn.el" "~/.emacs.d/custom-midnight.el" "/tmp/mutt-Lucy-1000-30606-34c1735a9111d7224" "/home/chu/.emacs.d/color-theme-zenburn.el" "/tmp/mutt-Lucy-1000-25468-33f24e0cce831f26" "/tmp/mutt-Lucy-1000-25468-257d119eb438036925" "/tmp/mutt-Lucy-1000-25468-563b704377615b43e" "/tmp/mutt-Lucy-1000-22853-776e6fd7d50f0d01c" "/tmp/mutt-Lucy-1000-20667-52e84401e71241b66" "/home/chu/.aptitude/config" "/home/chu/.gtk2rc-2.0" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/Documents/ANU/PHIL2080/notes.org" "/home/chu/.conf-scripts/bash_aliases" "/tmp/mutt-Lucy-1000-23646-76399ff262fdf2f1e" "/home/chu/.conf-scripts/README" "/home/chu/.fonts.conf" "/home/chu/.themes/Dust Cold/gtk-2.0/gtkrc" "/home/chu/.stumpwmrc"))
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring '("gnus-save" "param" " ibuffer" "keyb" "ERC" "keyb" "gnus-face" "gnus-face-5" "perma" "perme" "mail" "maiil" "mail" "require 'smtpma" "add-hook" "Mail"))
+(setq search-ring '("ERC" "chu" "chu_" "ERC" "group" "ANU" "mail" "gnus-save" "param" " ibuffer" "keyb" "ERC" "keyb" "gnus-face" "gnus-face-5" "perma"))
 (setq regexp-search-ring '(";; =.*" "s.*q" "(.*)))"))
 (setq register-alist (list (desktop-list* 13 (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk)) (list 82 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk))))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "/home/chu/.gnus"
-  ".gnus"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
-  1029
-  '(1000 nil)
+  "/home/chu/.conf-scripts/stumpwmrc"
+  ".stumpwmrc"
+  'lisp-interaction-mode
+  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode stumpwm-mode)
+  1708
+  '(1777 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org"
+  "effect-before-cause-symposium.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
+  1
+  '(2424 nil)
   nil
   nil
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
@@ -32,44 +43,99 @@
   ".emacs"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode hs-minor-mode)
-  30188
-  '(30164 nil)
+  58198
+  '(58162 nil)
   nil
   nil
   '((show-trailing-whitespace . 1) (indicate-empty-lines . t) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Projects/Programming/Haskell/library.hs"
+  "library.hs"
+  'haskell-mode
+  '(haskell-doc-mode haskell-indent-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  196
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Expr.hs"
+  "Expr.hs"
+  'haskell-mode
+  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  661
+  '(746 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/ANU/PHIL3072/phil3072.org"
+  "phil3072.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
+  287
+  '(26 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/gnus"
+  ".gnus"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
+  2637
+  '(5164 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/.conf-scripts/conkeror-dir/main.js"
   "main.js"
   'javascript-mode
   '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
+  32
   '(12062 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org"
-  "effect-before-cause-symposium.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
-  2336
-  '(1 nil)
+  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Main.hs"
+  "Main.hs"
+  'haskell-mode
+  '(haskell-doc-mode haskell-indent-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  221
+  '(nil nil)
   nil
   nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.conf-scripts/stumpwmrc"
-  ".stumpwmrc"
-  'lisp-interaction-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode stumpwm-mode)
-  20832
-  '(1 nil)
+  "/home/chu/.conf-scripts/mpd.conf"
+  ".mpdconf"
+  'sh-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  1
+  '(7431 nil)
   nil
   nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/muttrc"
+  ".muttrc"
+  'muttrc-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
+  1
+  '(105 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Documents/Organisation/books/books.org"
@@ -138,17 +204,6 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/Documents/ANU/PHIL3072/phil3072.org"
-  "phil3072.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
-  395
-  '(26 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
   "/home/chu/Documents/Organisation/notes.org"
   "notes.org"
   'org-mode
@@ -171,34 +226,12 @@
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.conf-scripts/mpd.conf"
-  ".mpdconf"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(7431 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
   "/home/chu/.conf-scripts/screenrc"
   ".screenrc"
   'sh-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
   104
   '(2514 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/muttrc"
-  ".muttrc"
-  'muttrc-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(105 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
@@ -268,28 +301,6 @@
   nil
   nil
   '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Main.hs"
-  "Main.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  72
-  '(nil nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Expr.hs"
-  "Expr.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  661
-  '(746 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Parse.hs"
