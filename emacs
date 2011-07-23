@@ -1074,6 +1074,14 @@
 				    ("n" "Note" entry (file+headline "notes.org" "Notes")
 				     "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1))))
 
+(defun add-course (&rest junk)
+  "Capture a course via org-mode's `org-capture'."
+  ;; "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n"
+  (let ((course-code ""))
+    (concat course-code "** " (read-from-minibuffer "Enter course code: ") "%?%^g\n"
+	    " " (read-from-minibuffer "Enter course title: ") "\n"
+	    " " (read-from-minibuffer "Enter course lecturer: ") "\n")))
+
 (defun file-path (&rest junk)
   "Return the path of a file."
   (buffer-file-name (get-buffer (car buffer-name-history))))
@@ -1320,7 +1328,7 @@
       erc-truncate-buffer-on-save t
       erc-timestamp-format "[%H:%M] " ;; time format for ERC messages
       erc-input-line-position -1 ;; keep input at the bottom
-      erc-keywords '("chu") ;; highlight nickname
+      ;; erc-keywords '("") ;; highlight specific keywords
       erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
       erc-prompt ;; channel specific prompt
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
@@ -1407,6 +1415,39 @@
            (buffer-substring-no-properties
             (point-min) (1- (point-max))))))
     (erc-send-message string)))
+
+(defun erc-cmd-UNAME (&rest ignore)
+  "Display the result of running `uname -a' to the current ERC
+buffer."
+  (let ((uname-output
+         (replace-regexp-in-string
+          "[ \n]+$" "" (shell-command-to-string "uname -a"))))
+    (erc-send-message
+     (concat "{uname -a} [" uname-output "]"))))
+
+(defun erc-cmd-UPTIME (&rest ignore)
+  "Display the uptime of the system, as well as some load-related
+stuff, to the current ERC buffer."
+  (let ((uname-output
+         (replace-regexp-in-string
+          ", load average: " "] {Load average} ["
+          ;; Collapse spaces, remove
+          (replace-regexp-in-string
+           " +" " "
+           ;; Remove beginning and trailing whitespace
+           (replace-regexp-in-string
+            "^ +\\|[ \n]+$" ""
+            (shell-command-to-string "uptime"))))))
+    (erc-send-message
+     (concat "{Uptime} [" uname-output "]"))))
+
+(defun erc-cmd-WTF (term &rest ignore)
+  "Look up definition for TERM."
+  (let ((def (wtf-is term)))
+    (if def
+        (erc-send-message
+         (concat "{Term} " (upcase term) " is " def))
+      (message (concat "No definition found for " (upcase term))))))
 
 (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
 
