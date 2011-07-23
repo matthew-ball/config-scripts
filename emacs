@@ -1077,19 +1077,20 @@
 				    ("n" "Note" entry (file+headline "notes.org" "Notes")
 				     "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1))))
 
+;; TODO: Get org-mode to handle the scheduling (time) of lectures/tutorials/seminars with `%s'.
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
   (let ((course-details ""))
-    ;; fix the concats with (setq ...)'s
     (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") " \t%?%^g\n"
-	    " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
-	    " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
-	    " LECTURES: \n + <" (read-from-minibuffer "Lecture Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n"))
+				 " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
+				 " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
+				 " LECTURES: \n + %s : " (read-from-minibuffer "Room Location: ") "\n"))
+				 ;; " LECTURES: \n + <" (read-from-minibuffer "Lecture Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n"))
     (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y") ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
       (setq course-details (concat course-details " + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n")))
     (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t") ;; this technically lies, t for "tutorial", any other input means "seminar"
-				  "TUTORIAL: "
-				"SEMINAR: ") "\n + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ")"\n")))
+				   "TUTORIAL: "
+				 "SEMINAR: ") "\n + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ")"\n")))
 
 (defun file-path (&rest junk)
   "Return the path of a file."
@@ -1483,6 +1484,11 @@ stuff, to the current ERC buffer."
 ;;; lambda calculus
 ;; ================
 (require 'lambdacalc) ;; TODO: change this to an autoload
+
+;; ====
+;;; WTF
+;; ====
+(require 'wtf)
 
 ;; =======================
 ;;; javascript programming
