@@ -6,7 +6,7 @@
 ;; ==========
 ;;; load path
 ;; ==========
-(add-to-list 'load-path "~/.emacs.d/") ;; user load path
+(add-to-list 'load-path user-emacs-directory) ;; add "~/.emacs.d/" to user load path
 
 ;; =============
 ;;; colour theme
@@ -159,7 +159,7 @@
 (global-set-key (kbd "<f6>") 'eshell) ;; open (or switch to) an eshell session
 (global-set-key (kbd "M-<f6>") 'ido-goto-symbol) ;; go to a symbol in the current buffer
 (global-set-key (kbd "C-<f6>") 'eval-and-replace) ;; evaluate a lisp expression and replace with the value
-(global-set-key (kbd "<f7>") 'gnus) ;; open gnus (this is handled in stumpwmrc)
+;; (global-set-key (kbd "<f7>") 'gnus) ;; open gnus (this is handled in stumpwmrc)
 ;; (global-set-key (kbd "<f7>") 'org-agenda) ;; view org-agenda *(taken care of by stumpwm)
 ;; (global-set-key (kbd "M-<f7>") 'org-capture) ;; capture tasks and store them in relative files *(taken care of by stumpwm)
 ;; (global-set-key (kbd "C-<f7>") 'calendar) ;;  view calendar *(taken care of by stumpwm)
@@ -645,11 +645,11 @@
 		    (filename . ".ncmpcpp/config")
 		    (filename . "conkeror-dir/*")))
 	       ("Project (Introduction to Computer Science)" ;; introduction to computer science related buffers
-		(filename . "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/")) ;; unfortunately have to hardcode the user here
+		(filename . "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/"))
 	       ("Project (Metaphysics)" ;; metaphysics related buffers
-		(filename . "/home/chu/Documents/Papers/other/Philosophy/Metaphysics")) ;; i.e. Cannot use ~/Documents/...
+		(filename . "/home/chu/Documents/Papers/other/Philosophy/Metaphysics"))
 	       ("University" ;; buffers related to ANU
-		(filename . "/home/chu/Documents/ANU/")) ;; this is a bit problematic
+		(filename . "/home/chu/Documents/ANU/"))
 	       ("LaTeX" ;; latex related buffers
 		(or (mode . latex-mode)
 		    (mode . LaTeX-mode)
@@ -1077,20 +1077,21 @@
 				    ("n" "Note" entry (file+headline "notes.org" "Notes")
 				     "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1))))
 
-;; TODO: Get org-mode to handle the scheduling (time) of lectures/tutorials/seminars with `%s'.
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
   (let ((course-details ""))
     (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") " \t%?%^g\n"
 				 " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
 				 " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
-				 " LECTURES: \n + %s : " (read-from-minibuffer "Room Location: ") "\n"))
 				 ;; " LECTURES: \n + <" (read-from-minibuffer "Lecture Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n"))
+				 " LECTURES: \n + %^T : " (read-from-minibuffer "Room Location: ") "\n"))
     (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y") ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
-      (setq course-details (concat course-details " + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n")))
+      ;; (setq course-details (concat course-details " + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n")))
+      (setq course-details (concat course-details " + %^T  : " (read-from-minibuffer "Room Location: ") "\n")))
     (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t") ;; this technically lies, t for "tutorial", any other input means "seminar"
 				   "TUTORIAL: "
-				 "SEMINAR: ") "\n + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ")"\n")))
+				 ;; "SEMINAR: ") "\n + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ")"\n")))
+				 "SEMINAR: ") "\n + %^T : " (read-from-minibuffer "Room Location: ")"\n")))
 
 (defun file-path (&rest junk)
   "Return the path of a file."

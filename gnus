@@ -2,15 +2,16 @@
 ;; custom .gnus file
 ;; Matthew Ball (copyleft 2011)
 ;; ============================
-;; TODO: setup ~/.authinfo file
-;; TODO: move ~/.mailrc to ~/.conf-scripts/mailrc and symlink back to ~/.mailrc
+;; TODO: move ~/.mailrc to ~/.conf-scripts/mailrc
 
 ;; ==================
 ;;; personal settings
 ;; ==================
 (setq user-mail-address "mathew.ball@gmail.com" ;; user mail address (could use my school mail)
       user-full-name "Matthew Ball" ;; user full-name
-      mail-aliases t ;; enable mail aliases (located in ~/.mailrc)
+      mail-aliases t ;; enable mail aliases
+      ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; change directory where mail aliases are located
+      ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; change directory where authentication information is found
       message-from-style 'angles ;; specifies how the "From" header appears
       read-mail-command 'gnus
       send-mail-function 'smtpmail-send-it) ;; not for gnus
@@ -26,6 +27,7 @@
       gnus-invalid-group-regexp "[:`'\"]\\|^$"
       gnus-permanently-visible-groups "mail"
       gnus-thread-hide-subtree t
+      gnus-fetch-old-headers t
       gnus-thread-ignore-subject t
       gnus-always-read-dribble-file t ;; don't bugger me with dribbles
       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
@@ -51,10 +53,8 @@
 ;; ===========
 ;;; imap setup
 ;; ===========
-;; set ssl
-(setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p")
-
-(setq imap-log t ;; log the imap session
+(setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; set ssl
+      imap-log t ;; log the imap session
       imap-store-password t ;; store the session password
       gnus-secondary-select-methods
       '((nnimap "gmail" ;; gmail login
@@ -139,6 +139,9 @@
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
 (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
 ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; add tab completion to name in the "To:" field
+
+(remove-hook 'gnus-summary-prepare-exit-hook
+	     'gnus-summary-expire-articles)
 
 ;; ===========
 ;;; rss config
