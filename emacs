@@ -1083,15 +1083,13 @@
     (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") " \t%?%^g\n"
 				 " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
 				 " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
-				 ;; " LECTURES: \n + <" (read-from-minibuffer "Lecture Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n"))
 				 " LECTURES: \n + %^T : " (read-from-minibuffer "Room Location: ") "\n"))
     (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y") ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
-      ;; (setq course-details (concat course-details " + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ") "\n")))
       (setq course-details (concat course-details " + %^T  : " (read-from-minibuffer "Room Location: ") "\n")))
     (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t") ;; this technically lies, t for "tutorial", any other input means "seminar"
 				   "TUTORIAL: "
-				 ;; "SEMINAR: ") "\n + <" (read-from-minibuffer "Time: ") " +1w> : " (read-from-minibuffer "Room Location: ")"\n")))
-				 "SEMINAR: ") "\n + %^T : " (read-from-minibuffer "Room Location: ")"\n")))
+				 "SEMINAR: ")
+	    "\n + %^T : " (read-from-minibuffer "Room Location: ") "\n")))
 
 (defun file-path (&rest junk)
   "Return the path of a file."
