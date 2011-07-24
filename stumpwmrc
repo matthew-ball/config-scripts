@@ -251,7 +251,7 @@
 (defcommand run-banshee () () "Run an instance of `banshee' with property `:instance'." (run-app "banshee" (list :instance "banshee")))
 (defcommand run-pyscrabble () () "Run an instance of `pyscrabble' with property `:instance'." (run-app "pyscrabble" (list :instance "pyscrabble")))
 
-(defcommand run-system-monitor () () "Run an instance of `*system-monitor*' with property `:title'." (run-terminal-app *system-monitor* *system-monitor*))
+(defcommand run-system-monitor () () "Run an instance of `*system-monitor*' with property `:title'." (run-terminal-app *system-monitor* *system-monitor* "-u \"chu\""))
 (defcommand run-package-manager () () "Run an instance of `*package-manager*' with property `:title'." (run-terminal-app *package-manager* *package-manager*))
 (defcommand run-irc () () "Run an instance of `*irc-client*' with property `:title'." (run-terminal-app *irc-client* *irc-client*))
 (defcommand run-music-player () () "Run an instance of `*music-player*' with property `:title'." (run-terminal-app *music-player* *music-player*))

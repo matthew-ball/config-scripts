@@ -136,7 +136,7 @@
 (custom-set-faces
  (font-lock-add-keywords 'emacs-lisp-mode
   			 '(("setq" . font-lock-keyword-face)
-			   ("eq" . font-lock-keyword-face)
+			   ;; ("eq" . font-lock-keyword-face)
 			   ("autoload" . font-lock-keyword-face)))
  (font-lock-add-keywords 'lisp-interaction-mode
 			 '(("setf" . font-lock-keyword-face))))
@@ -982,7 +982,7 @@
       org-timeline-show-empty-dates t
       org-completion-use-ido t ;; enable ido for target (buffer) completion
       org-log-into-drawer 'LOGBOOK ;; log changes in the LOGBOOK drawer
-      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel .5)) ;; targets include this file and any file contributing to the agenda - up to 5 levels deep
+      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; targets include this file and any file contributing to the agenda - up to 5 levels deep
       org-refile-use-outline-path 'file ;; targets start with the file name - allows creating level 1 tasks
       org-outline-path-complete-in-steps t ;; targets complete in steps so we start with filename, TAB shows the next level of targets etc
       org-refile-allow-creating-parent-nodes 'confirm ;; allow refile to create parent tasks with confirmation
@@ -999,7 +999,7 @@
       org-use-tag-inheritance nil ;; disable tag inheritance
       org-directory "~/Documents/Organisation/" ;; default directory for org mode
       org-default-notes-file (concat org-directory "notes.org") ;; file for quick notes
-      org-agenda-span 28 ;; show four weeks of agendas (replaces `org-agenda-ndays')
+      org-agenda-span 'month ;; show a month of agendas
       org-agenda-files (quote ("~/Documents/Organisation/notes.org"
 			       "~/Documents/Organisation/school.org"
 			       "~/Documents/Organisation/home.org"
