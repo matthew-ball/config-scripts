@@ -14,7 +14,8 @@
       ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; change directory where authentication information is found
       message-from-style 'angles ;; specifies how the "From" header appears
       read-mail-command 'gnus
-      send-mail-function 'smtpmail-send-it) ;; not for gnus
+      message-send-mail-function 'smtpmail-send-it ;; for gnus (message-mode)
+      send-mail-function 'smtpmail-send-it) ;; not for gnus (mail-mode)
 
 ;; (setq custom-mail-dir "~/.mail/") ;; set directory for mail
 ;; (setq custom-news-dir "~/.news/") ;; set directory for news
@@ -85,8 +86,7 @@
       starttls-gnutls-program "gnutls-cli"
       starttls-extra-arguments '("--insecure"))
 
-(setq message-send-mail-function 'smtpmail-send-it ;; for gnus
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-server "smtp.gmail.com"

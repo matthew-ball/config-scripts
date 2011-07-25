@@ -541,7 +541,7 @@
 ;; =====================
 (when *initializing*
   (run-editor) ;; start the editor
-  (run-browser) ;; start the browser
+  ;; (run-browser) ;; start the browser (TODO: fix)
   (swank) ;; start swank
   (run-shell-command "mpd")) ;; launch mpd
 

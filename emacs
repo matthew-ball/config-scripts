@@ -297,6 +297,9 @@
 (autoload 'mercurial "Version control with Mercurial." t) ;; mercurial for use with bitbucket
 (autoload 'magit-status "magit" "Version control with Git." t) ;; magit for use with github
 
+(setq magit-save-some-buffers t ;; ask me to save buffers before running magit-status
+      magit-process-popup-time 4) ;; Popup the process buffer if command takes too long
+
 ;; ========
 ;;; backups
 ;; ========
@@ -1488,6 +1491,12 @@ stuff, to the current ERC buffer."
 ;;; WTF
 ;; ====
 (require 'wtf)
+
+;; =======================
+;;; emacs lisp programming
+;; =======================
+(add-hook 'emacs-lisp-mode-hook ;; treat '-' as part of the word
+          '(lambda () (modify-syntax-entry ?- "w")))
 
 ;; =======================
 ;;; javascript programming
