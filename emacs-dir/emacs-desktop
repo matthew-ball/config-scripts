@@ -2,7 +2,7 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Mon Jul 25 16:21:27 2011
+;; Created Mon Jul 25 22:23:12 2011
 ;; Desktop file format version 206
 ;; Emacs version 23.1.1
 
@@ -11,32 +11,32 @@
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring '("magit" "view" "dribble" "message" "system" "tor" "htop" "eq" "org-refile" "2x" "2c" "add-cou" "BAD" "keyb" "chu" "org-mode"))
+(setq search-ring '("experimen" "org-agenda-dim" "org-mode" "aff" "emacs lis[" "emacs" "reftex" "magit" "view" "dribble" "message" "system" "tor" "htop" "eq" "org-refile"))
 (setq regexp-search-ring '(";; =.*" "s.*q" "(.*)))"))
 (setq register-alist (list (desktop-list* 13 (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk)) (list 82 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk))))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org"
-  "effect-before-cause-symposium.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
-  107
-  '(340 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
   "/home/chu/.conf-scripts/emacs"
   ".emacs"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode hs-minor-mode)
-  15211
-  '(14540 nil)
+  7459
+  '(7233 nil)
   nil
   nil
   '((show-trailing-whitespace . 1) (indicate-empty-lines . t) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org"
+  "effect-before-cause-symposium.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode)
+  143
+  '(5929 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Documents/Organisation/school.org"
@@ -499,4 +499,15 @@
   nil
   nil
   '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.tex"
+  "effect-before-cause-symposium.tex"
+  'latex-mode
+  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 

@@ -1000,6 +1000,7 @@
       ;; org-agenda-include-diary t ;; include entries from the emacs diary
       org-use-fast-todo-selection t ;; enable fast task state switching
       org-use-tag-inheritance nil ;; disable tag inheritance
+      org-agenda-dim-blocked-tasks nil ;; do not dim blocked tasks
       org-directory "~/Documents/Organisation/" ;; default directory for org mode
       org-default-notes-file (concat org-directory "notes.org") ;; file for quick notes
       org-agenda-span 'month ;; show a month of agendas
@@ -1136,6 +1137,7 @@
 (add-hook 'org-mode-hook 'org-toggle-pretty-entities) ;; toggle UTF-8 unicode symbols
 (add-hook 'org-mode-hook (lambda () (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading))) ;; M-RET inserts a new heading
 (add-hook 'org-mode-hook (lambda () (define-key org-mode-map (kbd "C-c q") 'insert-org-quote))) ;; insert quote with C-c q
+(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
 
 (define-skeleton insert-org-quote
   "Inserts an org-mode quote."
