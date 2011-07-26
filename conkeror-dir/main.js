@@ -210,7 +210,7 @@ interactive("reload-config", "Reload ~/.conkerorrc file.",
 interactive("url-completion-toggle", "toggle between bookmark and history completion", url_completion_toggle);
 
 // TODO: this doesn't appear to work
-url_completion_toggle; // open only bookmarks by default (toggle to using history with C-c t)
+// url_completion_toggle; // open only bookmarks by default (toggle to using history with C-c t)
 
 // ===================
 /// download directory

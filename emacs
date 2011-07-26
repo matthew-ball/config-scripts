@@ -989,6 +989,8 @@
       org-refile-use-outline-path 'file ;; targets start with the file name - allows creating level 1 tasks
       org-outline-path-complete-in-steps t ;; targets complete in steps so we start with filename, TAB shows the next level of targets etc
       org-refile-allow-creating-parent-nodes 'confirm ;; allow refile to create parent tasks with confirmation
+      org-footnote-auto-adjust t ;; automatically handle footnotes
+      org-agenda-skip-additional-timestamps-same-entry nil ;; don't skip multiple entries per day
       ;; org-indent-mode t ;; enable org indent mode
       ;; org-indent-indentation-per-level 2 ;; two indents per level
       ;; org-startup-indented t ;; indent text in org documents (WARNING: can crash emacs)
@@ -1015,7 +1017,8 @@
 				(sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))) ;; custom states a task could be in
 
       org-tag-alist (quote (("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r)
-			    ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n) ("WEBSITE" . ?w) ("BOOKMARK" . ?b))) ;; tags for org-set-tags (C-c C-q)
+			    ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n) ("WEBSITE" . ?w) ("BOOKMARK" . ?b)
+			    ("PHILOSOPHY" . ?s) ("COMPUTER SCIENCE" . ?c))) ;; tags for org-set-tags (C-c C-q)
 
       org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
 				     ("DONE" :foreground "green" :weight bold)
@@ -1167,6 +1170,38 @@
     (unless (= (current-column) 2)
       (insert "\n\n  "))))
 
+;; ==========
+;;; ansi term
+;; ==========
+(defun symbol-value-in-buffer (sym buf)
+  "Return the value of 'sym' in 'buf'."
+  (save-excursion
+    (with-current-buffer buf
+      (symbol-value sym))))
+
+(defun start-term (&rest junk)
+ "Start an `ansi-term' shell in the directory of current buffer."
+ (interactive)
+ (ansi-term "/bin/bash")
+ (term-line-mode))
+
+(defun switch-term (&rest junk)
+  "Switch to an active shell (if one exists) or create a new shell (if none exists)."
+  (interactive)
+  (let ((found nil))
+    (loop for b in (buffer-list)
+	  if (eq (symbol-value-in-buffer 'major-mode b) 'term-mode)
+	  do (switch-to-buffer b) (setq found t))
+    (when (not found) (start-term))))
+
+(defun kill-term (&rest junk)
+  "Close an ansi shell session and kill the remaining buffer."
+  (interactive)
+  (when (equal major-mode (or 'term-mode 'eshell-mode))
+      (progn
+	(term-kill-subjob)
+	(kill-buffer))))
+
 ;; =======
 ;;; eshell
 ;; =======
@@ -1292,7 +1327,7 @@
 (require 'erc-match) ;; TODO: change this to an autoload
 (require 'erc-join) ;; TODO: change this to an autoload
 (require 'erc-track) ;; TODO: change this to an autoload
-(require 'erc-fill) ;; TODO: change this to an autoload
+;; (require 'erc-fill) ;; TODO: change this to an autoload
 (require 'erc-ring) ;; TODO: change this to an autoload
 (require 'erc-netsplit) ;; TODO: change this to an autoload
 (require 'erc-spelling) ;; TODO: change this to an autoload
@@ -1308,7 +1343,7 @@
 (erc-autojoin-mode t) ;; enable autojoining
 (erc-track-mode t)
 (erc-match-mode t)
-(erc-fill-mode 0) ;; disable ERC fill
+;; (erc-fill-mode 0) ;; disable ERC fill
 (erc-ring-mode t)
 (erc-netsplit-mode t)
 (erc-timestamp-mode t) ;; enable ERC timestamp on
@@ -1323,7 +1358,7 @@
       erc-current-nick-highlight-type 'all ;; highlight the entire messahe where current nickname occurs
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
-      ;; erc-full-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
+      erc-fill-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
       ;; erc-fill-column 90
       erc-timestamp-right-column 61
       erc-track-showcount t ;; show count of unseen messages

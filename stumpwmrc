@@ -37,10 +37,8 @@
 ;; =====================
 ;;; default applications
 ;; =====================
-(defvar *browser* "chromium-browser" "Set the default web browser.")
-
-;; BUG: for some reason, conkeror crashes stumpwm
-;; (defvar *browser* "conkeror" "Set the default web browser.") TODO: do this better
+;; (defvar *browser* "chromium-browser" "Set the default web browser.")
+(defvar *browser* "conkeror" "Set the default web browser.") ;; TODO: do this better
 
 (defvar *terminal* "gnome-terminal" "Set the default terminal emulator.")
 (defvar *editor* "emacs" "Set the default editor.")
@@ -207,6 +205,7 @@
 	     (kbd "e") "emacs-erc"
 	     (kbd "g") "emacs-gnus"
 	     (kbd "i") "emacs-info"
+	     (kbd "t") "emacs-term"
              (kbd "C") "emacs-calendar")
 
 (fill-keymap *volume-map*
@@ -536,12 +535,19 @@
   (send-emacs-key-command "i")
   (message "Starting info."))
 
+(defcommand emacs-term () ()
+  "Start a new ANSI terminal session in Emacs."
+  (send-emacs-key-command "M-x")
+  (send-emacs-string "start-term")
+  (send-emacs-key-command "RET")
+  (message "Starting term."))
+
 ;; =====================
 ;;; startup applications
 ;; =====================
 (when *initializing*
   (run-editor) ;; start the editor
-  ;; (run-browser) ;; start the browser (TODO: fix)
+  (run-browser) ;; start the browser
   (swank) ;; start swank
   (run-shell-command "mpd")) ;; launch mpd
 
