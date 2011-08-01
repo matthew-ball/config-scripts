@@ -8,6 +8,11 @@
 ;; ==========
 (add-to-list 'load-path user-emacs-directory) ;; add "~/.emacs.d/" to user load path
 
+;; ============
+;;; common lisp
+;; ============
+(eval-when-compile (require 'cl)) ;; load the common-lisp packages
+
 ;; =============
 ;;; colour theme
 ;; =============
@@ -19,11 +24,6 @@
   (setq frame-title-format "%b"
   	icon-title-format "%b")
   (eval-after-load "color-theme" '(zenburn))) ;; apply zenburn colour theme
-
-;; ============
-;;; common lisp
-;; ============
-(eval-when-compile (require 'cl)) ;; load the common-lisp packages
 
 ;; ========================
 ;;; default function values
@@ -691,7 +691,7 @@
 		(or (name . "^\\*FINDER\\*$")
 		    (name . "^\\*DIAGNOSE\\*$")))
 	       ("Reading Notes" ;; reading notes related buffers
-		(filename . "Documents/Organisation/books/notes/"))
+		(filename . "Documents/Organisation/readings/notes/"))
 	       ("Organisation" ;; org-mode related buffers
 		(or (mode . org-mode)
 		    (mode . diary-mode)
@@ -723,7 +723,8 @@
 		    (name . "^\\*buffer-selection\\*$")))
 	       ("Shell" ;; shell related buffers
 		(or (mode . eshell-mode)
-		    (mode . Man-mode)
+		    (mode . shell-mode)
+		    (mode . term-mode)
 		    (mode . locate-mode)))
 	       ("Version Control" ;; version control related buffers
 		(or (mode . diff-mode)
@@ -1009,7 +1010,7 @@
       org-agenda-files (quote ("~/Documents/Organisation/notes.org"
 			       "~/Documents/Organisation/school.org"
 			       "~/Documents/Organisation/home.org"
-			       "~/Documents/Organisation/books/books.org"
+			       "~/Documents/Organisation/books/readings.org"
 			       "~/Documents/Organisation/bookmarks.org"
 			       "~/Documents/Organisation/projects.org")))
 
@@ -1062,20 +1063,20 @@
 				     "%(add-course)" :empty-lines 1 :immediate-finish 1)
 				    ("a" "Assignment" plain (file+function "school.org" course-code)
 				     "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-				    ;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase")
+				    ;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase") ;; WARNING: out-dated books.org
 				    ;;  "| [[%^{Link}][%^{Title}]] | %^{Author} | %^{Price} |" :immediate-finish 1) ;; manual version
-				    ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase")
+				    ("b" "Book to Purchase" table-line (file+headline "books/readings.org" "Books to Purchase")
 				     "| %c | %i | %^{Price} |" :immediate-finish 1) ;; conkeror version
-				    ("r" "Book to Read" table-line (file+headline "books/books.org" "Books to Read")
+				    ("r" "Book to Read" table-line (file+headline "books/readings.org" "Books to Read")
 				     "| %^{Title} | %^{Author} |" :immediate-finish 1)
-				    ("p" "Paper to Read" table-line (file+headline "books/books.org" "Papers to Read")
+				    ("p" "Paper to Read" table-line (file+headline "books/readings.org" "Papers to Read")
 				     "| %^{Title} | %^{Author} |  %^{Journal} | %^{Year} |" :immediate-finish 1)
 				    ("k" "Internet Bookmark" table-line (file+headline "bookmarks.org" "Internet Bookmarks")
 				     "| %c |" :immediate-finish 1)
 				    ("f" "File Bookmark" table-line (file+headline "bookmarks.org" "File Bookmarks")
 				     "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |"
 				     :immediate-finish 1)
-				    ("w" "Website" table-line (file+headline "books/books.org" "Websites")
+				    ("w" "Website" table-line (file+headline "books/readings.org" "Websites")
 				     "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
 				    ("j" "Project" entry (file+headline "projects.org" "Projects")
 				     "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
@@ -1181,7 +1182,6 @@
 
 (defun start-term (&rest junk)
  "Start an `ansi-term' shell in the directory of current buffer."
- (interactive)
  (ansi-term "/bin/bash")
  (term-line-mode))
 
@@ -1327,7 +1327,7 @@
 (require 'erc-match) ;; TODO: change this to an autoload
 (require 'erc-join) ;; TODO: change this to an autoload
 (require 'erc-track) ;; TODO: change this to an autoload
-;; (require 'erc-fill) ;; TODO: change this to an autoload
+(require 'erc-fill) ;; TODO: change this to an autoload
 (require 'erc-ring) ;; TODO: change this to an autoload
 (require 'erc-netsplit) ;; TODO: change this to an autoload
 (require 'erc-spelling) ;; TODO: change this to an autoload
@@ -1344,6 +1344,7 @@
 (erc-track-mode t)
 (erc-match-mode t)
 ;; (erc-fill-mode 0) ;; disable ERC fill
+;; (erc-fill-disable) ;; disable ERC fill
 (erc-ring-mode t)
 (erc-netsplit-mode t)
 (erc-timestamp-mode t) ;; enable ERC timestamp on
@@ -1358,8 +1359,8 @@
       erc-current-nick-highlight-type 'all ;; highlight the entire messahe where current nickname occurs
       erc-timestamp-format "[%H:%M] " ;; put timestamps on the left
       erc-fill-prefix "        " ;; ...
-      erc-fill-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
-      ;; erc-fill-column 90
+      erc-fill-column 90
+      ;; erc-fill-mode 0 ;; again, disable ERC fill (not sure why I have done it in two places)
       erc-timestamp-right-column 61
       erc-track-showcount t ;; show count of unseen messages
       erc-timestamp-only-if-changed-flag nil ;; always show timestamp
@@ -1385,6 +1386,8 @@
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
       erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic" "##club-ubuntu"))
       erc-join-buffer 'bury)
+
+(setq erc-modules (delq 'fill erc-modules)) ;; disable erc-fill-mode
 
 ;; (add-hook 'erc-after-connect '(lambda (SERVER NICK) (erc-message "PRIVMSG" "NickServ identify password"))) ;; authentication details
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
@@ -1938,7 +1941,7 @@ stuff, to the current ERC buffer."
 ;; ===================
 ;;; start emacs server
 ;; ===================
-(require 'server) ;; TODO: change to an autoload
+(require 'server)
 (when (and (functionp 'server-running-p) (not (server-running-p))) ;; don't start the server unless we can verify it isn't running
   (server-mode t) ;; enter server mode
-  (server-start)) ;; FIXME: fix (should be handled in .stumpwmrc)
+  (server-start))

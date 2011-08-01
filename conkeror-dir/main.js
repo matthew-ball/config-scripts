@@ -76,7 +76,7 @@ define_webjump("gnumla", "http://lists.gnu.org/archive/html/", $description="GNU
 
 // school stuff
 define_webjump("pp", "http://philpapers.org", $description="Philosophy Papers");
-define_webjump("stanford", "http://plato.stanford.edu", $description="Stanford Encyclopedia of Philosophy");
+define_webjump("stanford", "http://plato.stanford.edu/search/searcher.py?query=%s", $alternative="http://plato.stanford.edu", $description="Stanford Encyclopedia of Philosophy");
 define_webjump("jstor", "http://www.jstor.org.virtual.anu.edu.au", $description="Journal Storage");
 define_webjump("anu", "http://www.anu.edu.au", $description="Australian National University");
 define_webjump("library", "http://anulib.anu.edu.au", $description="ANU Library");

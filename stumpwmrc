@@ -43,14 +43,16 @@
 (defvar *terminal* "gnome-terminal" "Set the default terminal emulator.")
 (defvar *editor* "emacs" "Set the default editor.")
 
-(defvar *mail-client* "mutt" "Set the default mail application.")
-(defvar *irc-client* "irssi" "Set the default IRC client.")
 (defvar *package-manager* "aptitude" "Set the default package manager.")
 (defvar *system-monitor* "htop" "Set the default system monitor.")
 
-(defvar *media-player* "banshee" "Set the default media player.") ;; TODO: setup
 (defvar *music-player* "ncmpcpp" "Set the default music player.")
 (defvar *video-player* "totem" "Set the default video players.")
+
+(defvar *mail-client* "mutt" "Set the default mail application.") ;; TODO: this is now out-dated
+(defvar *irc-client* "irssi" "Set the default IRC client.") ;; TODO: ... as is this
+;; (defvar *media-player* "banshee" "Set the default media player.") ;; TODO: setup
+
 
 ;; ================
 ;;; slime and swank
@@ -247,8 +249,8 @@
 
 (defcommand run-referencer () () "Run an instance of `referencer' with property `:instance'." (run-app "referencer" (list :instance "referencer")))
 (defcommand run-tuxguitar () () "Run an instance of `tuxguitar' with property `:instance'." (run-app "tuxguitar" (list :instance "tuxguitar")))
-(defcommand run-banshee () () "Run an instance of `banshee' with property `:instance'." (run-app "banshee" (list :instance "banshee")))
 (defcommand run-pyscrabble () () "Run an instance of `pyscrabble' with property `:instance'." (run-app "pyscrabble" (list :instance "pyscrabble")))
+;; (defcommand run-banshee () () "Run an instance of `banshee' with property `:instance'." (run-app "banshee" (list :instance "banshee")))
 
 (defcommand run-system-monitor () () "Run an instance of `*system-monitor*' with property `:title'." (run-terminal-app *system-monitor* *system-monitor* "-u \"chu\""))
 (defcommand run-package-manager () () "Run an instance of `*package-manager*' with property `:title'." (run-terminal-app *package-manager* *package-manager*))
@@ -536,9 +538,9 @@
   (message "Starting info."))
 
 (defcommand emacs-term () ()
-  "Start a new ANSI terminal session in Emacs."
+  "Start a new (or switch to an existing) ANSI terminal session in Emacs."
   (send-emacs-key-command "M-x")
-  (send-emacs-string "start-term")
+  (send-emacs-string "switch-term")
   (send-emacs-key-command "RET")
   (message "Starting term."))
 
