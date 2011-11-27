@@ -2,21 +2,24 @@
 # Custom alias definitions
 # ========================
 
-alias ls='ls --color=auto'
-    
+alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars --human-readable --group-directories-first' # fancy ls
+# alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 alias search='apt-cache search' # search apt-cache for packages
 alias show='apt-cache show' # show package details from apt-cache
-alias update='sudo apt-get update' # update apt packages
-alias upgrade='sudo apt-get upgrade' # upgrade (any) available apt packages
+alias temp='acpi -t' # show package details from apt-cache
+
+alias update='sudo apt-get update' # update apt package
+alias upgrade='sudo apt-get upgrade' # upgrade available apt packages
+alias dist_upgrade='sudo apt-get dist-upgrade' # upgrade apt packages
 alias install='sudo apt-get install' # install package via apt-get
+alias remove='sudo apt-get remove' # remove apt package
+alias purge='sudo apt-get purge' # purge apt package
+
 alias screenshot='import -window root' # capture screenshot
-
 alias resume='screen -r' # resume screen session
-
 alias connect='nmcli con up id' # connect to network
-
 alias hibernate='sudo pm-hibernate'
 
 # jump to the current emacs directory

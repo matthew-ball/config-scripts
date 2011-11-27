@@ -37,8 +37,10 @@
 ;; =====================
 ;;; default applications
 ;; =====================
-;; (defvar *browser* "chromium-browser" "Set the default web browser.")
-(defvar *browser* "conkeror" "Set the default web browser.") ;; TODO: do this better
+(defvar *browser* "" "Set the default web browser.")
+
+(setf *browser* "conkeror") ;; set the default browser to conkeror
+;; (setf *browser* "chromium-browser") ;; set the default browser to chromium
 
 (defvar *terminal* "gnome-terminal" "Set the default terminal emulator.")
 (defvar *editor* "emacs" "Set the default editor.")
@@ -51,8 +53,8 @@
 
 (defvar *mail-client* "mutt" "Set the default mail application.") ;; TODO: this is now out-dated
 (defvar *irc-client* "irssi" "Set the default IRC client.") ;; TODO: ... as is this
-;; (defvar *media-player* "banshee" "Set the default media player.") ;; TODO: setup
 
+;; (defvar *media-player* "banshee" "Set the default media player.") ;; TODO: setup
 
 ;; ================
 ;;; slime and swank
@@ -139,12 +141,13 @@
       *mode-line-timeout* 1) ;; update every second (if nothing else has triggered it already)
 
 (setf *screen-mode-line-format*
-      (list ;; "[(^B%n^b) (^B%w^b)]" ;; current group/frames
-       ;; "[^B%g^bA] [^B%W^b] " ;; groups/current frame
+      (list "[(^B%n^b) (^B%w^b)]" ;; current group/frames
+       ;; "[(^B%g^bA)] [(^B%W^b)] " ;; groups/current frame
        ;; "[(%c) (%M)] " ;; cpu and memory
-       ;; "[(%B) (%I)] " ;; battery and wireless
-       ;; '(:eval (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t)))) ;; time
-       "[^B%m^b]")) ;; mpd
+       " [(%B) (%I)]" ;; battery and wireless
+       '(:eval (cat " [(^B" (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t) "^b)] ")) ;; time
+       ;; "[^B%m^b]" ;; mpd
+       ))
 
 ;; (when (not (head-mode-line (current-head))) ;; turn on the modeline
 ;;   (toggle-mode-line (current-screen) (current-head)))
@@ -381,6 +384,19 @@
 (make-web-jump google "http://www.google.com/search?q")
 (make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
 
+;; ==========
+;;; safe quit
+;; ==========
+(defcommand safequit () () ;; redefine the "quit" command (only leave the stumpwm session if there are no windows open
+  "Checks if any windows are open before quitting."
+  (let ((win-count 0))
+    (dolist (group (screen-groups (current-screen))) ;; count the windows in each group
+      (setq win-count (+ (length (group-windows group)) win-count)))
+    (if (= win-count 0) ;; display the number of open windows or quit
+        (run-commands "quit")
+      (message (format nil "You have ~d ~a open" win-count
+		       (if (= win-count 1) "window" "windows"))))))
+
 ;; ==============
 ;;; notifications
 ;; ==============
@@ -548,8 +564,9 @@
 ;;; startup applications
 ;; =====================
 (when *initializing*
+  ;; start emacs daemon
   (run-editor) ;; start the editor
-  (run-browser) ;; start the browser
+  ;; (run-browser) ;; start the browser
   (swank) ;; start swank
   (run-shell-command "mpd")) ;; launch mpd
 

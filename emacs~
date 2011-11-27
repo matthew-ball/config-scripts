@@ -16,34 +16,34 @@
 ;; =============
 ;;; colour theme
 ;; =============
-(require 'color-theme)
-(require 'zenburn)
-
-(when window-system ;; if using a windows system
-  ;; (set-face-attribute 'default nil :height 90) ;; change font size
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono-9") ;; change font details
-  (setq frame-title-format "%b"
-  	icon-title-format "%b")
-  (eval-after-load "color-theme" '(zenburn))) ;; apply zenburn colour theme
-
-;; NOTE: requires that emacs is run as a daemon
 ;; (require 'color-theme)
 ;; (require 'zenburn)
-;; (color-theme-initialize)
 
-;; ;; FIXME: this does not completely work
-;; (defun apply-color-theme (frame)
-;;   "Apply color theme to a frame based on whether its a 'real' window or a console window."
-;;   (select-frame frame)
-;;   (when (window-system frame)
-;;       (progn
-;; 	(set-face-attribute 'default nil :font "DejaVu Sans Mono-9") ;; change font details
-;; 	(setq frame-title-format "%b"
-;; 	      icon-title-format "%b")
-;; 	(zenburn))))
+;; (when window-system ;; if using a windows system
+;;   ;; (set-face-attribute 'default nil :height 90) ;; change font size
+;;   (set-face-attribute 'default nil :font "DejaVu Sans Mono-9") ;; change font details
+;;   (setq frame-title-format "%b"
+;;   	icon-title-format "%b")
+;;   (eval-after-load "color-theme" '(zenburn))) ;; apply zenburn colour theme
 
-;; (setq color-theme-is-global nil)
-;; (add-hook 'after-make-frame-functions 'apply-color-theme)
+;; NOTE: requires that emacs is run as a daemon
+(require 'color-theme)
+(require 'zenburn)
+(color-theme-initialize)
+
+;; FIXME: this does not completely work
+(defun apply-color-theme (frame)
+  "Apply color theme to a frame based on whether its a 'real' window or a console window."
+  (select-frame frame)
+  (when (window-system frame)
+      (progn
+	(set-face-attribute 'default nil :font "DejaVu Sans Mono-9") ;; change font details
+	(setq frame-title-format "%b"
+	      icon-title-format "%b")
+	(zenburn))))
+
+(setq color-theme-is-global nil)
+(add-hook 'after-make-frame-functions 'apply-color-theme)
 
 ;; ========================
 ;;; default function values
@@ -57,6 +57,7 @@
 (set-language-environment "UTF-8")
 (delete-selection-mode 1) ;; delete selected region
 ;; (display-time-mode t) ;; display time in the mode-line
+;; (display-battery-mode t) ;; display battery status in the mode-line
 ;; (which-function-mode t) ;; show the current function in the mode-line
 
 ;; ========================
@@ -119,8 +120,6 @@
 (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; open *.tex files in LaTeX mode
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; open word documents with antiword
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; open *.lua files in lua mode
-(add-to-list 'auto-mode-alist '("\\.ot$" . otter-mode)) ;; open *.ot files in otter mode
-(add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; open *.in files in otter mode
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; open python files in a psuedo-python interpreter
 
 ;; ===================
@@ -146,25 +145,21 @@
 ;;; custom variables
 ;; =================
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
  '(case-fold-search t)
  '(clean-buffer-list-delay-general 1)
  '(current-language-environment "English")
- '(global-font-lock-mode t nil (font-lock))
- '(org-agenda-files (quote ("~/Documents/Organisation/readings/notes/the-logical-basis-of-metaphysics.org" "~/Documents/Organisation/notes.org" "~/Documents/Organisation/school.org" "~/Documents/Organisation/home.org" "~/Documents/Organisation/readings/readings.org" "~/Documents/Organisation/bookmarks.org" "~/Documents/Organisation/projects.org"))))
+ '(global-font-lock-mode t nil (font-lock)))
 
 ;; =============
 ;;; custom faces
 ;; =============
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
+ (font-lock-add-keywords 'emacs-lisp-mode
+  			 '(("setq" . font-lock-keyword-face)
+			   ;; ("eq" . font-lock-keyword-face)
+			   ("autoload" . font-lock-keyword-face)))
+ (font-lock-add-keywords 'lisp-interaction-mode
+			 '(("setf" . font-lock-keyword-face))))
 
 ;; =========================
 ;;; global keyboard bindings
@@ -288,11 +283,6 @@
   "Run antiword on the entire buffer."
   (shell-command-on-region (point-min) (point-max) "antiword - " t t))
 
-;; ==============
-;;; doc view mode
-;; ==============
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
-
 ;; =================
 ;;; package archiver
 ;; =================
@@ -301,20 +291,6 @@
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("org-mode" . "http://orgmode.org/pkg/daily/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")))
-
-;; automatically set up packages (requires emacs24)
-;; (when (not package-archive-contents)
-;;   (package-refresh-contents))
-
-;; (defvar my-packages '(starter-kit starter-kit-lisp starter-kit-eshell
-;;                                   starter-kit-bindings scpaste
-;;                                   clojure-mode clojure-test-mode
-;;                                   markdown-mode yaml-mode tuareg
-;;                                   marmalade oddmuse scpaste))
-
-;; (dolist (p my-packages)
-;;   (when (not (package-installed-p p))
-;;     (package-install p)))
 
 ;; =================
 ;;; single line copy
@@ -702,10 +678,6 @@
 		(filename . "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/"))
 	       ("Project (Metaphysics)" ;; metaphysics related buffers
 		(filename . "/home/chu/Documents/Papers/other/Philosophy/Metaphysics"))
-	       ("Project (Intuitionistic Logic)" ;; intuitionistic logic related buffers
-		(filename . "/home/chu/Documents/Papers/other/Philosophy/Exclusion Conditional"))
-	       ("Project (Philosophy of Logic)" ;; philosophy of logic related buffers
-		(filename . "/home/chu/Documents/Papers/other/Philosophy/Philosophy of Logic"))
 	       ("University" ;; buffers related to ANU
 		(filename . "/home/chu/Documents/ANU/"))
 	       ("LaTeX" ;; latex related buffers
@@ -730,7 +702,6 @@
 		    (mode . makefile-mode)
 		    (mode . makefile-gmake-mode)
 		    (mode . scheme-mode)
-		    (mode . nusmv-mode)
 		    (mode . inferior-scheme-mode)
 		    (mode . lisp-mode)
 		    (mode . emacs-lisp-mode)
@@ -747,7 +718,7 @@
 		(or (name . "^\\*FINDER\\*$")
 		    (name . "^\\*DIAGNOSE\\*$")))
 	       ("Reading Notes" ;; reading notes related buffers
-		(filename . "Documents/Organisation/readings/"))
+		(filename . "Documents/Organisation/readings/notes/"))
 	       ("Deft" ;; deft note taking related buffers
 		(mode . deft-mode))
 	       ("Organisation" ;; org-mode related buffers
@@ -1058,7 +1029,6 @@
 (require 'org-protocol) ;; FIXME: change this to an autoload
 (require 'org-latex) ;; FIXME: change this to an autoload
 (require 'org-special-blocks) ;; FIXME: change this to an autoload
-(require 'org-freemind) ;; FIXME: change this to an autoload
 
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
@@ -1236,8 +1206,6 @@
 	       "\\documentclass[10pt,a4paper]{article}
                \\usepackage{amsmath}
                \\usepackage{amssymb}
-               \\usepackage{amsthm}
-               \\usepackage[cm]{fullpage}
                \\usepackage{multicol}
                \\usepackage{mdwlist}
                \\usepackage{geometry}
@@ -1334,8 +1302,7 @@
 (defun start-term (&rest junk)
  "Start an `ansi-term' shell in the directory of current buffer."
  (ansi-term "/bin/bash")
- ;; (term-line-mode)
- )
+ (term-line-mode))
 
 (defun switch-term (&rest junk)
   "Switch to an active shell (if one exists) or create a new shell (if none exists)."
@@ -1405,10 +1372,6 @@
 (require 'dired-x)
 ;; (require 'dired-details)
 ;; (dired-details-install)
-
-(setq dired-listing-switches "-al") ;; default listing switches
-;; (setq dired-listing-switches "-lRS") ;; recurse into sub-directories (seriously hurts the system though)
-;; (setq dired-listing-switches "--classify --tabsize=0 --literal --color=auto --show-control-chars --human-readable --group-directories-first")
 
 (add-hook 'dired-load-hook (lambda () (load "dired-x")))
 (add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; was dired-advertised-find-file
@@ -1687,17 +1650,6 @@ stuff, to the current ERC buffer."
       (unload-feature 'logic4fun))
   (logic4fun-mode))
 
-;; ======
-;;; otter
-;; ======
-(autoload 'otter-mode "otter-mode" "Mode for editing Otter files." t)
-(autoload 'run-otter  "otter-mode" "Running an inferior Otter process." t)
-
-(defvar otter-program "/usr/local/src/otter-3.2/source/otter" "The absolute path to Otter.")
-(defvar otter-out-extension ".oout" "*The extension used to generate output files from Otter.")
-(defvar otter-in-extension1 "\\.ot" "*The standard extension to recognize input-files for Otter (note that the \\ before the period is a must!)")
-(defvar otter-in-extension2 "\\.in" "*An other extension to recognize input-files for Otter (note that the \\ before the period is a must!)")
-
 ;; ================
 ;;; lambda calculus
 ;; ================
@@ -1775,12 +1727,6 @@ stuff, to the current ERC buffer."
 (add-hook 'lua-mode-hook 'hs-minor-mode)
 ;; (add-hook 'lua-mode-hook (lambda () (flyspell-prog-mode)))
 
-;; ==================
-;;; nusmv programming
-;; ==================
-(autoload 'nusmv-mode "nusmv-mode" "Major mode for NuSMV specification files." t)
-(setq auto-mode-alist (append  (list '("\\.smv$" . nusmv-mode)) auto-mode-alist))
-
 ;; =============
 ;;; latex markup
 ;; =============
@@ -1801,19 +1747,14 @@ stuff, to the current ERC buffer."
        (reftex-parse-all)))
 
 (defun org-mode-reftex-setup () ;; FIXME: fix
-  (when (and (buffer-file-name)
-	     (file-exists-p (buffer-file-name)))
-    (load-library "reftex")
-    (and (buffer-file-name)
-	 (file-exists-p (buffer-file-name))
-	 (reftex-parse-all))
-    (reftex-set-cite-format
-     '((?b . "[[bib::%l]]")
-       (?n . "[[note::%l]]"))))
-  (define-key org-mode-map "\C-c\C-g" 'reftex-citation))
+  "Make reftex work with org-mode."
+  (load-library "reftex")
+  (and (buffer-file-name)
+  (file-exists-p (buffer-file-name))
+  (reftex-parse-all))
+  (define-key org-mode-map (kbd "C-c (") 'reftex-citation))
 
 ;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-(add-hook 'org-mode-hook 'turn-on-reftex)
 (add-hook 'org-mode-hook (lambda () (if (member "REFTEX" org-todo-keywords-1)
 				   (org-mode-article-modes))))
 
@@ -2133,17 +2074,6 @@ stuff, to the current ERC buffer."
 (setq special-mode-hooks '(emacs-lisp-mode-hook lisp-interaction-mode-hook haskell-mode-hook shell-script-mode muttrc-mode))
 
 (mapc (lambda (mode-hook) (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
-
-;; ==========
-;;; time mode
-;; ==========
-(require 'time) ;; TODO: change this to an autoload
-(display-time-mode 1)
-
-;; =============
-;;; battery mode
-;; =============
-(display-battery-mode t) ;; display battery status in the mode-line
 
 ;; ===================
 ;;; start emacs server

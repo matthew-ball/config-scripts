@@ -32,15 +32,23 @@ external_content_handlers.set("application/x-dvi", "evince");
 /// mode-line
 // ==========
 require("mode-line.js");
-// require("mode-line-buttons.js");
+require("mode-line-buttons.js");
 
-// mode_line_add_buttons(standard_mode_line_buttons, true);
-// add_hook("mode_line_hook", mode_line_adder(buffer_icon_widget), true)
 // add_hook("mode_line_hook", mode_line_adder(current_buffer_name_widget));
-
-add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true);
-add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true);
+add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true); // shows how many buffers are currently loading
+add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true); // shows how many buffers are currently open
 remove_hook("mode_line_hook", mode_line_adder(clock_widget));
+// remove_hook("mode_line_hook", mode_line_adder(current_buffer_scroll_position_widget));
+
+mode_line_add_buttons(standard_mode_line_buttons, true);
+
+// =========
+/// favicons
+// =========
+require("favicon");
+
+add_hook("mode_line_hook", mode_line_adder(buffer_icon_widget), true);
+read_buffer_show_icons = true; // show favicons in the open buffer completions listing
 
 // =============
 /// tab-bar mode
@@ -48,7 +56,7 @@ remove_hook("mode_line_hook", mode_line_adder(clock_widget));
 // require("new-tabs.js"); // show tabs
 require("clicks-in-new-buffer.js"); // open buffers (tabs) in the background
 
-clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND; 
+clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND;
 clicks_in_new_buffer_button = 1; //  middle-click opens links in new buffers
 
 // ========================
@@ -209,7 +217,7 @@ interactive("reload-config", "Reload ~/.conkerorrc file.",
 
 interactive("url-completion-toggle", "toggle between bookmark and history completion", url_completion_toggle);
 
-// TODO: this doesn't appear to work
+// NOTE: this doesn't appear to work
 // url_completion_toggle; // open only bookmarks by default (toggle to using history with C-c t)
 
 // ===================
@@ -259,6 +267,11 @@ xkcd_add_title = true;
 // ===============
 require("page-modes/wikipedia.js")
 wikipedia_enable_didyoumean = true; // automatically follow "did you mean" links on wikipedia search pages
+
+// ============
+/// reddit mode
+// ============
+require("reddit");
 
 // ========================
 /// auto-hide the mode-line
@@ -338,6 +351,34 @@ require("session.js");
 // session_auto_save_file = "./session"
 session_auto_save_auto_load = true; // automatically load saved session on startup
 // session_auto_save_auto_load = "prompt";
+
+// ========
+/// history
+// ========
+session_pref('browser.history_expire_days', 2); // history expires after two days
+
+// NOTE: don't think I will actually need any of the following:
+// ----
+// define_browser_object_class(
+//     "history-url", null,
+//     function (I, prompt) {
+//         check_buffer (I.buffer, content_buffer);
+//         var result = yield I.buffer.window.minibuffer.read_url($prompt = prompt,  $use_webjumps = false, $use_history = true, $use_bookmarks = false);
+//         yield co_return (result);
+//     });
+
+// interactive("find-url-from-history",
+//             "Find a page from history in the current buffer",
+//             "find-url",
+// 	    $browser_object = browser_object_history_url);
+
+// interactive("find-url-from-history-new-buffer",
+//             "Find a page from history in the current buffer",
+//             "find-url-new-buffer",
+//             $browser_object = browser_object_history_url);
+
+// define_key(content_buffer_normal_keymap, "h", "find-url-from-history-new-buffer");
+// define_key(content_buffer_normal_keymap, "H", "find-url-from-history");
 
 // =======
 /// daemon

@@ -9,7 +9,7 @@
 ## ========
 ### exports
 ## ========
-export HISTCONTROL=ignoredups # don't put duplicate lines in the history 
+export HISTCONTROL=ignoredups # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # ... and ignore same sucessive entries
 
 # export TERM=xterm-color # export 8 colours in shell session
@@ -169,3 +169,23 @@ fi
 #     exec screen -dR
 #     exec screen -rD
 # fi
+
+## ============
+### emacs shell
+## ============
+# unset LC_MONETARY
+# unset LC_NUMERIC
+# unset LC_MESSAGES
+# unset LC_COLLATE
+# unset LC_CTYPE
+# unset LC_TIME
+
+# export LC_CTYPE=en_US.UTF-8
+# export PAGER=cat
+# export TERM=emacs
+
+# # alias less=cat
+# # alias more=cat
+
+# stty rows 10000 columns 80  2>/dev/null
+# # echo "Welcome to emacs shell"

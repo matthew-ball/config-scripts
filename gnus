@@ -146,26 +146,39 @@
 ;; ===========
 ;;; rss config
 ;; ===========
-;; (eval-after-load "gnus-sum" ;; set the default value of mm-discouraged-alternatives
-;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
+(eval-after-load "gnus-sum" ;; set the default value of mm-discouraged-alternatives
+  '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
      
-;; (add-to-list ;; display ‘text/html’ parts in nnrss groups
-;;  'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
+(add-to-list ;; display ‘text/html’ parts in nnrss groups
+ 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
-;; (add-hook 'gnus-summary-mode-hook
-;;           (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
-;; 		  (progn
-;; 		    (make-local-variable 'gnus-show-threads)
-;; 		    (make-local-variable 'gnus-article-sort-functions)
-;; 		    (make-local-variable 'gnus-use-adaptive-scoring)
-;; 		    (make-local-variable 'gnus-use-scoring)
-;; 		    (make-local-variable 'gnus-score-find-score-files-function)
-;; 		    (make-local-variable 'gnus-summary-line-format)
-;; 		    (setq gnus-show-threads nil
-;; 			  gnus-article-sort-functions 'gnus-article-sort-by-date
-;; 			  gnus-use-adaptive-scoring nil
-;; 			  gnus-use-scoring t
-;; 			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
+(add-hook 'gnus-summary-mode-hook
+          (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
+		  (progn
+		    (make-local-variable 'gnus-show-threads)
+		    (make-local-variable 'gnus-article-sort-functions)
+		    (make-local-variable 'gnus-use-adaptive-scoring)
+		    (make-local-variable 'gnus-use-scoring)
+		    (make-local-variable 'gnus-score-find-score-files-function)
+		    (make-local-variable 'gnus-summary-line-format)
+		    (setq gnus-show-threads nil
+			  gnus-article-sort-functions 'gnus-article-sort-by-date
+			  gnus-use-adaptive-scoring nil
+			  gnus-use-scoring t
+			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
+
+;; (defun browse-nnrss-url (arg)
+;;   "Browse RSS url."
+;;   (interactive "p")
+;;   (let ((url (assq nnrss-url-field (mail-header-extra (gnus-data-header (assq (gnus-summary-article-number) gnus-newsgroup-data))))))
+;;     (if url
+;; 	(browse-url (cdr url))
+;;       (gnus-summary-scroll-up arg))))
+
+;; (add-hook 'gnus-summary-mode-hook (lambda () (define-key gnus-summary-mode-map (kbd "C-<return>") 'browse-nnrss-url)))
+
+;; (add-to-list 'nnmail-extra-headers nnrss-url-field)
+
 
 ;; ====
 ;;; old

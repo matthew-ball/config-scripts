@@ -29,4 +29,13 @@
   ("uid-integer" 453750)
   ("ls" "/bin/ls")
   ("tmp-directory" "/tmp")
-  ("~" "/students/u4537508")))
+  ("~" "/students/u4537508")
+  ("ls-dired" t)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink"))
+ (["ssh" nil "remember" nil]
+  nil)
+ (["ssh" nil "See" nil]
+  nil))
