@@ -1,14 +1,32 @@
-mutt-dir/
+# ============================
+# ~/.conf-scripts/.gitignore
+# Matthew Ball (copyleft 2012)
+# ============================
+
+# ignore the passwords directory
 passwords/
-emacs-dir/auto-save-list/
-emacs-dir/save-files/
+# ignore unnecessary emacs-related files
+emacs-dir/ac-comphist.dat
+emacs-dir/ac-dict/
+emacs-dir/auto-complete-config.el
 emacs-dir/auto-complete-config.elc
+emacs-dir/auto-complete.el
 emacs-dir/auto-complete.elc
-emacs-dir/popup.elc
+emacs-dir/auto-save-list/
+emacs-dir/elpa/
+emacs-dir/eproject.lst
 emacs-dir/fuzzy.elc
-emacs-dir/google-reader-subscriptions.xml
 emacs-dir/history
+emacs-dir/popup.elc
 emacs-dir/recentf
+emacs-dir/save-files/
+emacs-dir/smex-items
+emacs-dir/url/
 emacs-dir/.emacs.desktop.lock
 emacs-dir/.emms-history
-emacs-dir/.emms-history.elc
+# ignore the mutt data
+mutt-dir/
+# ignore stumpwm's debug text
+stumpwm-dir/debug-output.txt
+# ignore backup files
+*~

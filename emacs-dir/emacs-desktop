@@ -2,49 +2,264 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Sun Nov 27 02:33:04 2011
+;; Created Sun Jan 29 16:07:37 2012
 ;; Desktop file format version 206
-;; Emacs version 23.2.1
+;; Emacs version 24.0.92.1
 
 ;; Global section:
-(setq desktop-missing-file-warning nil)
+(setq extended-command-history '("global-visual-line-mode" "visual-line-mode" "ido-dired" "linum-mode" "package-list-packages" "eval-buffer" "smex-initialize" "ido-dired"))
+(setq file-name-history '("/home/chu/.conf-scripts/README" "~/.emacs.d/config-el/dired-config.el" "~/.emacs.d/config-el/user-config.el" "/home/chu/.emacs.d/README" "/home/chu/.emacs.d/config-el/dired-config.el" "/home/chu/.emacs.d/config-el/user-config.el" "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org" "/home/chu/.conf-scripts/mpd.conf" "/home/chu/.emacs.d/emms-mpd.el" "" "/home/chu/Documents/Organisation/archive.org" "/home/chu/Documents/Writing/anti-realism/anti-realism.org" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "/home/chu/.conf-scripts/emacs-dir/README" "smex-items" "smex-items~/.emacs.d/" "/home/chu/.emacs.d/.smex-items" "/home/chu/.conf-scripts/emacs-dir/README" "/home/chu/.conf-scripts/.gitignore" "/home/chu/Documents/Writing/writings.org" "/home/chu/Documents/Reading/readings.org" "/home/chu/Documents/Writing/writing.org" "/home/chu/Documents/Writing/Exclusion Conditional/exclusion-conditional.org" "/home/chu/Downloads/philosophy-of-language.org" "/home/chu/Documents/Writing/Philosophy of Language/philosophy-of-language.org" "/home/chu/.emacs.d/config-el/appearance-config.el" "/home/chu/.emacs.d/config-el/package-config.el" "~/.emacs.d/config-el/appearance-config.el" "/home/chu/.emacs.d/README" "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org" "/home/chu/Documents/Reading/notes/an-introduction-to-godels-theorems.org" "/home/chu/.conf-scripts/emacs-dir/init.el" "/home/chu/.conf-scripts/README" "/home/chu/.emacs.d/README" "/home/chu/Downloads/emacs-starter-kit/emacs24-starter-kit/init.el" "/home/chu/Documents/Organisation/archive.org" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "/home/chu/.conf-scripts/emacs" "/home/chu/.emacs.d/config-el/latex-config.el" "/home/chu/.stumpwmrc" "/home/chu/.emacs.d/config-el/general-config.el"))
+(setq grep-history nil)
+(setq compile-history '("ghc Main.hs"))
+(setq minibuffer-history '("reftex-label" "reftex-toc" "reftex-mode" "reftex-info" "reftex-mode" "reftex-toc" "org-special-blocks-convert-html-special-cookies" "org-latex-packages-to-string" "org-entities-help" "org-entities" "org-protocol-create" "require" "emms-player-mpd-seek-to" "emms" "eval-buffer" "emms" "eval-buffer" "emms-setup" "dired-x-find-file-other-window" "eproject" "eval-buffer" "eproject" "eval-buffer" "eproject" "eval-buffer" "eproject-setup" "eval-buffer" "eproject-setup" "show-bugs-fixes-todos" "emacs-version" "dired-config.el" "user-config.el" "switch-term" "shell-mode-hook" "magit-status" "switch-term" "magit-status" "eshell" "switch-term" "eval-buffer" "emms-player-mpd-connect" "ido-dired" "eval-buffer" "ido-dired" "emms" "emms-player-mpd-connect" "emms" "switch-term" "ansi-term" "emms"))
+(setq query-replace-history nil)
+(setq read-expression-history '("(when pid (int-to-string pid))" "(int-to-string pid)" "(flymake-mode-on)" "(flymake-mode 'on)" "(flymake-mode t)" "(require 'imenu)" "(imenu-auto-rescan t)" "(require 'slime)" "(dolist (p my-packages) (if (package-installed-p p) (message (concat p \" is installed.\")) (message (concat p \" is not installed.\"))))" "(dolist (p my-packages) (package-installed-p p))" "(mapc 'package-installed-p my-packages)" "(do-list (p my-packages) (package-installed-p p))" "(package-installed-p 'magit)" "(package-installed-p magit)" "(package-installed-p \"magit\" \"1.1.0\")" "(package-installed-p \"magit\" \"1.1.0" "(package-installed-p \"magit\")" "(read (concat ?# \"lol\"))" "(read (concat \"l\" \"o\" \"l\"))" "(read (concat \"#\" \" \"))" "(read \"lol\")" "(write (concat \"# \" (buffer-file-name)))" "(read (concat \"# \" (buffer-file-name)))" "(concat \"# \" (buffer-file-name))" "(message (buffer-file-name))" "(if (and (functionp 'server-running-p) (not (server-running-p))) (message \"not running\") (message \"running\"))" "(buffer-name)" "(message user-email)" "(message user-full-name)"))
+(setq regexp-history nil)
+(setq regexp-search-ring '("autolo" "shell" "dired" "desktop" "alonzo" "eshell" "dired" "eshell" "dired" "READ" "emms" "run-audi" "run-" "music" "audio" "music"))
+(setq search-ring nil)
+(setq shell-command-history '("wc -l"))
 (setq tags-file-name nil)
-(setq tags-table-list nil)
-(setq search-ring '("October" "logic-and-m" "logic" "seman" "such that both" "art" "org-mode-reg" "reftex-citat" "add-to-" "appendf" " ibuffer" "abstract" "abst" "a-logical-fram" "a logical" "logic"))
-(setq regexp-search-ring '(";; =.*" "s.*q" "(.*)))"))
-(setq register-alist (list (desktop-list* 13 (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk)) (list 82 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook (list 'lambda '() (list 'set-marker mk nil (get-buffer " *temp*")))) mk))))
-(setq file-name-history '("/home/chu/Documents/Papers/other/Philosophy/Philosophy of Logic/philosophical-investigations-in-logic.bib" "/home/chu/Documents/Organisation/readings/notes/metaphysics-mathematics-and-meaning.org" "/home/chu/Documents/Papers/other/Philosophy/Philosophy of Logic/philosophical-investigations-in-logic.org" "~/Documents/Papers/other/Philosophy/Philosophy of Logic" "/tmp/www-facebook-com-ref-tn-tinyman-textarea.txt" "/home/chu/Documents/ANU/COMP4630/michael-assignment/assignment.smv" "/home/chu/Documents/ANU/COMP4630/peter-assignment/peter-assignment.org" "~/Documents/ANU/COMP4630/peter-assignment" "/ssh:u4537508@partch.anu.edu.au:Documents/Downloads/NuSMV/assignment/assignment.smv" "/home/chu/Documents/ANU/COMP4630/michael-assignment/notes-on-nusmv.txt" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/assignment.smv" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/example.smv" "/home/chu/Documents/ANU/COMP4630/michael-assignment/michael-assignment.smv" "/ssh:u4537508@partch.anu.edu.au:Documents/Downloads/NuSMV/assignment/assignment.smv" "~/Documents/ANU/COMP4630/michael-assignment/" "/home/chu/.conf-scripts/emacs-dir/nusmv-mode.el" "/home/chu/Documents/ANU/COMP4630/peter-assignment/assignment6" "~/Documents/ANU/COMP4630/peter-assignment" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/assignment.smv" "" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/" "" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/example.smv" "/home/chu/Documents/ANU/COMP4630/michael-assignment/assignment.smv" "~/Documents/ANU/COMP4630/michael-assignment" "~/Documents/Organisation/readings/mindmap.org" "/home/chu/Documents/Papers/other/Philosophy/Metaphysics/metaphysics-mindmap.org" "~/Documents/Papers/other/Philosophy/Metaphysics/metaphysics-mindmap.mm" "/home/chu/Documents/Papers/other/Philosophy/Metaphysics/metaphysics-mindmap.mm" "~/Documents/Metaphysics.mm" "~/Documents/Metaphysics.org" "" "~/Documents/Metaphysics.org" "/home/chu/Documents/Metaphysics.org" "~/Documents/Metaphysics.mm" "" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/ass5.smv" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/Documents/Downloads/NuSMV/assignment/" "/ssh:u4537508@partch.anu.edu.au:Documents/Downloads/NuSMV/assignment/ass5" "/ssh:u4537508@partch.anu.edu.au:/students/u4537508/" "/ssh:/u4537508@partch.anu.edu.au:/students/u4537508/" "/ssh:u4537508@partch.anu.edu.au:/../students/u4537508/Documents/Downloads/NuSMV/" "/ssh:u4537508@partch.anu.edu.au:/Documents" "/home/chu/Documents/Organisation/readings/notes/natural-logic.org" "/home/chu/Documents/Organisation/readings/notes/on-the-origin-of-objects.org" "/home/chu/Documents/Organisation/readings/notes/when-is-one-thing-equal-to-some-other-thing.org" "/home/chu/Documents/Organisation/readings/notes/metaphysics-and-supervenience.org" "/home/chu/Documents/Organisation/readings/notes/language-and-truth.org" "/home/chu/Documents/Organisation/readings/notes/four-disputes-about-properties.org" "/home/chu/.emacs" "/home/chu/Documents/Papers/other/Philosophy/Exclusion Conditional/exclusion-conditional.org" "~/Documents/Papers/other/Philosophy/Exclusion Conditional" "/home/chu/.conf-scripts/emacs" "" "~/Downloads/" "/home/chu/Documents/ANU/COMP4630/raj-assignment/raj-assignment.org" "~/Documents/ANU/COMP4630/raj-assignment" "~/Documents/ANU/COMP4630/jinbo-assignment/qtree.sty" "/home/chu/Documents/ANU/COMP4630/jinbo-assignment/jinbo-assignment.org" "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/template.tex" "/home/chu/.conf-scripts/emacs-dir/deft.el" "/home/chu/Documents/Organisation/readings/notes/challenges-to-metaphysical-realism.org" "/home/chu/Documents/Organisation/readings/notes/the-thought-a-logical-inquiry.org" "/home/chu/Documents/Organisation/readings/notes/the-thought-a-logical-enquiry.org" "/home/chu/Documents/Organisation/readings/notes/the-thought-a-logical-inquiry.org" "/tmp/www-facebook-com-ref-home-textarea.txt" "/home/chu/Documents/Organisation/readings/notes/logic/intermediate-logic.org" "/home/chu/Documents/Organisation/readings/notes/logic/intuitionistic-logic.org" "/home/chu/Documents/ANU/COMP3630/assignment1/assignment1.tex" "/home/chu/Documents/Papers/other/Computer Science/Linux/cheat-sheets/emacs/cheat-sheet2.tex" "~/Documents/Organisation/readings/notes/logic/classical-logic.org" "~/Documents/Organisation/readings/notes/logic" "/home/chu/Documents/Organisation/readings/notes/realism.org" "~/Documents/Papers/PDFs/latex-for-logicians-bussproofs.pdf" "/home/chu/Documents/ANU/COMP4630/alwen-assignment/alwen-assignment.org" "/home/chu/Documents/ANU/COMP4630/john-assignment/john-assignment.org" "~/Documents/ANU/COMP4630/john-assignment" "/home/chu/.conf-scripts/bash_aliases" "/home/chu/Projects/Programming/Assembly & C/test.c" "/home/chu/Documents/ANU/PHIL2074/assignment-2/assignment-2.tex" "/home/chu/Documents/Organisation/readings/notes/readings.bib" "/home/chu/Documents/Organisation/readings/notes/papers.bib" "/home/chu/Documents/Organisation/readings/notes/the-justification-of-deduction.org" "/home/chu/Documents/Organisation/readings/notes/the-philosophical-basis-of-intuitionistic-logic.org" "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/foundations-of-computation.org" "~/Documents/Papers/PDFs/intuitionistic-type-theory.pdf" "/home/chu/Documents/ANU/PHIL2074/assignment-2/assignment-2.tex" "/home/chu/Documents/Organisation/readings/notes/the-philosophical-significance-of-godels-theorem.org" "/home/chu/Documents/ANU/COMP4630/alwen-assignment/assignment.org" "~/Documents/ANU/COMP4630/alwen-assignment" "~/Documents/ANU/COMP4630/old/assignment1" "/home/chu/Documents/Organisation/readings/notes/realism-meaning-and-truth.org" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/Documents/ANU/COMP2310/Assignment1/Assignment1.odt" "/home/chu/Documents/Organisation/readings/notes/realism-and-truth.org" "/home/chu/Documents/Organisation/readings/notes/on-the-correspondence-between-display-postulates-and-deep-inference.org" "/home/chu/Projects/Programming/Haskell/TheoremProver.hs" "~/Documents/Organisation/readings/readings.org" "~/Documents/Organisation/readings" "/home/chu/Projects/Programming/Haskell/TheoremProver.hs" "/home/chu/Documents/Organisation/books/notes/truth.org" "/home/chu/Documents/Organisation/books/notes/metaphysical-problem-of-truth.org" "/home/chu/Documents/Organisation/books/notes/truth-and-meaning.org" "/home/chu/Documents/ANU/PHIL3072/notes/why-cannot-an-effect-precede-its-cause.org" "~/Documents/ANU/PHIL3072/notes/reading-material" "~/Documents/ANU/PHIL3072/notes/truth.org" "~/Documents/ANU/PHIL3072/notes/metaphysical-problem-of-truth.org" "/home/chu/Documents/ANU/PHIL2080/Logic-for-Fun/puzzle-5.7.l4f" "/home/chu/Documents/ANU/PHIL3072/notes/truth.org" "~/Documents/ANU/PHIL3072/notes/" "~/Documents/ANU/PHIL3072/notes" "~/Documents/ANU/COMP4630/old/" "/home/chu/Documents/Papers/PDFs/papers.org" "/home/chu/.conf-scripts/emacs-dir/refman.el" "/home/chu/.conf-scripts/emacs-dir/multi-term.el" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "~/Documents/ANU/PHIL3072/essay" "/home/chu/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-slides.tex" "/home/chu/Documents/Papers/PDFs/papers.org" "/home/chu/.conf-scripts/bashrc" "/home/chu/.authinfo" "/home/chu/.conf-scripts/emacs-dir/wtf.el" "/home/chu/Projects/Programming/Haskell/library.hs" "/home/chu/.mailrc" "/home/chu/.gnus" "/home/chu/.conf-scripts/gnus" "/home/chu/.gnus" "/home/chu/.conf-scripts/emacs-dir/lambdacalc.el" "/home/chu/.conf-scripts/emacs-dir/diminish.el" "/home/chu/.conf-scripts/conkeror-dir/ibuffer.js" "/home/chu/.conf-scripts/emacs-dir/erc-highlight-nicknames.el" "/home/chu/.conf-scripts/emacs-dir/lua-mode.el" "/home/chu/Documents/Organisation/bookmarks.org" "~/Projects/" "~/Documents/Papers/other/Philosophy/Metaphysics/" "~/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/" "~/Documents/Papers/PDFs/" "~/.conf-scripts/" "~/Documents/ANU/" "/home/chu/.conf-scripts/.git/config" "/home/chu/.conf-scripts/stumpwm-dir/bookmarks.lisp" "~/.conf-scripts/config-setup.sh" "/home/chu/org-protocol:/capture:/k/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/" "/home/chu/org-protocol:/capture:/w/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/" "/home/chu/org-protocol:/capture:/w/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/Google%2B/" "/home/chu/org-protocol:/capture:/k/https%3A%2F%2Fplus.google.com%2F%3Fhl%3Den%26tab%3DwX%23/Google%2B/" "/home/chu/org-protocol:/capture:/k/http%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dconkeror%2520and%2520emacs%26ie%3Dutf-8%26oe%3Dutf-8%26aq%3Dt/" "/home/chu/org-protocol:/capture:/k/http%3A%2F%2Fwww.afl.com.au%2F/AFL%20-%20The%20official%20site%20of%20the%20Australian%20Football%20League%20-%20AFL.com.au/" "/home/chu/org-protocol:/capture:/w/http%3A%2F%2Fwww.afl.com.au%2F/AFL%20-%20The%20official%20site%20of%20the%20Australian%20Football%20League%20-%20AFL.com.au/" "/home/chu/.backup/backup-script" "/home/chu/.conf-scripts/config-setup" "/home/chu/.conf-scripts/conkeror-dir/theme.json" "/home/chu/.conf-scripts/conkeror-dir/mini-buffer.css" "/home/chu/.conf-scripts/conkeror-dir/mode-line.css" "/home/chu/.conf-scripts/conkeror-dir/new-tabs.css" "/home/chu/.conf-scripts/conkeror-dir/modeline.css" "/home/chu/.conf-scripts/conkeror-dir/minibuffer.css" "/home/chu/.conf-scripts/conkeror-dir/scrollbars.css" "/home/chu/.conf-scripts/conkeror-dir/hints-url-panel.css" "/home/chu/.conf-scripts/conkeror-dir/scrollbars.js" "~/Documents/ANU/PHIL3072/effect-before-cause-symposium.org" "/home/chu/Documents/ANU/PHIL3072/effect-before-cause-symposium.org" "~/Documents/ANU/PHIL3072/truth-and-the-past.pdf" "~/Documents/ANU/PHIL3072/truth-and-proof.pdf" "~/Documents/ANU/PHIL3072/bringing-about-the-past.pdf" "~/Documents/ANU/PHIL3072/mctaggarts-proof.pdf" "~/Documents/ANU/PHIL3072/max-blacks-reply.pdf" "~/Documents/ANU/PHIL3072/effect-before-cause-symposium.pdf" "/home/chu/Documents/ANU/PHIL3072/phil3072.org" "/home/chu/.conf-scripts/README" "/home/chu/.conf-scripts/.gitignore" "/home/chu/.backup/README" "/home/chu/Backup/README" "/home/chu/.conf-scripts/README" "/home/chu/.conkerorrc/main.js" "/home/chu/.mpdconf" "/home/chu/.ncmpcpp/config" "/tmp/www-facebook-com-textarea.txt" "/home/chu/.irssi/config" "/home/chu/.conf-scripts/ncmpcpp-dir/config" "/home/chu/.conf-scripts/README" "/tmp/plus-google-com-hl-en-tab-wX-3ef.txt" "/home/chu/.conkerorrc" "/tmp/mutt-Lucy-1000-12059-555ee66284806f390" "/tmp/mutt-Lucy-1000-11792-55af7047526fa0991" "~/Documents/Organisation/books/notes/semantic-values.org" "/tmp/mutt-Lucy-1000-19329-936fdbe5b752974fa" "~/Documents/Papers/PDFs/abstract-objects-case-study.pdf" "/home/chu/Documents/Organisation/books/notes/semantic-values.org" "/home/chu/.w3m/w3mtmp5003-0" "/tmp/mutt-Lucy-1000-20544-4704dfd8a62581e26" "/tmp/mutt-Lucy-1000-20544-21db33e536de66fa3" "/home/chu/.conf-scripts/irssi-dir/config" "/home/chu/.conf-scripts/bash_aliases" "/home/chu/Documents/Organisation/books/notes/on-sense-and-reference.org" "~/Documents/Organisation/books/notes/an-introduction-to-godels-theorems.org" "/home/chu/Documents/Organisation/books/notes/an-introduction-to-godels-theorems.org" "~/Documents/Organisation/books/notes/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Organisation/books/notes/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Organisation/books/the-logical-basis-of-metaphysics.org" "/home/chu/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-text.tex" "~/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-slides.tex" "/tmp/mutt-Lucy-1000-16647-752f00f5d54e589e9" "/tmp/mutt-Lucy-1000-16647-314c9c34025d37a6b" "~/Downloads/UMASS-PHIL511" "/usr/share/common-lisp/source/stumpwm/contrib/mpd.lisp" "/home/chu/.mpdconf" "/tmp/mutt-Lucy-1000-28786-96ea5d76e582ab966" "/home/chu/.profile" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/.emacs.d/emacs-desktop" "/home/chu/.emacs.desktop" "/home/chu/.stumpwmrc" "/home/chu/.screenrc" "/home/chu/.bashrc" "/u4537508@partch.anu.edu.au:.emacs" "/home/chu/.emacs.d/elpa/zenburn-1.8/zenburn.el" "/home/chu/%s" "/tmp/mutt-Lucy-1000-32123-56f55a1ca2144e131" "/home/chu/.emacs.d/color-theme-zenburn.el" "~/.emacs.d/color-theme-zenburn.el" "~/.emacs.d/custom-midnight.el" "/tmp/mutt-Lucy-1000-30606-34c1735a9111d7224" "/home/chu/.emacs.d/color-theme-zenburn.el" "/tmp/mutt-Lucy-1000-25468-33f24e0cce831f26" "/tmp/mutt-Lucy-1000-25468-257d119eb438036925" "/tmp/mutt-Lucy-1000-25468-563b704377615b43e" "/tmp/mutt-Lucy-1000-22853-776e6fd7d50f0d01c" "/tmp/mutt-Lucy-1000-20667-52e84401e71241b66" "/home/chu/.aptitude/config" "/home/chu/.gtk2rc-2.0" "/home/chu/Documents/ANU/PHIL2080/logic-notes.org" "/home/chu/Documents/ANU/PHIL2080/notes.org" "/home/chu/.conf-scripts/bash_aliases" "/tmp/mutt-Lucy-1000-23646-76399ff262fdf2f1e" "/home/chu/.conf-scripts/README" "/home/chu/.fonts.conf" "/home/chu/.themes/Dust Cold/gtk-2.0/gtkrc" "/home/chu/.stumpwmrc"))
+(setq register-alist nil)
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "/home/chu/.conf-scripts/conkeror-dir/main.js"
-  "main.js"
-  'js-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  16143
-  '(1948 nil)
+  "/home/chu/.emacs.d/config-el/latex-config.el"
+  "latex-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  1199
+  '(606 nil)
   nil
   nil
-  '((buffer-file-coding-system . undecided-unix) (fill-column . 36) (truncate-lines)))
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Philosophy of Logic/philosophical-investigations-in-logic.org"
+  "/home/chu/.emacs.d/config-el/erc-config.el"
+  "erc-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  9891
+  '(1086 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org"
   "philosophical-investigations-in-logic.org"
   'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  6244
-  '(10428 nil)
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  1
+  '(6244 nil)
   nil
   nil
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/programming-config.el"
+  "programming-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  491
+  '(1597 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/org-config.el"
+  "org-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  518
+  '(285 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/Reading/readings.org"
+  "readings.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  1
+  '(1145 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/user-config.el"
+  "user-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  178
+  '(178 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/gnus-config.el"
+  "gnus-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  1296
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/appearance-config.el"
+  "appearance-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  91
+  '(1869 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/package-config.el"
+  "package-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  476
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/key-bindings-config.el"
+  "key-bindings-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  1
+  '(4105 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/dired-config.el"
+  "dired-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  258
+  '(164 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/config-el/general-config.el"
+  "general-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  23950
+  '(23950 nil)
+  nil
+  nil
+  '((show-trailing-whitespace . 1) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/README"
+  "README"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  2741
+  '(2722 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.emacs.d/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  856
+  '(609 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/stumpwmrc"
+  "stumpwmrc"
+  'lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode paredit-mode stumpwm-mode)
+  150
+  '(129 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/Writing/anti-realism/anti-realism.org"
+  "anti-realism.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  1589
+  '(1589 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/bashrc"
+  "bashrc"
+  'sh-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode)
+  5785
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/Writing/writings.org"
+  "writings.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
   "/home/chu/Documents/Organisation/school.org"
   "school.org"
   'org-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1466
-  '(1239 nil)
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  912
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/Writing/Philosophy of Language/philosophy-of-language.org"
+  "philosophy-of-language.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  20
+  '(122 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/Documents/Organisation/projects.org"
+  "projects.org"
+  'org-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  1
+  '(nil nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
@@ -53,338 +268,8 @@
   "/home/chu/Documents/Organisation/notes.org"
   "notes.org"
   'org-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1099
-  '(56 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/home.org"
-  "home.org"
-  'org-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1820
-  '(1820 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/logic/intermediate-logic.org"
-  "intermediate-logic.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  3474
-  '(1147 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/logic/intuitionistic-logic.org"
-  "intuitionistic-logic.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1654
-  '(1621 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/logic/classical-logic.org"
-  "classical-logic.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode org-beamer-mode flyspell-mode reftex-mode)
-  191
-  '(6320 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/natural-logic.tex"
-  "natural-logic.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-logical-basis-of-metaphysics.org"
-  "the-logical-basis-of-metaphysics.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  136
-  '(22 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/john-assignment/john-assignment.org"
-  "john-assignment.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  7880
-  '(6906 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/foundations-of-computation.org"
-  "foundations-of-computation.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  23785
-  '(22239 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Metaphysics/metaphysics.org"
-  "metaphysics.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  344
-  '(4577 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Metaphysics/metaphysics.tex"
-  "metaphysics.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(1 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  nil
-  "PDFs"
-  'dired-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(18599 nil)
-  t
-  '("/home/chu/Documents/Papers/PDFs/")
-  '((truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/emacs"
-  ".emacs"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
-  79234
-  '(79219 nil)
-  nil
-  nil
-  '((show-trailing-whitespace . 1) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Philosophy of Logic/philosophical-investigations-in-logic.bib"
-  "philosophical-investigations-in-logic.bib"
-  'bibtex-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  2392
-  '(2392 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Philosophy of Logic/philosophical-investigations-in-logic.tex"
-  "philosophical-investigations-in-logic.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/metaphysics-mathematics-and-meaning.org"
-  "metaphysics-mathematics-and-meaning.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  203
-  '(nil nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/non-classical-logic.tex"
-  "non-classical-logic.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  9176
-  '(6235 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Metaphysics/metaphysics.bib"
-  "metaphysics.bib"
-  'bibtex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1816
-  '(862 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/objects-properties.tex"
-  "objects-properties.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  24063
-  '(17382 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/introduction.tex"
-  "introduction.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode outline-minor-mode flyspell-mode reftex-mode)
-  1717
-  '(318 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/formal-systems.tex"
-  "formal-systems.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  22055
-  '(11917 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/peter-assignment/peter-assignment.org"
-  "peter-assignment.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  14410
-  '(10225 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  nil
-  "COMP4630"
-  'dired-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode dired-omit-mode)
-  1392
-  '(nil nil)
-  t
-  '("/home/chu/Documents/ANU/COMP4630/")
-  '((truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/PHIL3072/essay/essay.org"
-  "essay.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  38470
-  '(27918 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/reading-notes.org"
-  "reading-notes.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1601
-  '(3577 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/bashrc"
-  ".bashrc"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(5664 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/alwen-assignment/alwen-assignment.org"
-  "alwen-assignment.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(10787 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/michael-assignment/michael-assignment.smv"
-  "michael-assignment.smv"
-  'nusmv-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  4149
-  '(3528 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (case-fold-search) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/raj-assignment/raj-assignment.org"
-  "raj-assignment.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  361
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-philosophical-basis-of-intuitionistic-logic.tex"
-  "the-philosophical-basis-of-intuitionistic-logic.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/michael-assignment/notes-on-nusmv.txt"
-  "notes-on-nusmv.txt"
-  'text-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode)
-  1557
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  2
   '(1 nil)
   nil
   nil
@@ -394,722 +279,29 @@
   "/home/chu/Documents/Organisation/bookmarks.org"
   "bookmarks.org"
   'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  739
-  '(4890 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Exclusion Conditional/exclusion-conditional.org"
-  "exclusion-conditional.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  285
-  '(96 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/TheoremProver.hs"
-  "TheoremProver.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1453
-  '(11959 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/projects.org"
-  "projects.org"
-  'org-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  50
-  '(232 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/truth.org"
-  "truth.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  6475
-  '(148 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/mindmap.org"
-  "mindmap.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  211
-  '(85 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/bash_aliases"
-  "bash_aliases"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  205
-  '(96 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/deductive-logic.tex"
-  "deductive-logic.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  11180
-  '(6433 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/readings.org"
-  "readings.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  16188
-  '(15174 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/natural-logic.org"
-  "natural-logic.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  95
-  '(154 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-philosophical-basis-of-intuitionistic-logic.org"
-  "the-philosophical-basis-of-intuitionistic-logic.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  182
-  '(4883 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/raj-assignment/raj-assignment.tex"
-  "raj-assignment.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
   1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/stumpwmrc"
-  ".stumpwmrc"
-  'lisp-interaction-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode stumpwm-mode)
-  16770
-  '(16582 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/DNF.hs"
-  "DNF.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  972
-  '(nil nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/NNF.hs"
-  "NNF.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  929
-  '(929 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/CNF.hs"
-  "CNF.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(915 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Parse.hs"
-  "Parse.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  461
-  '(431 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Main.hs"
-  "Main.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  208
-  '(nil nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/on-the-origin-of-objects.org"
-  "on-the-origin-of-objects.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  164
-  '(nil nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/when-is-one-thing-equal-to-some-other-thing.org"
-  "when-is-one-thing-equal-to-some-other-thing.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  173
-  '(nil nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/metaphysics-and-supervenience.org"
-  "metaphysics-and-supervenience.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  174
-  '(3611 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/language-and-truth.org"
-  "language-and-truth.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  2981
-  '(2421 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/four-disputes-about-properties.org"
-  "four-disputes-about-properties.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(5082 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/challenges-to-metaphysical-realism.org"
-  "challenges-to-metaphysical-realism.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(119 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/jinbo-assignment/jinbo-assignment.org"
-  "jinbo-assignment.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  331
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/metaphysical-problem-of-truth.org"
-  "metaphysical-problem-of-truth.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  185
-  '(89 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/semantic-values.org"
-  "semantic-values.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  139
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/on-sense-and-reference.org"
-  "on-sense-and-reference.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  149
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/on-the-correspondence-between-display-postulates-and-deep-inference.org"
-  "on-the-correspondence-between-display-postulates-and-deep-inference.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  266
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/truth-and-meaning.org"
-  "truth-and-meaning.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  102
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-philosophical-significance-of-godels-theorem.org"
-  "the-philosophical-significance-of-godels-theorem.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  86
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/an-introduction-to-godels-theorems.org"
-  "an-introduction-to-godels-theorems.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  197
-  '(88 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-justification-of-deduction.org"
-  "the-justification-of-deduction.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  200
-  '(92 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/realism-and-truth.org"
-  "realism-and-truth.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  99
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/realism-meaning-and-truth.org"
-  "realism-meaning-and-truth.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  110
-  '(51 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/realism.org"
-  "realism.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  153
   '(1 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-thought-a-logical-inquiry.org"
-  "the-thought-a-logical-inquiry.org"
+  "/home/chu/Documents/Organisation/home.org"
+  "home.org"
   'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  40
-  '(22 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/foundations-of-computation.tex"
-  "foundations-of-computation.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Projects/Programming/Haskell/SAT/newSAT/Expr.hs"
-  "Expr.hs"
-  'haskell-mode
-  '(haskell-doc-mode haskell-indent-mode abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  661
-  '(746 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Linux/cheat-sheets/emacs/cheat-sheet2.tex"
-  "cheat-sheet2.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  175
-  '(262 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Linux/Ubuntu/emacs/emacs-slides.tex"
-  "emacs-slides.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  451
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/PHIL3072/phil3072.org"
-  "phil3072.org"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(26 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/readings.bib"
-  "readings.bib"
-  'bibtex-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(344 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/bibliography.bib"
-  "bibliography.bib"
-  'bibtex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(2431 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/abstract.tex"
-  "abstract.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  3979
-  '(121 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/gnus"
-  ".gnus"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode)
-  1
-  '(17718 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/mpd.conf"
-  ".mpdconf"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(1982 nil)
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
+  2
+  '(320 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.conf-scripts/muttrc"
-  ".muttrc"
-  'muttrc-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  1
-  '(105 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/screenrc"
-  ".screenrc"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode)
-  104
-  '(2514 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/induction.tex"
-  "induction.tex"
+  "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.tex"
+  "philosophical-investigations-in-logic.tex"
   'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  11620
-  '(10335 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/automata-languages.tex"
-  "automata-languages.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1931
-  '(10387 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/set-theory.tex"
-  "set-theory.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  13342
-  '(23 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/algorithms-complexity.tex"
-  "algorithms-complexity.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  212
-  '(10989 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/lambda-calculus.tex"
-  "lambda-calculus.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  6840
-  '(6730 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Computer Science/Introduction to Computer Science/Introduction/src/graph-theory.tex"
-  "graph-theory.tex"
-  'latex-mode
-  '(abbrev-mode visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1187
-  '(647 nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Metaphysics/metaphysics.bbl"
-  "metaphysics.bbl"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/PHIL3072/essay/essay.tex"
-  "essay.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/the-logical-basis-of-metaphysics.tex"
-  "the-logical-basis-of-metaphysics.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Papers/other/Philosophy/Exclusion Conditional/exclusion-conditional.tex"
-  "exclusion-conditional.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/four-disputes-about-properties.tex"
-  "four-disputes-about-properties.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/language-and-truth.tex"
-  "language-and-truth.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/metaphysics-and-supervenience.tex"
-  "metaphysics-and-supervenience.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/Organisation/readings/notes/truth.tex"
-  "truth.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/alwen-assignment/alwen-assignment.tex"
-  "alwen-assignment.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
-  1
-  '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  nil
-  "PHIL3072"
-  'dired-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode autopair-mode dired-omit-mode)
-  409
-  '(nil nil)
-  t
-  '("/home/chu/Documents/ANU/PHIL3072/")
-  '((truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/Documents/ANU/COMP4630/peter-assignment/peter-assignment.tex"
-  "peter-assignment.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode yas/minor-mode auto-complete-mode autopair-mode flyspell-mode reftex-mode)
+  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
   1
   '(nil nil)
   nil

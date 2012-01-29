@@ -1,1116 +1,506 @@
-((("install" .
-   [2 0 0 0 0 0 0])
-  ("paying" .
+((("org-mode-custom-latex" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
+  ("org-mode-hook" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("org-mode" .
+   [1 0 0 0 0 0 0 0])
+  ("org-mode-article-modes" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("org-todo-keywords-1" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("org-todo-keywords" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("member" .
    [1 0 0 0 0 0])
-  ("played" .
+  ("turn-on-reftex" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0])
+  ("org-mode-reftex-setup" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("org-special-blocks-ignore-regexp" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("emms-player-mpd" .
+   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("autoload" .
+   [2 0 0 0 0 0 0 0])
+  ("emms-player-mpd-connect" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("asleep" .
    [1 0 0 0 0 0])
-  ("worship" .
+  ("relate" .
+   [1 0 0 0 0 0])
+  ("Haskell" .
    [1 0 0 0 0 0 0])
-  ("scientists" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("seduce" .
+  ("monads" .
    [1 0 0 0 0 0])
-  ("young" .
-   [1 0 0 0 0])
-  ("You're" .
+  ("fucking" .
+   [1 0 0 0 0 0 0])
+  ("always" .
    [2 0 0 0 0 0])
-  ("religious" .
-   [1 0 0 0 0 0 0 0 0])
-  ("display-time" .
+  ("break" .
+   [1 0 0 0 0])
+  ("learn" .
+   [2 0 0 0 0])
+  ("similar" .
+   [1 0 0 0 0 0 0])
+  ("conceptually" .
    [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("zenburn" .
+  ("start" .
+   [2 0 0 0 0])
+  ("instance" .
+   [1 0 0 0 0 0 0 0])
+  ("whatever" .
+   [1 0 0 0 0 0 0 0])
+  ("they're" .
+   [3 0 0 0 0 0 0])
+  ("before" .
+   [1 0 0 0 0 0])
+  ("happens" .
+   [3 0 0 0 0 0 0])
+  ("challenging" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("accent" .
+   [1 0 0 0 0 0])
+  ("There's" .
+   [1 0 0 0 0 0 0])
+  ("teaching" .
+   [2 0 0 0 0 0 0 0])
+  ("Britain" .
    [2 0 0 0 0 0 0])
-  ("icon-title-format" .
-   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0])
-  ("frame-title-format" .
-   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0])
+  ("course" .
+   [1 0 0 0 0 0])
+  ("you're" .
+   [4 0 0 0 0 0])
+  ("problem" .
+   [3 0 0 0 0 0 0])
+  ("British" .
+   [8 0 0 0 0 0 0])
+  ("You're" .
+   [3 0 0 0 0 0])
+  ("someone" .
+   [3 0 0 0 0 0 0])
+  ("couldn't" .
+   [1 0 0 0 0 0 0 0])
+  ("happening" .
+   [1 0 0 0 0 0 0 0 0])
+  ("going" .
+   [1 0 0 0 0])
+  ("thing" .
+   [3 0 0 0 0])
+  ("volunteer" .
+   [1 0 0 0 0 0 0 0 0])
+  ("through" .
+   [1 0 0 0 0 0 0])
+  ("interesting" .
+   [2 0 0 0 0 0 0 0 0 0 0])
+  ("calendar-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("quit" .
+   [1 0 0 0])
+  ("tomorrow" .
+   [1 0 0 0 0 0 0 0])
+  ("everyone" .
+   [2 0 0 0 0 0 0 0])
+  ("talking" .
+   [1 0 0 0 0 0 0])
+  ("ready" .
+   [1 0 0 0 0])
+  ("getting" .
+   [2 0 0 0 0 0 0])
+  ("idiot" .
+   [1 0 0 0 0])
+  ("anything" .
+   [2 0 0 0 0 0 0 0])
+  ("never" .
+   [1 0 0 0 0])
+  ("honest" .
+   [2 0 0 0 0 0])
+  ("Philosophy" .
+   [1 0 0 0 0 0 0 0 0 0])
+  ("won't" .
+   [1 0 0 0 0])
+  ("about" .
+   [3 0 0 0 0])
+  ("something" .
+   [5 0 0 0 0 0 0 0 0])
+  ("turned" .
+   [1 0 0 0 0 0])
+  ("channel" .
+   [1 0 0 0 0 0 0])
+  ("hello" .
+   [1 0 0 0 0])
+  ("unless" .
+   [1 0 0 0 0 0])
+  ("don't" .
+   [7 0 0 0 0])
+  ("parts" .
+   [1 0 0 0 0])
+  ("terrible" .
+   [1 0 0 0 0 0 0 0])
+  ("their" .
+   [1 0 0 0 0])
+  ("That's" .
+   [2 0 0 0 0 0])
+  ("species" .
+   [1 0 0 0 0 0 0])
+  ("waterlaz" .
+   [0 0 0 0 0 1 0 0])
+  ("drinking" .
+   [1 0 0 0 0 0 0 0])
+  ("dirty" .
+   [1 0 0 0 0])
+  ("Australian" .
+   [0 0 0 0 0 0 0 0 0 1])
+  ("messages" .
+   [1 0 0 0 0 0 0 0])
+  ("England" .
+   [1 0 0 0 0 0 0])
+  ("server" .
+   [1 0 0 0 0 0])
+  ("except" .
+   [1 0 0 0 0 0])
+  ("part" .
+   [1 0 0 0])
+  ("imagine" .
+   [1 0 0 0 0 0 0])
+  ("possibility" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("doesn't" .
+   [1 0 0 0 0 0 0])
+  ("looked" .
+   [2 0 0 0 0 0])
+  ("haven't" .
+   [3 0 0 0 0 0 0])
+  ("though" .
+   [1 0 0 0 0 0])
+  ("still" .
+   [2 0 0 0 0])
+  ("awesome" .
+   [1 0 0 0 0 0 0])
+  ("reddit" .
+   [1 0 0 0 0 0])
+  ("world" .
+   [1 0 0 0 0])
+  ("possible" .
+   [2 0 0 0 0 0 0 0])
+  ("should" .
+   [7 0 0 0 0 0])
+  ("nothing's" .
+   [0 0 0 0 0 0 0 1 0])
+  ("nothingness" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("topic" .
+   [4 0 0 0 0])
+  ("usually" .
+   [1 0 0 0 0 0 0])
+  ("stupid" .
+   [1 0 0 0 0 0])
+  ("created" .
+   [1 0 0 0 0 0 0])
+  ("matthew" .
+   [1 0 0 0 0 0 0])
+  ("people" .
+   [3 0 0 0 0 0])
+  ("explain" .
+   [1 0 0 0 0 0 0])
+  ("email" .
+   [2 0 0 0 0])
+  ("context-free" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("remove" .
+   [1 0 0 0 0 0])
+  ("which" .
+   [3 0 0 0 0])
+  ("Turing" .
+   [1 0 0 0 0 0])
+  ("perfect" .
+   [1 0 0 0 0 0 0])
+  ("capture" .
+   [1 0 0 0 0 0 0])
+  ("really" .
+   [1 0 0 0 0 0])
+  ("ambiguity" .
+   [2 0 0 0 0 0 0 0 0])
+  ("can't" .
+   [1 0 0 0 0])
+  ("language" .
+   [2 0 0 0 0 0 0 0])
+  ("natural" .
+   [1 0 0 0 0 0 0])
+  ("basically" .
+   [1 0 0 0 0 0 0 0 0])
+  ("leave" .
+   [1 0 0 0 0])
+  ("either" .
+   [3 0 0 0 0 0])
+  ("didn't" .
+   [1 0 0 0 0 0])
+  ("sorry" .
+   [1 0 0 0 0])
+  ("choice" .
+   [1 0 0 0 0 0])
+  ("maybe" .
+   [1 0 0 0 0])
+  ("actually" .
+   [3 0 0 0 0 0 0 0])
+  ("think" .
+   [2 0 0 0 0])
+  ("could" .
+   [4 0 0 0 0])
+  ("happen" .
+   [1 0 0 0 0 0])
+  ("would" .
+   [5 0 0 0 0])
+  ("there" .
+   [3 0 0 0 0])
+  ("probably" .
+   [3 0 0 0 0 0 0 0])
+  ("require" .
+   [4 0 0 0 0 0 0])
+  ("gnus" .
+   [4 0 0 0])
+  ("gnus-article-mode" .
+   [0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("gnus-summary-mode" .
+   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0])
+  ("gnus-browse-mode" .
+   [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("gnus-topic-mode" .
+   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("gnus-group-mode" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("recentf-save-file" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("user-org-university-file" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("category" .
+   [2 0 0 0 0 0 0 0])
+  ("command" .
+   [1 0 0 0 0 0 0])
+  ("write" .
+   [2 0 0 0 0])
+  ("fboundp" .
+   [1 0 0 0 0 0 0])
+  ("/quit" .
+   [1 0 0 0 0])
+  ("user-scripts-directory" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("user-home-directory" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("load-config" .
+   [2 0 0 0 0 0 0 0 0 0 0])
+  ("expand-file-name" .
+   [0 0 0 0 0 0 0 0 0 0 1 10 0 0 0 0])
+  ("user-documents-directory" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2])
+  ("defun" .
+   [3 0 0 0 0])
+  ("noerror" .
+   [1 0 0 0 0 0 0])
+  ("ac-comphist" .
+   [0 0 0 0 0 0 0 1 0 0 1])
+  ("concat" .
+   [7 0 0 0 0 0])
+  ("user-emacs-directory" .
+   [0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("defvar" .
+   [4 0 0 0 0 0])
+  ("user-university-directory" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("org-agenda-mode" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("fringe-mode" .
+   [3 0 0 0 0 0 0 0 0 0 0])
+  ("left-fringe" .
+   [2 0 0 0 0 0 0 0 0 0 0])
+  ("set-fringe-mode" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("add-to-list" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("org-entities-user" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("Paladine" .
+   [0 0 0 0 0 0 1 1])
+  ("that's" .
+   [2 0 0 0 0 0])
+  ("pretty" .
+   [4 0 0 0 0 0])
+  ("Microsoft" .
+   [1 0 0 0 0 0 0 0 0])
+  ("What's" .
+   [1 0 0 0 0 0])
+  ("first" .
+   [4 0 0 0 0])
+  ("thought" .
+   [3 0 0 0 0 0 0])
+  ("There" .
+   [3 0 0 0 0])
+  ("Thing" .
+   [1 0 0 0 0])
+  ("wouldn't" .
+   [4 0 0 0 0 0 0 0])
   ("instead" .
    [1 0 0 0 0 0 0])
-  ("looks" .
+  ("TANSTAAFL" .
+   [1 0 0 0 0 0 0 0 0])
+  ("against" .
+   [1 0 0 0 0 0 0])
+  ("found" .
    [1 0 0 0 0])
-  ("looking" .
+  ("stuff" .
+   [1 0 0 0 0])
+  ("google" .
+   [1 0 0 0 0 0])
+  ("user-org-notes-file" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
+  ("user-organisation-directory" .
+   [0 0 0 0 0 0 0 0 1 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("recentf-save-" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("package" .
+   [1 0 0 0 0 0 0])
+  ("being" .
+   [3 0 0 0 0])
+  ("return" .
+   [1 0 0 0 0 0])
+  ("argument" .
+   [1 0 0 0 0 0 0 0])
+  ("longer" .
+   [2 0 0 0 0 0])
+  ("varies" .
+   [1 0 0 0 0 0])
+  ("between" .
+   [1 0 0 0 0 0 0])
+  ("person" .
+   [3 0 0 0 0 0])
+  ("front" .
+   [1 0 0 0 0])
+  ("waiting" .
+   [1 0 0 0 0 0 0])
+  ("provide" .
+   [1 0 0 0 0 0 0])
+  ("package-config" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("haskell-mode" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("magit" .
+   [1 0 0 0 0])
+  ("diminish" .
+   [2 0 0 0 0 0 0 0])
+  ("color-theme" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("slime" .
+   [1 0 0 0 0])
+  ("zenburn" .
+   [1 0 0 0 0 0 0])
+  ("x-terminal-emulator" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("*browser*" .
+   [1 0 0 0 0 0 0 0 0])
+  ("x-www-browser" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("*terminal*" .
+   [1 0 0 0 0 0 0 0 0 0])
+  ("toggle-indicate-empty-lines" .
+   [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("eval-after-load" .
+   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("haskell-indent-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0])
+  ("turn-on-haskell-doc-mode" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
+  ("turn-on-haskell-indent" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("add-hook" .
+   [2 0 0 0 0 0 0 0])
+  ("haskell-mode-hook" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0])
+  ("custom-turn-on-haskell-modes" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("lambda" .
+   [2 0 0 0 0 0])
+  ("defcommand" .
+   [2 0 0 0 0 0 0 0 0 0])
+  ("hostname" .
+   [1 0 0 0 0 0 0 0])
+  ("echo-string" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("current-screen" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("police" .
+   [1 0 0 0 0 0])
+  ("Which" .
+   [1 0 0 0 0])
+  ("version" .
    [1 0 0 0 0 0 0])
   ("using" .
    [1 0 0 0 0])
-  ("idiots" .
-   [1 0 0 0 0 0])
-  ("hardware" .
+  ("consider" .
    [1 0 0 0 0 0 0 0])
-  ("they're" .
+  ("bazhang" .
+   [0 0 0 0 0 0 1])
+  ("Raymond" .
    [1 0 0 0 0 0 0])
-  ("excellent" .
-   [1 0 0 0 0 0 0 0 0])
-  ("weird-key" .
-   [1 0 0 0 0 0 0 0 0])
-  ("version" .
-   [1 0 0 0 0 0 0])
-  ("older" .
-   [1 0 0 0 0])
-  ("keyboard" .
-   [5 0 0 0 0 0 0 0])
-  ("isn't" .
-   [1 0 0 0 0])
-  ("running" .
-   [1 0 0 0 0 0 0])
-  ("after" .
-   [1 0 0 0 0])
-  ("don't" .
-   [3 0 0 0 0])
-  ("space" .
-   [2 0 0 0 0])
-  ("backspace" .
-   [2 0 0 0 0 0 0 0 0])
-  ("entertain" .
-   [0 0 0 0 0 1 0 0 0])
-  ("button" .
-   [1 0 0 0 0 0])
-  ("service" .
-   [1 0 0 0 0 0 0])
-  ("you're" .
-   [2 0 0 0 0 0])
-  ("people" .
-   [1 0 0 0 0 0])
-  ("money" .
-   [1 0 0 0 0])
-  ("years" .
-   [2 0 0 0 0])
-  ("being" .
-   [1 0 0 0 0])
-  ("recently" .
+  ("Smullyan" .
    [1 0 0 0 0 0 0 0])
-  ("window" .
-   [1 0 0 0 0 0])
-  ("can't" .
-   [1 0 0 0 0])
-  ("sweet" .
+  ("worry" .
    [2 0 0 0 0])
-  ("somehow" .
-   [1 0 0 0 0 0 0])
-  ("sites" .
-   [1 0 0 0 0])
-  ("though" .
+  ("you'll" .
    [1 0 0 0 0 0])
-  ("perfectly" .
+  ("anyone" .
+   [1 0 0 0 0 0])
+  ("surprised" .
    [1 0 0 0 0 0 0 0 0])
-  ("downloading" .
-   [1 0 0 0 0 0 0 0 0 0 0])
+  ("guess" .
+   [1 0 0 0 0])
+  ("things" .
+   [1 0 0 0 0 0])
+  ("trouble" .
+   [1 0 0 0 0 0 0])
   ("because" .
    [1 0 0 0 0 0 0])
-  ("lawyer" .
-   [1 0 0 0 0 0])
-  ("legal" .
+  ("Linux" .
    [1 0 0 0 0])
-  ("illegally" .
-   [1 0 0 0 0 0 0 0 0])
-  ("material" .
-   [2 0 0 0 0 0 0 0])
-  ("illegal" .
-   [3 0 0 0 0 0 0])
-  ("night" .
+  ("We're" .
    [1 0 0 0 0])
-  ("interesting" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("anything" .
-   [2 0 0 0 0 0 0 0])
-  ("actually" .
-   [2 0 0 0 0 0 0 0])
-  ("compiler" .
-   [1 0 0 0 0 0 0 0])
-  ("gnus-thread-hide-subtree" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("device" .
-   [1 0 0 0 0 1])
-  ("run-browser" .
-   [0 0 0 0 0 0 1 0 0 0 0])
-  ("mpd-connect" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("run-editor" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("frame" .
-   [1 0 0 0 0])
-  ("*browser*" .
-   [6 0 0 0 0 0 0 0 0])
-  ("*editor*" .
-   [5 0 0 0 0 1 0 0])
-  ("frame-preference-rule" .
-   [0 0 0 0 0 0 0 0 1 1 0 0 1 0 0 0 0 0 0 0 0])
-  ("*terminal*" .
-   [3 0 0 0 0 0 0 0 0 1])
-  ("string" .
-   [3 0 0 0 0 0])
-  ("org-entities-user" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("code." .
-   [1 0 0 0 0])
-  ("progn" .
-   [6 0 0 0 0])
-  ("run-commands" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("terminal" .
-   [1 0 0 0 0 0 0 0])
-  ("run-or-raise" .
-   [1 0 0 0 0 0 4 6 2 0 0 0])
-  ("gnome-terminal" .
-   [3 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("defcommand" .
-   [16 0 0 0 0 0 0 0 0 0])
-  ("string-downcase" .
-   [0 0 0 0 0 0 0 0 0 0 4 5 0 0 0])
-  ("symbol-name" .
-   [4 0 0 0 0 0 1 0 0 0 4])
-  ("command-string" .
-   [5 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  (":title" .
-   [36 0 0 0 0 3])
-  (":instance" .
-   [26 0 0 0 3 6 3 0 3])
-  (":class" .
-   [13 0 0 0 0 0])
-  ("chromium-browser" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("def-run-or-raise-command" .
-   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("stumpwm" .
-   [1 0 0 0 0 0 0])
-  ("moves" .
-   [1 0 0 0 0])
-  ("table" .
-   [1 0 0 0 0])
-  ("finish" .
-   [3 0 0 0 0 0])
-  ("states" .
-   [1 0 0 0 0 0])
-  ("?:lauses" .
-   [1 0 0 0 0 0 0 0])
-  ("|functions" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("?:orts" .
-   [1 0 0 0 0 0])
-  ("occupied" .
-   [12 0 0 0 0 0 0 7])
-  ("animals" .
-   [5 0 0 0 0 0 0])
-  ("cardinality" .
-   [10 0 0 0 0 0 0 0 0 0 0])
-  ("clause" .
-   [2 0 0 0 0 0])
-  ("google-define" .
-   [0 0 0 0 0 0 0 0 1 0 0 0 0])
-  ("google-it" .
-   [0 0 0 0 0 0 1 0 0])
-  ("package-list-packages" .
-   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
-  ("calendar" .
-   [1 0 0 0 0 0 0 0])
-  ("diary" .
-   [1 0 0 0 0])
-  ("global-set-key" .
-   [0 0 0 0 0 0 1 0 0 0 1 0 0 1])
-  ("frege92" .
-   [1 0 0 0 0 0 0])
-  ("Aristotle" .
-   [1 0 0 0 0 0 0 0 0])
-  ("papers" .
-   [1 0 0 0 0 0])
-  ("historical" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("metatheory" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("considered" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("necessary" .
-   [1 0 0 0 0 0 0 0 0])
-  ("understand" .
-   [2 0 0 0 0 0 0 0 0 0])
-  ("epistemology" .
-   [0 0 0 0 0 0 1 0 0 0 0 0])
-  ("understood" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("question" .
-   [1 0 0 0 0 0 0 0])
-  ("russell19" .
-   [1 0 0 0 0 0 0 0 0])
-  ("share" .
-   [1 0 0 0 0])
-  ("there" .
-   [5 0 0 0 0])
-  ("certain" .
-   [2 0 0 0 0 0 0])
-  ("defines" .
-   [1 0 0 0 0 0 0])
-  ("Although" .
-   [1 0 0 0 0 0 0 0])
-  ("existential" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("paper" .
-   [2 0 0 0 0])
-  ("chapter" .
-   [3 0 0 0 0 0 0])
-  ("multiple" .
-   [1 0 0 0 0 0 0 0])
-  ("physical" .
-   [2 0 0 0 0 0 0 0])
-  ("context-free" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("-variants" .
-   [1 0 0 0 0 0 0 0 0])
-  ("respectively" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("denotes" .
-   [2 0 0 0 0 0 0])
-  ("conditions" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("following" .
-   [1 0 0 0 0 0 0 0 0])
-  ("satisfies" .
-   [2 0 0 0 0 0 0 0 0])
-  ("formula" .
-   [3 0 0 0 0 0 0])
-  ("valuation" .
-   [2 0 0 0 0 0 0 0 0])
-  ("semantic" .
-   [2 0 0 0 0 0 0 0])
-  ("meaning" .
-   [2 0 0 0 0 0 0])
-  ("gives" .
-   [1 0 0 0 0])
-  ("function" .
-   [6 0 0 0 0 0 0 0])
-  ("interpretation" .
-   [3 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("represents" .
-   [2 0 0 0 0 0 0 0 0 0])
-  ("becomes" .
-   [1 0 0 0 0 0 0])
-  ("variables" .
-   [1 0 0 0 0 0 0 0 0])
-  ("forall" .
-   [1 0 0 0 0 0])
-  ("Quantifiers" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("rightarrow" .
-   [3 0 0 0 0 0 0 0 0 0])
-  ("Connectives" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("symbols" .
-   [1 0 0 0 0 0 0])
-  ("reasoning" .
-   [2 0 0 0 0 0 0 0 0])
-  ("provide" .
-   [1 0 0 0 0 0 0])
-  ("quantifiers" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("Operators" .
-   [1 0 0 0 0 0 0 0 0])
-  ("entire" .
-   [1 0 0 0 0 0])
-  ("classical" .
-   [1 0 0 0 0 0 0 0 0])
-  ("calculus" .
-   [2 0 0 0 0 0 0 0])
-  ("machines" .
-   [1 0 0 0 0 0 0 0])
-  ("functions" .
-   [1 0 0 0 0 0 0 0 0])
-  ("recursive" .
-   [1 0 0 0 0 0 0 0 0])
-  ("Turing" .
-   [2 0 0 0 0 0])
-  ("traditional" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("Presented" .
-   [3 0 0 0 0 0 0 0 0])
-  ("Sequent" .
-   [1 0 0 0 0 0 0])
-  ("Calculi" .
-   [1 0 0 0 0 0 0])
-  ("lemmas" .
-   [1 0 0 0 0 0])
-  ("subset" .
-   [2 0 0 0 0 0])
-  ("smaller" .
-   [1 0 0 0 0 0 0])
-  ("derive" .
-   [1 0 0 0 0 0])
-  ("contains" .
-   [1 0 0 0 0 0 0 0])
-  ("contain" .
-   [1 0 0 0 0 0 0])
-  ("second" .
-   [1 0 0 0 0 0])
-  ("essentially" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("condition" .
-   [3 0 0 0 0 0 0 0 0])
-  ("varying" .
-   [1 0 0 0 0 0 0])
-  ("mathcal" .
-   [26 0 0 0 0 0 0])
-  ("elements" .
-   [1 0 0 0 0 0 0 0])
-  ("There" .
-   [2 0 0 0 0])
-  ("necessarily" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("requirement" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("weakening" .
-   [1 0 0 0 0 0 0 0 0])
-  ("mathbb" .
-   [6 0 0 0 0 0])
-  ("subseteq" .
-   [4 0 0 0 0 0 0 0])
-  ("notation" .
-   [1 0 0 0 0 0 0 0])
-  ("mathematical" .
-   [2 0 0 0 0 0 0 0 0 0 0 0])
-  ("through" .
-   [1 0 0 0 0 0 0])
-  ("representing" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("identity" .
-   [2 0 0 0 0 0 0 0])
-  ("three" .
-   [1 0 0 0 0])
-  ("satisfy" .
-   [1 0 0 0 0 0 0])
-  ("consequence" .
-   [3 0 0 0 0 0 0 0 0 0 0])
-  ("logical" .
-   [1 0 0 0 0 0 0])
-  ("follows" .
-   [2 0 0 0 0 0 0])
-  ("conclusion" .
-   [4 0 0 0 0 0 0 0 0 0])
-  ("premises" .
-   [5 0 0 0 0 0 0 0])
-  ("where" .
-   [5 0 0 0 0])
-  ("denoted" .
-   [1 0 0 0 0 0 0])
-  ("relation" .
-   [7 0 0 0 0 0 0 0])
-  ("precise" .
-   [2 0 0 0 0 0 0])
-  ("between" .
-   [5 0 0 0 0 0 0])
-  ("evaluate" .
-   [1 0 0 0 0 0 0 0])
-  ("statements" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("sentence" .
-   [1 0 0 0 0 0 0 0])
-  ("declarative" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("statement" .
-   [4 0 0 0 0 0 0 0 0])
-  ("deductive" .
-   [3 0 0 0 0 0 0 0 0])
-  ("truth" .
-   [1 0 0 0 0])
-  ("subsubsection" .
-   [4 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("Modal" .
-   [1 0 0 0 0])
-  ("Introduction" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("section" .
-   [4 0 0 0 0 0 0])
-  ("document" .
-   [2 0 0 0 0 0 0 0])
-  ("article" .
-   [1 0 0 0 0 0 0])
-  ("backupSavePackages" .
-   [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
-  ("savePackages" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("backupPackages" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("print" .
-   [1 0 0 0 0])
-  ("insert" .
-   [1 0 0 0 0 0])
-  ("backupPackagesList" .
-   [1 0 0 0 0 0 0 2 1 0 0 0 0 0 0 0 0 0])
-  ("Listbox" .
-   [1 0 0 0 0 0 0])
-  ("sticky" .
-   [2 0 0 0 0 0])
-  ("columnspan" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("column" .
-   [2 0 0 0 0 0])
-  ("backupRemovePackage" .
-   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
-  ("showwarning" .
-   [2 0 0 0 0 0 0 0 0 0 1])
-  ("tkMessageBox" .
-   [0 0 0 0 0 0 2 0 0 1 0 0])
-  ("except" .
-   [1 0 0 0 0 0])
-  ("removePackage" .
-   [1 0 0 0 0 0 1 0 0 0 0 0 0])
-  ("command" .
-   [4 0 0 0 0 0 0])
-  ("Button" .
-   [2 0 0 0 0 0])
-  ("backup" .
-   [1 0 0 0 0 0])
-  ("individual" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("instantiated" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("concrete" .
-   [1 0 0 0 0 0 0 0])
-  ("thing" .
-   [3 0 0 0 0])
-  ("exists" .
-   [3 0 0 0 0 0])
-  ("rather" .
-   [2 0 0 0 0 0])
-  ("exist" .
-   [1 0 0 0 0])
-  ("Abstract" .
-   [1 0 0 0 0 0 0 0])
-  ("subsection" .
-   [19 0 0 0 0 0 0 0 0 0])
-  ("synthetic" .
-   [0 0 0 0 0 0 0 0 1])
-  ("analytic" .
-   [1 0 0 0 0 0 0 0])
-  ("whereas" .
-   [1 0 0 0 0 0 0])
-  ("psychology" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("remove" .
-   [1 0 0 0 0 0])
-  ("reason" .
-   [1 0 0 0 0 0])
-  ("concepts" .
-   [2 0 0 0 0 0 0 0])
-  ("analysis" .
-   [2 0 0 0 0 0 0 0])
-  ("general" .
-   [3 0 0 0 0 0 0])
-  ("about" .
-   [3 0 0 0 0])
-  ("allowed" .
-   [1 0 0 0 0 0 0])
-  ("structure" .
-   [2 0 0 0 0 0 0 0 0])
-  ("Frege's" .
-   [1 0 0 0 0 0 0])
-  ("contrast" .
-   [2 0 0 0 0 0 0 0])
-  ("Aristotelian" .
-   [0 0 0 0 0 1 0 0 0 0 0 0])
-  ("course" .
-   [2 0 0 0 0 0])
-  ("century" .
-   [2 0 0 0 0 0 0])
-  ("notion" .
-   [3 0 0 0 0 0])
-  ("would" .
-   [2 0 0 0 0])
-  ("logic" .
-   [9 0 0 0 0])
-  ("entirely" .
-   [1 0 0 0 0 0 0 0])
-  ("could" .
-   [1 0 0 0 0])
-  ("mathematics" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("abstract" .
+  ("greatest" .
    [3 0 0 0 0 0 0 0])
-  ("modern" .
-   [3 0 0 0 0 0])
-  ("updateBackupFiles" .
-   [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
-  ("import" .
-   [1 0 0 0 0 0])
-  ("footnote" .
-   [7 0 0 0 0 0 0 0])
-  ("abstraction" .
-   [2 0 0 0 0 0 0 0 0 0 0])
-  ("combined" .
-   [2 0 0 0 0 0 0 0])
-  ("expressions" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("language" .
-   [3 0 0 0 0 0 0 0])
-  ("devised" .
-   [1 0 0 0 0 0 0])
-  ("also" .
-   [2 0 0 0])
-  ("found" .
-   [2 0 0 0 0])
-  ("paradoxes" .
-   [1 0 0 0 0 0 0 0 0])
-  ("potential" .
-   [4 0 0 0 0 0 0 0 0])
-  ("possible" .
-   [2 0 0 0 0 0 0 0])
-  ("According" .
-   [2 0 0 0 0 0 0 0 0])
-  ("Frege" .
-   [6 0 0 0 0])
-  ("Gottlob" .
-   [2 0 0 0 0 0 0])
-  ("from" .
-   [1 0 0 0])
-  ("motivation" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("primary" .
-   [1 0 0 0 0 0 0])
-  ("first" .
-   [4 0 0 0 0])
-  ("those" .
-   [2 0 0 0 0])
-  ("Russell" .
-   [6 0 0 0 0 0 0])
-  ("Bertrand" .
-   [3 0 0 0 0 0 0 0])
-  ("sets" .
-   [1 0 0 0])
-  ("naive" .
-   [3 0 0 0 0])
-  ("the" .
-   [6 0 0])
-  ("description" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("system" .
-   [7 0 0 0 0 0])
-  ("formal" .
-   [8 0 0 0 0 0])
-  ("theory" .
-   [10 0 0 0 0 0])
-  ("type" .
-   [2 0 0 0])
-  ("things" .
-   [4 0 0 0 0 0])
-  ("such" .
-   [2 0 0 0])
-  ("nature" .
-   [2 0 0 0 0 0])
-  ("their" .
-   [1 0 0 0 0])
-  ("study" .
-   [1 0 0 0 0])
-  ("relationship" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("object" .
-   [10 0 0 0 0 0])
-  ("specific" .
-   [2 0 0 0 0 0 0 0])
-  ("particular" .
-   [3 0 0 0 0 0 0 0 0 0])
-  ("universal" .
-   [2 0 0 0 0 0 0 0 0])
-  ("these" .
-   [2 0 0 0 0])
-  ("instance" .
-   [4 0 0 0 0 0 0 0])
-  ("qualities" .
-   [3 0 0 0 0 0 0 0 0])
-  ("quality" .
-   [1 0 0 0 0 0 0])
-  ("which" .
-   [17 0 0 0 0])
-  ("entities" .
-   [3 0 0 0 0 0 0 0])
-  ("described" .
-   [1 0 0 0 0 0 0 0 0])
-  ("Objects" .
-   [2 0 0 0 0 0 0])
-  ("should" .
-   [4 0 0 0 0 0])
-  ("phenomena" .
-   [1 0 0 0 0 0 0 0 0])
-  ("this" .
-   [2 0 0 0])
-  ("with" .
-   [1 0 0 0])
-  ("begin" .
-   [1 0 0 0 0])
-  ("types" .
-   [4 0 0 0 0])
-  ("objects" .
-   [9 0 0 0 0 0 0])
-  ("latex-skeleton-textsc" .
-   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
-  ("latex-skeleton-emph" .
-   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
-  ("latex-skeleton-texttt" .
-   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
-  ("latex-skeleton-footnote" .
-   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
-  ("latex-skeleton-textbf" .
-   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
-  ("emacs-version" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("substring" .
-   [1 0 0 0 0 0 0 0 0])
-  ("ac-modes" .
+  ("business" .
    [1 0 0 0 0 0 0 0])
-  ("add-to-list" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("org-mode" .
+  ("without" .
+   [1 0 0 0 0 0 0])
+  ("single" .
+   [1 0 0 0 0 0])
+  ("software" .
    [1 0 0 0 0 0 0 0])
-  ("latex-mode" .
-   [1 0 0 0 0 1 0 0 0 0])
-  ("ido-mode" .
-   [1 0 0 0 0 0 0 0])
-  ("dired-mode" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("dired-x" .
-   [2 0 0 0 0 0 0])
-  ("inc" .
-   [1 0 0])
-  ("int" .
-   [5 0 0])
-  ("main" .
-   [0 0 1 0])
-  ("return" .
-   [5 0 0 0 0 0])
-  ("while" .
-   [5 0 0 0 0])
-  ("wantp" .
-   [5 0 0 0 0])
-  ("wantq" .
-   [5 0 0 0 0])
-  ("if" .
-   [1 0])
-  ("turn" .
-   [1 0 0 0])
-  ("lambda" .
-   [6 0 0 0 0 0])
-  ("defun" .
-   [6 0 0 0 0])
-  ("message" .
-   [9 0 0 0 0 0 0])
-  ("switch-to-buffer" .
-   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
-  ("current-buffer" .
-   [0 0 0 0 1 0 0 0 0 0 0 0 0 0])
-  ("let" .
-   [1 0 0])
-  ("fn-list" .
-   [3 0 0 0 0 0 0])
-  ("latex-view" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("latex-file" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("mapc" .
-   [1 0 0 0])
-  ("fn" .
-   [2 0])
-  ("add-hook" .
-   [5 0 0 0 0 0 0 0])
-  ("latex-mode-hook" .
-   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0])
-  ("forward" .
-   [1 0 0 0 0 0 0])
-  ("consist" .
-   [1 0 0 0 0 0 0])
-  ("properties" .
-   [2 0 0 0 0 0 0 0 0 0])
-  ("perhaps" .
-   [1 0 0 0 0 0 0])
-  ("other" .
-   [1 0 0 0 0])
-  ("appeal" .
-   [1 0 0 0 0 0])
-  ("first-order" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("allows" .
-   [1 0 0 0 0 0])
-  ("model" .
-   [3 0 0 0 0])
-  ("predicates" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("predicate" .
-   [1 0 0 0 0 0 0 0 0])
-  ("applied" .
-   [1 0 0 0 0 0 0])
-  ("argument" .
-   [14 0 0 0 0 0 0 0])
-  ("struct" .
-   [1 0 0 0 0 0])
-  ("character" .
-   [0 0 0 0 1 0 0 0 0])
-  ("set_name" .
-   [0 0 0 0 0 1 0 0])
-  ("new_player" .
-   [1 0 0 0 0 0 1 0 0 0])
-  ("printf" .
-   [2 0 0 0 0 0])
-  ("scanf" .
-   [1 0 0 0 0])
-  ("char" .
-   [1 0 0 0])
-  ("name" .
-   [5 0 0 0])
-  ("cha" .
-   [1 0 0])
-  ("Lewis" .
-   [2 0 0 0 0])
-  ("input" .
-   [2 0 0 0 0])
-  ("Emacs" .
-   [1 0 0 0 0])
-  ("factorial" .
-   [4 0 0 0 0 0 0 0 1])
-  ("listFactorial" .
-   [0 0 0 0 0 0 0 2 0 0 0 0 0])
-  ("length" .
-   [1 0 0 0 0 0])
-  ("ac-flyspell-workaround" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("Message" .
-   [0 0 0 0 0 0 1])
-  ("logic4fun-mode" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("kill-buffer" .
-   [0 0 0 0 0 0 0 0 0 0 1])
-  ("inductive" .
-   [4 0 0 0 0 0 0 0 0])
-  ("inference" .
-   [2 0 0 0 0 0 0 0 0])
-  ("responses" .
-   [1 0 0 0 0 0 0 0 0])
-  ("problem" .
-   [3 0 0 0 0 0 0])
-  ("induction" .
-   [2 0 0 0 0 0 0 0 0])
-  ("around" .
-   [2 0 0 0 0 0])
-  ("since" .
-   [1 0 0 0 0])
-  ("However" .
-   [1 0 0 0 0 0 0])
-  ("answer" .
-   [2 0 0 0 0 0])
-  ("questions" .
-   [2 0 0 0 0 0 0 0 0])
-  ("philosophy" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("response" .
-   [2 0 0 0 0 0 0 0])
-  ("provides" .
-   [1 0 0 0 0 0 0 0])
-  ("essay" .
-   [1 0 0 0 0])
-  ("attempt" .
-   [1 0 0 0 0 0 0])
-  ("justify" .
-   [3 0 0 0 0 0 0])
-  ("famous" .
-   [1 0 0 0 0 0])
-  ("agrees" .
-   [1 0 0 0 0 0])
-  ("Where" .
-   [1 0 0 0 0])
-  ("Popper" .
-   [2 0 0 0 0 0])
-  ("differs" .
-   [1 0 0 0 0 0 0])
-  ("explain" .
-   [2 0 0 0 0 0 0])
-  ("scientific" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("beliefs" .
-   [3 0 0 0 0 0 0])
-  ("knowledge" .
-   [2 0 0 0 0 0 0 0 0])
-  ("Papers" .
-   [1 0 0 0 0 0])
-  ("Books" .
-   [1 0 0 0 0])
-  ("Inductive" .
-   [1 0 0 0 0 0 0 0 0])
-  ("Knowledge" .
-   [1 0 0 0 0 0 0 0 0])
-  ("moreover" .
-   [1 0 0 0 0 0 0 0])
-  ("cannot" .
-   [1 0 0 0 0 0])
-  ("entitled" .
-   [1 0 0 0 0 0 0 0])
-  ("These" .
-   [2 0 0 0 0])
-  ("appear" .
-   [1 0 0 0 0 0])
-  ("similar" .
-   [3 0 0 0 0 0 0])
-  ("inferences" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("accepted" .
-   [1 0 0 0 0 0 0 0])
-  ("doubt" .
-   [2 0 0 0 0])
-  ("exactly" .
-   [1 0 0 0 0 0 0])
-  ("before" .
-   [4 0 0 0 0 0])
-  ("giving" .
-   [1 0 0 0 0 0])
-  ("means" .
-   [1 0 0 0 0])
-  ("behind" .
-   [1 0 0 0 0 0])
-  ("paradox" .
-   [1 0 0 0 0 0 0])
-  ("contraposition" .
-   [2 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("contradiction" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("subject" .
-   [1 0 0 0 0 0 0])
-  ("proposition" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("example" .
-   [2 0 0 0 0 0 0])
-  ("equivalence" .
-   [1 0 0 0 0 0 0 0 0 0 0])
-  ("holds" .
-   [1 0 0 0 0])
-  ("implication" .
-   [2 0 0 0 0 0 0 0 0 0 0])
-  ("denial" .
-   [1 0 0 0 0 0])
-  ("reality" .
-   [1 0 0 0 0 0 0])
-  ("modus" .
-   [1 0 0 0 0])
-  ("consequent" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("showing" .
-   [1 0 0 0 0 0 0])
-  ("assumption" .
-   [2 0 0 0 0 0 0 0 0 0])
-  ("implicational" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("suppose" .
-   [1 0 0 0 0 0 0])
-  ("claim" .
-   [1 0 0 0 0])
-  ("emacs" .
-   [3 0 0 0 0])
-  ("*run-or-raise-all-screens*" .
-   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("really" .
-   [5 0 0 0 0 0])
-  ("&optional" .
-   [4 0 0 0 0 0 0 0 0])
-  ("cmd-str" .
-   [7 0 0 0 0 0 0])
-  ("args-str" .
-   [3 0 0 0 0 0 0 0])
-  ("concatenate" .
-   [3 0 0 0 0 1 0 1 1 0 1])
-  ("quick-launch" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("string=" .
-   [1 0 0 0 0 0 0])
-  ("run-shell-command" .
-   [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0])
-  ("*default-package*" .
-   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
-  (":stumpwm" .
-   [1 0 0 0 0 0 0 0])
-  ("sb_background" .
-   [0 0 0 0 0 0 0 1 0 0 0 0 0])
-  (":tight" .
-   [1 0 0 0 0 0])
-  (":none" .
-   [1 0 0 0 0])
-  (":thin" .
-   [1 0 0 0 0])
-  ("defparameter" .
-   [1 0 0 0 0 2 0 2 0 0 0 0])
-  ("BROWSER" .
-   [5 0 0 0 0 0 0])
-  ("BROWSER-EXEC" .
-   [1 0 0 0 0 0 0 0 0 0 0 0])
-  ("BROWSER-PROP" .
-   [3 0 0 0 0 0 0 0 0 0 0 0])
-  ("TERMINAL-EXEC" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("TERMINAL-PROP" .
-   [3 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("EDITOR-EXEC" .
-   [0 0 0 0 0 0 1 0 0 0 1])
-  ("EDITOR-PROP" .
-   [3 0 0 0 0 0 0 0 0 0 0])
-  ("TERMINAL" .
-   [1 0 0 0 0 0 0 0])
-  ("chromium" .
-   [1 0 0 0 0 0 0 0])
-  ("quick-launch-non-cli" .
-   [0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0])
-  ("defvar" .
-   [6 0 0 0 0 0])
-  ("defmacro" .
-   [1 0 0 0 0 0 0 0])
-  ("run-app" .
-   [11 0 0 0 0 0 0])
-  ("test-one" .
-   [1 0 0 0 0 0 0 0])
-  ("show-bugs-fixes-todos" .
-   [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
-  ("emacs-lisp-mode-hook" .
-   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1])
-  ("lisp-interaction-mode-hook" .
-   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
-  ("require" .
-   [3 0 0 0 0 0 0])
-  ("color-theme" .
-   [0 0 0 0 0 1 0 0 0 0 0])
-  ("fill-keymap" .
-   [0 0 0 0 0 0 0 0 1 0 0])
-  ("*volume-map*" .
-   [0 0 0 0 0 0 0 1 1 0 0 0])
-  ("holidays" .
-   [1 0 0 0 0 0 0 0])
-  ("*holidays*" .
-   [2 0 0 0 0 0 0 0 0 0])
-  ("TODO:" .
-   [1 0 0 0 0])
-  ("thank" .
-   [1 0 0 0 0])
-  ("working" .
-   [2 0 0 0 0 0 0])
   ("again" .
    [1 0 0 0 0])
-  ("appears" .
-   [1 0 0 0 0 0 0])
-  ("you've" .
-   [1 0 0 0 0 0])
-  ("pretty" .
-   [5 0 0 0 0 0])
-  ("Thanks" .
-   [1 0 0 0 0 0])
-  ("thanks" .
-   [1 0 0 0 0 0])
-  ("update" .
-   [1 0 0 0 0 0])
-  ("review" .
-   [1 0 0 0 0 0])
-  ("totally" .
-   [2 0 0 0 0 0 0])
-  ("forums" .
-   [1 0 0 0 0 0])
-  ("right" .
-   [1 0 0 0 0])
-  ("sleep" .
-   [1 0 0 0 0])
-  ("starting" .
+  ("operator" .
    [1 0 0 0 0 0 0 0])
-  ("implementation" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("what's" .
-   [1 0 0 0 0 0])
-  ("nothing" .
+  ("anymore" .
    [1 0 0 0 0 0 0])
-  ("Something" .
-   [1 0 0 0 0 0 0 0 0])
-  ("tells" .
+  ("slaps" .
    [1 0 0 0 0])
-  ("we'll" .
-   [1 0 0 0 0])
-  ("problems" .
-   [1 0 0 0 0 0 0 0])
-  ("point" .
-   [2 0 0 0 0])
-  ("something" .
-   [2 0 0 0 0 0 0 0 0])
-  ("choice" .
-   [1 0 0 0 0 0])
-  ("Excellent" .
-   [1 0 0 0 0 0 0 0 0])
-  ("ubuntu-offtopic" .
-   [0 0 0 0 0 0 2 0 0 1 0 0 0 0 2])
-  ("think" .
-   [1 0 0 0 0])
-  ("annoyed" .
-   [1 0 0 0 0 0 0])
-  ("earlier" .
-   [1 0 0 0 0 0 0])
-  ("sorry" .
-   [1 0 0 0 0])
-  ("happened" .
-   [1 0 0 0 0 0 0 0])
-  ("that's" .
-   [2 0 0 0 0 0])
-  ("Hehehe" .
+  ("trouts" .
    [0 0 0 0 0 1])
-  ("Ahahaha" .
-   [1 0 0 0 0 0 0])
-  ("trusted" .
-   [1 0 0 0 0 0 0])
-  ("Except" .
-   [1 0 0 0 0 0])
+  ("competition" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("while" .
+   [1 0 0 0 0])
+  ("remember" .
+   [1 0 0 0 0 0 0 0])
+  ("heart" .
+   [1 0 0 0 0])
+  ("little" .
+   [2 0 0 0 0 0])
   ("Don't" .
    [1 0 0 0 0])
-  ("joking" .
+  ("smarter" .
+   [1 0 0 0 0 0 0])
+  ("Oliver" .
    [1 0 0 0 0 0])
-  ("basically" .
-   [1 0 0 0 0 0 0 0 0])
-  ("respond" .
-   [1 0 0 0 0 0 0])
-  ("requests" .
-   [2 0 0 0 0 0 0 0])
-  ("address" .
-   [2 0 0 0 0 0 0])
-  ("display-time-mode" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
-  ("set-face-attribute" .
-   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
-  ("default" .
-   [1 0 0 0 0 0 0])
-  (":font" .
-   [1 0 0 0 0])
-  ("newpage" .
-   [1 0 0 0 0 0 0])
-  ("autoload" .
+  ("personal" .
    [1 0 0 0 0 0 0 0])
-  ("erc-join" .
-   [1 0 0 0 0 0 0 0])
-  ("reading" .
-   [1 0 0 0 0 0 0])
-  ("notes" .
-   [2 0 0 0 0])
-  ("associated" .
-   [2 0 0 0 0 0 0 0 0 0])
-  ("Sameness" .
-   [1 0 0 0 0 0 0 0])
-  ("Substance" .
-   [1 0 0 0 0 0 0 0 0])
-  ("David" .
-   [1 0 0 0 0])
-  ("Wiggins" .
-   [1 0 0 0 0 0 0])
-  ("Scientific" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("Method" .
-   [1 0 0 0 0 0])
-  ("Practice" .
-   [1 0 0 0 0 0 0 0])
-  ("Gauch" .
-   [1 0 0 0 0])
-  ("comprises" .
-   [1 0 0 0 0 0 0 0 0])
-  ("related" .
-   [1 0 0 0 0 0 0])
-  ("areas" .
-   [2 0 0 0 0])
-  ("interested" .
-   [1 0 0 0 0 0 0 0 0 0])
-  ("false" .
-   [1 0 0 0 0])
-  ("/msg" .
-   [1 0 0 0])
-  ("NickServ" .
-   [1 0 0 0 0 0 0 0])
-  ("identify" .
-   [1 0 0 0 0 0 0 0])))
+  ("MonkeyDust" .
+   [0 0 0 0 0 0 1 0 0 0])
+  ("ubuntu-offtopic" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0])))

@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads (color-theme-zenburn) "zenburn" "zenburn.el" (19959
-;;;;;;  12608))
+;;;### (autoloads (color-theme-zenburn) "zenburn" "zenburn.el" (20228
+;;;;;;  27240))
 ;;; Generated autoloads from zenburn.el
 
 (autoload 'color-theme-zenburn "zenburn" "\
@@ -14,7 +14,7 @@ Just some alien fruit salad to keep you in the zone.
 
 ;;;***
 
-;;;### (autoloads nil nil ("zenburn-pkg.el") (19959 12608 470144))
+;;;### (autoloads nil nil ("zenburn-pkg.el") (20228 27240 741426))
 
 ;;;***
 
@@ -26,8 +26,3 @@ Just some alien fruit salad to keep you in the zone.
 ;; coding: utf-8
 ;; End:
 ;;; zenburn-autoloads.el ends here
-
-
-
-
-

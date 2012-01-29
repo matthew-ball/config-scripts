@@ -160,6 +160,9 @@ else
     fi
 fi
 
+### youtube
+# mplayer -cookies -cookies-file /foo/bar.txt $(youtube-dl -g --cookies /foo/bar.txt "youtube-share-link")
+
 ## ===========
 ### gnu screen
 ## ===========

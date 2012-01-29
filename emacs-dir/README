@@ -1,0 +1,134 @@
+
+* GNU Emacs for the Humanities
+- The configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs; it is primarily designed to aid a non-programmer in using GNU Emacs; it focuses mainly on org-mode and latex configurations. As such, it is mainly directed at people who write documents, though it does include "sane"[fn:subjective] configurations for other components.
+
+- This README file is best read using functionality provided by org-mode.
+
+- This configuration is developed (and running) on GNU Emacs 24.0.92.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1) of 2012-01-06 on doubah, modified by Debian.
+
+** Initiation :: [[file:init.el][init.el]]
+- this file initialises the configuration:
+  + adds ~/.emacs.d/ to the load-path
+  + requires common-lisp package
+  + sets custom configuration file
+  + requires specific configuration files, a brief description of each module is provided in the following sections[fn:order-of-evaluation]:
+    - *package-config*
+    - *appearance-config*
+    - *general-config*
+    - *key-bindings-config*
+    - *programming-config*
+    - *org-config*
+    - *latex-config*
+    - *erc-config*
+    - *gnus-config*
+  + starts the GNU Emacs server
+
+** Package Management :: [[file:config-el/package-config.el][package-config.el]]
+- this file provides a configuration for packages not available by default in GNU Emacs.
+  + the following files[fn:auto-setup] are installed from ELPA[fn:ELPA]:
+    - color-theme :: /description/
+    - diminish :: /description/
+    - eproject :: /description/
+    - haskell-mode :: /description/
+    - magit :: /description/
+    - slime :: the Superior Lisp Interaction mode for Emacs
+    - smex :: /description/
+    - zenburn :: just some alien fruit salad to keep you in the zone
+    - paredit :: minor mode for pseudo-structurally editing Lisp code
+    - ido-ubiquitous :: use `ido-completing-read' instead of `completing-read' almost everywhere
+  + the following files are not available from ELPA, but are required for complete working:
+    - auto-complete :: start auto-completion at current point - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]]
+    - ...
+
+** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
+- this file provides a configuration for visual appearance:
+  + sets the colour theme to zenburn[fn:requires-zenburn]
+
+** Dired Settings :: [[file:config-el/dired-config.el][dired-config.el]]
+** General Settings :: [[file:config-el/general-config.el][general-config.el]]
+- this file provides a configuration for general GNU Emacs usage:
+  + user variables
+    - user-home-directory :: the file-path to the user's home directory
+    - user-scripts-directory :: the file-path to the user's scripts directory
+    - user-documents-directory :: the file-path to the user's documents directory
+    - user-reading-directory :: the file-path to the user's reading directory
+    - user-writing-directory :: the file-path to the user's writing directory
+    - user-organisation-directory :: the file-path to the user's organisation directory
+    - user-university-directory :: the file-path to the user's university directory
+    - user-org-university-file :: the file-path to the user's university organisation file
+    - user-org-notes-file :: the file-path to the user's notes organisation file
+    - user-org-projects-file :: the file-path to the user's projects organisation file
+    - user-org-archive-file :: the file-path to the user's archive organisation file
+    - user-university-id :: the user's university identification number
+    - user-primary-email-address :: the user's primary email address
+    - user-secondary-email-address :: the user's secondary email address
+  + user functions
+    - eval-and-replace :: evaluate an emacs-lisp expression and replace the code with the result
+    - show-dot-file-structure :: show the structure of a dot file
+    - show-bugs-fixes-todos :: show any BUGS/FIXES/TODOS in a file
+    - switch-to-dot-emacs :: switch to the init.el file
+    - display-startup-echo-area-message :: set the initial minibuffer message
+  + sets the default value of internal GNU Emacs variables:
+    - inhibit-startup-message :: turn off the startup message (value: t)
+    - inhibit-startup-echo-area-message :: turn off the startup echo area message (value: t)
+    - initial-scratch-message :: set the initial scratch message (value: string)
+    - completion-ignore-case :: ignore case in auto-completing text (value: t)
+    - read-file-name-completion-ignore-case :: ignore cases in file-names (value: t)
+    - auto-compression-mode :: automatically parse an archive (value: 1)
+    - message-log-max :: maximum number of lines to keep in the message log buffer (value: 2000)
+    - show-trailing-whitespace :: show trailing white-space (value: 1)
+    - scroll-margin :: use smooth scrolling (value: 0)
+    - scroll-conservatively :: ... the defaults (value: 100000)
+    - scroll-up-aggressively :: ... are very (value: 0)
+    - scroll-down-aggressively :: ... annoying (value: 0)
+    - scroll-preserve-screen-position :: preserve screen position with C-v/M-v (value: t)
+    - auto-save-interval :: change auto-save interval (value: 1000)
+    - sentence-end-double-space :: sentences end with a single space (value: 'nil)
+    - echo-keystrokes :: instant feedback for what you are typing (value: 0.1)
+    - suggest-key-bindings :: do not show respective key-bindings (value: nil)
+  + sets the default web browser
+  + sets the default auto-mode list
+  + overwrite selected text
+  + activates ido mode
+
+** Key Bindings :: [[file:config-el/key-bindings-config.el][key-bindings-config.el]]
+- this file provides a configuration for key bindings:
+  + ...
+
+** Programming Settings :: [[file:config-el/programming-config.el][programming-config.el]]
+- this file provides a configuration for the following programming modes:
+  + emacs lisp programming
+  + common lisp programming
+  + slime
+  + haskell programming
+  + python programming
+  + maxima
+
+** Organisation Settings :: [[file:config-el/org-config.el][org-config.el]]
+- this file provides a configuration for org-mode:
+  + ...
+
+** LaTeX Settings :: [[file:config-el/latex-config.el][latex-config.el]]
+- this file provides a configuration for LaTeX:
+  + ...
+
+** ERC Settings :: [[file:config-el/erc-config.el][erc-config.el]]
+- this file provides a configuration for ERC (the GNU Emacs IRC Client):
+  + ...
+
+** GNUS Settings :: [[file:config-el/gnus-config.el][gnus-config.el]]
+- this file provides a configuration for GNUS (the GNU Emacs Mail and News Reader):
+  + ...
+
+** User Settings :: [[file:config-el/user-config.el][user-config.el]]
+* Footnotes
+
+[fn:ELPA] GNU Emacs Lisp Package Archiver.
+
+[fn:auto-setup] This still needs to be correctly configured.
+
+[fn:subjective] Obviously this is going to be subjective. This configuration presented here is very much based around /my/ preferences.
+
+[fn:requires-zenburn] This *requires* the zenburn theme as an outside extra (available from ELPA).
+
+[fn:order-of-evaluation] The order these files are listed in is the order they are included in. This ordering may (or may not) be necessary.
