@@ -1,18 +1,9 @@
 
+=This README file is best read using functionality provided by org-mode=
+
 # TODO Create script to automatically symlink files from this directory to their correct locations.
 # TODO Rename files to '<app-name>' and directories to '<add-name>.d/'.
 # TODO Merge with backup directory (in particular the scripts).
-# TODO Remove unused files
-|------------|
-| Name:      |
-|------------|
-| irssi-dir/ |
-| screenrc   |
-| muttrc     |
-| mpd.conf   |
-| ncmpcpp-d  |
-|------------|
-
 
 * Configuration Files:
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system. This directory can be put on github (or another service) and pulled/pushed as required.

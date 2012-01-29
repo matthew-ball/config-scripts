@@ -21,15 +21,13 @@
        (reftex-parse-all))
   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
 
-(add-hook 'org-mode-hook 'org-mode-reftex-setup)
-
 (defun org-mode-custom-latex ()
   "Enable custom settings for org-mode."
-  ;; (org-mode-reftex-setup) ;; FIXME: fix
   (turn-on-reftex) ;; turn on reftex
+  (org-mode-reftex-setup) ;; enable org-mode/reftex integration
   (lambda () (if (member "REFTEX" org-todo-keywords-1 (org-mode-article-modes)))))
 
-(add-hook 'org-mode-hook 'org-mode-custom-latex)
+;; (add-hook 'org-mode-hook 'org-mode-custom-latex)
 
 ;;; reftex formats (for biblatex)
 (setq reftex-cite-format

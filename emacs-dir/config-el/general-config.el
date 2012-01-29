@@ -272,6 +272,8 @@
 	 ("Version Control" ;; version control related buffers
 	  (or (mode . diff-mode)
 	      (mode . magit-status-mode)
+	      (mode . magit-key-mode)
+	      (mode . magit-log-edit-mode)
 	      (mode . vc-mode)
 	      (mode . vc-dir-mode)
 	      (mode . vc-log-entry-mode)
@@ -553,5 +555,3 @@
 (mapc (lambda (mode-hook) (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
 
 (provide 'general-config)
-
-

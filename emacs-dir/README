@@ -1,8 +1,8 @@
 
+=This README file is best read using functionality provided by org-mode=
+
 * GNU Emacs for the Humanities
 - The configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs; it is primarily designed to aid a non-programmer in using GNU Emacs; it focuses mainly on org-mode and latex configurations. As such, it is mainly directed at people who write documents, though it does include "sane"[fn:subjective] configurations for other components.
-
-- This README file is best read using functionality provided by org-mode.
 
 - This configuration is developed (and running) on GNU Emacs 24.0.92.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1) of 2012-01-06 on doubah, modified by Debian.
 

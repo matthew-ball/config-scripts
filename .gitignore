@@ -14,13 +14,15 @@ emacs-dir/auto-complete.el
 emacs-dir/auto-complete.elc
 emacs-dir/auto-save-list/
 emacs-dir/elpa/
-emacs-dir/eproject.lst
-emacs-dir/fuzzy.elc
+emacs-dir/emacs-desktop
 emacs-dir/history
-emacs-dir/popup.elc
 emacs-dir/recentf
-emacs-dir/save-files/
 emacs-dir/smex-items
+emacs-dir/eproject.lst
+# emacs-dir/popup.elc
+# emacs-dir/fuzzy.elc
+emacs-dir/*.elc
+emacs-dir/save-files/
 emacs-dir/url/
 emacs-dir/.emacs.desktop.lock
 emacs-dir/.emms-history
