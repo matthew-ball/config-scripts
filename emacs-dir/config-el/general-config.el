@@ -252,7 +252,8 @@
 	      (mode . scheme-mode)
 	      (mode . inferior-scheme-mode)
 	      (mode . maxima-mode)
-	      (mode . inferior-maxima-mode)))
+	      (mode . inferior-maxima-mode)
+	      (name . "^\\*slime-events\\*$")))
 	 ("Organisation" ;; org-mode related buffers
 	  (or (mode . org-mode)
 	      (mode . org-agenda-mode)
