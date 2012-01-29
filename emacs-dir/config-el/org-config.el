@@ -4,20 +4,25 @@
 ;; ==================================
 
 ;;; org mode
-(autoload 'org-install "Organise tasks with org-mode." t)
-(autoload 'org-entities "Enable unicode support for org-mode." t)
+(autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
+(autoload 'org-entities "org" "Enable unicode support for org-mode." t)
 (autoload 'org-protocol "org-protocol" "Use org-mode with emacsclient." t)
 (autoload 'org-latex "org-latex" "Render LaTeX with org-mode." t)
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
-;; (require 'org-protocol) ;; FIXME: change this to an autoload
-;; (require 'org-latex) ;; FIXME: change this to an autoload
-;; (require 'org-special-blocks) ;; FIXME: change this to an autoload
 
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
-      ;; org-read-date-display-live nil ;; disable the live date-display
       org-log-done 'time ;; capture a timestamp for when a task changes state
+      ;; org-read-date-display-live nil ;; disable the live date-display
       ;; org-insert-mode-line-in-empty-file t
+      ;; org-indent-mode t ;; enable org indent mode
+      ;; org-indent-indentation-per-level 2 ;; two indents per level
+      ;; org-startup-indented t ;; indent text in org documents (WARNING: can crash emacs)
+      ;; org-odd-levels-only t ;; use only odd levels for an outline
+      ;; org-hide-leading-stars t ;; hide leading stars in a headline
+      ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; ignore processing
+      ;; org-use-property-inheritance t ;; children tasks inherit properties from their parent
+      ;; org-agenda-include-diary t ;; include entries from the emacs diary
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
       org-completion-use-ido t ;; enable ido for target (buffer) completion
@@ -28,15 +33,7 @@
       org-refile-allow-creating-parent-nodes 'confirm ;; allow refile to create parent tasks with confirmation
       org-footnote-auto-adjust t ;; automatically handle footnotes
       org-agenda-skip-additional-timestamps-same-entry nil ;; don't skip multiple entries per day
-      ;; org-indent-mode t ;; enable org indent mode
-      ;; org-indent-indentation-per-level 2 ;; two indents per level
-      ;; org-startup-indented t ;; indent text in org documents (WARNING: can crash emacs)
-      ;; org-odd-levels-only t ;; use only odd levels for an outline
-      ;; org-hide-leading-stars t ;; hide leading stars in a headline
-      ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; ignore processing
-      ;; org-use-property-inheritance t ;; children tasks inherit properties from their parent
       org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; file for archiving items
-      ;; org-agenda-include-diary t ;; include entries from the emacs diary
       org-use-fast-todo-selection t ;; enable fast task state switching
       org-use-tag-inheritance nil ;; disable tag inheritance
       org-agenda-dim-blocked-tasks nil ;; do not dim blocked tasks

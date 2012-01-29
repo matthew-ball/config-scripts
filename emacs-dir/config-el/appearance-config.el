@@ -5,7 +5,10 @@
 
 ;;; appearance
 (require 'color-theme)
-(require 'zenburn)
+;; (require 'zenburn)
+
+;; (autoload 'color-theme "color-theme" "Colour theme for GNU Emacs (GTK)." t)
+(autoload 'zenburn "zenburn" "Zenburn colour theme for GNU Emacs." t)
 
 (when window-system 'x ;; if using x windowing system
   (set-face-attribute 'default nil :height 90) ;; change font size
@@ -23,6 +26,9 @@
 
 ;;; visual lines
 (global-visual-line-mode t) ;; enable visual line mode for all buffers (i.e. globally)
+
+;;; indicate empty lines
+;; (toggle-indicate-empty-lines)
 
 ;;; show matching parenthesis
 (show-paren-mode t)

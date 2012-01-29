@@ -4,7 +4,8 @@
 ;; ==========================================
 
 ;;; emacs lisp programming
-(require 'eldoc) ;; emacs-lisp documentation minor mode
+(autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
+
 (eldoc-add-command
  'paredit-backward-delete
  'paredit-close-round)

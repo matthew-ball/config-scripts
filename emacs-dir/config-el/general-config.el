@@ -460,16 +460,15 @@
 ;;; paredit
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
+(defun override-slime-repl-bindings-with-paredit () ;; stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
+  (define-key slime-repl-mode-map
+    (read-kbd-macro paredit-backward-delete-key) nil))
+
 ;; TODO: move hooks to programming-config.el
 (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode t)))
 (add-hook 'lisp-mode-hook (lambda () (paredit-mode t)))
 (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode t)))
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
-
-(defun override-slime-repl-bindings-with-paredit () ;; stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
-  (define-key slime-repl-mode-map
-    (read-kbd-macro paredit-backward-delete-key) nil))
-
 (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
 
 ;;; flyspell
@@ -495,7 +494,7 @@
  "Start an `ansi-term' shell in the directory of current buffer."
  (ansi-term "/bin/bash")
  ;; (term-line-mode)
- )
+ (message "Starting terminal session."))
 
 (defun switch-term (&rest junk)
   "Switch to an active shell (if one exists) or create a new shell (if none exists)."
@@ -515,35 +514,6 @@
 	(kill-buffer))))
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-;;; eshell
-;; TODO: move this into a separate configuration file
-(require 'ansi-color)
-(require 'eshell)
-(require 'em-smart)
-
-(setq eshell-prompt-function (lambda () (concat (user-login-name) "@" (system-name) ":" (eshell/pwd) (if (= (user-uid) 0) "# " "$ "))) ;; modify eshell prompt
-      eshell-prompt-regexp "^[^#$\n]*[#$] " ;; fix shell auto-complete
-      eshell-cmpl-cycle-completions nil ;; avoid cycle-completion
-      eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\)/\\'" ;; ignore file prefixes
-      eshell-save-history-on-exit t ;; save eshell history on exit
-      eshell-where-to-jump 'begin ;; jump to beginning of line
-      eshell-review-quick-commands nil ;; enable quick review
-      eshell-smart-space-goes-to-end t) ;; save buffer history
-
-(defun eshell-handle-ansi-color ()
-  (ansi-color-apply-on-region eshell-last-output-start eshell-last-output-end))
-
-(defun eshell-clear ()
-  "Clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
-
-(add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color) ;; enable colours in eshell sessions
-
-;;; indicate empty lines
-;; (toggle-indicate-empty-lines)
 
 ;;; project management
 ;; (require 'eproject) ;; FIXME: change this to an autoload

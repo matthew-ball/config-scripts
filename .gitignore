@@ -19,9 +19,9 @@ emacs-dir/history
 emacs-dir/recentf
 emacs-dir/smex-items
 emacs-dir/eproject.lst
+emacs-dir/*.elc
 # emacs-dir/popup.elc
 # emacs-dir/fuzzy.elc
-emacs-dir/*.elc
 emacs-dir/save-files/
 emacs-dir/url/
 emacs-dir/.emacs.desktop.lock

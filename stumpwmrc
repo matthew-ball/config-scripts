@@ -37,9 +37,10 @@
 (defvar *package-manager* "aptitude" "Set the default package manager.")
 (defvar *system-monitor* "htop" "Set the default system monitor.")
 (defvar *document-viewer* "evince" "Set the default document reader.")
-(defvar *audio-player* "ncmpcpp" "Set the default audio player.")
+(defvar *audio-player* "ncmpcpp" "Set the default audio player.") ;; NOTE: can use emms ...
 (defvar *video-player* "vlc" "Set the default video player.")
 
+;; (defvar *audio-player* "emms" "Set the default audio player.") ;; TODO: implement this in emacs
 ;; (defvar *mail-client* "gnus" "Set the default mail application.") ;; TODO: implement this in emacs
 ;; (defvar *irc-client* "erc" "Set the default IRC client.") ;; TODO: implement this in emacs
 

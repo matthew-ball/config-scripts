@@ -2,20 +2,20 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Sun Jan 29 16:07:37 2012
+;; Created Sun Jan 29 20:23:37 2012
 ;; Desktop file format version 206
 ;; Emacs version 24.0.92.1
 
 ;; Global section:
-(setq extended-command-history '("global-visual-line-mode" "visual-line-mode" "ido-dired" "linum-mode" "package-list-packages" "eval-buffer" "smex-initialize" "ido-dired"))
-(setq file-name-history '("/home/chu/.conf-scripts/README" "~/.emacs.d/config-el/dired-config.el" "~/.emacs.d/config-el/user-config.el" "/home/chu/.emacs.d/README" "/home/chu/.emacs.d/config-el/dired-config.el" "/home/chu/.emacs.d/config-el/user-config.el" "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org" "/home/chu/.conf-scripts/mpd.conf" "/home/chu/.emacs.d/emms-mpd.el" "" "/home/chu/Documents/Organisation/archive.org" "/home/chu/Documents/Writing/anti-realism/anti-realism.org" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "/home/chu/.conf-scripts/emacs-dir/README" "smex-items" "smex-items~/.emacs.d/" "/home/chu/.emacs.d/.smex-items" "/home/chu/.conf-scripts/emacs-dir/README" "/home/chu/.conf-scripts/.gitignore" "/home/chu/Documents/Writing/writings.org" "/home/chu/Documents/Reading/readings.org" "/home/chu/Documents/Writing/writing.org" "/home/chu/Documents/Writing/Exclusion Conditional/exclusion-conditional.org" "/home/chu/Downloads/philosophy-of-language.org" "/home/chu/Documents/Writing/Philosophy of Language/philosophy-of-language.org" "/home/chu/.emacs.d/config-el/appearance-config.el" "/home/chu/.emacs.d/config-el/package-config.el" "~/.emacs.d/config-el/appearance-config.el" "/home/chu/.emacs.d/README" "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org" "/home/chu/Documents/Reading/notes/an-introduction-to-godels-theorems.org" "/home/chu/.conf-scripts/emacs-dir/init.el" "/home/chu/.conf-scripts/README" "/home/chu/.emacs.d/README" "/home/chu/Downloads/emacs-starter-kit/emacs24-starter-kit/init.el" "/home/chu/Documents/Organisation/archive.org" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "/home/chu/.conf-scripts/emacs" "/home/chu/.emacs.d/config-el/latex-config.el" "/home/chu/.stumpwmrc" "/home/chu/.emacs.d/config-el/general-config.el"))
+(setq extended-command-history '("eval-buffer" "eval-current-buffer" "global-visual-line-mode" "visual-line-mode" "ido-dired" "linum-mode" "package-list-packages" "eval-buffer" "smex-initialize" "ido-dired"))
+(setq file-name-history '("/home/chu/.conf-scripts/emacs-dir/config-el/eshell-config.el" "/home/chu/log.txt" "~/.backup/config-original/screenrc" "~/.backup/config-original/muttrc" "~/.backup/config-original/mutt-dir/" "~/.backup/config-original/irssi-dir/" "~/.backup/config-original/emacs-backup/" "~/.backup/config-original" "/home/chu/.conf-scripts/README" "~/.emacs.d/config-el/dired-config.el" "~/.emacs.d/config-el/user-config.el" "/home/chu/.emacs.d/README" "/home/chu/.emacs.d/config-el/dired-config.el" "/home/chu/.emacs.d/config-el/user-config.el" "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org" "/home/chu/.conf-scripts/mpd.conf" "/home/chu/.emacs.d/emms-mpd.el" "" "/home/chu/Documents/Organisation/archive.org" "/home/chu/Documents/Writing/anti-realism/anti-realism.org" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "/home/chu/.conf-scripts/emacs-dir/README" "smex-items" "smex-items~/.emacs.d/" "/home/chu/.emacs.d/.smex-items" "/home/chu/.conf-scripts/emacs-dir/README" "/home/chu/.conf-scripts/.gitignore" "/home/chu/Documents/Writing/writings.org" "/home/chu/Documents/Reading/readings.org" "/home/chu/Documents/Writing/writing.org" "/home/chu/Documents/Writing/Exclusion Conditional/exclusion-conditional.org" "/home/chu/Downloads/philosophy-of-language.org" "/home/chu/Documents/Writing/Philosophy of Language/philosophy-of-language.org" "/home/chu/.emacs.d/config-el/appearance-config.el" "/home/chu/.emacs.d/config-el/package-config.el" "~/.emacs.d/config-el/appearance-config.el" "/home/chu/.emacs.d/README" "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.org" "/home/chu/Documents/Reading/notes/an-introduction-to-godels-theorems.org" "/home/chu/.conf-scripts/emacs-dir/init.el" "/home/chu/.conf-scripts/README" "/home/chu/.emacs.d/README" "/home/chu/Downloads/emacs-starter-kit/emacs24-starter-kit/init.el" "/home/chu/Documents/Organisation/archive.org" "/home/chu/Documents/ANU/PHIL3072/essay/essay.org" "/home/chu/.conf-scripts/emacs" "/home/chu/.emacs.d/config-el/latex-config.el" "/home/chu/.stumpwmrc" "/home/chu/.emacs.d/config-el/general-config.el"))
 (setq grep-history nil)
 (setq compile-history '("ghc Main.hs"))
-(setq minibuffer-history '("reftex-label" "reftex-toc" "reftex-mode" "reftex-info" "reftex-mode" "reftex-toc" "org-special-blocks-convert-html-special-cookies" "org-latex-packages-to-string" "org-entities-help" "org-entities" "org-protocol-create" "require" "emms-player-mpd-seek-to" "emms" "eval-buffer" "emms" "eval-buffer" "emms-setup" "dired-x-find-file-other-window" "eproject" "eval-buffer" "eproject" "eval-buffer" "eproject" "eval-buffer" "eproject-setup" "eval-buffer" "eproject-setup" "show-bugs-fixes-todos" "emacs-version" "dired-config.el" "user-config.el" "switch-term" "shell-mode-hook" "magit-status" "switch-term" "magit-status" "eshell" "switch-term" "eval-buffer" "emms-player-mpd-connect" "ido-dired" "eval-buffer" "ido-dired" "emms" "emms-player-mpd-connect" "emms" "switch-term" "ansi-term" "emms"))
+(setq minibuffer-history '("magit-status" "eshell" "Dired" "GNUS" "eshell-output-filter-functions" "eshell-output-filter" "ansi-color-for-comint-mode-filter" "eldoc-mode" "emms" "emms-all" "zenburn" "color-theme-zenburn" "latex-mode" "ido-dired" "my-packages" "/home/chu/.conf-scripts/emacs-dir/config-el/package-config.el" "magit-status" "eval-and-replace" "Emacs Starter Kit" "http://eschulte.me/emacs-starter-kit/starter-kit.html" "/home/chu/.conf-scripts/emacs-dir/README" "eval-and-replace" "eval-buffer" "org-toggle-pretty-entities" "eval-buffer" "org-install-letbind" "magit-status" "/home/chu/.conf-scripts/README" "ido-dired" "magit-status" "ido-dired" "/home/chu/.conf-scripts/README" "eval-buffer" "magit-status" "ido-dired" "magit-status" "/home/chu/.conf-scripts/emacs-dir/README" "/home/chu/.conf-scripts/README" "ido-dired" "magit-status" "/home/chu/.conf-scripts/README" "/home/chu/.emacs.d/README" "battery" "display-battery-mode" "magit-status" "#" "magit-status" "/home/chu/.conf-scripts/.gitignore" "magit-status" "ido-dired"))
 (setq query-replace-history nil)
 (setq read-expression-history '("(when pid (int-to-string pid))" "(int-to-string pid)" "(flymake-mode-on)" "(flymake-mode 'on)" "(flymake-mode t)" "(require 'imenu)" "(imenu-auto-rescan t)" "(require 'slime)" "(dolist (p my-packages) (if (package-installed-p p) (message (concat p \" is installed.\")) (message (concat p \" is not installed.\"))))" "(dolist (p my-packages) (package-installed-p p))" "(mapc 'package-installed-p my-packages)" "(do-list (p my-packages) (package-installed-p p))" "(package-installed-p 'magit)" "(package-installed-p magit)" "(package-installed-p \"magit\" \"1.1.0\")" "(package-installed-p \"magit\" \"1.1.0" "(package-installed-p \"magit\")" "(read (concat ?# \"lol\"))" "(read (concat \"l\" \"o\" \"l\"))" "(read (concat \"#\" \" \"))" "(read \"lol\")" "(write (concat \"# \" (buffer-file-name)))" "(read (concat \"# \" (buffer-file-name)))" "(concat \"# \" (buffer-file-name))" "(message (buffer-file-name))" "(if (and (functionp 'server-running-p) (not (server-running-p))) (message \"not running\") (message \"running\"))" "(buffer-name)" "(message user-email)" "(message user-full-name)"))
 (setq regexp-history nil)
-(setq regexp-search-ring '("autolo" "shell" "dired" "desktop" "alonzo" "eshell" "dired" "eshell" "dired" "READ" "emms" "run-audi" "run-" "music" "audio" "music"))
+(setq regexp-search-ring '("Package" "installed" "elpa" "conf-s" "battery" "ba" "magit" "autolo" "shell" "dired" "desktop" "alonzo" "eshell" "dired" "eshell" "dired"))
 (setq search-ring nil)
 (setq shell-command-history '("wc -l"))
 (setq tags-file-name nil)
@@ -23,23 +23,133 @@
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/latex-config.el"
-  "latex-config.el"
+  "/home/chu/.conf-scripts/emacs-dir/config-el/general-config.el"
+  "general-config.el"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  1199
-  '(606 nil)
+  1
+  '(23244 nil)
+  nil
+  nil
+  '((show-trailing-whitespace . 1) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/eshell-config.el"
+  "eshell-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  167
+  '(157 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  881
+  '(609 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/erc-config.el"
+  "/home/chu/.conf-scripts/emacs-dir/config-el/appearance-config.el"
+  "appearance-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  1313
+  '(1289 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/programming-config.el"
+  "programming-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  2160
+  '(198 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/user-config.el"
+  "user-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  206
+  '(178 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/erc-config.el"
   "erc-config.el"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  9891
-  '(1086 nil)
+  1
+  '(9891 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/org-config.el"
+  "org-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  2654
+  '(1487 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/latex-config.el"
+  "latex-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  224
+  '(6645 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/emacs-dir/config-el/package-config.el"
+  "package-config.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
+  693
+  '(614 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/stumpwmrc"
+  "stumpwmrc"
+  'lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode paredit-mode stumpwm-mode)
+  2170
+  '(129 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/home/chu/.conf-scripts/bashrc"
+  "bashrc"
+  'sh-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode)
+  5166
+  '(2044 nil)
   nil
   nil
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
@@ -49,30 +159,8 @@
   "philosophical-investigations-in-logic.org"
   'org-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
-  1
+  76476
   '(6244 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/programming-config.el"
-  "programming-config.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  491
-  '(1597 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/org-config.el"
-  "org-config.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  518
-  '(285 nil)
   nil
   nil
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
@@ -89,18 +177,7 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/user-config.el"
-  "user-config.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  178
-  '(178 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/gnus-config.el"
+  "/home/chu/.conf-scripts/emacs-dir/config-el/gnus-config.el"
   "gnus-config.el"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
@@ -111,29 +188,7 @@
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/appearance-config.el"
-  "appearance-config.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  91
-  '(1869 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/package-config.el"
-  "package-config.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  476
-  '(nil nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/key-bindings-config.el"
+  "/home/chu/.conf-scripts/emacs-dir/config-el/key-bindings-config.el"
   "key-bindings-config.el"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
@@ -144,7 +199,7 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/dired-config.el"
+  "/home/chu/.conf-scripts/emacs-dir/config-el/dired-config.el"
   "dired-config.el"
   'emacs-lisp-mode
   '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
@@ -153,50 +208,6 @@
   nil
   nil
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/config-el/general-config.el"
-  "general-config.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  23950
-  '(23950 nil)
-  nil
-  nil
-  '((show-trailing-whitespace . 1) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/README"
-  "README"
-  'org-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
-  2741
-  '(2722 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.emacs.d/init.el"
-  "init.el"
-  'emacs-lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode eldoc-mode paredit-mode)
-  856
-  '(609 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/stumpwmrc"
-  "stumpwmrc"
-  'lisp-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode paredit-mode stumpwm-mode)
-  150
-  '(129 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Documents/Writing/anti-realism/anti-realism.org"
@@ -208,17 +219,6 @@
   nil
   nil
   '((buffer-file-coding-system . utf-8-unix) (truncate-lines)))
-
-(desktop-create-buffer 206
-  "/home/chu/.conf-scripts/bashrc"
-  "bashrc"
-  'sh-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode)
-  5785
-  '(1 nil)
-  nil
-  nil
-  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "/home/chu/Documents/Writing/writings.org"
@@ -298,13 +298,13 @@
   '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
-  "/home/chu/Documents/Writing/Philosophy of Logic/philosophical-investigations-in-logic.tex"
-  "philosophical-investigations-in-logic.tex"
-  'latex-mode
-  '(visual-line-mode global-visual-line-mode auto-complete-mode flyspell-mode reftex-mode)
-  1
+  nil
+  ".conf-scripts"
+  'dired-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode dired-omit-mode)
+  248
   '(nil nil)
-  nil
-  nil
-  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+  t
+  '("/home/chu/.conf-scripts/")
+  '((truncate-lines)))
 

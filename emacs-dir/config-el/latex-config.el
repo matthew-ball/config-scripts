@@ -3,10 +3,12 @@
 ;; Matthew Ball (copyleft 2012)
 ;; ====================================
 
-(autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
-(autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" t)
-(autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-(autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
+(autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
+
+(autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
+(autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
+(autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
+(autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
 
 (defun org-mode-article-modes ()
   (reftex-mode t)

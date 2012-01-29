@@ -4,10 +4,9 @@
 ;; ===================================
 
 ;;; emacs multimedia system
-(require 'emms-setup) ;; FIXME: change this to an autoload
-(require 'emms-player-mpd) ;; FIXME: change this to an autoload
-;; (autoload 'emms "emms-playlist-mode" "Start a GNU Emacs multimedia system session." t)
-;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
+(autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
+(autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
+(autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
 
 ;; (emms-devel)
 (emms-all)

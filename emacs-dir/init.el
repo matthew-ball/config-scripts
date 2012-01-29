@@ -20,6 +20,7 @@
 (require 'package-config)
 (require 'appearance-config)
 (require 'dired-config)
+(require 'eshell-config)
 (require 'general-config)
 (require 'key-bindings-config)
 (require 'programming-config)
