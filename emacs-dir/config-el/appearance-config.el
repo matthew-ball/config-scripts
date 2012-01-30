@@ -44,6 +44,22 @@
 (display-battery-mode t) ;; display battery status in the mode line
 ;; (which-function-mode t) ;; show the current function in the mode line
 
+;;; code folding
+;; (hs-minor-mode t)
+(autoload 'hs-toggle-hiding "hideshow" "Toggle code folding minor mode." t)
+
+(global-set-key (kbd "C-+") 'hs-toggle-hiding)
+;; (global-set-key (kbd "C-\\") 'toggle-selective-display)
+
+(setq hs-hide-comments nil) ;; hide the comments too when you do a 'hs-hide-all'
+(setq hs-isearch-open 'x) ;; set whether isearch opens folded comments, code, or both where x is code, comments, t (both), or nil (neither)
+
+(add-hook 'lisp-mode-hook       'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+(add-hook 'shell-script-mode    'hs-minor-mode)
+(add-hook 'haskell-mode-hook    'hs-minor-mode)
+(add-hook 'latex-mode-hook      'hs-minor-mode)
+
 ;;; diminish
 (require 'diminish) ;; turn off the textual mode indicator in the mode line
 
@@ -53,6 +69,7 @@
 (eval-after-load "simple" '(diminish 'visual-line-mode ""))
 (eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
 (eval-after-load "eldoc" '(diminish 'eldoc-mode ""))
+(eval-after-load "hideshow" '(diminish 'hs-minor-mode ""))
 (eval-after-load "paredit" '(diminish 'paredit-mode ""))
 (eval-after-load "haskell-doc" '(diminish 'haskell-doc-mode ""))
 (eval-after-load "haskell-indent" '(diminish 'haskell-indent-mode ""))

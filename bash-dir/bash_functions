@@ -3,59 +3,87 @@
 ## Matthew Ball (copyleft 2012)
 ## =======================================
 
-function get_dist_name {
-    # TODO: export $DIST_NAME (???)
+function init_dist_variables {
     DIST_TYPE=`/usr/bin/lsb_release -i` # $DIST_TYPE is 16 characters into the output of /usr/bin/lsb_release -i
     DIST_NAME=${DIST_TYPE:16}
-    # echo $DIST_NAME # DEBUGGING
+
+    if [ $DIST_NAME = "Debian" ] || [ $DIST_NAME = "Ubuntu" ]; then # set debian/ubuntu package manager variables
+	PM_SEARCH="apt-cache search";    PM_SHOW="apt-cache show";
+	PM_UPDATE="sudo apt-get update"; PM_UPGRADE="sudo apt-get upgrade"; PM_INSTALL="sudo apt-get install"; PM_REMOVE="sudo apt-get remove"; PM_PURGE="sudo apt-get purge";
+    elif [ $DIST_NAME = "Arch" ]; then # set arch package manager variables
+	PM_SEARCH="pacman"; PM_SHOW="pacman"; PM_UPDATE="pacman"; PM_UPGRADE="pacman"; PM_INSTALL="pacman"; PM_REMOVE="pacman"; PM_PURGE="pacman";
+    else
+	return
+    fi
 }
 
-function check_dist_type {
-    get_dist_name # get distribution name
-    # echo "$1 $2 $3" # DEBUGGING
-
-    if [ $DIST_NAME = "Debian" ] || [ $DIST_NAME = "Ubuntu" ]; then
-	RUN_PACKAGE_MANAGER="$1 $3" # set debian/ubuntu command string
-    else
-	if [ $DIST_NAME = "Arch" ]; then
-	    RUN_PACKAGE_MANAGER="$2 $3" # set arch command string
-	else
-	    return
-	fi
-    fi
-    $RUN_PACKAGE_MANAGER # execute command string
+function package_manager_command_run {
+    PACKAGE_MANAGER_COMMAND="$1 $2" # set command string
+    $PACKAGE_MANAGER_COMMAND        # run command string
 }
 
 function package_manager_search {
-    check_dist_type "apt-cache search" "pacman" $1
+    if [ -z $PM_SEARCH ]; then # if $PM_SEARCH is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_SEARCH $1"
 }
 
 function package_manager_show {
-    check_dist_type "apt-cache show" "pacman" $1
+    if [ -z $PM_SHOW ]; then # if $PM_SHOW is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_SHOW $1"
 }
 
 function package_manager_update {
-    check_dist_type "sudo apt-get update" "pacman" $1
+    if [ -z $PM_UPDATE ]; then # if $PM_UPDATE is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_UPDATE $1"
 }
 
 function package_manager_upgrade {
-    check_dist_type "sudo apt-get upgrade" "pacman" $1
+    if [ -z $PM_UPGRADE ]; then # if $PM_UPGRADE is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_UPGRADE $1"
 }
 
 function package_manager_dist_upgrade {
-    check_dist_type "sudo apt-get dist-upgrade" "pacman" $1
+    if [ -z $PM_DIST_UPGRADE ]; then # if $PM_DIST_UPGRADE is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_DIST_UPGRADE $1"
 }
 
 function package_manager_install {
-    check_dist_type "sudo apt-get install" "pacman" $1
+    if [ -z $PM_INSTALL ]; then # if $PM_INSTALL is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_INSTALL $1"
 }
 
 function package_manager_remove {
-    check_dist_type "sudo apt-get remove" "pacman" $1
+    if [ -z $PM_REMOVE ]; then # if $PM_REMOVE is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_REMOVE $1"
 }
 
 function package_manager_purge {
-    check_dist_type "sudo apt-get purge" "pacman" $1
+    if [ -z $PM_PURGE ]; then # if $PM_PURGE is empty initialise variables
+	init_dist_variables
+    fi
+
+    package_manager_command_run "$PM_PURGE $1"
 }
 
 function mcd { # make directory and cd into it
@@ -117,5 +145,3 @@ function show-full-path { # show full file path
         echo $file
     done
 }
-
-# add some new functions ...

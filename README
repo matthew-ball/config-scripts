@@ -1,3 +1,7 @@
+# ============================
+# ~/.conf-scripts/README
+# Matthew Ball (copyleft 2012)
+# ============================
 
 =This README file is best read using functionality provided by org-mode=
 
@@ -23,6 +27,12 @@
     - Version: 0.00
   + Music Player Daemon
     - Version: 0.00
+  + Network Manager Command Line Interface
+    - Version: 0.00
+- the configuration will hopefully represent a possible "desktop" shell setup which is cross-platform, the setup currently supports:
+  + debian
+  + ubuntu
+  + arch
 
 ** Linking Files
 - this configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required
