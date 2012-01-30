@@ -1,7 +1,5 @@
-;; ======================================
 ;; ~/.emacs.d/config-el/general-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ======================================
 
 ;;; user variables
 (defvar user-home-directory "~/" "Directory for user's home files.")

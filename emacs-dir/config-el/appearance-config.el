@@ -1,7 +1,5 @@
-;; =========================================
 ;; ~/.emacs.d/config-el/appearance-config.el
 ;; Matthew Ball (copyleft 2012)
-;; =========================================
 
 ;;; appearance
 (require 'color-theme)

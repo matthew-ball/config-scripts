@@ -1,7 +1,5 @@
-# ============================
 # ~/.conf-scripts/README
 # Matthew Ball (copyleft 2012)
-# ============================
 
 =This README file is best read using functionality provided by org-mode=
 
@@ -27,6 +25,10 @@
     - Version: 0.00
   + Music Player Daemon
     - Version: 0.00
+  + NCMPCPP Client
+    - Version: 0.00
+  + VLC Player
+    - Version: 0.00
   + Network Manager Command Line Interface
     - Version: 0.00
 - the configuration will hopefully represent a possible "desktop" shell setup which is cross-platform, the setup currently supports:
@@ -40,20 +42,20 @@
 - NOTE: the linking process should be run from the conf project root directory
 
 *** List of link files:
-|-----------------------+----------------+------------------------------------------|
-| Source:               | Destination:   | Command:                                 |
-|-----------------------+----------------+------------------------------------------|
-| aptitude-dir/         | ~/.aptitude/   | ln -s aptitude-dir/ ~/.aptitude          |
-| bash-dir/             | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                |
-| conkeror-dir/         | ~/.conkerorrc/ | ln -s conkeror-dir/ ~/.conkerorrc        |
-| emacs-dir/            | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d              |
-| ncmpcpp-dir/          | ~/.ncmpcpp/    | ln -s ncmpcpp-dir/ ~/.ncmpcpp            |
-| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
-|-----------------------+----------------+------------------------------------------|
-| bash-dir/bashrc       | ~/.bashrc      | ln -s bash-dir/bashrc ~/.bashrc          |
-| mpd-dir/mpdrc         | ~/.mpdconf     | ln -s mpd-dir/mpdrc ~/.mpdconf           |
-| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
-|-----------------------+----------------+------------------------------------------|
+|----------------------------+----------------+-----------------------------------------------|
+| Source:                    | Destination:   | Command:                                      |
+|----------------------------+----------------+-----------------------------------------------|
+| aptitude-dir/              | ~/.aptitude/   | ln -s aptitude-dir/ ~/.aptitude               |
+| bash-dir/                  | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                     |
+| conkeror-dir/              | ~/.conkerorrc/ | ln -s conkeror-dir/ ~/.conkerorrc             |
+| emacs-dir/                 | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d                   |
+| ncmpcpp-dir/               | ~/.ncmpcpp/    | ln -s ncmpcpp-dir/ ~/.ncmpcpp                 |
+| stumpwm-dir/               | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d               |
+|----------------------------+----------------+-----------------------------------------------|
+| bash-dir/bash.sh           | ~/.bashrc      | ln -s bash-dir/bash.sh ~/.bashrc              |
+| mpd-dir/mpd.conf           | ~/.mpdconf     | ln -s mpd-dir/mpd.conf ~/.mpdconf             |
+| stumpwm-dir/stumpwmrc.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/stumpwmrc.lisp ~/.stumpwmrc |
+|----------------------------+----------------+-----------------------------------------------|
 
 *** List of non-link files:
 |-----------------|
