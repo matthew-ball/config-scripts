@@ -12,11 +12,11 @@
 ;;; common lisp
 (eval-when-compile (require 'cl))
 
-;;; custom configuration
+;;; customize configuration file
 (setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
 (load custom-file 'noerror)
 
-;;; user configuration files
+;;; configuration files
 (require 'package-config)
 (require 'appearance-config)
 (require 'dired-config)

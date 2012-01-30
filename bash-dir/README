@@ -1,0 +1,10 @@
+
+=This README file is best read using functionality provided by org-mode=
+
+* BASH Configuration
+- the bash configuration is split over three files:
+  1. bashrc :: the bash rc file
+  2. bash\_aliases :: the bash alias definition file
+  3. bash\_functions :: the bash functions definition file
+
+* Footnotes

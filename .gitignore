@@ -30,5 +30,7 @@ emacs-dir/.emms-history
 mutt-dir/
 # ignore stumpwm's debug text
 stumpwm-dir/debug-output.txt
+# ignore ncmpcpp's error.log files
+ncmpcpp-dir/error.log
 # ignore backup files
 *~

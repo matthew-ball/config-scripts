@@ -9,14 +9,11 @@
 ### exports
 export HISTCONTROL=ignoredups # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # ... and ignore same sucessive entries
-
 # export TERM=xterm-color # export 8 colours in shell session
 export TERM=xterm-256color # export 256 colours in shell session
-
 export ALTERNATE_EDITOR=emacs # set the alternate editor as emacs
 export EDITOR='emacsclient -n' # set the main editor as emacsclient (requiring emacs-server)
 # export VISUAL=emacsclient # set the visual edit as emacsclient (requiring emacs-server)
-
 # export BROWSER="conkeror" # export BROWSER as conkeror
 # export BROWSER="chromium-browser" # export BROWSER as chromium
 export BROWSER="x-www-browser" # export BROWSER as x-www-browser ... NOTE: requires debian (???)
@@ -60,55 +57,34 @@ fi
 # esac
 
 if [ "$color_prompt" = yes ]; then
+    # TODO: clean this prompt up ...
+#PS1="\n\[\e[30;1m\]\[\016\]l\[\017\](\[\e[34;1m\]\u@\h\[\e[30;1m\])-(\[\e[34;1m\]\j\[\e[30;1m\])-(\[\e[34;1m\]\@\d\[\e[30;1m\])->\[\e[30;1m\]\n\[\016\]m\[\017\]-(\[\[\e[32;1m\]\w\[\e[30;1m\])-(\[\e[32;1m\]\$(/bin/ls -1 | /usr/bin/wc -l | /bin/sed 's: ::g') files, \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b\[\e[30;1m\])--> \[\e[0m\]"
+
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[00m\]\$ '
+    # PS1="[\[\033[35m\]\t\[\033[m\]]-\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
-## ===============================
 ### enable programmable completion
-## ===============================
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-## ===============================
-### alias definitions
-### (sourced from ~/.bash_aliases)
-## ===============================
-if [ -f ~/.conf-scripts/bash_aliases ]; then
-   . ~/.conf-scripts/bash_aliases
+### bash aliases (sourced from ~/.conf-scripts/bash-dir/bash_aliases)
+if [ -f ~/.conf-scripts/bash-dir/bash_aliases ]; then
+    . ~/.conf-scripts/bash-dir/bash_aliases
 fi
 
-## =================
-### custom functions
-## =================
-extract () { # extract from an archive
-    if [ -f $1 ] ; then
-	case $1 in
-            *.tar.bz2)   tar xvjf $1    ;;
-            *.tar.gz)    tar xvzf $1    ;;
-            *.bz2)       bunzip2 $1     ;;
-            *.rar)       unrar x $1     ;;
-            *.gz)        gunzip $1      ;;
-            *.tar)       tar xvf $1     ;;
-            *.xz)        tar Jxf $1     ;;
-            *.tbz2)      tar xvjf $1    ;;
-            *.tgz)       tar xvzf $1    ;;
-            *.zip)       unzip $1       ;;
-            *.Z)         uncompress $1  ;;
-            *.7z)        7z x $1        ;;
-            *)           echo "Can not extract '$1'..." ;;
-	esac
-    else
-	echo "'$1' is not a valid file!"
-    fi
-}
+### bash functions (sourced from ~/.conf-scripts/bash-dir/bash_functions) 
+if [ -f ~/.conf-scripts/bash-dir/bash_functions ]; then
+    . ~/.conf-scripts/bash-dir/bash_functions
+fi
 
-## ================================
 ### autolaunch ssh-agent on msysgit
-## ================================
 SSH_ENV="$HOME/.ssh/environment"
 
 # start the ssh-agent

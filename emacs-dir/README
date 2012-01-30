@@ -1,7 +1,7 @@
 
 =This README file is best read using functionality provided by org-mode=
 
-* GNU Emacs Initialisation
+* GNU Emacs Configuration
 - This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs; it is primarily designed to aid a non-programmer in using GNU Emacs; it focuses mainly on org-mode and latex configurations.
 
 - This configuration optionally includes functionality for the following "external"[fn:external] operations:

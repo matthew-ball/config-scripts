@@ -3,26 +3,46 @@
 
 * Configuration Files:
 - this directory houses the configuration files most important for the perfect[fn:subjective] working system
-- install, backup and restore scripts are provided to configure the config project
+- install, backup and restore scripts are provided to control the config project
+- the configuration script is designed for use with:
+  + Debian Squeeze
+    - Version: 0.00
+  + BASH Terminal
+    - Version: 0.00
+  + StumpWM Window Manager
+    - Version: 0.00
+  + GNU Emacs Editor
+    - Version: 24.0.92.1
+    + Org Extension
+      - Version: 7.8.03
+    + ERC Extension
+      - Version: 5.3
+    + Gnus Extension
+      - Version: 5.13
+  + Conkeror Web Browser
+    - Version: 0.00
+  + Music Player Daemon
+    - Version: 0.00
 
 ** Linking Files
 - this configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required
 - the files and directories of the config project can then be symlink'ed from their source to a destination location
 
 *** List of link files:
-|---------------+----------------+-----------------------------------------------|
-| Source:       | Destination:   | Command:                                      |
-|---------------+----------------+-----------------------------------------------|
-| aptitude-dir/ | ~/.aptitude/   | ln -s .conf-scripts/aptitude-dir/ .aptitude   |
-| conkeror-dir/ | ~/.conkerorrc/ | ln -s .conf-scripts/conkeror-dir/ .conkerorrc |
-| emacs-dir/    | ~/.emacs.d/    | ln -s .conf-scripts/emacs-dir/ .emacs.d       |
-| ncmpcpp-dir/  | ~/.ncmpcpp/    | ln -s .conf-scripts/ncmpcpp-dir/ .ncmpcpp     |
-| stumpwm-dir/  | ~/.stumpwm.d/  | ln -s .conf-scripts/stumpwm-dir/ .stumpwm.d   |
-|---------------+----------------+-----------------------------------------------|
-| bashrc        | ~/.bashrc      | ln -s .conf-scripts/bashrc .bashrc            |
-| mpd.conf      | ~/.mpdconf     | ln -s .conf-scripts/mpd.conf .mpdconf         |
-| stumpwmrc     | ~/.stumpwmrc   | ln -s .conf-scripts/stumpwmrc .stumpwmrc      |
-|---------------+----------------+-----------------------------------------------|
+|-----------------------+----------------+------------------------------------------------------|
+| Source:               | Destination:   | Command:                                             |
+|-----------------------+----------------+------------------------------------------------------|
+| aptitude-dir/         | ~/.aptitude/   | ln -s .conf-scripts/aptitude-dir/ .aptitude          |
+| bash-dir/             | ~/.bash.d/     | ln -s .conf-scripts/bash-dir/ .bash.d                |
+| conkeror-dir/         | ~/.conkerorrc/ | ln -s .conf-scripts/conkeror-dir/ .conkerorrc        |
+| emacs-dir/            | ~/.emacs.d/    | ln -s .conf-scripts/emacs-dir/ .emacs.d              |
+| ncmpcpp-dir/          | ~/.ncmpcpp/    | ln -s .conf-scripts/ncmpcpp-dir/ .ncmpcpp            |
+| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s .conf-scripts/stumpwm-dir/ .stumpwm.d          |
+|-----------------------+----------------+------------------------------------------------------|
+| bash-dir/bashrc       | ~/.bashrc      | ln -s .conf-scripts/bash-dir/bashrc .bashrc          |
+| mpd-dir/mpdrc         | ~/.mpdconf     | ln -s .conf-scripts/mpd-dir/mpdrc .mpdconf           |
+| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s .conf-scripts/stumpwm-dir/init.lisp .stumpwmrc |
+|-----------------------+----------------+------------------------------------------------------|
 
 *** List of non-link files:
 *** TODO add files from .gitignore
@@ -43,16 +63,8 @@
 *** TODO rename file to '<app-name>.rc' and directories to '<app-name>.d/'
 *** TODO merge with backup directory (in particular, the backup/restore scripts)
 
-** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
-- the configuration script is designed for use with:
-  + GNU Emacs 24.0.92.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1) of 2012-01-19 on kutjera, modified by Debian
-  + Org-mode version 7.8.03
-  + ERC Version 5.3 (GNU Emacs 24.0.92.1)
-  + Gnus v5.13
-  + stumpwm v0.00
-  + conkeror v0.00
-  + mpd v0.00
-
+** Initial Configuration
+*** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
 - the configuration script serves three main purposes:
   1. install the custom configuration
   2. backup the custom configuration
@@ -83,7 +95,7 @@
   + MPD\_RC\_SRC="~/.conf-scripts/mpd.conf"
   + MPD\_RC\_DEST="~/.mpd.conf"
 
-*** Install Script
+**** Install Script
 - the install process is written with two functions of use:
   1. the "maximal" function: this function will pull in all the required files (through 'git clone' for example)
   2. the "minimal" function: this function will symlink files from a $SRC location to a $DEST location
@@ -101,31 +113,39 @@
 
 **** TODO clean up mpd.conf file (rename to mpdrc)
 
-*** Backup Script
+**** Backup Script
 - the backup script will ...
 
-*** Restore Script
+**** Restore Script
 - the restore script will ...
 
-** Backup Script :: /link file/
+*** Backup Script :: [[file:backup-script.sh][backup-script.sh]]
+- the backup script ...
 
-** Restore Script :: /link file/
+*** Restore Script :: [[file:restore-script.sh][restore-script.sh]]
+- the restore script ...
 
-** Aptitude Configuration :: /link file/
+** Application Configuration
+*** Aptitude Configuration :: [[~/.conf-scripts/aptitude-dir/][aptitude-dir/]]
+- the Aptitude configuration is explained in the [[file:aptitude-dir/README][README]] file of =aptitude-dir= directory
 
-** Bash Configuration :: /link file/
+*** BASH Configuration :: [[file:bash-dir/][bash-dir/]]
+- the BASH configuration is explained in the [[file:bash-dir/README][README]] file of the =bash-dir= directory
 
-** Conkeror Configuration :: /link file/
+*** Conkeror Configuration :: [[file:conkeror-dir/][conkeror-dir/]]
+- the Conkeror configuration is explained in the [[file:conkeror-dir/README][README]] file of the =conkeror-dir= directory
 
-** GNU Emacs Configuration :: /link file/
-- The GNU Emacs configuration file is best explained in the [[file:emacs-dir/README][README]] file of the =emacs-dir= directory.
+*** GNU Emacs Configuration :: [[file:emacs-dir/][emacs-dir/]]
+- the GNU Emacs configuration is explained in the [[file:emacs-dir/README][README]] file of the =emacs-dir= directory
 
-** StumpWM Configuration :: /link file/
-- The StumpWM configuration is explained in the ... file of the =stumpm-dir= directory.
+*** StumpWM Configuration :: [[~/.conf-scripts/stumpwm-dir/][stumpwm-dir/]]
+- the StumpWM configuration is explained in the [[file:stumpwm-dir/README][README]] file of the =stumpwm-dir= directory
 
-** NCMPCPP Configuration :: /link file/
+*** NCMPCPP Configuration :: [[file:~/.conf-scripts/ncmpcpp-dir/][ncmpcpp-dir/]]
+- the NCMPCPP configuration is explained in the [[file:ncmpcpp-dir/README][README]] file of the =ncmpcpp-dir= directory
 
-** MPD Configuration :: /link file/
+*** MPD Configuration :: [[file:~/.conf-scripts/mpd-dir/][mpd-dir/]]
+- the MPD configuration is explained in the [[file:mpd-dir/README][README]] file of the =mpd-dir= directory
 
 * Footnotes
 

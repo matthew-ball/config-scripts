@@ -16,17 +16,15 @@ STUMPWM_DIR_DEST="~/.stumpwm.d/"
 STUMPWM_RC_SRC="~/.conf-scripts/stumpwm-dir/init.lisp"
 STUMPWM_RC_DEST="~/.stumpwmrc"
 
-# TODO: finish cleaning up config setup structure
 BASH_DIR_SRC="~/.conf-scripts/bash-dir/"
 BASH_DIR_DEST="~/.bash.d/"
 
-# TODO: move bashrc (and bash_aliases) into bash-dir
 BASH_RC_SRC="~/.conf-scripts/bash-dir/bashrc"
 BASH_RC_DEST="~/.bashrc"
 
 # TODO: clean up mpd stuff ...
-MPD_RC_SRC="~/.conf-scripts/mpd.conf"
-MPD_RC_DEST="~/.mpd.conf"
+MPD_RC_SRC="~/.conf-scripts/mpd-dir/mpdrc"
+MPD_RC_DEST="~/.mpdconf"
 
 # TODO: populate ncmpcpp stuff ...
 NCMPCPP_DIR_SRC="~/.conf-scripts/ncmpcpp-dir/"
@@ -55,6 +53,7 @@ function check-file-exists {
 	echo "  + creating $1 ..."
     fi
 }
+
 # example: symlink-file bashrc .bashrc
 function symlink-file {
     # the first argument is the file source
