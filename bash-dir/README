@@ -7,4 +7,10 @@
   2. bash\_aliases :: the bash alias definition file
   3. bash\_functions :: the bash functions definition file
 
+- the bash configuration makes an attempt at being somewhat "cross-platform":
+  + the current configuration includes a bash config for:
+    1. Debian
+    2. Ubuntu
+    3. Arch
+
 * Footnotes

@@ -27,25 +27,25 @@
 ** Linking Files
 - this configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required
 - the files and directories of the config project can then be symlink'ed from their source to a destination location
+- NOTE: the linking process should be run from the conf project root directory
 
 *** List of link files:
-|-----------------------+----------------+------------------------------------------------------|
-| Source:               | Destination:   | Command:                                             |
-|-----------------------+----------------+------------------------------------------------------|
-| aptitude-dir/         | ~/.aptitude/   | ln -s .conf-scripts/aptitude-dir/ .aptitude          |
-| bash-dir/             | ~/.bash.d/     | ln -s .conf-scripts/bash-dir/ .bash.d                |
-| conkeror-dir/         | ~/.conkerorrc/ | ln -s .conf-scripts/conkeror-dir/ .conkerorrc        |
-| emacs-dir/            | ~/.emacs.d/    | ln -s .conf-scripts/emacs-dir/ .emacs.d              |
-| ncmpcpp-dir/          | ~/.ncmpcpp/    | ln -s .conf-scripts/ncmpcpp-dir/ .ncmpcpp            |
-| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s .conf-scripts/stumpwm-dir/ .stumpwm.d          |
-|-----------------------+----------------+------------------------------------------------------|
-| bash-dir/bashrc       | ~/.bashrc      | ln -s .conf-scripts/bash-dir/bashrc .bashrc          |
-| mpd-dir/mpdrc         | ~/.mpdconf     | ln -s .conf-scripts/mpd-dir/mpdrc .mpdconf           |
-| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s .conf-scripts/stumpwm-dir/init.lisp .stumpwmrc |
-|-----------------------+----------------+------------------------------------------------------|
+|-----------------------+----------------+------------------------------------------|
+| Source:               | Destination:   | Command:                                 |
+|-----------------------+----------------+------------------------------------------|
+| aptitude-dir/         | ~/.aptitude/   | ln -s aptitude-dir/ ~/.aptitude          |
+| bash-dir/             | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                |
+| conkeror-dir/         | ~/.conkerorrc/ | ln -s conkeror-dir/ ~/.conkerorrc        |
+| emacs-dir/            | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d              |
+| ncmpcpp-dir/          | ~/.ncmpcpp/    | ln -s ncmpcpp-dir/ ~/.ncmpcpp            |
+| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
+|-----------------------+----------------+------------------------------------------|
+| bash-dir/bashrc       | ~/.bashrc      | ln -s bash-dir/bashrc ~/.bashrc          |
+| mpd-dir/mpdrc         | ~/.mpdconf     | ln -s mpd-dir/mpdrc ~/.mpdconf           |
+| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
+|-----------------------+----------------+------------------------------------------|
 
 *** List of non-link files:
-*** TODO add files from .gitignore
 |-----------------|
 | File Name:      |
 |-----------------|
@@ -59,9 +59,7 @@
 *** TODO create script for symlinking files and directories
 - the symlink command is: =ln -s <src> <dst>=
 - example: =cd; ln -s .conf-scripts/bashrc .bashrc=
-
-*** TODO rename file to '<app-name>.rc' and directories to '<app-name>.d/'
-*** TODO merge with backup directory (in particular, the backup/restore scripts)
+- =config-setup.sh= started
 
 ** Initial Configuration
 *** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
