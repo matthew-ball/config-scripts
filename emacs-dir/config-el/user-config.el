@@ -20,4 +20,8 @@
 
 (emms-player-mpd-connect) ;; connect emms to mpd
 
+;;; project management
+;; (require 'eproject) ;; FIXME: change this to an autoload
+;; TODO: learn eproject
+
 (provide 'user-config)

@@ -410,7 +410,9 @@
       version-control t) ;; use versioned backups
 
 ;;; recent files
-(require 'recentf)
+;; (require 'recentf)
+(autoload 'recentf-mode "recentf" "Recent files." t)
+
 (setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recentf") ;; recently saved files
       recentf-max-saved-items 500 ;; maximum saved items is 500
       recentf-max-menu-items 25) ;; maximum 25 files in menu
@@ -418,6 +420,8 @@
 (recentf-mode t)
 
 ;;; desktop save mode
+(autoload 'desktop-save-mode "desktop" "Save session file." t)
+
 (desktop-save-mode 1) ;; enable desktop save mode
 
 (setq desktop-path `(,(expand-file-name user-emacs-directory))
@@ -514,14 +518,5 @@
 	(kill-buffer))))
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-;;; project management
-;; (require 'eproject) ;; FIXME: change this to an autoload
-;; TODO: learn eproject
-
-;;; highlight special comments
-(setq special-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook lisp-interaction-mode-hook shell-script-mode))
-
-(mapc (lambda (mode-hook) (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
 
 (provide 'general-config)

@@ -1,7 +1,5 @@
-;; ==========================================
 ;; ~/.emacs.d/config-el/programming-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ==========================================
 
 ;;; general programming
 (defun turn-on-general-programming-mode ()
@@ -24,8 +22,14 @@
 ;;; common lisp programming
 (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
 
+(add-hook 'lisp-mode-hook '(lambda ()
+			     ;; (slime-mode t)
+			     (turn-on-general-programming-mode)))
+
+(add-hook 'inferior-lisp-mode-hook '(lambda () ((inferior-slime-mode t))))
+
 ;;; slime
-(autoload 'slime "slime" "The Superior Lisp Interaction mode for Emacs" t)
+(autoload 'slime "slime" "The Superior Lisp Interaction mode for GNU Emacs" t)
 
 (eval-after-load "slime"
   '(progn
@@ -45,7 +49,6 @@
 		     slime-scratch
 		     slime-xref-browser))))
 
-;; (slime-autodoc-mode)
 (setq inferior-lisp-program "/usr/bin/sbcl" ;; use sbcl as the lisp environment
       slime-net-coding-system 'utf-8-unix
       slime-complete-symbol*-fancy t
@@ -59,11 +62,8 @@
 			      (turn-on-general-programming-mode)
 			      (start-slime-automatically)))
 
-;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
-
 ;;; haskell programming
-(autoload 'haskell-mode "haskell-site-file" "Major mode for editing Haskell code." t)
+(autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)
 
 (setq haskell-font-lock-symbols t) ;; enable unicode symbols for haskell
 
@@ -76,19 +76,21 @@
 				(custom-turn-on-haskell-modes)))
 
 ;;; shell script
+(autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
+
 (add-hook 'shell-script-mode '(lambda ()
 				(turn-on-general-programming-mode)))
 
 ;;; python programming
-(autoload 'python-mode "python" "Python editing mode." t)
+(autoload 'python-mode "python" "Major mode for editing python source code." t)
 
 (add-hook 'python-mode-hook '(lambda ()
 			       (turn-on-general-programming-mode)))
 
 ;;; maxima
-(autoload 'maxima-mode "maxima" "Maxima mode." t)
-(autoload 'imaxima "imaxima" "Frontend for maxima with Image support." t)
-(autoload 'maxima "maxima" "Maxima interaction." t)
+(autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
+(autoload 'maxima "maxima" "Major mode for maxima interaction." t)
+(autoload 'imaxima "imaxima" "Major mode frontend for maxima with image support." t)
 (autoload 'imath-mode "imath" "Imath mode for math formula input." t)
 
 (setq imaxima-use-maxima-mode-flag t)
