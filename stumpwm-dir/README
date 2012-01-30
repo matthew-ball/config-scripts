@@ -1,0 +1,58 @@
+
+=This README file is best read using functionality provided by org-mode=
+
+* StumpWM Initialisation
+** Appearance Configuration
+- The following variables are set:
+  + foreground :: ...
+  + background :: ...
+  + border-color :: ...
+  + focus-color :: ...
+  + unfocus-color :: ...
+
+** Default Applications
+- the following applications should be available by default:
+  + web-browser :: /description/
+  + terminal-emulator :: /description/
+  + editor :: /description/
+  + file-manager :: /description/
+  + package manager :: /description/
+  + system-monitor :: /description/
+  + document-viewer :: /description/
+  + audio-player :: /description/
+  + video-player :: /description/
+
+** General Functions
+- the following functions provide some general feedback:
+  + cat :: /description/
+  + hostname :: /description/
+  + launch-mpd :: /description/
+
+** Slime and Swank
+- set this up ...
+
+** Monitoring Scripts
+** Window Appearance
+** Message and Input Box
+** Mode Line
+** Key Bindings
+** Virtual Desktops
+** Run Applications
+** Window Placement
+** User Commands
+** Super User Commands
+** Process Management
+** Key Sequence
+** Web Jump
+** Safe Quit
+** Notifications
+- set this up ...
+
+** Quick Menu
+- set this up ...
+
+** Music Player Daemon
+** Volume Control
+** Interact with GNU Emacs
+** Start-up Applications
+* Footnotes

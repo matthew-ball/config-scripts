@@ -122,15 +122,15 @@
       ;; *window-name-source* :title ;; windows get their name from their title property
       *timeout-wait* 5) ;; how long a message will appear for (in seconds)
 
-;;; modeline
+;;; mode line
 (set-frame-outline-width 0)
 
 (setf *mode-line-background-color* *background-colour*
       *mode-line-foreground-color* *foreground-colour*
       *mode-line-border-color* *border-colour*
-      *mode-line-border-width* 0 ;; set thickness of the mode-line border
-      *mode-line-pad-x* 0 ;; set the padding between the mode-line text and the sides
-      *mode-line-pad-y* 0 ;; set the padding between the mode-line text and the top/bottom
+      *mode-line-border-width* 0 ;; set thickness of the mode line border
+      *mode-line-pad-x* 0 ;; set the padding between the mode line text and the sides
+      *mode-line-pad-y* 0 ;; set the padding between the mode line text and the top/bottom
       *mode-line-position* :top
       *mode-line-screen-position* :top
       *mode-line-frame-position* :top
@@ -148,10 +148,10 @@
        ;; "[^B%m^b]" ;; mpd
        ))
 
-;; (when (not (head-mode-line (current-head))) ;; turn on the modeline
+;; (when (not (head-mode-line (current-head))) ;; turn on the mode line
 ;;   (toggle-mode-line (current-screen) (current-head)))
 
-;;; keybindings
+;;; key bindings
 (defmacro defkey-top (key cmd)
   `(define-key *top-map* (kbd, key), cmd))
 

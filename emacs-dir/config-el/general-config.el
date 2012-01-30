@@ -52,7 +52,7 @@
     (occur "\\<\\(FIXME\\|TODO\\|BUG\\): ")
     (other-window 1)))
 
-(defun switch-to-dot-emacs (&rest junk)
+(defun switch-to-dot-emacs (&rest junk) ;; NOTE: this file serves no purpose anymore ... consider removing this function ... (???)
   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
   (interactive)
   (if (equal (buffer-name) "init.el")
@@ -87,7 +87,8 @@
 ;;; default browser
 (setq browse-url-browser-function 'browse-url-generic
       ;; browse-url-generic-program "conkeror") ;; default web browser set to conkeror
-      browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
+      ;; browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
+      browser-url-generic-program "x-www-browser") ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
 
 ;;; default auto-mode list
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; open .screenrc in shell script mode
