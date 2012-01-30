@@ -90,7 +90,8 @@ function lsfiles { # list only files
 }
 function grip { # search all files in current directory
     # this is my emacs-dir show structure function ...
-    grep -ir "$1" "$PWD"
+    # grep -ir "$1" "$PWD"
+    grep -RnisI "$1" "$PWD"
 }
 function show-full-path { # show full file path
     for file in $(ls "$@"); do

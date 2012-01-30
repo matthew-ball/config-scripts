@@ -36,20 +36,39 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
-(defun show-dot-file-structure (&rest junk)
-  "Show the outline structure of a configuration file."
+(defun occur-mode-clean-buffer ()
+  "Removes all commentary from the *Occur* buffer, leaving the unadorned lines."
   (interactive)
-  (progn
-    (occur (concat "^" (make-string 3 (aref comment-start 0)) "+"))
-    (other-window 1)))
+  (if (get-buffer "*Occur*")
+      (save-excursion
+	(set-buffer (get-buffer "*Occur*"))
+	(goto-char (point-min))
+	(toggle-read-only 0)
+	(if (looking-at "^[0-9]+ lines matching \"")
+	    (kill-line 1))
+	(while (re-search-forward "^[ \t]*[0-9]+:"
+				  (point-max)
+				  t)
+	  (replace-match "")
+	  (forward-line 1)))
+    (message "There is no buffer named \"*Occur*\".")))
+
+(defun show-dot-file-structure (&rest junk)
+  "Show the outline structure of a configuration file"
+  (interactive)
+  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) (concat "^" (make-string 3 (aref comment-start 0)) "+"))
+  (occur-mode-clean-buffer)
+  (other-window 1))
 
 (defun show-bugs-fixes-todos (&rest junk)
   "Show the outline-mode structure listing any bugs, fixes or TODOs in source code comments."
   (interactive)
-  (progn
-    (occur "\\<\\(FIXME\\|TODO\\|BUG\\): ")
-    (other-window 1)))
+  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) "\\<\\(FIXME\\|TODO\\|BUG\\): ")
+  (occur-mode-clean-buffer)
+  (other-window 1))
 
+;; TODO: this needs to be changed ...
+;; TODO: could probably be a function which opens the config-el directory ...
 (defun switch-to-dot-emacs (&rest junk) ;; NOTE: this file serves no purpose anymore ... consider removing this function ... (???)
   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
   (interactive)
