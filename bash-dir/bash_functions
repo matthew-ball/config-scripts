@@ -3,9 +3,8 @@
 ## Matthew Ball (copyleft 2012)
 ## =======================================
 
-# $DIST_TYPE = "Ubuntu" || $DIST_TYPE = "Debian" || $DIST_TYPE = "Arch"
-
 function get_dist_name {
+    # TODO: export $DIST_NAME (???)
     DIST_TYPE=`/usr/bin/lsb_release -i` # $DIST_TYPE is 16 characters into the output of /usr/bin/lsb_release -i
     DIST_NAME=${DIST_TYPE:16}
     # echo $DIST_NAME # DEBUGGING
@@ -13,51 +12,49 @@ function get_dist_name {
 
 function check_dist_type {
     get_dist_name # get distribution name
+    # echo "$1 $2 $3" # DEBUGGING
 
     if [ $DIST_NAME = "Debian" ] || [ $DIST_NAME = "Ubuntu" ]; then
-	# echo "$1 $3" # DEBUGGING
-	RUN_PACKAGE_MANAGER="$1 $3"
-	$RUN_PACKAGE_MANAGER
+	RUN_PACKAGE_MANAGER="$1 $3" # set debian/ubuntu command string
     else
 	if [ $DIST_NAME = "Arch" ]; then
-	    # echo "$2 $3" # DEBUGGING
-	    RUN_PACKAGE_MANAGER="$2 $3"
-	    $RUN_PACKAGE_MANAGER
+	    RUN_PACKAGE_MANAGER="$2 $3" # set arch command string
 	else
-	    echo ""
+	    return
 	fi
     fi
+    $RUN_PACKAGE_MANAGER # execute command string
 }
 
 function package_manager_search {
     check_dist_type "apt-cache search" "pacman" $1
 }
 
-function package-manager-show {
+function package_manager_show {
     check_dist_type "apt-cache show" "pacman" $1
 }
 
-function package-manager-update {
+function package_manager_update {
     check_dist_type "sudo apt-get update" "pacman" $1
 }
 
-function package-manager-upgrade {
+function package_manager_upgrade {
     check_dist_type "sudo apt-get upgrade" "pacman" $1
 }
 
-function package-manager-dist-upgrade {
+function package_manager_dist_upgrade {
     check_dist_type "sudo apt-get dist-upgrade" "pacman" $1
 }
 
-function package-manager-install {
+function package_manager_install {
     check_dist_type "sudo apt-get install" "pacman" $1
 }
 
-function package-manager-remove {
+function package_manager_remove {
     check_dist_type "sudo apt-get remove" "pacman" $1
 }
 
-function package-manager-purge {
+function package_manager_purge {
     check_dist_type "sudo apt-get purge" "pacman" $1
 }
 
