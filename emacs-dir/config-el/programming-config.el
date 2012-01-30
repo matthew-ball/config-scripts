@@ -3,6 +3,13 @@
 ;; Matthew Ball (copyleft 2012)
 ;; ==========================================
 
+;;; general programming
+(defun turn-on-general-programming-mode ()
+  "General function for programming modes."
+  (modify-syntax-entry ?- "w") ;; treat '-' as part of the word
+  ;; (flymake-mode) ;; turn on flymake mode
+  (hs-minor-mode))
+
 ;;; emacs lisp programming
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
@@ -11,7 +18,7 @@
  'paredit-close-round)
 
 (add-hook 'emacs-lisp-mode-hook '(lambda ()
-				   (modify-syntax-entry ?- "w") ;; treat '-' as part of the word
+				   (turn-on-general-programming-mode)
 				   (eldoc-mode t)))
 
 ;;; common lisp programming
@@ -19,6 +26,7 @@
 
 ;;; slime
 (autoload 'slime "slime" "The Superior Lisp Interaction mode for Emacs" t)
+
 (eval-after-load "slime"
   '(progn
      (setq slime-lisp-implementations '((sbcl ("/usr/bin/sbcl"))))
@@ -47,7 +55,10 @@
   (unless (slime-connected-p)
     (save-excursion (slime))))
 
-(add-hook 'slime-mode-hook 'start-slime-automatically)
+(add-hook 'slime-mode-hook '(lambda ()
+			      (turn-on-general-programming-mode)
+			      (start-slime-automatically)))
+
 ;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
 ;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
 
@@ -60,10 +71,19 @@
   (turn-on-haskell-doc-mode) ;; enable haskell's documentation mode
   (turn-on-haskell-indent)) ;; enable haskell's indentation mode
 
-(add-hook 'haskell-mode-hook '(lambda () (custom-turn-on-haskell-modes)))
+(add-hook 'haskell-mode-hook '(lambda ()
+				(turn-on-general-programming-mode)
+				(custom-turn-on-haskell-modes)))
+
+;;; shell script
+(add-hook 'shell-script-mode '(lambda ()
+				(turn-on-general-programming-mode)))
 
 ;;; python programming
 (autoload 'python-mode "python" "Python editing mode." t)
+
+(add-hook 'python-mode-hook '(lambda ()
+			       (turn-on-general-programming-mode)))
 
 ;;; maxima
 (autoload 'maxima-mode "maxima" "Maxima mode." t)
