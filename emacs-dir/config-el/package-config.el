@@ -15,19 +15,12 @@
 (defvar user-packages (list 'emms 'eproject) "User packages to be installed through ELPA.")
 (defvar list-packages (list '()) "Packages to be installed through ELPA.")
 
-;; FIXME: old way of adding core packages ... ;; TODO: update elpa function with above variables ...
-(defvar my-packages (list 'magit 'haskell-mode 'diminish 'color-theme 'slime 'smex 'zenburn 'paredit 'ido-ubiquitous) "Libraries to be installed by default.")
-
 ;; add core and user packages
 (add-to-list 'list-packages (append core-packages user-packages)) ;; TODO: make a choice whether to download core and user packages?
 
-;; FIXME: old way of adding user packages ...
-(add-to-list 'my-packages 'emms)
-(add-to-list 'my-packages 'eproject)
-
 (defun emacs-custom-elpa-package-install ()
-  "Install all custom configuration packages from ELPA which are not already installed.
-NOTE: This function only needs to be run the first time emacs is run with this setup."
+  "Install all custom configuration packages from ELPA.
+NOTE: This function only needs to be called the first time emacs is run under this setup."
   (interactive)
   (dolist (package list-packages)
     (message "Package %s" (symbol-name package))
@@ -38,23 +31,25 @@ NOTE: This function only needs to be run the first time emacs is run with this s
       (message "Package %s installed" (symbol-name package)))))
 
 (defun check-internet-status ()
-  "Check to see if computer is online.
-NOTE: This function might not work on Windows"
+  "Check to see if computer is connected to the internet.
+NOTE: This function might not work on Windows."
   (if (and (functionp 'network-interface-list) (network-interface-list))
       (some (lambda (iface)
 	      (unless (equal "lo" (car iface))
 		(member 'up (first (last (network-interface-info (car iface)))))))
 	    (network-interface-list)) t))
 
-;; FIXME: this is a bit buggy .. debugging /appears/ to give desired outputs though ... (???)
-;; (when (check-internet-status) ;; this should not be called too often ...
-;;   (unless package-archive-contents ;; if the package-archive-contents are out of date ...
-;;     (package-refresh-contents)) ;; ... check to make sure package archives are updated (WARNING, this is a bit painful ...)
-;;   (emacs-custom-elpa-package-install)) ;; install custom packages
+(defun run-initial-setup (&rest junk) ;; FIXME: debugging /appears/ to give desired outputs though (???)
+  "If the computer is connected to the internet then update package archives and install custom packages.
+NOTE: This function only needs to be called the first time emacs is run under this setup."
+  (when (check-internet-status) ;; this should not be called too often ...
+    (unless package-archive-contents ;; if the package-archive-contents are out of date ...
+      (package-refresh-contents)) ;; ... check to make sure package archives are updated (WARNING, this is a bit painful ...)
+    (emacs-custom-elpa-package-install))) ;; install custom packages
 
 ;;; system package manager
-(autoload 'apt "apt-mode" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up ...
-;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???) ...
+(autoload 'apt "apt-mode" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
+;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
 
 (defun check-dist-name (name)
   "Return true if distribution name matches NAME string, false otherwise.
