@@ -3,8 +3,8 @@
 ;; Matthew Ball (copyleft 2012)
 ;; ======================================
 
-;;; package manager
-(require 'package)
+;;; emacs package manager
+(autoload 'package "package" "GNU Emacs lisp package management." t)
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")
@@ -22,7 +22,7 @@
 ;;   (add-to-list 'core-packages 'package))
 
 ;; (defun add-user-elpa-package (package)
-;;   "Add packages to the `my-packages' list."
+;;   "Add packages to the `user-packages' list."
 ;;   (add-to-list 'user-packages 'package))
 
 (defun add-user-elpa-package (package)
@@ -55,5 +55,32 @@
 ;;   (unless package-archive-contents ;; if the package-archive-contents are out of date ...
 ;;     (package-refresh-contents)) ;; ... check to make sure package archives are updated (WARNING, this is a bit painful ...)
 ;;   (emacs-custom-elpa-package-install)) ;; install custom packages
+
+;;; system package manager
+(autoload 'apt "apt-mode" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up ...
+;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???) ...
+
+(defun check-dist-name (name)
+  "Return t if distribution name matches `name' string, false otherwise."
+  (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16))) ;; NOTE: distribution name is 16 characters into the output
+    (string= (read dist-name) name)))
+
+(defun run-package-manager (&rest junk)
+  "Run the package manager inside GNU Emacs."
+  (interactive)
+  ;; works
+  ;;  (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16))) ;; NOTE: distribution name is 16 characters into the output
+  ;; (cond ((or (string= (read dist-name) "Debian") (string= (read dist-name) "Ubuntu")) (apt)) ;; start apt-mode (for debian/ubuntu systems)
+  ;; 	  ((string= (read dist-name) "Arch") (pacman)) ;; start pacman mode (for arch systems)
+  ;; 	  (t (message "no system")))))
+
+  ;; testing
+  (cond ((or (check-dist-name "Debian") (check-dist-name "Ubuntu")) (apt)) ;; start apt-mode (for debian/ubuntu systems)
+	((checkdist-name "Arch") (pacman)) ;; start pacman mode (for arch systems)
+	(t (message "no system"))))
+
+(defun pacman (&rest junk) ;; TODO: find emacs mode for arch ...
+  "..."
+  (message "pacman"))
 
 (provide 'package-config)

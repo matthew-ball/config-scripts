@@ -67,11 +67,38 @@
   (occur-mode-clean-buffer)
   (other-window 1))
 
+;; TODO: move this somewhere ... (automatically generate it if possible)
+;; TODO: this needs to be cleaned up ...
+;; (defvar config-files (list 'appearance-config
+;; 			   'dired-config
+;; 			   'erc-config
+;; 			   'eshell-config
+;; 			   'general-config
+;; 			   'gnus-config
+;; 			   'key-bindings-config
+;; 			   'latex-config
+;; 			   'org-config
+;; 			   'package-config
+;; 			   'programming-config
+;; 			   'user-config) "Stores a list of the names of the configuration files.")
+
+;; (defun open-emacs-config-files (&rest junk))
+;; (defun open-stumpwm-config-files (&rest junk))
+;; (defun open-bash-config-files (&rest junk))
+;; (defun open-config-files (&rest junk) ;; TODO: extend this to all configuration files
+;;   "Opens all GNU Emacs user configuration files."
+;;   (interactive)
+;;   (find-file (concat (expand-file-name user-emacs-directory) "init.el"))
+;;   (mapc (lambda (config-file)
+;; 	  (find-file (concat (expand-file-name user-emacs-directory) "config-el/" (symbol-name config-file) ".el")))
+;; 	config-files))
+
 ;; TODO: this needs to be changed ...
 ;; TODO: could probably be a function which opens the config-el directory ...
 (defun switch-to-dot-emacs (&rest junk) ;; NOTE: this file serves no purpose anymore ... consider removing this function ... (???)
   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
   (interactive)
+  (config files)
   (if (equal (buffer-name) "init.el")
       (eval-buffer) ;; evaluate the current buffer
     (find-file (concat (expand-file-name user-emacs-directory) "init.el")))) ;; switch to the init.el file
@@ -303,8 +330,9 @@
 	      (mode . shell-mode)
 	      (mode . term-mode)
 	      (mode . locate-mode)))
-	 ("Emacs Lisp Package Archiver" ;; elpa related buffers
-	  (or (mode . package-menu-mode)
+	 ("Package Management" ;; apt-mode and elpa related buffers
+	  (or (mode . apt-mode)
+	      (mode . package-menu-mode)
 	      (name . "^\\*Package Info\\*$")))
 	 ("Miscellaneous" ;; miscellaneous special buffers
 	  (or (mode . Info-mode)

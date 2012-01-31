@@ -51,8 +51,10 @@
     - ido-ubiquitous :: use `ido-completing-read' instead of `completing-read' almost everywhere
   + the following files are not available from ELPA, but are required for complete working:
     - auto-complete :: start auto-completion at current point - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]]
+    - apt-mode :: debian/ubuntu package management mode available from [[http://www.netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el][netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el]]
     - ...
 
+** TODO 
 ** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
 - this file provides a configuration for visual appearance:
   + sets the colour theme to zenburn[fn:requires-zenburn]
