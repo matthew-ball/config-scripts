@@ -10,31 +10,26 @@
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-;; TODO: set `core-packages' and `user-packages' variables and functions ...
-;; (defvar core-packages (list '...) "Core packages to be installed through ELPA.")
-;; (defvar user-packages (list '...) "User packages to be installed through ELPA.") ;; FIXME: implement this over a custom list - variable in user-config.el (???)
+;; FIXME: store `core' and `user' package lists in an external source (a variable in init.el and user-config.el perhaps)
+(defvar core-packages (list 'magit 'haskell-mode 'diminish 'color-theme 'slime 'smex 'zenburn 'paredit 'ido-ubiquitous) "Core packages to be installed through ELPA.")
+(defvar user-packages (list 'emms 'eproject) "User packages to be installed through ELPA.")
+(defvar list-packages (list '()) "Packages to be installed through ELPA.")
 
+;; FIXME: old way of adding core packages ... ;; TODO: update elpa function with above variables ...
 (defvar my-packages (list 'magit 'haskell-mode 'diminish 'color-theme 'slime 'smex 'zenburn 'paredit 'ido-ubiquitous) "Libraries to be installed by default.")
 
-;; TODO: this seems redundant ...
-;; (defun add-core-elpa-package (package)
-;;   "Add individual packages to the `core-packages' list."
-;;   (add-to-list 'core-packages 'package))
+;; add core and user packages
+(add-to-list 'list-packages (append core-packages user-packages)) ;; TODO: make a choice whether to download core and user packages?
 
-;; (defun add-user-elpa-package (package)
-;;   "Add packages to the `user-packages' list."
-;;   (add-to-list 'user-packages 'package))
-
-(defun add-user-elpa-package (package)
-  "Add packages to the `my-packages' list."
-  (add-to-list 'my-packages 'package))
-
-(add-user-elpa-package 'emms) ;; add user-config settings
+;; FIXME: old way of adding user packages ...
+(add-to-list 'my-packages 'emms)
+(add-to-list 'my-packages 'eproject)
 
 (defun emacs-custom-elpa-package-install ()
-  "Install all custom configuration packages from ELPA which are not installed."
+  "Install all custom configuration packages from ELPA which are not already installed.
+NOTE: This function only needs to be run the first time emacs is run with this setup."
   (interactive)
-  (dolist (package my-packages)
+  (dolist (package list-packages)
     (message "Package %s" (symbol-name package))
     (unless (or (member package package-activated-list)
 		(functionp package))
@@ -43,7 +38,8 @@
       (message "Package %s installed" (symbol-name package)))))
 
 (defun check-internet-status ()
-  "Check to see if computer is online. (This might not work on Windows)"
+  "Check to see if computer is online.
+NOTE: This function might not work on Windows"
   (if (and (functionp 'network-interface-list) (network-interface-list))
       (some (lambda (iface)
 	      (unless (equal "lo" (car iface))
@@ -61,26 +57,23 @@
 ;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???) ...
 
 (defun check-dist-name (name)
-  "Return t if distribution name matches `name' string, false otherwise."
-  (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16))) ;; NOTE: distribution name is 16 characters into the output
+  "Return true if distribution name matches NAME string, false otherwise.
+NOTE: distribution name is 16 characters into the output of 'lsb_release -i'."
+  (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16)))
     (string= (read dist-name) name)))
 
 (defun run-package-manager (&rest junk)
-  "Run the package manager inside GNU Emacs."
+  "Run the system package manager inside GNU Emacs.
+If a debian or ubuntu system, run `apt'.
+If an arch system, run `pacman'.
+Otherwise, use no system."
   (interactive)
-  ;; works
-  ;;  (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16))) ;; NOTE: distribution name is 16 characters into the output
-  ;; (cond ((or (string= (read dist-name) "Debian") (string= (read dist-name) "Ubuntu")) (apt)) ;; start apt-mode (for debian/ubuntu systems)
-  ;; 	  ((string= (read dist-name) "Arch") (pacman)) ;; start pacman mode (for arch systems)
-  ;; 	  (t (message "no system")))))
-
-  ;; testing
   (cond ((or (check-dist-name "Debian") (check-dist-name "Ubuntu")) (apt)) ;; start apt-mode (for debian/ubuntu systems)
 	((checkdist-name "Arch") (pacman)) ;; start pacman mode (for arch systems)
 	(t (message "no system"))))
 
-(defun pacman (&rest junk) ;; TODO: find emacs mode for arch ...
-  "..."
+(defun pacman (&rest junk) ;; TODO: find emacs mode for arch
+  "dummy pacman message"
   (message "pacman"))
 
 (provide 'package-config)

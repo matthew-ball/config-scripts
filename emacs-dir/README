@@ -2,13 +2,15 @@
 =This README file is best read using functionality provided by org-mode=
 
 * GNU Emacs Configuration
-- This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs; it is primarily designed to aid a non-programmer in using GNU Emacs; it focuses mainly on org-mode and latex configurations.
-
+- This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs
+- This configuration is a full-blown "emacs is an operating system" setup; this extra functionality is easily configured
 - This configuration optionally includes functionality for the following "external"[fn:external] operations:
   + ERC :: an IRC client for GNU Emacs
   + GNUS :: a mail and newsreader client for GNU Emacs
   + Dired :: a file system browser for GNU Emacs
   + eshell :: a shell emulator for GNU Emacs
+  + package :: an emacs-lisp package manager
+  + package-manager :: a front-end to the system package manager
 
 ** TODO This project is based on the idea available from Eric Schulte at [[http://eschulte.me/emacs-starter-kit/starter-kit.html][Emacs Starter Kit]] to turn the dot file setup into an org-file setup.
 
@@ -54,7 +56,6 @@
     - apt-mode :: debian/ubuntu package management mode available from [[http://www.netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el][netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el]]
     - ...
 
-** TODO 
 ** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
 - this file provides a configuration for visual appearance:
   + sets the colour theme to zenburn[fn:requires-zenburn]

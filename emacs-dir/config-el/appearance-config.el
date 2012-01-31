@@ -105,6 +105,6 @@
 (setq special-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook lisp-interaction-mode-hook shell-script-mode sh-mode-hook))
 
 (mapc (lambda (mode-hook)
-	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
+	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
 
 (provide 'appearance-config)
