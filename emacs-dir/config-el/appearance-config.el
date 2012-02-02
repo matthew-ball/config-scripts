@@ -108,7 +108,7 @@
 (mapc (lambda (mode-hook)
 	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
 
-(setq insert-custom-tag-list (list "BUG" "TODO" "FIXME"))
+(setq insert-custom-tag-list (list "BUG" "TODO" "FIXME")) ;; clean this up ...
 
 (defun insert-custom-tag ();; TODO: find appropriate key-binding
   "Insert a custom tag (from `insert-custom-tag-list') in source code comments."

@@ -58,6 +58,8 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-M-%") 'query-replace)
 ;; ---
+(global-set-key (kbd "C-c i") 'insert-custom-tag) ;; insert a custom tag comment
+;; ---
 ;; (global-unset-key (kbd "C-z")) ;; remove binding on C-z (suspend-frame)
 
 (provide 'key-bindings-config)

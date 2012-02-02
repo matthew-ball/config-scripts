@@ -296,8 +296,6 @@
 	      (mode . inferior-slime-mode)
 	      (mode . scheme-mode)
 	      (mode . inferior-scheme-mode)
-	      (mode . maxima-mode)
-	      (mode . inferior-maxima-mode)
 	      (name . "^\\*slime-events\\*$")))
 	 ("Organisation" ;; org-mode related buffers
 	  (or (mode . org-mode)
@@ -309,6 +307,15 @@
 	 ("Dired" ;; dired related buffers
 	  (or (mode . dired-mode)
 	      (name . "^\\*Dired log\\*$")))
+	 ("Shell" ;; shell related buffers
+	  (or (mode . eshell-mode)
+	      (mode . shell-mode)
+	      (mode . term-mode)
+	      (mode . locate-mode)))
+	 ("Mathematics and Science" ;; buffers related to mathematics and science
+	  (or (mode . calculator-mode)
+	      (mode . maxima-mode)
+	      (mode . inferior-maxima-mode)))
 	 ("Mail and News" ;; mail (and news) related buffers
 	  (or (mode . gnus-group-mode)
 	      (mode . gnus-topic-mode)
@@ -325,11 +332,6 @@
 	      (mode . vc-log-entry-mode)
 	      (name . "^\\*magit-process\\*$")
 	      (name . "^\\*magit-log-edit\\*$")))
-	 ("Shell" ;; shell related buffers
-	  (or (mode . eshell-mode)
-	      (mode . shell-mode)
-	      (mode . term-mode)
-	      (mode . locate-mode)))
 	 ("Package Management" ;; apt-mode and elpa related buffers
 	  (or (mode . apt-mode)
 	      (mode . package-menu-mode)
