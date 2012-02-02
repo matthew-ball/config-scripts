@@ -59,6 +59,7 @@
 (global-set-key (kbd "C-M-%") 'query-replace)
 ;; ---
 (global-set-key (kbd "C-c i") 'insert-custom-tag) ;; insert a custom tag comment
+(global-set-key (kbd "C-c h") 'insert-custom-dot-file-header-text) ;; insert custom header text for a source code dot file
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; remove binding on C-z (suspend-frame)
 

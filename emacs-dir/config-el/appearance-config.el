@@ -26,9 +26,9 @@
 (global-visual-line-mode t) ;; enable visual line mode for all buffers (i.e. globally)
 
 ;;; line numbers
-(autoload 'linum-mode "linum" "Display line numbers." t)
+;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-(add-hook 'find-file-hook (lambda () (linum-mode 1)))
+;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; turn on linum mode if in a file
 
 ;;; indicate empty lines
 (toggle-indicate-empty-lines)

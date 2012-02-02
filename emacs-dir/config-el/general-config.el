@@ -5,12 +5,12 @@
 (defvar user-home-directory "~/" "Directory for user's home files.")
 
 (defvar user-scripts-directory (concat user-home-directory ".conf-scripts/") "Directory for user's run-time scripts.")
-(defvar user-projects-directory (concat user-home-directory "Projects/") "Directory for user's projects.")
 (defvar user-documents-directory (concat user-home-directory "Documents/") "Directory for user's documents.")
 
 (defvar user-audio-directory (concat user-home-directory "Music/") "Directory for user's music.")
 (defvar user-video-directory (concat user-home-directory "Videos/") "Directory for user's videos.")
 
+(defvar user-projects-directory (concat user-home-directory "Projects/") "Directory for user's projects.")
 (defvar user-reading-directory (concat user-documents-directory "Reading/") "Directory for user's reading material.")
 (defvar user-writing-directory (concat user-documents-directory "Writing/") "Directory for user's writing material.")
 (defvar user-organisation-directory (concat user-documents-directory "Organisation/") "Directory for user's organisation files.")
@@ -351,6 +351,7 @@
 	      (name . "\\*Messages\\*$")
 	      (name . "\\*Keys\\*$")
 	      (name . "\\*Disabled Command\\*$")
+	      (name . "\\*Help\\*$")
 	      (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
 (setq ibuffer-show-empty-filter-groups nil ;; do not display empty groups

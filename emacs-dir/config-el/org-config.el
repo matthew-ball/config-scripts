@@ -49,23 +49,24 @@
 			 ,(concat user-reading-directory "readings.org")
 			 ,(concat user-writing-directory "writings.org")))
 
-(setq org-tag-alist '(("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r) ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n)
-		      ("WEBSITE" . ?w) ("BOOKMARK" . ?b) ("PHILOSOPHY" . ?s) ("COMPUTER SCIENCE" . ?c) ("MATHEMATICS" . ?m) ("WRITING" . ?t)) ;; tags for `org-set-tags'
+(setq org-tag-alist
+      '(("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r) ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n)
+	("WEBSITE" . ?w) ("BOOKMARK" . ?b) ("PHILOSOPHY" . ?s) ("COMPUTER SCIENCE" . ?c) ("MATHEMATICS" . ?m) ("WRITING" . ?t)) ;; tags for `org-set-tags'
 
       org-agenda-custom-commands '(("q" "Show All Tasks" ((agenda "" ((org-agenda-ndays 7) ;; overview of tasks
-								  (org-agenda-start-on-weekday nil) ;; calendar begins today
-								  (org-agenda-repeating-timestamp-show-all t)
-								  (org-agenda-entry-types '(:timestamp :sexp))))
-						      (agenda "" ((org-agenda-ndays 1) ;; daily agenda
-								  (org-deadline-warning-days 7) ;; seven day advanced warning for deadlines
-								  (org-agenda-todo-keyword-format "[ ]")
-								  (org-agenda-scheduled-leaders '("" ""))
-								  (org-agenda-prefix-format "%t%s")))
-						      (todo "TODO" ;; todos searched by context
-							    ((org-agenda-prefix-format "[ ] %T: ")
-							     (org-agenda-sorting-strategy '(tag-up priority-down))
-							     (org-agenda-todo-keyword-format "")
-							     (org-agenda-overriding-header "\n==================\n Tasks by Context\n=================="))))
+								      (org-agenda-start-on-weekday nil) ;; calendar begins today
+								      (org-agenda-repeating-timestamp-show-all t)
+								      (org-agenda-entry-types '(:timestamp :sexp))))
+							  (agenda "" ((org-agenda-ndays 1) ;; daily agenda
+								      (org-deadline-warning-days 7) ;; seven day advanced warning for deadlines
+								      (org-agenda-todo-keyword-format "[ ]")
+								      (org-agenda-scheduled-leaders '("" ""))
+								      (org-agenda-prefix-format "%t%s")))
+							  (todo "TODO" ;; todos searched by context
+								((org-agenda-prefix-format "[ ] %T: ")
+								 (org-agenda-sorting-strategy '(tag-up priority-down))
+								 (org-agenda-todo-keyword-format "")
+								 (org-agenda-overriding-header "\n==================\n Tasks by Context\n=================="))))
 				    ((org-agenda-compact-blocks t)
 				     (org-agenda-remove-tags t)))
 				   ("h" "Home" ((org-agenda-list nil nil 1) (tags-todo "HOME") (tags-todo "GENERAL")) "HOME"
@@ -75,35 +76,35 @@
 				   ("g" "General" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags "NOTES")) "GENERAL") ;; tasks for GENERAL
 				   ("r" "Reading" ((org-agenda-list nil nil 1) (tags "READING") (tags "WEBSITE")) "READING")) ;; tasks for READING
 
-      org-capture-templates '(("h" "Home" entry (file+headline "home.org" "Home")
-			       "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-			      ;; ("u" "University" entry (file+headline "school.org" "University")
-			      ;;  "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n" :empty-lines 1 :immediate-finish 1)
-			      ("u" "University" entry (file+headline "school.org" "University")
-			       "%(add-course)" :empty-lines 1 :immediate-finish 1)
-			      ("a" "Assignment" plain (file+function "school.org" course-code)
-			       "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-			      ;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase") ;; WARNING: out-dated books.org
-			      ;;  "| [[%^{Link}][%^{Title}]] | %^{Author} | %^{Price} |" :immediate-finish 1) ;; manual version
-			      ("b" "Purchase" table-line (file+headline "readings/readings.org" "Purchase") ;; TODO: fix file name
-			       "| %c | %i | %^{Price} |" :immediate-finish 1) ;; conkeror version
-			      ("r" "Book to Read" table-line (file+headline "readings/readings.org" "Reading") ;; TODO: fix file name
-			       "| %^{Title} | %^{Author} | %^{Year} | N/A |" :immediate-finish 1)
-			      ("p" "Paper to Read" table-line (file+headline "readings/readings.org" "Reading") ;; TODO: fix file name
-			       "| %^{Title} | %^{Author} | %^{Year} | %^{Journal} |" :immediate-finish 1)
-			      ("k" "Internet Bookmark" table-line (file+headline "bookmarks.org" "Internet Bookmarks")
-			       "| %c |" :immediate-finish 1)
-			      ("f" "File Bookmark" table-line (file+headline "bookmarks.org" "File Bookmarks")
-			       "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |"
-			       :immediate-finish 1)
-			      ("w" "Website" table-line (file+headline "readings/readings.org" "Websites")
-			       "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
-			      ("j" "Project" entry (file+headline "projects.org" "Projects")
-			       "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-			      ("g" "General" entry (file+headline "notes.org" "General")
-			       "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-			      ("n" "Note" entry (file+headline "notes.org" "Notes")
-			       "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)))
+      org-capture-templates ;; TODO: replace with custom variables
+      '(("h" "Home" entry (file+headline "home.org" "Home") ;; (concat (expand-file-name user-organisation-directory) "home.org")
+	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	;; ("u" "University" entry (file+headline "school.org" "University")
+	;;  "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n" :empty-lines 1 :immediate-finish 1)
+	("u" "University" entry (file+headline "school.org" "University") ;; (expand-file-name user-org-university-file)
+	 "%(add-course)" :empty-lines 1 :immediate-finish 1)
+	("a" "Assignment" plain (file+function "school.org" course-code) ;; (expand-file-name user-org-university-file)
+	 "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase") ;; WARNING: out-dated books.org
+	;;  "| [[%^{Link}][%^{Title}]] | %^{Author} | %^{Price} |" :immediate-finish 1) ;; manual version
+	("b" "Purchase" table-line (file+headline "readings/readings.org" "Purchase") ;; (concat (expand-file-name user-reading-directory) "readings.org")
+	 "| %c | %i | %^{Price} |" :immediate-finish 1) ;; conkeror version
+	("r" "Book to Read" table-line (file+headline "readings/readings.org" "Reading") ;; (concat (expand-file-name user-reading-directory) "readings.org")
+	 "| %^{Title} | %^{Author} | %^{Year} | N/A |" :immediate-finish 1)
+	("p" "Paper to Read" table-line (file+headline "readings/readings.org" "Reading") ;; (concat (expand-file-name user-reading-directory) "readings.org")
+	 "| %^{Title} | %^{Author} | %^{Year} | %^{Journal} |" :immediate-finish 1)
+	("k" "Internet Bookmark" table-line (file+headline "bookmarks.org" "Internet Bookmarks") ;; (concat (expand-file-name user-organisation-directory) "bookmarks.org")
+	 "| %c |" :immediate-finish 1)
+	("f" "File Bookmark" table-line (file+headline "bookmarks.org" "File Bookmarks") ;; (concat (expand-file-name user-organisation-directory) "bookmarks.org")
+	 "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |" :immediate-finish 1)
+	("w" "Website" table-line (file+headline "readings/readings.org" "Websites") ;; (concat (expand-file-name user-reading-directory) "readings.org")
+	 "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
+	("j" "Project" entry (file+headline "projects.org" "Projects") ;; (expand-file-name user-org-projects-file)
+	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	("g" "General" entry (file+headline "notes.org" "General") ;; (expand-file-name user-org-notes-file)
+	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	("n" "Note" entry (file+headline "notes.org" "Notes") ;; (expand-file-name user-org-notes-file)
+	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)))
 
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
