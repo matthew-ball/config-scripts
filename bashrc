@@ -1,19 +1,19 @@
-## =================================
 ## ~/.conf-scripts/.bashrc
 ## Matthew Ball (copyleft 2008-2012)
-## =================================
 
 # if not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-### exports
+### export functionality
 export HISTCONTROL=ignoredups # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # ... and ignore same sucessive entries
 # export TERM=xterm-color # export 8 colours in shell session
 export TERM=xterm-256color # export 256 colours in shell session
-export ALTERNATE_EDITOR=emacs # set the alternate editor as emacs
+
+export ALTERNATE_EDITOR="" # set the alternate editor as emacs (automatically start an emacs in daemon mode and connect to it if one is not found running)
 export EDITOR='emacsclient -n' # set the main editor as emacsclient (requiring emacs-server)
 # export VISUAL=emacsclient # set the visual edit as emacsclient (requiring emacs-server)
+
 # export BROWSER="conkeror" # export BROWSER as conkeror
 # export BROWSER="chromium-browser" # export BROWSER as chromium
 export BROWSER="x-www-browser" # export BROWSER as x-www-browser ... NOTE: requires debian (???)
@@ -28,12 +28,6 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then # set variable ide
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# if [ -n "$EMACS" ]; then # if we're in emacs don't worry about the fancy terminal prompt, else use coloured prompt
-#     PS1="\u@\h:\w\$ "
-# else
-#     force_color_prompt=yes
-# fi
-
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
@@ -45,29 +39,6 @@ if [ -n "$force_color_prompt" ]; then
         color_prompt=no;
     fi
 fi
-
-### shell prompt
-# case "$TERM" in # set a fancy prompt (non-color, unless we know we "want" color)
-# xterm-color|screen|xterm-256color)
-#     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-#     ;;
-# *)
-#     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#     ;;
-# esac
-
-if [ "$color_prompt" = yes ]; then
-    # TODO: clean this prompt up ...
-#PS1="\n\[\e[30;1m\]\[\016\]l\[\017\](\[\e[34;1m\]\u@\h\[\e[30;1m\])-(\[\e[34;1m\]\j\[\e[30;1m\])-(\[\e[34;1m\]\@\d\[\e[30;1m\])->\[\e[30;1m\]\n\[\016\]m\[\017\]-(\[\[\e[32;1m\]\w\[\e[30;1m\])-(\[\e[32;1m\]\$(/bin/ls -1 | /usr/bin/wc -l | /bin/sed 's: ::g') files, \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b\[\e[30;1m\])--> \[\e[0m\]"
-
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[00m\]\$ '
-    # PS1="[\[\033[35m\]\t\[\033[m\]]-\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
-
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
 
 ### enable programmable completion
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -84,29 +55,25 @@ if [ -f ~/.conf-scripts/bash-dir/bash_functions ]; then
     . ~/.conf-scripts/bash-dir/bash_functions
 fi
 
-### autolaunch ssh-agent on msysgit
-SSH_ENV="$HOME/.ssh/environment"
+# prompt colours
+GREY="\[\033[00m\]" # code for the colour "grey"
+RED="\[\033[01;31m\]" # code for the colour "red"
+GREEN="\[\033[01;32m\]" # code for the colour "green"
+YELLOW="\[\033[01;33m\]" # code for the colour "yellow"
+BLUE="\[\033[01;34m\]" # code for the colour "blue"
 
-# start the ssh-agent
-function start_agent {
-    echo "Initializing new SSH agent..."
-    # spawn ssh-agent
-    ssh-agent | sed 's/^echo/#echo/' > "$SSH_ENV"
-    echo succeeded
-    chmod 600 "$SSH_ENV"
-    . "$SSH_ENV" > /dev/null
-    ssh-add
-}
+if [ "$color_prompt" = yes ]; then
+    # PS1="\$ " # plain prompt
+    # PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$ " # prompt with no colour
+    # PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$GREY@$GREEN\h$GREY:$BLUE\w$GREY\$ " # prompt with colour (without sv status)
 
-function test_identities { # test whether standard identities have been added to the agent already
-    ssh-add -l | grep "The agent has no identities" > /dev/null
-    if [ $? -eq 0 ]; then
-        ssh-add
-        if [ $? -eq 2 ]; then # $SSH_AUTH_SOCK broken so we start a new proper agent
-            start_agent
-        fi
-    fi
-}
+    PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$GREY@$GREEN\h$GREY:$BLUE\w$YELLOW\$(parse_git_branch)$GREY\$ " # requires parse_git_branch function
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+SSH_ENV="$HOME/.ssh/environment" # autolaunch ssh-agent on msysgit
 
 if [ -n "$SSH_AGENT_PID" ]; then # check for running ssh-agent with proper $SSH_AGENT_PID
     ps -ef | grep "$SSH_AGENT_PID" | grep ssh-agent > /dev/null
@@ -134,6 +101,22 @@ fi
 # if [ -z "$STY" ]; then
 #     exec screen -dR
 #     exec screen -rD
+# fi
+
+### shell prompt
+# case "$TERM" in # set a fancy prompt (non-color, unless we know we "want" color)
+# xterm-color|screen|xterm-256color)
+#     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+#     ;;
+# *)
+#     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#     ;;
+# esac
+
+# if [ -n "$EMACS" ]; then # if we're in emacs don't worry about the fancy terminal prompt, else use coloured prompt
+#     PS1="\u@\h:\w\$ "
+# else
+#     force_color_prompt=yes
 # fi
 
 ### emacs shell

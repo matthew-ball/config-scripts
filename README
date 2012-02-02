@@ -29,9 +29,9 @@
     - Version: 0.00
   + VLC Player
     - Version: 0.00
-  + Network Manager Command Line Interface
+  + NMCLI Network Manager
     - Version: 0.00
-- the configuration will hopefully represent a possible "desktop" shell setup which is cross-platform, the setup currently supports:
+- the configuration will hopefully represent a possible "desktop" shell setup for GNU/Linux which is cross-platform across distributions, the setup currently supports:
   + debian
   + ubuntu
   + arch

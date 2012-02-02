@@ -1,4 +1,4 @@
-;; ~/.emacs.d/config-el/general-config.el
+ ;; ~/.emacs.d/config-el/general-config.el
 ;; Matthew Ball (copyleft 2012)
 
 ;;; user variables
@@ -131,8 +131,8 @@
 ;;; default browser
 (setq browse-url-browser-function 'browse-url-generic
       ;; browse-url-generic-program "conkeror") ;; default web browser set to conkeror
-      ;; browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
-      browser-url-generic-program "x-www-browser") ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
+      browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
+      ;; browser-url-generic-program "x-www-browser") ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
 
 ;;; default auto-mode list
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; open .screenrc in shell script mode

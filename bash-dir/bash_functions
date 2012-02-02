@@ -14,10 +14,12 @@ function init_dist_variables { # initialise package manager variables for distri
 	return
     fi
 }
+
 function package_manager_command_run { # run package manager command
     PACKAGE_MANAGER_COMMAND="$1 $2" # set command string
     $PACKAGE_MANAGER_COMMAND        # run command string
 }
+
 function package_manager_search { # search package manager archives
     if [ -z $PM_SEARCH ]; then # if $PM_SEARCH is empty initialise variables
 	init_dist_variables
@@ -25,6 +27,7 @@ function package_manager_search { # search package manager archives
 
     package_manager_command_run "$PM_SEARCH $1"
 }
+
 function package_manager_show { # show package details
     if [ -z $PM_SHOW ]; then # if $PM_SHOW is empty initialise variables
 	init_dist_variables
@@ -32,6 +35,7 @@ function package_manager_show { # show package details
 
     package_manager_command_run "$PM_SHOW $1"
 }
+
 function package_manager_update { # update package archives
     if [ -z $PM_UPDATE ]; then # if $PM_UPDATE is empty initialise variables
 	init_dist_variables
@@ -39,6 +43,7 @@ function package_manager_update { # update package archives
 
     package_manager_command_run "$PM_UPDATE $1"
 }
+
 function package_manager_upgrade { # upgrade from package archives
     if [ -z $PM_UPGRADE ]; then # if $PM_UPGRADE is empty initialise variables
 	init_dist_variables
@@ -46,6 +51,7 @@ function package_manager_upgrade { # upgrade from package archives
 
     package_manager_command_run "$PM_UPGRADE $1"
 }
+
 function package_manager_dist_upgrade { # distribution upgrade from package archives
     if [ -z $PM_DIST_UPGRADE ]; then # if $PM_DIST_UPGRADE is empty initialise variables
 	init_dist_variables
@@ -53,6 +59,7 @@ function package_manager_dist_upgrade { # distribution upgrade from package arch
 
     package_manager_command_run "$PM_DIST_UPGRADE $1"
 }
+
 function package_manager_install { # install package from package archives
     if [ -z $PM_INSTALL ]; then # if $PM_INSTALL is empty initialise variables
 	init_dist_variables
@@ -60,6 +67,7 @@ function package_manager_install { # install package from package archives
 
     package_manager_command_run "$PM_INSTALL $1"
 }
+
 function package_manager_remove { # remove package from computer
     if [ -z $PM_REMOVE ]; then # if $PM_REMOVE is empty initialise variables
 	init_dist_variables
@@ -67,6 +75,7 @@ function package_manager_remove { # remove package from computer
 
     package_manager_command_run "$PM_REMOVE $1"
 }
+
 function package_manager_purge { # purge package from computer
     if [ -z $PM_PURGE ]; then # if $PM_PURGE is empty initialise variables
 	init_dist_variables
@@ -79,20 +88,25 @@ function mcd { # make directory and cd into it
     mkdir "$1"
     cd "$1"
 }
+
 function lister { # feeds file and directory filtered listers
     ls -l `if [ "$1" == '' ]; then echo '.'; else echo "$1"; fi`
 }
+
 function lsdirs { # list only directories
     lister $1 | egrep '^d'
 }
+
 function lsfiles { # list only files
     lister $1 | egrep -v '^d'
 }
+
 function grip { # search all files in current directory
     # this is my emacs-dir show structure function ...
     # grep -ir "$1" "$PWD"
     grep -RnisI "$1" "$PWD"
 }
+
 function show-full-path { # show full file path
     for file in $(ls "$@"); do
         echo -n $(pwd)
@@ -105,10 +119,12 @@ function lsnet { # list network connections
     # TODO: this function does not do what I think it does
     lsof -i  | awk '{printf("%-14s%-20s%s\n", $10, $1, $9)}' | sort
 }
+
 function sizeof { # return sizeof array
     array=( $@ ) # $@ expands to all parameters
     echo ${#array[@]}
 }
+
 function extract-from-archive { # extract files from an archive
     if [ -f $1 ]; then
 	case $1 in
@@ -128,5 +144,30 @@ function extract-from-archive { # extract files from an archive
 	esac
     else
 	echo "'$1' is not a valid file ..."
+    fi
+}
+
+function parse_git_branch {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo " ("${ref#refs/heads/}")"
+}
+
+function start_agent { # start the ssh-agent
+    echo "Initializing new SSH agent..."
+    # spawn ssh-agent
+    ssh-agent | sed 's/^echo/#echo/' > "$SSH_ENV"
+    echo succeeded
+    chmod 600 "$SSH_ENV"
+    . "$SSH_ENV" > /dev/null
+    ssh-add
+}
+
+function test_identities { # test whether standard identities have been added to the agent already
+    ssh-add -l | grep "The agent has no identities" > /dev/null
+    if [ $? -eq 0 ]; then
+        ssh-add
+        if [ $? -eq 2 ]; then # $SSH_AUTH_SOCK broken so we start a new proper agent
+            start_agent
+        fi
     fi
 }

@@ -13,6 +13,7 @@
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
       org-log-done 'time ;; capture a timestamp for when a task changes state
+      org-src-fontify-natively t ;; enable fontify in source code blocks
       ;; org-read-date-display-live nil ;; disable the live date-display
       ;; org-insert-mode-line-in-empty-file t
       ;; org-indent-mode t ;; enable org indent mode

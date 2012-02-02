@@ -9,6 +9,15 @@ alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars 
 alias grep='grep --color=auto'
 alias ack="ack-grep -i -u"
 
+# git command aliases
+alias gst="git status "
+alias gc="git commit "
+alias gca="git commit -a "
+alias ga="git add "
+alias gco="git checkout "
+alias gb="git branch "
+alias gm="git merge "
+
 # TODO: clean this up
 alias emacs_file='emacsclient -n' # open file in the current emacs session
 

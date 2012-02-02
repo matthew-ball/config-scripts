@@ -2,6 +2,8 @@
 
 # to give this script execute permissions run the command: 'chmod +x config-setup'
 
+# TODO: doesn't like "~" variable, replace with something like: "/home/$USER/"
+
 # TODO: finish this script
 EMACS_DIR_SRC="~/.conf-scripts/emacs-dir/"
 EMACS_DIR_DEST="~/.emacs.d/"
@@ -38,33 +40,44 @@ VERSION_NUMBER=0.01
 GITHUB_SRC="https://github.com/matthew-ball/config-scripts" # path to my github repository
 
 # i don't know if I will need these two check functions ...
-function check-dir-exists {
-    if [ -d $1]; then
-	echo "  + $1 exists ..."
-    else
-	echo "  + creating $1 ..."
-    fi
-}
+# function check-dir-exists {
+#     if [ -d $1]; then
+# 	echo "  + $1 exists ..."
+#     else
+# 	echo "  + creating $1 ..."
+#     fi
+# }
 
-function check-file-exists {
-    if [-e $1 ]; then
-	echo "  + $1 exists ..."
-    else
-	echo "  + creating $1 ..."
-    fi
-}
+# function check-file-exists {
+#     if [-e $1 ]; then
+# 	echo "  + $1 exists ..."
+#     else
+# 	echo "  + creating $1 ..."
+#     fi
+# }
 
 # example: symlink-file bashrc .bashrc
 function symlink-file {
     # the first argument is the file source
     # the second argument is the file destination
     # TODO: run shell command ...
+
+    if [ -e $2 ]; then
+	echo "- destination file $2 exists"
+	return
+    elif [ -d $2 ]; then
+	echo "- destination folder $2 exists"
+	return
+    else
+	echo "- creating $2"
+    fi
+
     echo "  + ln -s $1 $2"
 }
 
 function echo-source-and-destination {
-    # echo "$1::source: $2 ..."
-    # echo "$1::destination: $3 ..."
+    # echo "- $1::source: $2 ..."
+    # echo "- $1::destination: $3 ..."
     echo "- creating symlink $1 from $2 to $3 ..."
     symlink-file $2 $3
 }

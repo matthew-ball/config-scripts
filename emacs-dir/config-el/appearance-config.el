@@ -100,11 +100,29 @@
 (eval-after-load "paredit" '(diminish 'paredit-mode ""))
 (eval-after-load "haskell-doc" '(diminish 'haskell-doc-mode ""))
 (eval-after-load "haskell-indent" '(diminish 'haskell-indent-mode ""))
+(eval-after-load "reftex" '(diminish 'reftex-mode ""))
 
 ;;; highlight special comments
 (setq special-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook lisp-interaction-mode-hook shell-script-mode sh-mode-hook))
 
 (mapc (lambda (mode-hook)
 	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
+
+;; insert FIXME/TODO/BUG comment
+;; (defmacro insert-bug-todo-fix-skeleton (code) ;; inserts a custom comment clause
+;;   (let ((func (intern (concat "bug-todo-fix-skeleton-" code)))
+;; 	(doc (format "Inserts a %s clause comment in a source code file." code)))
+;;     `(define-skeleton ,func ,doc "String: "
+;;        (concat "^" (make-string 2 (aref comment-start 0)) "+ " str))))
+;;       "\\" ,code  "{" str | "insert text" "}"
+
+(define-skeleton insert-bug-tag
+  "Insert a BUG tag comment in a source file."
+  "Insert comment: "
+  (concat "^" (make-string 2 (aref comment-start 0)) "+" " " str))
+
+;; (insert-bug-todo-fix-skeleton "BUG")
+
+
 
 (provide 'appearance-config)
