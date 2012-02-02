@@ -108,21 +108,11 @@
 (mapc (lambda (mode-hook)
 	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
 
-;; insert FIXME/TODO/BUG comment
-;; (defmacro insert-bug-todo-fix-skeleton (code) ;; inserts a custom comment clause
-;;   (let ((func (intern (concat "bug-todo-fix-skeleton-" code)))
-;; 	(doc (format "Inserts a %s clause comment in a source code file." code)))
-;;     `(define-skeleton ,func ,doc "String: "
-;;        (concat "^" (make-string 2 (aref comment-start 0)) "+ " str))))
-;;       "\\" ,code  "{" str | "insert text" "}"
+(setq insert-custom-tag-list (list "BUG" "TODO" "FIXME"))
 
-(define-skeleton insert-bug-tag
-  "Insert a BUG tag comment in a source file."
-  "Insert comment: "
-  (concat "^" (make-string 2 (aref comment-start 0)) "+" " " str))
-
-;; (insert-bug-todo-fix-skeleton "BUG")
-
-
+(defun insert-custom-tag ();; TODO: find appropriate key-binding
+  "Insert a custom tag (from `insert-custom-tag-list') in source code comments."
+  (interactive)
+  (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " insert-custom-tag-list) ": ")))
 
 (provide 'appearance-config)
