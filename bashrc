@@ -67,7 +67,7 @@ if [ "$color_prompt" = yes ]; then
     # PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$ " # prompt with no colour
     # PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$GREY@$GREEN\h$GREY:$BLUE\w$GREY\$ " # prompt with colour (without sv status)
 
-    PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$GREY@$GREEN\h$GREY:$BLUE\w$YELLOW\$(parse_git_branch)$GREY\$ " # requires parse_git_branch function
+    PS1="${debian_chroot:+($debian_chroot)}$RED\u$GREY@$GREEN\h$GREY:$BLUE\w$YELLOW\$(parse_git_branch)$GREY\$ " # requires parse_git_branch function
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
