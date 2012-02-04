@@ -51,47 +51,78 @@
 	  (forward-line 1)))
     (message "There is no buffer named \"*Occur*\".")))
 
-(defun custom-show-structure (string &rest junk) ;; BUG: seems to scn *all* buffers?
-  "Show the outline structure of all files matching in the extension in a directory."
+(defun insert-custom-header-text (&rest junk)
+  "Insert the header string for a file."
+  (interactive)
+  (insert (concat (make-string 2 (aref comment-start 0)) " " (buffer-file-name) "\n"
+		  (concat (make-string 2 (aref comment-start 0)) " " (user-full-name)
+			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")")))) ;; NOTE: need (substring ...) otherwise we pick up the \n character
+
+(defun show-custom-structure (string &rest junk) ;; FIX: seems to scan *all* buffers?
+  "Show the outline structure of all files matching the same extension in a directory."
   (interactive)
   (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) string)
   ;; (occur-mode-clean-buffer) ;; clean up the occur-mode buffer (BUGGY?)
   (other-window 1))
 
-(defun show-dot-files (&rest junk) ;; FIXME: this currently only works for .el extensions
+(defun show-dot-files (&rest junk) ;; FIX: this currently only works for .el extensions
   "Show the outline structure of all configuration files matching the same extension."
   (interactive)
-  (custom-show-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
+  (show-custom-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
 
-(defun insert-custom-file-header-text (&rest junk)
-  "Insert the header string for a file."
+;;; highlight custom comment tags
+;; TODO: this section should be moved into a new file (`highlight-custom-comment-tags.el')
+;; (require 'highlight-custom-comment-tags nil 'noerror) ;; TODO: replace with an autoload ...
+(defvar font-lock-custom-comment-tag-face 'font-lock-custom-comment-tag-face "Face name to use for custom comment tags.")
+(defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
+(defvar custom-comment-tag-list '("BUG" "DEBUG" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
+(defvar custom-comment-tag-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook) "Major modes which enable highlighting of custom comment tags.")
+
+(defun custom-comment-tag-regexp (&rest junk)
+  "The optimised regular expresssion of the `custom-comment-tag-list' variable."
   (interactive)
-  (insert (concat (make-string 2 (aref comment-start 0)) " " (buffer-file-name) "\n"
-		  (concat (make-string 2 (aref comment-start 0)) " " (user-full-name)
-			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")")))) ;; need (substring ...) otherwise we pick up the \n character
+  (concat (regexp-opt custom-comment-tag-list 'words) ":"))
 
-;;; highlight special comments
-(defvar custom-tag-list '("BUG" "TODO" "FIXME"))
-(defvar custom-tag-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook) "Major modes which support highlighting of special comments.")
-
-(defun highlight-special-comments (&rest junk)
-  "Highlight special comments (defined in the variable `custom-tag-list') in particular modes, defined in the variable `custom-tag-mode-hooks'."
+(defun highlight-custom-comment-tags (&rest junk)
+;; FIX: not sure how the regexp is meant to be working (seems to work fine in `show-custom-comment-tag') -  it appears to be font-lock-keywords wanting double back-slashes
+  "Highlight custom comment tags in designated modes.
+The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
+The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
   (interactive)
-  (message "Highlight special comments."))
+  ;; method 1 ::
+  ;; (mapc (lambda (mode-hook)
+  ;; 	  (add-hook mode-hook
+  ;; 		    (lambda ()
+  ;; 		      (font-lock-add-keywords nil
+  ;; 					      '((custom-comment-tag-regexp) . font-lock-custom-comment-tag-face)))))
+  ;; 	  custom-comment-tag-mode-hooks))
+  ;; method 2 ::
+  (mapcar (lambda (mode)
+  	    (font-lock-add-keywords mode
+				    ;; '(((custom-comment-tag-regexp) 1 'font-lock-custom-comment-tag-face))))
+				    '(((custom-comment-tag-regexp) . font-lock-custom-comment-tag-face))))
+  	  custom-comment-tag-mode-hooks))
 
-(mapc (lambda (mode-hook) ;; FIXME: not sure how the regexp is meant to be working ... seems to generate a newline at the end which I don't want ...
-	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) custom-tag-mode-hooks)
-	;; (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(((concat (regexp-opt custom-tag-list 'words) ":") 1 font-lock-warning-face t)))))) custom-tag-mode-hooks)
+;; (highlight-custom-comment-tags) ;; TODO: add this function to text-mode hook, and programming mode hook
 
-(defun insert-custom-tag (&rest junk)
-  "Insert a custom tag (from `custom-tag-list') in source code comments."
+;; TODO: this should be moved into the function above (i.e. `highlight-custom-comment-tags')
+(mapc (lambda (mode-hook)
+	;; (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIX\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) ;; NOTE: original ...
+	(add-hook mode-hook (lambda ()
+			      (font-lock-add-keywords nil
+						      '(("\\<\\(BUG\\|DEBUG\\|FIX\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
+							 1 font-lock-custom-comment-tag-face t)))))) ;; NOTE: modified ...
+      custom-comment-tag-mode-hooks) ;; WARNING: remember that the font-lock-keywords need to be double back-slashed!!!
+
+(defun insert-custom-comment-tag (&rest junk)
+  "Insert a custom comment tag (from `custom-comment-tag-list') in a source code file."
   (interactive)
-  (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " custom-tag-list) ": ")))
+  (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " custom-comment-tag-list) ": ")))
 
-(defun show-bugs-fixes-todos (&rest junk)
-  "Show the outline-mode structure listing any bugs, fixes or TODOs in source code comments."
+(defun show-custom-comment-tag (&rest junk)
+  "Show the custom comment tags (defined in the variable `custom-comment-tag-list') in an outline-mode structure."
   (interactive)
-  (custom-show-structure (concat (regexp-opt custom-tag-list 'words) ":")))
+  (show-custom-structure (custom-comment-tag-regexp)))
 
 ;; TODO: move this somewhere ... (automatically generate it if possible)
 ;; TODO: this needs to be cleaned up ...
@@ -121,7 +152,7 @@
 
 ;; TODO: this needs to be changed ...
 ;; TODO: could probably be a function which opens the config-el directory ...
-(defun switch-to-dot-emacs (&rest junk) ;; NOTE: this file serves no purpose anymore ... consider removing this function ... (???)
+(defun switch-to-dot-emacs (&rest junk) ;; NOTE: this function serves no purpose anymore ... consider removing this function ... (???)
   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
   (interactive)
   (config files)
@@ -446,7 +477,7 @@
 ;;; stumpwm mode
 (autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t)
 
-;; FIXME: fix
+;; FIX: this doesn't appear to work ...
 ;;; single line copy
 ;; (defadvice kill-ring-save (before slick-copy activate compile)
 ;;   "When called interactively with no active region, copy a single line instead."
@@ -455,7 +486,7 @@
 ;;       (message "Copied line")
 ;;       (list (line-beginning-position) (line-beginning-position 2)))))
 
-;; FIXME: fix
+;; FIX: this doesn't appear to work ...
 ;;; single line cut
 ;; (defadvice kill-region (before slick-cut activate compile)
 ;;   "When called interactively with no active region, kill a single line instead."

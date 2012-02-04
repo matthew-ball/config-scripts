@@ -9,8 +9,8 @@
 ;; (global-set-key (kbd "M-<f2>") 'function) ;; ...
 ;; (global-set-key (kbd "C-<f2>") 'function) ;; ...
 (global-set-key (kbd "<f3>") 'switch-to-dot-emacs) ;; switch to ~/.emacs.d/init.el file (or evaluate-buffer if already present)
-(global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file
-(global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; show the structure of the active dot-config file
+;; (global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file ;; TODO: this function is redundant
+;; (global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; show the structure of the active dot-config file ;; TODO: this function is redundant
 (global-set-key (kbd "<f4>") 'erc-start-or-switch) ;; start an erc session (or switch to the most active buffer)
 ;; (global-set-key (kbd "M-<f4>") 'function) ;; ...
 (global-set-key (kbd "C-<f4>") 'gnus) ;; start a gnus session (or switch to an existing session)
@@ -56,8 +56,9 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-M-%") 'query-replace)
 ;; ---
-(global-set-key (kbd "C-c i") 'insert-custom-tag) ;; insert a custom tag comment
-(global-set-key (kbd "C-c h") 'insert-custom-dot-file-header-text) ;; insert custom header text for a source code dot file
+(global-set-key (kbd "C-c c c") 'insert-custom-comment-tag) ;; insert a custom comment tag
+(global-set-key (kbd "C-c c s") 'show-custom-comment-tag) ;; show custom comment tags
+(global-set-key (kbd "C-c c h") 'insert-custom-header-text) ;; insert custom header text for a source code dot file
 ;; ---
 ;; (global-set-key (kbd "<menu>") 'function) ;; ...
 ;; (global-set-key (kbd "M-<menu>") 'function) ;; ...
