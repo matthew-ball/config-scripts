@@ -1,7 +1,5 @@
-;; ============================
 ;; ~/.conf-scripts/stumpwmrc
 ;; Matthew Ball (copyleft 2012)
-;; ============================
 
 ;;; lisp implementation
 ;debian=sbcl

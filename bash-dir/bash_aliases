@@ -1,7 +1,5 @@
-## =====================================
 ## ~/.conf-scripts/bash-dir/bash_aliases
 ## Matthew Ball (copyleft 2012)
-## =====================================
 
 alias lsr='ls -R' # recursive directory listing
 alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars --human-readable --group-directories-first' # fancy ls

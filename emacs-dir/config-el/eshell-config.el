@@ -1,7 +1,5 @@
-;; =====================================
 ;; ~/.emacs.d/config-el/eshell-config.el
 ;; Matthew Ball (copyleft 2012)
-;; =====================================
 
 ;;; eshell
 (require 'ansi-color)

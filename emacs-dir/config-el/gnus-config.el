@@ -1,9 +1,8 @@
-;; ===================================
 ;; ~/.emacs.d/config-el/gnus-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ===================================
 
-(require 'gnus nil 'noerror)  
+;; (require 'gnus nil 'noerror)
+(autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
 
 ;; ==================
 ;;; personal settings

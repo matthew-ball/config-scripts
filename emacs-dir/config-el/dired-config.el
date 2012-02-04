@@ -1,7 +1,5 @@
-;; ====================================
 ;; ~/.emacs.d/config-el/dired-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ====================================
 
 ;;; dired
 (put 'dired-find-alternate-file 'disabled nil) ;; enable re-use of dired buffers

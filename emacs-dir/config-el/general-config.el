@@ -1,4 +1,4 @@
- ;; ~/.emacs.d/config-el/general-config.el
+;; ~/.emacs.d/config-el/general-config.el
 ;; Matthew Ball (copyleft 2012)
 
 ;;; user variables
@@ -46,26 +46,52 @@
 	(toggle-read-only 0)
 	(if (looking-at "^[0-9]+ lines matching \"")
 	    (kill-line 1))
-	(while (re-search-forward "^[ \t]*[0-9]+:"
-				  (point-max)
-				  t)
+	(while (re-search-forward "^[ \t]*[0-9]+:" (point-max) t)
 	  (replace-match "")
 	  (forward-line 1)))
     (message "There is no buffer named \"*Occur*\".")))
 
-(defun show-dot-file-structure (&rest junk)
-  "Show the outline structure of a configuration file"
+(defun custom-show-structure (string &rest junk) ;; BUG: seems to scn *all* buffers?
+  "Show the outline structure of all files matching in the extension in a directory."
   (interactive)
-  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) (concat "^" (make-string 3 (aref comment-start 0)) "+"))
-  (occur-mode-clean-buffer)
+  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) string)
+  ;; (occur-mode-clean-buffer) ;; clean up the occur-mode buffer (BUGGY?)
   (other-window 1))
+
+(defun show-dot-files (&rest junk) ;; FIXME: this currently only works for .el extensions
+  "Show the outline structure of all configuration files matching the same extension."
+  (interactive)
+  (custom-show-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
+
+(defun insert-custom-file-header-text (&rest junk)
+  "Insert the header string for a file."
+  (interactive)
+  (insert (concat (make-string 2 (aref comment-start 0)) " " (buffer-file-name) "\n"
+		  (concat (make-string 2 (aref comment-start 0)) " " (user-full-name)
+			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")")))) ;; need (substring ...) otherwise we pick up the \n character
+
+;;; highlight special comments
+(defvar custom-tag-list '("BUG" "TODO" "FIXME"))
+(defvar custom-tag-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook) "Major modes which support highlighting of special comments.")
+
+(defun highlight-special-comments (&rest junk)
+  "Highlight special comments (defined in the variable `custom-tag-list') in particular modes, defined in the variable `custom-tag-mode-hooks'."
+  (interactive)
+  (message "Highlight special comments."))
+
+(mapc (lambda (mode-hook) ;; FIXME: not sure how the regexp is meant to be working ... seems to generate a newline at the end which I don't want ...
+	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) custom-tag-mode-hooks)
+	;; (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(((concat (regexp-opt custom-tag-list 'words) ":") 1 font-lock-warning-face t)))))) custom-tag-mode-hooks)
+
+(defun insert-custom-tag (&rest junk)
+  "Insert a custom tag (from `custom-tag-list') in source code comments."
+  (interactive)
+  (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " custom-tag-list) ": ")))
 
 (defun show-bugs-fixes-todos (&rest junk)
   "Show the outline-mode structure listing any bugs, fixes or TODOs in source code comments."
   (interactive)
-  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) "\\<\\(FIXME\\|TODO\\|BUG\\): ")
-  (occur-mode-clean-buffer)
-  (other-window 1))
+  (custom-show-structure (concat (regexp-opt custom-tag-list 'words) ":")))
 
 ;; TODO: move this somewhere ... (automatically generate it if possible)
 ;; TODO: this needs to be cleaned up ...

@@ -31,7 +31,7 @@
 ;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; turn on linum mode if in a file
 
 ;;; indicate empty lines
-(toggle-indicate-empty-lines)
+(toggle-indicate-empty-lines) ;; TODO: turn on indicate-empty-line only if in a file?!
 
 ;;; show matching parenthesis
 (show-paren-mode t)
@@ -101,18 +101,5 @@
 (eval-after-load "haskell-doc" '(diminish 'haskell-doc-mode ""))
 (eval-after-load "haskell-indent" '(diminish 'haskell-indent-mode ""))
 (eval-after-load "reftex" '(diminish 'reftex-mode ""))
-
-;;; highlight special comments
-(setq special-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook lisp-interaction-mode-hook shell-script-mode sh-mode-hook))
-
-(mapc (lambda (mode-hook)
-	(add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) special-mode-hooks)
-
-(setq insert-custom-tag-list (list "BUG" "TODO" "FIXME")) ;; clean this up ...
-
-(defun insert-custom-tag ();; TODO: find appropriate key-binding
-  "Insert a custom tag (from `insert-custom-tag-list') in source code comments."
-  (interactive)
-  (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " insert-custom-tag-list) ": ")))
 
 (provide 'appearance-config)

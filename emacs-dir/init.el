@@ -1,7 +1,5 @@
-;; =================================
 ;; ~/.conf-scripts/emacs-dir/init.el
 ;; Matthew Ball (copyleft 2012)
-;; =================================
 
 ;;; load path
 (add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; add "~/.emacs.d/" to user load path

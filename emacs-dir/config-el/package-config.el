@@ -1,7 +1,5 @@
-;; ======================================
 ;; ~/.emacs.d/config-el/package-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ======================================
 
 ;;; emacs package manager
 (autoload 'package "package" "GNU Emacs lisp package management." t)

@@ -1,7 +1,5 @@
-;; ==================================
 ;; ~/.emacs.d/config-el/org-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ==================================
 
 ;;; org mode
 (autoload 'org-install "org-exp" "Organise tasks with org-mode." t)

@@ -1,7 +1,5 @@
-;; ====================================
 ;; ~/.emacs.d/config-el/latex-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ====================================
 
 (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
 (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)

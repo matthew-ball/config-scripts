@@ -1,7 +1,5 @@
-;; ===========================================
 ;; ~/.emacs.d/config-el/key-bindings-config.el
 ;; Matthew Ball (copyleft 2012)
-;; ===========================================
 
 ;;; global key-bindings
 ;; (global-set-key (kbd "<f1>") 'function) ;; ...
