@@ -70,13 +70,13 @@
   (interactive)
   (show-custom-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
 
-;;; highlight custom comment tags
-;; TODO: this section should be moved into a new file (`highlight-custom-comment-tags.el')
-;; (require 'highlight-custom-comment-tags nil 'noerror) ;; TODO: replace with an autoload ...
+;;; NOTE: highlight custom comment tags
 (defvar font-lock-custom-comment-tag-face 'font-lock-custom-comment-tag-face "Face name to use for custom comment tags.")
 (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
-(defvar custom-comment-tag-list '("BUG" "DEBUG" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
-(defvar custom-comment-tag-mode-hooks '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook) "Major modes which enable highlighting of custom comment tags.")
+(defvar custom-comment-tag-list '("BUG" "DEBUG" "ERROR" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
+(defvar custom-comment-tag-mode-hooks
+  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook org-mode-hook) ;; ERROR: org-mode-hook doesn't work
+  "Major modes which enable highlighting of custom comment tags.")
 
 (defun custom-comment-tag-regexp (&rest junk)
   "The optimised regular expresssion of the `custom-comment-tag-list' variable."
@@ -84,35 +84,23 @@
   (concat (regexp-opt custom-comment-tag-list 'words) ":"))
 
 (defun highlight-custom-comment-tags (&rest junk)
-;; FIX: not sure how the regexp is meant to be working (seems to work fine in `show-custom-comment-tag') -  it appears to be font-lock-keywords wanting double back-slashes
+;; FIX: the regxp produces a string with only single backslahes, but font-lock-keywords wants double back-slashes
+;; WARNING: remember that the font-lock-keywords need to be double back-slashed!!!
   "Highlight custom comment tags in designated modes.
 The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
 The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
-  (interactive)
-  ;; method 1 ::
-  ;; (mapc (lambda (mode-hook)
-  ;; 	  (add-hook mode-hook
-  ;; 		    (lambda ()
-  ;; 		      (font-lock-add-keywords nil
-  ;; 					      '((custom-comment-tag-regexp) . font-lock-custom-comment-tag-face)))))
-  ;; 	  custom-comment-tag-mode-hooks))
-  ;; method 2 ::
-  (mapcar (lambda (mode)
-  	    (font-lock-add-keywords mode
-				    ;; '(((custom-comment-tag-regexp) 1 'font-lock-custom-comment-tag-face))))
-				    '(((custom-comment-tag-regexp) . font-lock-custom-comment-tag-face))))
-  	  custom-comment-tag-mode-hooks))
+  ;; (interactive)
+  (mapc (lambda (mode-hook)
+	  (add-hook mode-hook (lambda ()
+				(font-lock-add-keywords nil
+							'(("\\<\\(BUG\\|DEBUG\\|ERROR\\|FIX\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
+							   1 font-lock-custom-comment-tag-face t))))))
+							;; '(((custom-comment-tag-regexp) 0 font-lock-custom-comment-tag-face t)))))) ;; ERROR: doesn't work
+	custom-comment-tag-mode-hooks)
+  (message "Custom highlight tags activted."))
 
-;; (highlight-custom-comment-tags) ;; TODO: add this function to text-mode hook, and programming mode hook
-
-;; TODO: this should be moved into the function above (i.e. `highlight-custom-comment-tags')
-(mapc (lambda (mode-hook)
-	;; (add-hook mode-hook (lambda () (font-lock-add-keywords nil '(("\\<\\(FIX\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))) ;; NOTE: original ...
-	(add-hook mode-hook (lambda ()
-			      (font-lock-add-keywords nil
-						      '(("\\<\\(BUG\\|DEBUG\\|FIX\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
-							 1 font-lock-custom-comment-tag-face t)))))) ;; NOTE: modified ...
-      custom-comment-tag-mode-hooks) ;; WARNING: remember that the font-lock-keywords need to be double back-slashed!!!
+;; IMPORTANT: activate custom comment tags
+(highlight-custom-comment-tags)
 
 (defun insert-custom-comment-tag (&rest junk)
   "Insert a custom comment tag (from `custom-comment-tag-list') in a source code file."
@@ -123,6 +111,15 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
   "Show the custom comment tags (defined in the variable `custom-comment-tag-list') in an outline-mode structure."
   (interactive)
   (show-custom-structure (custom-comment-tag-regexp)))
+
+
+
+
+
+
+
+
+
 
 ;; TODO: move this somewhere ... (automatically generate it if possible)
 ;; TODO: this needs to be cleaned up ...
