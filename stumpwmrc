@@ -1,10 +1,10 @@
 ;; ~/.conf-scripts/stumpwmrc
 ;; Matthew Ball (copyleft 2012)
 
-;;; lisp implementation
+;;; COMMENT: lisp implementation
 ;debian=sbcl
 
-;;; initial config
+;;; COMMENT: initial config
 (in-package :stumpwm) ;; declare the package scope
 
 (setf *default-package* :stumpwm ;; set default package to be stumpwm
@@ -26,7 +26,7 @@
 
 ;; (defparameter *groups* '("default" "internet" "misc") "Default group names.") ;; TODO: should actually do something with this ...
 
-;;; default applications
+;;; COMMENT: default applications
 (defvar *browser* "" "Set the default web browser.") ;; TODO: this should be "x-www-browser"
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this (and the previous line) perhaps a bit redundant now .. staying for consistency ...
 
@@ -49,7 +49,7 @@
 ;; (setf *browser* "conkeror") ;; set the default browser as conkeror
 (setf *browser* "chromium-browser") ;; set the default browser as chromium
 
-;;; general functions
+;;; COMMENT: general functions
 (defun cat (&rest strings) ;; TODO: rename to 'concat' (for consistency with emacs)
   "Concatenates strings, like the Unix command 'cat'. A shortcut for (concatenate 'string foo bar)."
   (apply 'concatenate 'string strings))
@@ -62,25 +62,24 @@
   "Start music player daemon server."
   (run-shell-command "mpd"))
 
-;;; slime and swank
-;; TODO: set up slime/swank stumpwm interaction
-;; (load "/usr/share/common-lisp/source/slime/swank-loader.lisp")
-;; (swank-loader:init)
-;; (defvar *swank-p* nil)
+;;; COMMENT: slime and swank ;; TODO: set up slime/swank stumpwm interaction
+(load "/usr/share/common-lisp/source/slime/swank-loader.lisp")
+(swank-loader:init)
+(defvar *swank-p* nil)
 
-;; (defcommand swank () ()
-;;   "Starts a swank server on port 4005 and notifies the user."
-;;   (setf *top-level-error-action* :break)
-;;   (if *swank-p*
-;;       (message "Swank server already running.")
-;;     (progn
-;;       (swank:create-server :port 4005
-;;                            :style swank:*communication-style*
-;;                            :dont-close t)
-;;       (setf *swank-p* t)
-;;       (message "Starting swank (port 4005)."))))
+(defcommand swank () ()
+  "Starts a swank server on port 4005 and notifies the user."
+  (setf *top-level-error-action* :break)
+  (if *swank-p*
+      (message "Swank server already running.")
+    (progn
+      (swank:create-server :port 4005
+                           :style swank:*communication-style*
+                           :dont-close t)
+      (setf *swank-p* t)
+      (message "Starting swank (port 4005)."))))
 
-;;; monitoring scripts
+;;; COMMENT: monitoring scripts
 (set-contrib-dir "/usr/share/common-lisp/source/stumpwm/contrib") ;; set contrib directory
 
 (mapcar #'load-module '("cpu" ;; load selected modules
@@ -95,7 +94,7 @@
                         "wifi"
 			"battery"))
 
-;;; window appearance
+;;; COMMENT: window appearance
 (setf *normal-border-width* 0 ;; the width in pixels given to the borders of regular windows
       *maxsize-border-width* 0 ;; the width in pixels given to the borders of windows with maxsize or ratio hints
       *transient-border-width* 0 ;; the width in pixels given to the borders of transient or pop-up windows
@@ -107,7 +106,7 @@
 
 (set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1") ;; set the font for the message and input bars, and the mode line (emacs font)
 
-;;; message and input box
+;;; COMMENT: message and input box
 (set-bg-color *background-colour*)
 (set-fg-color *foreground-colour*)
 (set-border-color *border-colour*)
@@ -120,7 +119,7 @@
       ;; *window-name-source* :title ;; windows get their name from their title property
       *timeout-wait* 5) ;; how long a message will appear for (in seconds)
 
-;;; mode line
+;;; COMMENT: mode line
 (set-frame-outline-width 0)
 
 (setf *mode-line-background-color* *background-colour*
@@ -149,7 +148,7 @@
 ;; (when (not (head-mode-line (current-head))) ;; turn on the mode line
 ;;   (toggle-mode-line (current-screen) (current-head)))
 
-;;; key bindings
+;;; COMMENT: key bindings
 (defmacro defkey-top (key cmd)
   `(define-key *top-map* (kbd, key), cmd))
 
@@ -216,20 +215,20 @@
 	     (kbd "d") "volume-down"
 	     (kbd "m") "volume-toggle-mute")
 
-;;; virtual desktops
+;;; COMMENT: virtual desktops
 (setf (group-name (first (screen-groups (current-screen)))) "default") ;; rename 'Default' group 'default'
 
 (run-commands "gnewbg internet" ;; create internet group
 	      "gnewbg misc") ;; create misc group
 
-;;; run applications
-(defun run-app (cmd prop &optional args) ;; FIXME: fix
+;;; COMMENT: run applications
+(defun run-app (cmd prop &optional args) ;; FIX: fix
   "Run an instance of `cmd' with property `prop' (and any optional arguments `args')"
   (if (null args)
       (run-or-raise cmd prop)
     (run-or-raise (cat cmd " " args) prop)))
 
-(defun run-terminal-app (cmd ttl &optional args) ;; FIXME: fix
+(defun run-terminal-app (cmd ttl &optional args) ;; FIX: fix
   "Run an instance of `cmd' with property `title' (and any optional arguments `args') in `*terminal*' titled `ttl'."
   (if (null args)
       (run-app (cat *terminal* " -title \"" ttl "\" -e \"" cmd "\"") (list :title ttl))
@@ -259,7 +258,7 @@
 (defcommand run-pyscrabble () () "Run an instance of `pyscrabble' with property `:instance'." (run-app "pyscrabble" (list :instance "pyscrabble")))
 ;; (defcommand run-banshee () () "Run an instance of `banshee' with property `:instance'." (run-app "banshee" (list :instance "banshee")))
 
-;;; window placement
+;;; COMMENT: window placement
 (defmacro frame-preference-rule (group-name prop-type prop-name)
   `(progn
      (case ,prop-type
@@ -268,7 +267,7 @@
        (r (define-frame-preference ,group-name (0 t t :role ,prop-name)))     ;; match the window's @code{WM_WINDOW_ROLE}
        (t (define-frame-preference ,group-name (0 t t :title ,prop-name)))))) ;; match the window's title
 
-;; FIXME: clean these rules up (the property names shouldn't be hardcoded)
+;; FIX: clean these rules up (the property names shouldn't be hardcoded)
 ;; instance rules
 (frame-preference-rule "default" 'i "emacs")               ;; => *editor*
 (frame-preference-rule "default" 'i "pcmanfm")             ;; => *file-manager*
@@ -280,14 +279,14 @@
 (frame-preference-rule "misc" 't "htop")                   ;; => *system-monitor*
 (frame-preference-rule "misc" 't "aptitude")               ;; => *package-manager*
 
-;;; user commands
+;;; COMMENT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (cat "Hostname: " (hostname))))
 
-;;; super user commands
+;;; COMMENT: super user commands
 (define-stumpwm-type :password (input prompt)
   (let ((history *input-history*)
         (arg (argument-pop input))
@@ -318,7 +317,7 @@
 (sudo-command shutdown "shutdown -h now")
 (sudo-command hibernate "pm-hibernate")
 
-;;; process management
+;;; COMMENT: process management
 (defun ps-exists (ps)
   (let ((f "ps -ef | grep ~S | grep -v -e grep -e stumpish | wc -l"))
     (< 0 (parse-integer (run-shell-command (format nil f ps) t)))))
@@ -338,7 +337,7 @@
 (defcommand ps-kill (ps) ((:rest "Process to kill: "))
   (kill-ps ps))
 
-;;; key sequence
+;;; COMMENT: key sequence
 (defun key-press-hook (key key-seq cmd)
   (declare (ignore key))
   (unless (eq *top-map* *resize-map*)
@@ -353,7 +352,7 @@
 
 (replace-hook *key-press-hook* 'key-press-hook)
 
-;;; web jumping
+;;; COMMENT: web jumping
 (defmacro make-web-jump (name url-prefix)
   `(defcommand ,name (search) ((:rest ,(string-capitalize (string-downcase (concatenate 'string "Search in " (symbol-name name) " for: ")))))
      (run-shell-command (format nil (concatenate 'string *browser* " '~A=~A'") ,url-prefix (substitute #\+ #\Space search)))))
@@ -361,7 +360,7 @@
 (make-web-jump google "http://www.google.com/search?q")
 (make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
 
-;;; safe quit
+;;; COMMENT: safe quit
 (defcommand safe-quit () () ;; redefine the "quit" command (only leave the stumpwm session if there are no windows open)
   "Checks if any windows are open before quitting."
   (let ((win-count 0))
@@ -372,7 +371,7 @@
       (message (format nil "You have ~d ~a open" win-count
 		       (if (= win-count 1) "window" "windows"))))))
 
-;;; notifications
+;;; COMMENT: notifications
 ;; (define-key *root-map* (kbd "N") '*notifications-map*)
 
 ;; (defun notify (fmt args)
@@ -384,7 +383,7 @@
 ;; (define-stumpwm-command "notify" ((msg :rest "Notify: "))
 ;;   (notify "~a" msg))
 
-;;; quick menu
+;;; COMMENT: quick menu
 ;; (defparameter *quick-menu*
 ;;   '(("graphics"
 ;;      ("gimp" "gimp"))
@@ -428,14 +427,14 @@
 ;;     (let ((choice (pick *quick-menu*)))
 ;;       (run-shell-command choice)))
 
-;;; music player daemon
+;;; COMMENT: music player daemon
 (setf *mpd-port* 7700
       *mpd-volume-step* 10
       ;; *mpd-status-fmt* "" ;; message display by mpd-status
       ;; *mpd-current-song-fmt* "" ;; message displayed by mpd-current-song
       *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; mode-line format for mpd
 
-;;; volume control
+;;; COMMENT: volume control
 (defcommand volume-up () ()
   "Increase volume level."
   (dotimes (n 10)
@@ -450,8 +449,8 @@
   "Toggle between mute/unmute volume level."
   (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
 
-;;; interact with emacs
-(defun send-emacs-key-command (cmd) ;; FIXME: fix
+;;; COMMENT: interact with emacs
+(defun send-emacs-key-command (cmd) ;; FIX: fix
   "Send a key-command to an existing emacs session."
   (emacs)
   (send-meta-key (current-screen) (kbd cmd)))
@@ -482,7 +481,7 @@
   (send-emacs-key-command "RET")
   (message "Starting capture."))
 
-(defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIXME: fix
+(defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIX: fix
   "Open directory for file management in Emacs."
   (send-emacs-key-command "M-x")
   (send-emacs-string "ido-dired")
@@ -525,7 +524,7 @@
   (send-emacs-key-command "RET")
   (message "Starting term."))
 
-;;; startup applications
+;;; COMMENT: startup applications
 (when *initializing*
   (launch-mpd) ;; start mpd server
   (run-editor) ;; start the editor

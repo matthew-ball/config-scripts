@@ -1,14 +1,14 @@
 ;; ~/.emacs.d/config-el/package-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; emacs package manager
+;;; COMMENT: emacs package manager
 (autoload 'package "package" "GNU Emacs lisp package management." t)
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-;; FIXME: store `core' and `user' package lists in an external source (a variable in init.el and user-config.el perhaps)
+;; FIX: store `core' and `user' package lists in an external source (a variable in init.el and user-config.el perhaps)
 (defvar core-packages (list 'magit 'haskell-mode 'diminish 'color-theme 'slime 'smex 'zenburn 'paredit 'ido-ubiquitous) "Core packages to be installed through ELPA.")
 (defvar user-packages (list 'emms 'eproject) "User packages to be installed through ELPA.")
 (defvar list-packages (list '()) "Packages to be installed through ELPA.")
@@ -22,8 +22,7 @@ NOTE: This function only needs to be called the first time emacs is run under th
   (interactive)
   (dolist (package list-packages)
     (message "Package %s" (symbol-name package))
-    (unless (or (member package package-activated-list)
-		(functionp package))
+    (unless (or (member package package-activated-list)	(functionp package))
       (message "Installing %s" (symbol-name package))
       (package-install package)
       (message "Package %s installed" (symbol-name package)))))
@@ -37,7 +36,7 @@ NOTE: This function might not work on Windows."
 		(member 'up (first (last (network-interface-info (car iface)))))))
 	    (network-interface-list)) t))
 
-(defun run-initial-setup (&rest junk) ;; FIXME: debugging /appears/ to give desired outputs though (???)
+(defun run-initial-setup (&rest junk) ;; FIX: debugging /appears/ to give desired outputs though (???)
   "If the computer is connected to the internet then update package archives and install custom packages.
 NOTE: This function only needs to be called the first time emacs is run under this setup."
   (when (check-internet-status) ;; this should not be called too often ...
@@ -45,7 +44,7 @@ NOTE: This function only needs to be called the first time emacs is run under th
       (package-refresh-contents)) ;; ... check to make sure package archives are updated (WARNING, this is a bit painful ...)
     (emacs-custom-elpa-package-install))) ;; install custom packages
 
-;;; system package manager
+;;; COMMENT: system package manager
 (autoload 'apt "apt-mode" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
 ;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
 

@@ -1,7 +1,7 @@
 ;; ~/.emacs.d/config-el/general-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; user variables
+;;; COMMENT: user variables
 (defvar user-home-directory "~/" "Directory for user's home files.")
 
 (defvar user-scripts-directory (concat user-home-directory ".conf-scripts/") "Directory for user's run-time scripts.")
@@ -25,7 +25,7 @@
 (defvar user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user.")
 (defvar user-secondary-email-address (concat user-university-id "@anu.edu.au") "Secondary email address for the user.")
 
-;;; user functions
+;;; COMMENT: user functions
 (defun eval-and-replace ()
   "Replace the preceding s-expression with its value."
   (interactive)
@@ -51,75 +51,63 @@
 	  (forward-line 1)))
     (message "There is no buffer named \"*Occur*\".")))
 
-(defun insert-custom-header-text (&rest junk)
+(defun insert-custom-header-text (&rest junk) ;; NOTE: need (substring ...) otherwise we pick up the \n character
   "Insert the header string for a file."
   (interactive)
   (insert (concat (make-string 2 (aref comment-start 0)) " " (buffer-file-name) "\n"
 		  (concat (make-string 2 (aref comment-start 0)) " " (user-full-name)
-			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")")))) ;; NOTE: need (substring ...) otherwise we pick up the \n character
+			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
 
-(defun show-custom-structure (string &rest junk) ;; FIX: seems to scan *all* buffers?
+(defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
   "Show the outline structure of all files matching the same extension in a directory."
-  (interactive)
   (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) string)
-  ;; (occur-mode-clean-buffer) ;; clean up the occur-mode buffer (BUGGY?)
+  ;; (occur-mode-clean-buffer) ;; ;; NOTE: clean up the occur-mode buffer
   (other-window 1))
 
-(defun show-dot-files (&rest junk) ;; FIX: this currently only works for .el extensions
+(defun show-dot-file-structure (&rest junk) ;; FIX: this currently only works for .el extensions (???)
   "Show the outline structure of all configuration files matching the same extension."
   (interactive)
   (show-custom-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
 
-;;; NOTE: highlight custom comment tags
+;;; COMMENT: highlight custom comment tags
 (defvar font-lock-custom-comment-tag-face 'font-lock-custom-comment-tag-face "Face name to use for custom comment tags.")
 (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
-(defvar custom-comment-tag-list '("BUG" "DEBUG" "ERROR" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
+(defvar custom-comment-tag-list '("BUG" "COMMENT" "DEBUG" "ERROR" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
 (defvar custom-comment-tag-mode-hooks
-  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook org-mode-hook) ;; ERROR: org-mode-hook doesn't work
+  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook)
   "Major modes which enable highlighting of custom comment tags.")
 
 (defun custom-comment-tag-regexp (&rest junk)
-  "The optimised regular expresssion of the `custom-comment-tag-list' variable."
-  (interactive)
+  "The \"optimised\" regular expresssion of the `custom-comment-tag-list' list variable."
   (concat (regexp-opt custom-comment-tag-list 'words) ":"))
 
-(defun highlight-custom-comment-tags (&rest junk)
-;; FIX: the regxp produces a string with only single backslahes, but font-lock-keywords wants double back-slashes
-;; WARNING: remember that the font-lock-keywords need to be double back-slashed!!!
-  "Highlight custom comment tags in designated modes.
-The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
-The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
-  ;; (interactive)
-  (mapc (lambda (mode-hook)
-	  (add-hook mode-hook (lambda ()
-				(font-lock-add-keywords nil
-							'(("\\<\\(BUG\\|DEBUG\\|ERROR\\|FIX\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
-							   1 font-lock-custom-comment-tag-face t))))))
-							;; '(((custom-comment-tag-regexp) 0 font-lock-custom-comment-tag-face t)))))) ;; ERROR: doesn't work
-	custom-comment-tag-mode-hooks)
-  (message "Custom highlight tags activted."))
-
-;; IMPORTANT: activate custom comment tags
-(highlight-custom-comment-tags)
-
-(defun insert-custom-comment-tag (&rest junk)
-  "Insert a custom comment tag (from `custom-comment-tag-list') in a source code file."
+(defun insert-custom-comment-tag (&rest junk) ;; TODO: there should be a check to make sure we have `ido-completing-read' available (???)
+  "Insert a custom comment tag (see: `custom-comment-tag-list') in a source code file."
   (interactive)
   (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " custom-comment-tag-list) ": ")))
 
 (defun show-custom-comment-tag (&rest junk)
-  "Show the custom comment tags (defined in the variable `custom-comment-tag-list') in an outline-mode structure."
+  "Show the custom comment tags (defined in the variable `custom-comment-tag-list') in an outline-mode structure.
+This function depends on the multi-occur function `show-custom-structure'."
   (interactive)
   (show-custom-structure (custom-comment-tag-regexp)))
 
+(defun activate-highlight-custom-comment-tags (&rest junk) ;; ERROR: the regxp produces a string with only single backslahes, but font-lock-keywords wants double back-slashes
+  "Highlight custom comment tags in designated modes.
+The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
+The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
+  (mapc
+   (lambda (mode-hook)
+     (add-hook mode-hook
+	       (lambda ()
+		 (font-lock-add-keywords nil
+					 ;; '(((custom-comment-tag-regexp) 0 font-lock-custom-comment-tag-face t)))))) ;; ERROR: doesn't work
+					 '(("\\<\\(BUG\\|COMMENT\\|DEBUG\\|ERROR\\|FIX\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
+					    1 font-lock-custom-comment-tag-face t))))));; FIX: this string should not be hardcoded
+   custom-comment-tag-mode-hooks)
+  (message "Custom highlight tags activated."))
 
-
-
-
-
-
-
-
+(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
 ;; TODO: move this somewhere ... (automatically generate it if possible)
 ;; TODO: this needs to be cleaned up ...
@@ -152,7 +140,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 (defun switch-to-dot-emacs (&rest junk) ;; NOTE: this function serves no purpose anymore ... consider removing this function ... (???)
   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
   (interactive)
-  (config files)
+  ;; (config files)
   (if (equal (buffer-name) "init.el")
       (eval-buffer) ;; evaluate the current buffer
     (find-file (concat (expand-file-name user-emacs-directory) "init.el")))) ;; switch to the init.el file
@@ -161,7 +149,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
   "Clear the message buffer initially."
   (message ""))
 
-;;; default variable values
+;;; COMMENT: default variable values
 (setq inhibit-startup-message t ;; turn off startup message
       inhibit-startup-echo-area-message t ;; turn off startup echo area message
       initial-scratch-message (concat ";; For information about "
@@ -182,13 +170,13 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
       echo-keystrokes 0.1 ;; see what you are typing
       suggest-key-bindings nil) ;; do not show respective key-bindings
 
-;;; default browser
+;;; COMMENT: default browser
 (setq browse-url-browser-function 'browse-url-generic
       ;; browse-url-generic-program "conkeror") ;; default web browser set to conkeror
       browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
       ;; browser-url-generic-program "x-www-browser") ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
 
-;;; default auto-mode list
+;;; COMMENT: default auto-mode list
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; open .screenrc in shell script mode
 ;; (add-to-list 'auto-mode-alist '(".bash_aliases" . shell-script-mode)) ;; open .bash_aliases in shell script mode
 ;; (add-to-list 'auto-mode-alist '(".mpdconf/" . shell-script-mode)) ;; open any file in .mpdconf/ in shell script mode
@@ -214,10 +202,10 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; open *.in files in otter mode
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; open python files in a psuedo-python interpreter
 
-;;; selection
+;;; COMMENT: selection
 (delete-selection-mode 1) ;; replace (delete) selected region
 
-;;; ido mode
+;;; COMMENT: ido mode
 (require 'ido)
 (require 'ido-ubiquitous)
 
@@ -315,12 +303,12 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 		(ido-completing-read prompt allcomp nil require-match initial-input hist def))
 	ad-do-it))))
 
-;;; smex mode
+;;; COMMENT: smex mode
 (require 'smex)
 (setq smex-save-file (concat user-emacs-directory "smex-items"))
 (smex-initialize) ;; super-charge ido mode
 
-;;; ibuffer
+;;; COMMENT: ibuffer
 (require 'ibuffer)
 
 (setq ibuffer-saved-filter-groups
@@ -331,7 +319,8 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	 ("University" ;; university related buffers
 	  (filename . ,(expand-file-name user-university-directory)))
 	 ("Reading" ;; reading (material and notes) related buffers
-	  (filename . ,(expand-file-name user-reading-directory)))
+	  (or (filename . ,(expand-file-name user-reading-directory))
+	      (mode . doc-view-mode)))
 	 ("Writing" ;; writing related buffers
 	  (filename . ,(expand-file-name user-writing-directory)))
 	 ("Projects" ;; project related buffers
@@ -405,6 +394,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (name . "\\*Messages\\*$")
 	      (name . "\\*Keys\\*$")
 	      (name . "\\*Disabled Command\\*$")
+	      (name . "\\*Process List\\*$")
 	      (name . "\\*Help\\*$")
 	      (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
@@ -420,7 +410,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 			       (ibuffer-auto-mode 1) ;; automatically update buffer list
 			       (ibuffer-switch-to-saved-filter-groups "default")))
 
-;;; auto-complete mode
+;;; COMMENT: auto-complete mode
 (when (require 'auto-complete-config nil 'noerror)
   (add-to-list 'ac-dictionary-directories (concat (expand-file-name user-emacs-directory) "ac-dict"))
   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
@@ -443,7 +433,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 
 (real-global-auto-complete-mode t)
 
-;;; smart tab
+;;; COMMENT: smart tab
 (defun smart-tab () ;; implement a smarter TAB
   "This smart tab is minibuffer compliant: it acts as usual in the minibuffer.
  Else, if mark is active, indents region. Else if point is at the end of a symbol, expands it.
@@ -463,19 +453,19 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	  ;; (dabbrev-expand nil) ;; use dabbrev-expand
 	(indent-for-tab-command)))))
 
-;;; enable/disable functions
+;;; COMMENT: enable/disable functions
 (put 'overwrite-mode 'disabled t) ;; disable overwrite mode
 
-;;; mini buffer
+;;; COMMENT: mini buffer
 (file-name-shadow-mode t) ;; be smart about filenames in the mini buffer
 (fset 'yes-or-no-p 'y-or-n-p) ;; changes all yes/no questions to y/n
 (savehist-mode t) ;; keep mini buffer history between session
 
-;;; stumpwm mode
+;;; COMMENT: stumpwm mode
 (autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t)
 
 ;; FIX: this doesn't appear to work ...
-;;; single line copy
+;;; COMMENT: single line copy
 ;; (defadvice kill-ring-save (before slick-copy activate compile)
 ;;   "When called interactively with no active region, copy a single line instead."
 ;;   (interactive
@@ -484,7 +474,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 ;;       (list (line-beginning-position) (line-beginning-position 2)))))
 
 ;; FIX: this doesn't appear to work ...
-;;; single line cut
+;;; COMMENT: single line cut
 ;; (defadvice kill-region (before slick-cut activate compile)
 ;;   "When called interactively with no active region, kill a single line instead."
 ;;   (interactive
@@ -492,17 +482,17 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 ;;       (message "Killed line")
 ;;       (list (line-beginning-position) (line-beginning-position 2)))))
 
-;;; tramp
+;;; COMMENT: tramp
 (autoload 'tramp "Remote file manipulation with Tramp." t)
 (setq tramp-default-method "ssh") ;; use ssh for tramp
 
-;;; version control
+;;; COMMENT: version control
 (autoload 'magit-status "magit" "Version control with Git." t) ;; magit for use with github
 
 (setq magit-save-some-buffers t ;; ask me to save buffers before running magit-status
       magit-process-popup-time 4) ;; Popup the process buffer if command takes too long
 
-;;; backups
+;;; COMMENT: backups
 (setq-default delete-old-versions t) ;; delete excess file backups silently
 
 (setq ;; backup-by-copying t ;; don't clobber symlinks
@@ -513,7 +503,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
       kept-old-versions 2
       version-control t) ;; use versioned backups
 
-;;; recent files
+;;; COMMENT: recent files
 ;; (require 'recentf)
 (autoload 'recentf-mode "recentf" "Recent files." t)
 
@@ -523,7 +513,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 
 (recentf-mode t)
 
-;;; desktop save mode
+;;; COMMENT: desktop save mode
 (autoload 'desktop-save-mode "desktop" "Save session file." t)
 
 (desktop-save-mode 1) ;; enable desktop save mode
@@ -565,7 +555,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
   (when (not (emacs-process-p ad-return-value))
     (setq ad-return-value nil)))
 
-;;; paredit
+;;; COMMENT: paredit
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
 (defun override-slime-repl-bindings-with-paredit () ;; stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
@@ -579,19 +569,19 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
 (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
 
-;;; flyspell
+;;; COMMENT: flyspell
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checking" t)
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
 (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
 
 (add-hook 'text-mode-hook 'turn-on-flyspell) ;; turn on automatic spell check if in a text-mode
 
-;;; ispell
+;;; COMMENT: ispell
 (setq ispell-program-name "aspell" ;; use aspell for automatic spelling
       ispell-parser 'tex
       ispell-extra-args '("--sug-mode=ultra"))
 
-;;; ansi-terminal
+;;; COMMENT: ansi-terminal
 (defun symbol-value-in-buffer (sym buf)
   "Return the value of 'sym' in 'buf'."
   (save-excursion

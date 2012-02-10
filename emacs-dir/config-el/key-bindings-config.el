@@ -1,7 +1,7 @@
 ;; ~/.emacs.d/config-el/key-bindings-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; global key-bindings
+;;; COMMENT: global key-bindings
 ;; (global-set-key (kbd "<f1>") 'function) ;; ...
 ;; (global-set-key (kbd "M-<f1>") 'function) ;; ...
 ;; (global-set-key (kbd "C-<f1>") 'function) ;; ...
@@ -9,8 +9,8 @@
 ;; (global-set-key (kbd "M-<f2>") 'function) ;; ...
 ;; (global-set-key (kbd "C-<f2>") 'function) ;; ...
 (global-set-key (kbd "<f3>") 'switch-to-dot-emacs) ;; switch to ~/.emacs.d/init.el file (or evaluate-buffer if already present)
-;; (global-set-key (kbd "M-<f3>") 'show-bugs-fixes-todos) ;; show any TODO items in the source code comments of a file ;; TODO: this function is redundant
-;; (global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; show the structure of the active dot-config file ;; TODO: this function is redundant
+(global-set-key (kbd "M-<f3>") 'show-custom-comment-tag) ;; show custom comment tags in an outline structure
+(global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; show the structure of the "same" dot-config files ;; ERROR: this function only works with '.el' extensions
 (global-set-key (kbd "<f4>") 'erc-start-or-switch) ;; start an erc session (or switch to the most active buffer)
 ;; (global-set-key (kbd "M-<f4>") 'function) ;; ...
 (global-set-key (kbd "C-<f4>") 'gnus) ;; start a gnus session (or switch to an existing session)

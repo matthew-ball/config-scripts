@@ -1,6 +1,7 @@
 ;; ~/.emacs.d/config-el/latex-config.el
 ;; Matthew Ball (copyleft 2012)
 
+;;; COMMENT: latex
 (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
 (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
 (autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
@@ -28,7 +29,7 @@
 
 ;; (add-hook 'org-mode-hook 'org-mode-custom-latex)
 
-;;; reftex formats (for biblatex)
+;;; COMMENT: reftex formats (for biblatex)
 (setq reftex-cite-format
       '((?c . "\\cite[]{%l}")
         (?t . "\\textcite{%l}")

@@ -1,7 +1,7 @@
 ;; ~/.emacs.d/config-el/erc-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; erc
+;;; COMMENT: erc
 (autoload 'doctor-doc "doctor") ;; for use with erc doctor
 (autoload 'make-doctor-variables "doctor") ;; ...
 (autoload 'erc-select "erc" "The GNU Emacs IRC client." t)
@@ -14,16 +14,17 @@
 (autoload 'erc-spelling "erc" "ERC mode for interaction with flyspell (aspell)." t)
 (autoload 'erc-pcomplete "erc" "ERC mode for completing the nickname before point." t)
 (autoload 'erc-highlight-nicknames "erc" "ERC mode for highlighting nicknames." t)
+(autoload 'wtf-is "wtf" "ERC command for describing acronyms." t)
 
-;; (require 'erc-match) ;; TODO: change this to an autoload
-;; (require 'erc-join) ;; TODO: change this to an autoload
-;; (require 'erc-track) ;; TODO: change this to an autoload
-;; (require 'erc-fill) ;; TODO: change this to an autoload
-;; (require 'erc-ring) ;; TODO: change this to an autoload
-;; (require 'erc-netsplit) ;; TODO: change this to an autoload
-;; (require 'erc-spelling) ;; TODO: change this to an autoload
-;; (require 'erc-pcomplete) ;; TODO: change this to an autoload
-;; (require 'erc-highlight-nicknames) ;; TODO: change this to an autoload
+;; (require 'erc-match)
+;; (require 'erc-join)
+;; (require 'erc-track)
+;; (require 'erc-fill)
+;; (require 'erc-ring)
+;; (require 'erc-netsplit)
+;; (require 'erc-spelling)
+;; (require 'erc-pcomplete)
+;; (require 'erc-highlight-nicknames)
 
 (and (require 'erc-highlight-nicknames) (add-to-list 'erc-modules 'highlight-nicknames) (erc-update-modules))
 
@@ -144,7 +145,7 @@
                (buffer-string))))))
 
 (defun erc-cmd-SHOW (&rest form)
-  "Eval FORM and send the result and the original form as: FORM => (eval FORM)."
+  "Evaluate FORM and send the result and the original form as: FORM => (eval FORM)."
   (let ((string
          (with-temp-buffer
            (mapc #'(lambda (f) (insert f " ")) form)
@@ -160,8 +161,7 @@
     (erc-send-message string)))
 
 (defun erc-cmd-UNAME (&rest ignore)
-  "Display the result of running `uname -a' to the current ERC
-buffer."
+  "Display the result of running `uname -a' to the current ERC buffer."
   (let ((uname-output
          (replace-regexp-in-string
           "[ \n]+$" "" (shell-command-to-string "uname -a"))))
@@ -169,22 +169,21 @@ buffer."
      (concat "{uname -a} [" uname-output "]"))))
 
 (defun erc-cmd-UPTIME (&rest ignore)
-  "Display the uptime of the system, as well as some load-related
-stuff, to the current ERC buffer."
+  "Display the uptime of the system, as well as some load-related stuff, to the current ERC buffer."
   (let ((uname-output
          (replace-regexp-in-string
-          ", load average: " "] {Load average} ["
-          ;; Collapse spaces, remove
-          (replace-regexp-in-string
-           " +" " "
-           ;; Remove beginning and trailing whitespace
-           (replace-regexp-in-string
-            "^ +\\|[ \n]+$" ""
-            (shell-command-to-string "uptime"))))))
+	  ", load average: " "] {Load average} ["
+	  ;; collapse spaces, remove
+	  (replace-regexp-in-string
+	   " +" " "
+	   ;; remove beginning and trailing whitespace
+	   (replace-regexp-in-string
+	    "^ +\\|[ \n]+$" ""
+	    (shell-command-to-string "uptime"))))))
     (erc-send-message
      (concat "{Uptime} [" uname-output "]"))))
 
-(defun erc-cmd-WTF (term &rest ignore)
+(defun erc-cmd-WTF (term &rest ignore) ;; ERROR: this doesn't work
   "Look up definition for TERM."
   (let ((def (wtf-is term)))
     (if def

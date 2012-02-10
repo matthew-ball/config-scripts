@@ -4,9 +4,7 @@
 ;; (require 'gnus nil 'noerror)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
 
-;; ==================
-;;; personal settings
-;; ==================
+;;; COMMENT: personal settings
 (setq user-mail-address "mathew.ball@gmail.com" ;; user mail address (could use my school mail)
       user-full-name "Matthew Ball" ;; user full-name
       mail-aliases t ;; enable mail aliases
@@ -21,9 +19,7 @@
 ;; (setq custom-mail-dir "~/.mail/") ;; set directory for mail
 ;; (setq custom-news-dir "~/.news/") ;; set directory for news
 
-;; ==============
-;;; gnus settings
-;; ==============
+;;; COMMENT: gnus settings
 ;; (setq gnus-select-method '(nnml "")
 ;;       gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
 ;;       gnus-invalid-group-regexp "[:`'\"]\\|^$"
@@ -44,17 +40,13 @@
 ;;       gnus-save-killed-list nil
 ;;       gnus-check-new-newsgroups nil)
 
-;; ================
-;;; visible headers
-;; ================
+;;; COMMENT: visible headers
 ;; (setq gnus-visible-headers
 ;;       (concat "^From:\\|^Subject:\\|^Newsgroups:"
 ;; 	      "\\|^Organization:"
 ;; 	      "\\|^To:\\|^Cc:\\|^Date:"))
 
-;; ===========
-;;; imap setup
-;; ===========
+;;; COMMENT: imap setup
 ;; (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; set ssl
 ;;       imap-log t ;; log the imap session
 ;;       imap-store-password t ;; store the session password
@@ -74,9 +66,7 @@
 ;; 		;; (nnimap-expunge-on-close 'never)
 ;; 		(nnimap-stream ssl))))
 
-;; ===========
-;;; smtp setup
-;; ===========
+;;; COMMENT: smtp setup
 ;; (require 'smtpmail)
 
 ;; (defvar smtp-accounts ;; available smtp accounts
@@ -134,9 +124,7 @@
 ;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
 ;; 	  finally (error "Cannot interfere SMTP information."))))
 
-;; =============
-;;; email config
-;; =============
+;;; COMMENT: email config
 ;; (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
 ;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
 ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; add tab completion to name in the "To:" field
@@ -144,9 +132,7 @@
 ;; (remove-hook 'gnus-summary-prepare-exit-hook
 ;; 	     'gnus-summary-expire-articles)
 
-;; ===========
-;;; rss config
-;; ===========
+;;; COMMENT: rss config
 ;; (eval-after-load "gnus-sum" ;; set the default value of mm-discouraged-alternatives
 ;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
      

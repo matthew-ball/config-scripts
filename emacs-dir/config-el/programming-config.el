@@ -1,14 +1,14 @@
 ;; ~/.emacs.d/config-el/programming-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; general programming
+;;; COMMENT: general programming
 (defun turn-on-general-programming-mode ()
   "General function for programming modes."
   (modify-syntax-entry ?- "w") ;; treat '-' as part of the word
   ;; (flymake-mode) ;; turn on flymake mode
   (hs-minor-mode))
 
-;;; emacs lisp programming
+;;; COMMENT: emacs lisp programming
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
 (eldoc-add-command
@@ -19,7 +19,7 @@
 				   (turn-on-general-programming-mode)
 				   (eldoc-mode t)))
 
-;;; common lisp programming
+;;; COMMENT: common lisp programming
 (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
 
 (add-hook 'lisp-mode-hook '(lambda ()
@@ -28,7 +28,7 @@
 
 (add-hook 'inferior-lisp-mode-hook '(lambda () ((inferior-slime-mode t))))
 
-;;; slime
+;;; COMMENT: slime
 (autoload 'slime "slime" "The Superior Lisp Interaction mode for GNU Emacs" t)
 
 (eval-after-load "slime"
@@ -62,7 +62,7 @@
 			      (turn-on-general-programming-mode)
 			      (start-slime-automatically)))
 
-;;; haskell programming
+;;; COMMENT: haskell programming
 (autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)
 
 (setq haskell-font-lock-symbols t) ;; enable unicode symbols for haskell
@@ -75,19 +75,19 @@
 				(turn-on-general-programming-mode)
 				(custom-turn-on-haskell-modes)))
 
-;;; shell script
+;;; COMMENT: shell script
 (autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
 
 (add-hook 'shell-script-mode '(lambda ()
 				(turn-on-general-programming-mode)))
 
-;;; python programming
+;;; COMMENT: python programming
 (autoload 'python-mode "python" "Major mode for editing python source code." t)
 
 (add-hook 'python-mode-hook '(lambda ()
 			       (turn-on-general-programming-mode)))
 
-;;; maxima
+;;; COMMENT: maxima
 (autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
 (autoload 'maxima "maxima" "Major mode for maxima interaction." t)
 (autoload 'imaxima "imaxima" "Major mode frontend for maxima with image support." t)

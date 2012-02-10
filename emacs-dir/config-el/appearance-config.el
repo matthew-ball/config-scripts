@@ -1,7 +1,7 @@
 ;; ~/.emacs.d/config-el/appearance-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; appearance
+;;; COMMENT: appearance
 (require 'color-theme)
 ;; (require 'zenburn)
 
@@ -10,7 +10,7 @@
 
 (when window-system 'x ;; if using x windowing system
   (set-face-attribute 'default nil :height 90) ;; change font size
-  (eval-after-load "color-theme" '(zenburn)) ;; apply zenburn colour theme
+  (eval-after-load "color-theme" '(zenburn)) ;; NOTE: apply zenburn colour theme
   (setq frame-title-format "%b"
   	icon-title-format "%b"))
 
@@ -22,23 +22,23 @@
 ;;(when (fboundp 'fringe-mode) (fringe-mode -1)) ;; turn off the fringe
 (when (fboundp 'fringe-mode) (set-fringe-mode '(1 . 0))) ;; set fringe to 1px on left side only
 
-;;; visual lines
+;;; COMMENT: visual lines
 (global-visual-line-mode t) ;; enable visual line mode for all buffers (i.e. globally)
 
-;;; line numbers
+;;; COMMENT: line numbers
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
 ;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; turn on linum mode if in a file
 
-;;; indicate empty lines
-(toggle-indicate-empty-lines) ;; TODO: turn on indicate-empty-line only if in a file?!
+;;; COMMENT: indicate empty lines
+;; (toggle-indicate-empty-lines)
 
-;;; show matching parenthesis
+;;; COMMENT: show matching parenthesis
 (show-paren-mode t)
 (setq show-paren-style 'parenthesis
       show-paren-delay 0.0)
 
-;;; mode line
+;;; COMMENT: mode line
 (setq line-number-mode 1 ;; turn on line numbers in the mode line
       column-number-mode 1 ;; turn on column numbers in the mode line
       size-indication-mode t) ;; show file size in mode line
@@ -47,7 +47,7 @@
 (display-battery-mode t) ;; display battery status in the mode line
 ;; (which-function-mode t) ;; show the current function in the mode line
 
-;;; code folding
+;;; COMMENT: code folding
 (require 'hideshow)
 
 ;; TODO: add custom modes
@@ -87,7 +87,7 @@
 ;; (add-hook 'haskell-mode-hook    'hs-minor-mode)
 (add-hook 'latex-mode-hook 'hs-minor-mode)
 
-;;; diminish
+;;; COMMENT: diminish
 (require 'diminish) ;; turn off the textual mode indicator in the mode line
 
 (eval-after-load "flyspell" '(diminish 'flyspell-mode ""))

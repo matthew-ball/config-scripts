@@ -1,12 +1,14 @@
-;; ~/.emacs.d/config-el/org-config.el
+;; /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
 ;; Matthew Ball (copyleft 2012)
 
-;;; org mode
+;;; COMMENT: org mode
 (autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
-(autoload 'org-entities "org" "Enable unicode support for org-mode." t)
+;; (autoload 'org-entities "org" "Enable unicode support for org-mode." t)
 (autoload 'org-protocol "org-protocol" "Use org-mode with emacsclient." t)
 (autoload 'org-latex "org-latex" "Render LaTeX with org-mode." t)
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
+
+(require 'org-entities) ;; TODO: change this to an autoload
 
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
@@ -47,7 +49,7 @@
 			 ,(concat user-reading-directory "readings.org")
 			 ,(concat user-writing-directory "writings.org")))
 
-(setq org-tag-alist
+(setq org-tag-alist ;; TODO: create customisations
       '(("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r) ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n)
 	("WEBSITE" . ?w) ("BOOKMARK" . ?b) ("PHILOSOPHY" . ?s) ("COMPUTER SCIENCE" . ?c) ("MATHEMATICS" . ?m) ("WRITING" . ?t)) ;; tags for `org-set-tags'
 
@@ -70,6 +72,7 @@
 				   ("h" "Home" ((org-agenda-list nil nil 1) (tags-todo "HOME") (tags-todo "GENERAL")) "HOME"
 				    (org-agenda-files '("home.org" "notes.org"))) ;; tasks for HOME
 				   ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; tasks for UNIVERSITY
+				   ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context)
 				   ("p" "Projects" ((org-agenda-list nil nil 1) (tags-todo "PROJECTS")) "PROJECTS") ;; PROJECT tasks
 				   ("g" "General" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags "NOTES")) "GENERAL") ;; tasks for GENERAL
 				   ("r" "Reading" ((org-agenda-list nil nil 1) (tags "READING") (tags "WEBSITE")) "READING")) ;; tasks for READING
@@ -172,6 +175,7 @@
 (add-to-list 'org-export-latex-classes
 	     '("assignment"
 	       "\\documentclass[10pt,a4paper]{article}
+               \\usepackage{hyperref}
                \\usepackage{amsmath}
                \\usepackage{amssymb}
                \\usepackage{amsthm}
@@ -189,6 +193,19 @@
 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
 	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(add-to-list 'org-export-latex-classes
+	     '("article"
+	       "\\documentclass[12pt,a4paper]{article}
+               \\usepackage{hyperref}
+               \\setcounter{secnumdepth}{0}
+               [NO-DEFAULT-PACKAGES]
+               [EXTRA]"
+	       ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (add-to-list 'org-export-latex-classes
 	     '("beamer"
@@ -218,11 +235,17 @@
 (add-to-list 'org-entities-user '("vdash" "\\vdash" t "&vdash;" "[derives]" nil "⊢"))
 (add-to-list 'org-entities-user '("models" "\\models" t "&mod;" "[models]" nil "⊨"))
 (add-to-list 'org-entities-user '("Box" "\\Box" t "&box;" "[box]" nil "☐"))
-(add-to-list 'org-entities-user '("cdots" "\\cdots" t "&cdots;" "[center dots]" nil "∙"))
-;; (add-to-list 'org-entities-user '("ldots" "\\ldots" t "&ldots;" "[line dots]" nil ".")) ;; FIXME: this does not work
+(add-to-list 'org-entities-user '("cdots" "\\cdots" t "&cdots;" "[center dots]" nil "⋯"))
+(add-to-list 'org-entities-user '("ldots" "\\ldots" t "&ldots;" "[line dots]" nil "…"))
+(add-to-list 'org-entities-user '("reals" "\\mathbb{R}" t "&reals;" "[real numbers]" nil "ℝ"))
+(add-to-list 'org-entities-user '("integers" "\\mathbb{Z}" t "&integers;" "[integers]" nil "ℤ"))
+(add-to-list 'org-entities-user '("primes" "\\mathbb{P}" t "&primes;" "[prime numbers]" nil "ℙ"))
+(add-to-list 'org-entities-user '("naturals" "\\mathbb{N}" t "&naturals;" "[natural numbers]" nil "ℕ"))
+(add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" t "&irrationals;" "[irrational numbers]" nil "𝕀"))
+(add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" t "&rationals;" "[rational numbers]" nil "ℚ"))
+(add-to-list 'org-entities-user '("complex" "\\mathbb{C}" t "&complex;" "[complex numbers]" nil "ℂ"))
 
-;; (add-to-list 'org-entities-user '("newline" "\\newline" t "&newline;" "[new line]" nil "")) ;; TODO: get arrow picture
-;; (add-to-list 'org-entities-user '("newpage" "\\newpage" t "&newpage;" "[new page]" nil "")) ;; TODO: get arrow picture
+;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
 
 (defun turn-on-custom-org-bindings ()
   "Activate custom org-mode bindings."
@@ -234,6 +257,29 @@
   "Active custom org-mode functionality."
   (org-toggle-pretty-entities) ;; toggle UTF-8 unicode symbols
   (turn-on-custom-org-bindings)) ;; enable custom org-mode bindings
+
+(defun get-page-title (url)
+  "Get title of web page, whose url can be found in the current line"
+  (interactive "sURL: ")
+  ;; Get title of web page, with the help of functions in url.el
+  (with-current-buffer (url-retrieve-synchronously url) ;; find title by grep the html code
+    (goto-char 0)
+    (re-search-forward "<title>\\([^<]*\\)</title>" nil t 1)
+    (setq web_title_str (match-string 1))
+    (goto-char 0)
+    (if (re-search-forward "charset=\\([-0-9a-zA-Z]*\\)" nil t 1) ;; find charset by grep the html code
+        (setq coding_charset (downcase (match-string 1)))
+      (setq coding_charset "utf-8") ;; find the charset, assume utf-8 otherwise
+      (setq web_title_str (decode-coding-string web_title_str (intern coding_charset)))) ;; decode the string of title.
+    (insert-string "\n\n\n")
+    (insert-string web_title_str)
+    (insert-string (concat "[[" url "][" web_title_str "]]"))
+    (insert-string (format "%s - %s" url web_title_str))
+    (insert "\n\n\n")
+    (insert web_title_str)
+    (insert (concat "[[" url "][" web_title_str "]]"))
+    (insert (format "%s - %s" url web_title_str))
+    (message (concat "title is: " web_title_str))))
 
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
