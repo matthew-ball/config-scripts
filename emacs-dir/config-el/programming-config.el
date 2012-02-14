@@ -49,7 +49,7 @@
 		     slime-scratch
 		     slime-xref-browser))))
 
-(setq inferior-lisp-program "/usr/bin/sbcl" ;; use sbcl as the lisp environment
+(setq inferior-lisp-program "/usr/bin/sbcl" ;; use sbcl as the lisp environment ;; TODO: this is a bit redundant, considering it's already set
       slime-net-coding-system 'utf-8-unix
       slime-complete-symbol*-fancy t
       slime-complete-symbol-function 'slime-fuzzy-complete-symbol)

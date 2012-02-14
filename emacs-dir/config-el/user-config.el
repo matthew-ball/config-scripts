@@ -2,21 +2,21 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: emacs multimedia system
-(autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
-(autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
-(autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
+;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
+;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
+;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
 
-;; (emms-devel)
-(emms-all) ;; NOTE: runs `emms-standard' and adds stable emms features
-(emms-default-players)
+;; ;; (emms-devel)
+;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable emms features
+;; (emms-default-players)
 
-(setq emms-player-mpd-server-name "localhost")
-(setq emms-player-mpd-server-port "7700")
+;; (setq emms-player-mpd-server-name "localhost")
+;; (setq emms-player-mpd-server-port "7700")
 
-(add-to-list 'emms-info-functions 'emms-info-mpd) ;; NOTE: get track information from mpd
-(add-to-list 'emms-player-list 'emms-player-mpd) ;; NOTE: add mpd to the emms player list
+;; (add-to-list 'emms-info-functions 'emms-info-mpd) ;; NOTE: get track information from mpd
+;; (add-to-list 'emms-player-list 'emms-player-mpd) ;; NOTE: add mpd to the emms player list
 
-(emms-player-mpd-connect) ;; NOTE: connect emms to mpd
+;; (emms-player-mpd-connect) ;; NOTE: connect emms to mpd
 
 ;;; COMMENT: project management
 ;; (require 'eproject) ;; FIX: change this to an autoload
