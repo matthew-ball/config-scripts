@@ -1,5 +1,5 @@
-;; ~/.conf-scripts/stumpwmrc
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.conf-scripts/stumpwmrc
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: lisp implementation
 ;debian=sbcl

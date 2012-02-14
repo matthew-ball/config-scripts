@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/erc-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/erc-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: erc
 (autoload 'doctor-doc "doctor") ;; for use with erc doctor

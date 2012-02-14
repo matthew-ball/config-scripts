@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/gnus-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/gnus-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;; (require 'gnus nil 'noerror)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
@@ -9,6 +9,9 @@
       user-full-name "Matthew Ball" ;; user full-name
       mail-aliases t ;; enable mail aliases
       auth-source-save-behavior nil
+      gnus-inhibit-startup-message t
+      gnus-agent-expire-all t  ;; allow uncaching of unread articles
+      gnus-agent-article-alist-save-format 2 ; compress cache
       ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; change directory where mail aliases are located
       ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; change directory where authentication information is found
       message-from-style 'angles ;; specifies how the "From" header appears

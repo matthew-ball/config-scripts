@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/general-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/general-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: user variables
 (defvar user-home-directory "~/" "Directory for user's home files.")
@@ -72,7 +72,8 @@
 ;;; COMMENT: highlight custom comment tags
 (defvar font-lock-custom-comment-tag-face 'font-lock-custom-comment-tag-face "Face name to use for custom comment tags.")
 (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
-(defvar custom-comment-tag-list '("BUG" "COMMENT" "DEBUG" "ERROR" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
+;; TODO: add "FILE" and "AUTHOR" tags
+(defvar custom-comment-tag-list '("AUTHOR" "BUG" "COMMENT" "DEBUG" "ERROR" "FILE" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
 (defvar custom-comment-tag-mode-hooks
   '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook)
   "Major modes which enable highlighting of custom comment tags.")
@@ -102,7 +103,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	       (lambda ()
 		 (font-lock-add-keywords nil
 					 ;; '(((custom-comment-tag-regexp) 0 font-lock-custom-comment-tag-face t)))))) ;; ERROR: doesn't work
-					 '(("\\<\\(BUG\\|COMMENT\\|DEBUG\\|ERROR\\|FIX\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
+					 '(("\\<\\(AUTHOR\\|BUG\\|COMMENT\\|DEBUG\\|ERROR\\|FI\\(?:LE\\|X\\)\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
 					    1 font-lock-custom-comment-tag-face t))))));; FIX: this string should not be hardcoded
    custom-comment-tag-mode-hooks)
   (message "Custom highlight tags activated."))

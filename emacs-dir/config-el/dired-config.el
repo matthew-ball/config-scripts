@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/dired-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/dired-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: dired
 (put 'dired-find-alternate-file 'disabled nil) ;; NOTE: enable re-use of dired buffers

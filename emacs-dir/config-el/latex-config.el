@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/latex-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/latex-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: latex
 (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)

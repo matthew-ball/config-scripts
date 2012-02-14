@@ -1,5 +1,5 @@
-;; /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: org mode
 (autoload 'org-install "org-exp" "Organise tasks with org-mode." t)

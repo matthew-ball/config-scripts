@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/eshell-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/eshell-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: eshell
 (require 'ansi-color)

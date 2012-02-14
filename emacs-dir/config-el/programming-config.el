@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/programming-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/programming-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: general programming
 (defun turn-on-general-programming-mode ()

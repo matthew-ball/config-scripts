@@ -1,5 +1,5 @@
-;; ~/.emacs.d/config-el/user-config.el
-;; Matthew Ball (copyleft 2012)
+;; FILE: ~/.emacs.d/config-el/user-config.el
+;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: emacs multimedia system
 (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
