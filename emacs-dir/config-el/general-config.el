@@ -348,6 +348,8 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (filename . ,(expand-file-name user-organisation-directory))))
 	 ("ERC" ;; erc related buffers
 	  (mode . erc-mode))
+	 ("Web Browser" ;; w3m related buffers
+	  (mode . w3m-mode))
 	 ("Dired" ;; dired related buffers
 	  (or (mode . dired-mode)
 	      (name . "^\\*Dired log\\*$")))

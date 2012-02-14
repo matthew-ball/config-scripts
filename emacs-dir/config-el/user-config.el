@@ -23,16 +23,18 @@
 ;; TODO: learn eproject
 
 ;;; COMMENT: w3m browser
-;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t) ;; TODO: set up w3m-el
+(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t) ;; TODO: set up w3m-el
 ;; (require 'w3m-load)
+;; (require 'w3m)
 
-;; (setq browse-url-browser-function 'w3m-browse-url
-;;       w3m-use-cookies t
-;;       w3m-coding-system 'utf-8
-;;       w3m-file-coding-system 'utf-8
-;;       w3m-file-name-coding-system 'utf-8
-;;       w3m-input-coding-system 'utf-8
-;;       w3m-output-coding-system 'utf-8
-;;       w3m-terminal-coding-system 'utf-8)
+(setq ;; browse-url-browser-function 'w3m-browse-url
+      ;; browse-url-new-window-flag t
+      w3m-use-cookies t
+      w3m-coding-system 'utf-8
+      w3m-file-coding-system 'utf-8
+      w3m-file-name-coding-system 'utf-8
+      w3m-input-coding-system 'utf-8
+      w3m-output-coding-system 'utf-8
+      w3m-terminal-coding-system 'utf-8)
 
 (provide 'user-config)
