@@ -231,8 +231,8 @@
 (defun run-terminal-app (cmd ttl &optional args) ;; FIX: fix
   "Run an instance of `cmd' with property `title' (and any optional arguments `args') in `*terminal*' titled `ttl'."
   (if (null args)
-      (run-app (cat *terminal* " -title \"" ttl "\" -e \"" cmd "\"") (list :title ttl))
-    (run-app (cat *terminal* " -title \"" ttl "\" -e \"" cmd " " args "\"") (list :title ttl))))
+      (run-app (cat *terminal* " -t \"" ttl "\" -e \"" cmd "\"") (list :title ttl))
+    (run-app (cat *terminal* " -t \"" ttl "\" -e \"" cmd " " args "\"") (list :title ttl))))
 
 ;; (defcommand exec-in-terminal (cmd) ((:string "Command: ")) (run-shell-command (format nil "~A -e ~A" *terminal* cmd))) ;; TODO: clean this up
 
@@ -528,7 +528,7 @@
 (when *initializing*
   ;; (launch-mpd) ;; start mpd server
   (run-editor) ;; start the editor
-  (run-browser) ;; start the browser
-  (run-system-monitor)) ;; start the system monitor
+  ;; (run-browser) ;; start the browser
+  (run-system-monitor)) ;; start the system monitor ;; TODO: investigate why this does not work
 
 ;; (mpd-connect) ;; start mpd connection

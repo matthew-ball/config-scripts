@@ -29,9 +29,9 @@
 ;; (global-set-key (kbd "<f9>") 'function) ;; ...
 (global-set-key (kbd "M-<f9>") 'elisp-index-search) ;; search for the documentation of an emacs lisp function
 (global-set-key (kbd "C-<f9>") 'emacs-index-search) ;; search for the documentation of an emacs command
-(global-set-key (kbd "<f10>") 'package-list-packages) ;; list available elpa packages
+(global-set-key (kbd "<f10>") 'browse-url) ;; run web browser
 (global-set-key (kbd "M-<f10>") 'run-package-manager) ;; run the system package manager
-;; (global-set-key (kbd "C-<f10>") 'function) ;; ...
+(global-set-key (kbd "C-<f10>") 'package-list-packages) ;; list available elpa packages
 (global-set-key (kbd "<f11>") 'emms) ;; start emacs multimedia system
 (global-set-key (kbd "M-<f11>") 'emms-player-mpd-connect) ;; connect emms to mpd
 ;; (global-set-key (kbd "C-<f11>") 'function) ;; ...

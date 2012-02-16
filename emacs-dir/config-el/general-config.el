@@ -54,8 +54,8 @@
 (defun insert-custom-header-text (&rest junk) ;; NOTE: need (substring ...) otherwise we pick up the \n character
   "Insert the header string for a file."
   (interactive)
-  (insert (concat (make-string 2 (aref comment-start 0)) " " (buffer-file-name) "\n"
-		  (concat (make-string 2 (aref comment-start 0)) " " (user-full-name)
+  (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
+		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
 			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
 
 (defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
@@ -72,11 +72,17 @@
 ;;; COMMENT: highlight custom comment tags
 (defvar font-lock-custom-comment-tag-face 'font-lock-custom-comment-tag-face "Face name to use for custom comment tags.")
 (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
-;; TODO: add "FILE" and "AUTHOR" tags
 (defvar custom-comment-tag-list '("AUTHOR" "BUG" "COMMENT" "DEBUG" "ERROR" "FILE" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
 (defvar custom-comment-tag-mode-hooks
   '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook)
   "Major modes which enable highlighting of custom comment tags.")
+
+;; TODO: Differentiate between `comment' and `todo' tags
+;; (defvar font-lock-custom-comment-tag-face)
+;; (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))))
+
+;; (defvar font-lock-custom-todo-tag-face)
+;; (defface font-lock-custom-todo-tag-face '((t (:foreground "OrangeRed"))))
 
 (defun custom-comment-tag-regexp (&rest junk)
   "The \"optimised\" regular expresssion of the `custom-comment-tag-list' list variable."
@@ -170,12 +176,6 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
       sentence-end-double-space 'nil ;; sentences end with a single space
       echo-keystrokes 0.1 ;; see what you are typing
       suggest-key-bindings nil) ;; do not show respective key-bindings
-
-;;; COMMENT: default browser
-(setq browse-url-browser-function 'browse-url-generic
-      ;; browse-url-generic-program "conkeror") ;; default web browser set to conkeror
-      browse-url-generic-program "chromium-browser") ;; default web browser set to chromium-browser
-      ;; browser-url-generic-program "x-www-browser") ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
 
 ;;; COMMENT: default auto-mode list
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; open .screenrc in shell script mode
@@ -338,6 +338,8 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (mode . inferior-lisp-mode)
 	      (mode . slime-mode)
 	      (mode . inferior-slime-mode)
+	      (mode . html-mode)
+	      (mode . javascript-mode)
 	      (mode . scheme-mode)
 	      (mode . inferior-scheme-mode)
 	      (name . "^\\*slime-events\\*$")))
@@ -583,6 +585,9 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 (setq ispell-program-name "aspell" ;; use aspell for automatic spelling
       ispell-parser 'tex
       ispell-extra-args '("--sug-mode=ultra"))
+
+;;; COMMENT: docview
+(setq doc-view-continuous t)
 
 ;;; COMMENT: ansi-terminal
 (defun symbol-value-in-buffer (sym buf)

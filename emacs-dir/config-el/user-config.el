@@ -22,13 +22,22 @@
 ;; (require 'eproject) ;; FIX: change this to an autoload
 ;; TODO: learn eproject
 
-;;; COMMENT: w3m browser
-(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t) ;; TODO: set up w3m-el
-;; (require 'w3m-load)
-;; (require 'w3m)
+;;; COMMENT: default browser
+(setq browse-url-browser-function 'w3m-browse-url ;; NOTE: use w3m web browser
+      browse-url-new-window-flag t
+      ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
+      ;; browse-url-generic-program "conkeror" ;; default web browser set to conkeror
+      browse-url-generic-program "chromium-browser" ;; default web browser set to chromium-browser
+      ;; browser-url-generic-program "x-www-browser" ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
+      )
 
-(setq ;; browse-url-browser-function 'w3m-browse-url
-      ;; browse-url-new-window-flag t
+;;; COMMENT: w3m browser
+(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+
+(setq w3m-key-binding 'info
+      w3m-home-page "www.emacswiki.org"
+      ;; w3m-default-display-inline-images t
+      w3m-use-toolbar nil
       w3m-use-cookies t
       w3m-coding-system 'utf-8
       w3m-file-coding-system 'utf-8
