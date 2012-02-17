@@ -280,6 +280,7 @@
 (frame-preference-rule "misc" 't "aptitude")               ;; => *package-manager*
 
 ;;; COMMENT: user commands
+;; TODO: add `package-manager' commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
