@@ -335,24 +335,34 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (mode . inferior-python-mode)
 	      (mode . lisp-mode)
 	      (mode . common-lisp-mode)
+	      (mode . emacs-lisp-mode)
 	      (mode . inferior-lisp-mode)
+	      (mode . repl-mode)
 	      (mode . slime-mode)
 	      (mode . inferior-slime-mode)
+	      (mode . fuzzy-completions-mode)
 	      (mode . html-mode)
+	      (mode . css-mode)
 	      (mode . javascript-mode)
 	      (mode . scheme-mode)
 	      (mode . inferior-scheme-mode)
-	      (name . "^\\*slime-events\\*$")))
+	      (name . "^\\*slime-events\\*$")
+	      (name . "^\\*slime-threads\\*$")
+	      (name . "^\\*slime-connections\\*$")
+	      (name . "^\\*slime-repl sbcl\\*$")
+	      (name . "^\\*slime-compilation\\*$")
+	      (name . "^\\*inferior-lisp\\*$")))
 	 ("Organisation" ;; org-mode related buffers
 	  (or (mode . org-mode)
 	      (mode . org-agenda-mode)
 	      (mode . calendar-mode)
+	      (mode . diary-mode)
 	      (filename . ,(expand-file-name user-organisation-directory))))
 	 ("ERC" ;; erc related buffers
 	  (mode . erc-mode))
 	 ("Web Browser" ;; w3m related buffers
 	  (mode . w3m-mode))
-	 ("Dired" ;; dired related buffers
+	 ("File Manager" ;; dired related buffers
 	  (or (mode . dired-mode)
 	      (name . "^\\*Dired log\\*$")))
 	 ("Shell" ;; shell related buffers
@@ -362,6 +372,8 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (mode . locate-mode)))
 	 ("Mathematics and Science" ;; buffers related to mathematics and science
 	  (or (mode . calculator-mode)
+	      (mode . calc-mode)
+	      (mode . calc-trail-mode)
 	      (mode . maxima-mode)
 	      (mode . inferior-maxima-mode)))
 	 ("Mail and News" ;; mail (and news) related buffers
@@ -369,7 +381,22 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (mode . gnus-topic-mode)
 	      (mode . gnus-browse-mode)
 	      (mode . gnus-summary-mode)
-	      (mode . gnus-article-mode)))
+	      (mode . gnus-article-mode)
+	      (mode . gnus-edit-form-mode)
+	      (mode . message-mode)
+	      (name . "^\\*gnus trace\\*$")
+	      (filename . ".newsrc-dribble$")))
+	 ("Information" ;; info related buffers
+	  (or (mode . info-mode)
+	      (mode . Info-mode)
+	      (mode . apropos-mode)
+	      (mode . Help-Mode)
+	      (mode . help-mode)
+	      (mode . Man-mode)
+	      (mode . woman-mode)))
+	 ("Process Manager" ;; process manager related buffers
+	  (or (mode . proced-mode)
+	      (mode . process-menu-mode)))
 	 ("Version Control" ;; version control related buffers
 	  (or (mode . diff-mode)
 	      (mode . magit-status-mode)
@@ -385,13 +412,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (mode . package-menu-mode)
 	      (name . "^\\*Package Info\\*$")))
 	 ("Miscellaneous" ;; miscellaneous special buffers
-	  (or (mode . Info-mode)
-	      (mode . apropos-mode)
-	      (mode . Help-Mode)
-	      (mode . help-mode)
-	      (mode . Man-mode)
-	      (mode . woman-mode)
-	      (mode . occur-mode)
+	  (or (mode . occur-mode)
 	      (mode . customize-mode)
 	      (mode . Custom-mode)
 	      (mode . completion-list-mode)
@@ -399,7 +420,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (name . "\\*Messages\\*$")
 	      (name . "\\*Keys\\*$")
 	      (name . "\\*Disabled Command\\*$")
-	      (name . "\\*Process List\\*$")
+	      ;; (name . "\\*Process List\\*$")
 	      (name . "\\*Help\\*$")
 	      (name . "\\*Org PDF LaTeX Output\\*$"))))))
 

@@ -28,12 +28,11 @@
 
 ;;; COMMENT: default applications
 (defvar *browser* "" "Set the default web browser.") ;; TODO: this should be "x-www-browser"
-(defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this (and the previous line) perhaps a bit redundant now .. staying for consistency ...
-
+(defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this 1(and the previous) line is redundant
 (defvar *editor* "emacs" "Set the default editor.")
 (defvar *file-manager* "pcmanfm" "Set the default file manager.")
 (defvar *package-manager* "aptitude" "Set the default package manager.")
-(defvar *system-monitor* "htop" "Set the default system monitor.")
+(defvar *system-monitor* "htop" "Set the default system monitor.") ;; NOTE: this is redundant
 (defvar *document-viewer* "evince" "Set the default document reader.")
 (defvar *audio-player* "ncmpcpp" "Set the default audio player.") ;; NOTE: can use emms ...
 (defvar *video-player* "vlc" "Set the default video player.")
@@ -62,8 +61,14 @@
 ;;   "Start music player daemon server."
 ;;   (run-shell-command "mpd"))
 
-;;; COMMENT: slime and swank ;; TODO: set up slime/swank stumpwm interaction
+;;; COMMENT: slime and swank
+;; NOTE: requires `quicklisp'
 ;; (load "/usr/share/common-lisp/source/slime/swank-loader.lisp")
+;; (load "/home/chu/quicklisp/dists/quicklisp/software/slime-20120208-cvs/swank-loader.lisp")
+
+;; (require 'swank)
+;; (swank:create-server)
+
 ;; (swank-loader:init)
 ;; (defvar *swank-p* nil)
 
@@ -530,6 +535,7 @@
   ;; (launch-mpd) ;; start mpd server
   (run-editor) ;; start the editor
   ;; (run-browser) ;; start the browser
-  (run-system-monitor)) ;; start the system monitor ;; TODO: investigate why this does not work
+  ;; (run-system-monitor) ;; start the system monitor
+  ) 
 
 ;; (mpd-connect) ;; start mpd connection

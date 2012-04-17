@@ -15,52 +15,60 @@
  'paredit-backward-delete
  'paredit-close-round)
 
-(add-hook 'emacs-lisp-mode-hook '(lambda ()
+;; (add-hook 'after-save-hook  (lambda () ;; NOTE: automatically byte-compile .el files
+;; 			      (if (eq major-mode 'emacs-lisp-mode)
+;; 				  (save-excursion (byte-compile-file buffer-file-name)))))
+
+(add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
 				   (turn-on-general-programming-mode)
 				   (eldoc-mode t)))
 
 ;;; COMMENT: common lisp programming
-(setq inferior-lisp-program "/usr/bin/sbcl --noinform")
+(setq inferior-lisp-program "/usr/bin/sbcl")
 
 (add-hook 'lisp-mode-hook '(lambda ()
 			     ;; (slime-mode t)
 			     (turn-on-general-programming-mode)))
 
-(add-hook 'inferior-lisp-mode-hook '(lambda () ((inferior-slime-mode t))))
+;; (add-hook 'inferior-lisp-mode-hook '(lambda () ((inferior-slime-mode t))))
 
-;;; COMMENT: slime
-(autoload 'slime "slime" "The Superior Lisp Interaction mode for GNU Emacs" t)
+;;; COMMENT: slime/swank
+;; IMPORTANT: requires `quicklisp' and (ql:quickload "quicklisp-slime-helper")
+(add-to-list 'load-path "/home/chu/quicklisp/dists/quicklisp/software/slime-20120208-cvs") ;; TODO: this is not an ideal setup
 
-(eval-after-load "slime"
-  '(progn
-     (setq slime-lisp-implementations '((sbcl ("/usr/bin/sbcl"))))
-     '(slime-setup '(slime-repl
-		     slime-asdf
-		     ;; slime-autodoc
-		     slime-editing-commands
-		     slime-fancy-inspector
-		     slime-fontifying-fu
-		     slime-fuzzy
-		     slime-indentation
-		     slime-mdot-fu
-		     slime-package-fu
-		     slime-references
-		     slime-sbcl-exts
-		     slime-scratch
-		     slime-xref-browser))))
+(require 'slime-autoloads)
 
-(setq inferior-lisp-program "/usr/bin/sbcl" ;; use sbcl as the lisp environment ;; TODO: this is a bit redundant, considering it's already set
-      slime-net-coding-system 'utf-8-unix
+(slime-setup '(slime-fancy
+	       slime-tramp
+	       slime-banner
+	       slime-compiler-notes-tree
+	       slime-package-fu
+	       slime-indentation
+	       slime-repl
+	       slime-editing-commands
+	       slime-fancy-inspector
+	       slime-fontifying-fu
+	       slime-fuzzy
+	       slime-mdot-fu
+	       slime-scratch
+	       slime-xref-browser
+	       slime-asdf
+	       ;; slime-autodoc
+	       ;; slime-indentation-fu
+	       slime-references
+	       slime-sbcl-exts))
+
+(setq slime-net-coding-system 'utf-8-unix
       slime-complete-symbol*-fancy t
       slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
-(defun start-slime-automatically () ;; automatically start slime when opening a lisp file
-  (unless (slime-connected-p)
-    (save-excursion (slime))))
+;; (defun start-slime-automatically () ;; automatically start slime when opening a lisp file
+;;   (unless (slime-connected-p)
+;;     (save-excursion (slime))))
 
-(add-hook 'slime-mode-hook '(lambda ()
-			      (turn-on-general-programming-mode)
-			      (start-slime-automatically)))
+;; (add-hook 'slime-mode-hook '(lambda ()
+;; 			      (turn-on-general-programming-mode)
+;; 			      (start-slime-automatically)))
 
 ;;; COMMENT: haskell programming
 (autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)

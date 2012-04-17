@@ -75,7 +75,7 @@
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
 		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
-      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#org-mode" "#ubuntu-offtopic" "##club-ubuntu" "#haskell"))
+      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#haskell" "#org-mode" "#ubuntu-offtopic" "#debian-offtopic" "##math" "##programming" "##club-ubuntu"))
       erc-join-buffer 'bury)
 
 (setq erc-modules (delq 'fill erc-modules)) ;; disable erc-fill-mode

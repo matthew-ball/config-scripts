@@ -19,23 +19,22 @@
       message-send-mail-function 'smtpmail-send-it ;; for gnus (message-mode)
       send-mail-function 'smtpmail-send-it) ;; not for gnus (mail-mode)
 
-;; (setq custom-mail-dir "~/.mail/") ;; set directory for mail
-;; (setq custom-news-dir "~/.news/") ;; set directory for news
+(setq custom-mail-dir "~/Mail/") ;; set directory for mail
+(setq custom-news-dir "~/News/") ;; set directory for news
 
 ;;; COMMENT: gnus settings
-;; (setq gnus-select-method '(nnml "")
-;;       gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
-;;       gnus-invalid-group-regexp "[:`'\"]\\|^$"
-;;       gnus-permanently-visible-groups "mail"
-;;       gnus-thread-hide-subtree t
-;;       gnus-fetch-old-headers t
-;;       gnus-thread-ignore-subject t
-;;       gnus-always-read-dribble-file t ;; don't bugger me with dribbles
-;;       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
-;;       gnus-posting-styles '((".*"
-;; 			     (name "Matthew Ball"))
-;; 			    ("gmail" (address "mathew.ball@gmail.com"))
-;; 			    ("anumail" (address "u4537508@anu.edu.au"))))
+(setq gnus-select-method '(nnml "")
+      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
+      gnus-invalid-group-regexp "[:`'\"]\\|^$"
+      gnus-permanently-visible-groups "mail"
+      gnus-thread-hide-subtree t
+      gnus-fetch-old-headers t
+      gnus-thread-ignore-subject t
+      gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
+      gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
+      gnus-posting-styles '((".*" (name "Matthew Ball"))
+			    ("gmail" (address "mathew.ball@gmail.com"))
+			    ("anumail" (address "u4537508@anu.edu.au"))))
 
 ;; (setq gnus-save-newsrc-file nil
 ;;       gnus-read-newsrc-file nil
@@ -44,10 +43,10 @@
 ;;       gnus-check-new-newsgroups nil)
 
 ;;; COMMENT: visible headers
-;; (setq gnus-visible-headers
-;;       (concat "^From:\\|^Subject:\\|^Newsgroups:"
-;; 	      "\\|^Organization:"
-;; 	      "\\|^To:\\|^Cc:\\|^Date:"))
+(setq gnus-visible-headers
+      (concat "^From:\\|^Subject:\\|^Newsgroups:"
+	      "\\|^Organization:"
+	      "\\|^To:\\|^Cc:\\|^Date:"))
 
 ;;; COMMENT: imap setup
 ;; (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; set ssl
@@ -128,34 +127,42 @@
 ;; 	  finally (error "Cannot interfere SMTP information."))))
 
 ;;; COMMENT: email config
-;; (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
 ;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
 ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; add tab completion to name in the "To:" field
 
 ;; (remove-hook 'gnus-summary-prepare-exit-hook
 ;; 	     'gnus-summary-expire-articles)
 
+;;; COMMENT: html display
+(setq mm-text-html-renderer 'w3m)
+(setq mm-inline-text-html-with-images t)
+(setq mm-inline-text-html-with-w3m-keymap nil)
+
 ;;; COMMENT: rss config
-;; (eval-after-load "gnus-sum" ;; set the default value of mm-discouraged-alternatives
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
+
+(setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n")
+
+;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
 ;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
      
-;; (add-to-list ;; display ‘text/html’ parts in nnrss groups
+;; (add-to-list ;; NOTE: display 'text/html' parts in nnrss groups
 ;;  'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
-;; (add-hook 'gnus-summary-mode-hook
-;;           (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
-;; 		  (progn
-;; 		    (make-local-variable 'gnus-show-threads)
-;; 		    (make-local-variable 'gnus-article-sort-functions)
-;; 		    (make-local-variable 'gnus-use-adaptive-scoring)
-;; 		    (make-local-variable 'gnus-use-scoring)
-;; 		    (make-local-variable 'gnus-score-find-score-files-function)
-;; 		    (make-local-variable 'gnus-summary-line-format)
-;; 		    (setq gnus-show-threads nil
-;; 			  gnus-article-sort-functions 'gnus-article-sort-by-date
-;; 			  gnus-use-adaptive-scoring nil
-;; 			  gnus-use-scoring t
-;; 			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
+(add-hook 'gnus-summary-mode-hook
+          (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
+		  (progn
+		    (make-local-variable 'gnus-show-threads)
+		    (make-local-variable 'gnus-article-sort-functions)
+		    (make-local-variable 'gnus-use-adaptive-scoring)
+		    (make-local-variable 'gnus-use-scoring)
+		    (make-local-variable 'gnus-score-find-score-files-function)
+		    (make-local-variable 'gnus-summary-line-format)
+		    (setq gnus-show-threads nil
+			  gnus-article-sort-functions 'gnus-article-sort-by-date
+			  gnus-use-adaptive-scoring nil
+			  gnus-use-scoring t
+			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
 
 ;; (defun browse-nnrss-url (arg)
 ;;   "Browse RSS url."

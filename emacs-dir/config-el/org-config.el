@@ -66,7 +66,7 @@
 								((org-agenda-prefix-format "[ ] %T: ")
 								 (org-agenda-sorting-strategy '(tag-up priority-down))
 								 (org-agenda-todo-keyword-format "")
-								 (org-agenda-overriding-header "\n==================\n Tasks by Context\n=================="))))
+								 (org-agenda-overriding-header "\n===========\n All Tasks\n==========="))))
 				    ((org-agenda-compact-blocks t)
 				     (org-agenda-remove-tags t)))
 				   ("h" "Home" ((org-agenda-list nil nil 1) (tags-todo "HOME") (tags-todo "GENERAL")) "HOME"
@@ -145,6 +145,9 @@
 	     '("paper"
 	       "\\documentclass[12pt,a4paper,oneside]{paper}
                \\usepackage{hyperref}
+               \\usepackage{amsmath}
+               \\usepackage{amsfonts}
+               \\usepackage{amsthm}
                \\setcounter{secnumdepth}{0}
                [NO-DEFAULT-PACKAGES]
                [EXTRA]"
@@ -226,7 +229,7 @@
 			       (screen . nil)
 			       (sh . nil)))
 
-(setq org-export-latex-listings t)
+(setq org-export-latex-listings t) ;; NOTE: tell org to use listings
 
 (add-to-list 'org-entities-user '("neg" "\\neg" t "&not;" "[negation]" nil "¬"))
 (add-to-list 'org-entities-user '("iff" "\\iff" t "&iff;" "[if and only if]" nil "↔"))
@@ -245,13 +248,31 @@
 (add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" t "&rationals;" "[rational numbers]" nil "ℚ"))
 (add-to-list 'org-entities-user '("complex" "\\mathbb{C}" t "&complex;" "[complex numbers]" nil "ℂ"))
 
+;; \mathbb{R}		\mathbf{R}		\mathcal{R}		\mathfrak{R}
+;; \mathbb{Z}		\mathbf{Z}		\mathcal{Z}		\mathfrak{Z}
+;; \mathbb{Q}		\mathbf{Q}		\mathcal{Q}		\mathfrak{Q}
+
+;; TODO: add customizations for \mathcal{}'s
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
+(add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
+(add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
+(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
 
 (defun turn-on-custom-org-bindings ()
   "Activate custom org-mode bindings."
   (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; M-RET inserts a new heading
   (define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; insert paper template with C-c p
   (define-key org-mode-map (kbd "C-c b") 'insert-org-beamer)) ;; insert beamer template with C-c b
+
+;; TODO: finish this off
+;; FIX: doesn't work for some reason
+(defvar org-custom-file-alist (list "paper" "beamer" "assignment" "book") "List of custom file types for use with `org-mode' documents.")
+
+(defun org-insert-custom-file ()
+  "Insert custom `org-mode' file template."
+  (interactive)
+  (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
+    (insert (concat "Insert file type: " custom-file-type))))
 
 (defun turn-on-custom-org ()
   "Active custom org-mode functionality."
@@ -287,13 +308,99 @@
 ;; TODO: add an org-post-export-hook function
 
 (define-skeleton insert-org-paper
-  "Inserts an org-mode paper template."
+  "Inserts an `org-mode' paper template."
   "Insert paper title: "
   "#+LATEX_CLASS: paper\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
 
+(define-skeleton insert-org-assignment
+  "Inserts an `org-mode' assignment template."
+  "Insert assignment title: "
+  "#+LATEX_CLASS: assignment\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
+
 (define-skeleton insert-org-beamer
-  "Inserts an org-mode beamer presentation template."
+  "Inserts an `org-mode' beamer presentation template."
   "Insert presentation title: "
   "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
+
+(defun insert-org-latex-document (&rest junk)
+  "Inserts an `org-mode' document template."
+  )
+
+;;; COMMENT: org-ref-man
+;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
+(defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
+  "Generate an `org-mode' style file link."
+  (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
+
+(defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
+  "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
+  (if (file-exists-p dir-name)
+      (let (files result)
+	(setq files (directory-files dir-name t (concat "\.pdf$") t))
+	(dolist (file files)
+	  (when (and (file-readable-p file) (not (file-directory-p file)))
+	    (setq result (cons file result))
+	    (generate-paper-entry file)))
+	result)))
+
+(defun generate-paper-list-current-buffer ()
+  "Generate a list of documents from the directory of the current buffer."
+  (interactive)
+  (generate-paper-list (file-name-directory (buffer-file-name))))
+
+;; COMMENT: This is a set of custom inserts for common clauses in an `org-mode' document
+(defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
+  "Insert a footnote in an `org-mode' document."
+  (interactive "sEnter footnote name: \nsEnter text: ")
+  (save-excursion
+    (insert (concat "[fn:" name "]"))
+    (end-of-buffer)
+    (insert (concat "[fn:" name "] " text))))
+
+(define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote)
+
+;; COMMENT: This is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
+;; TODO: write functions for the following `alist' variables
+(defvar org-latex-math-operator-alist (list "frac" "sqrt" "times") "List of mathematical operators in LaTeX.")
+
+(defvar org-latex-environment-alist (list "align" "align*" "equation" "equation*" "matrix" "matrix*" "proof")
+  "List of mathematical environments in LaTeX")
+
+(defvar org-latex-math-font-alist (list "mathbb" "mathbf" "mathcal" "mathfrak") "List of mathematical fonts in LaTeX.")
+
+;; (defvar org-latex-math-font-alist (list "mathnormal" "mathrm" "mathit" "mathbf" "mathsf" "mathtt" "mathcal" "mathfrak" "mathbb" "mathscr")
+;;   "List of mathematical fonts in LaTeX.")
+
+(defvar org-latex-clause-alist (list "font" "environment" "operator") "List of LaTeX clauses.")
+
+(defun org-insert-latex-math-font ()
+  "Insert a LaTeX math font clause into an `org-mode' document."
+  (interactive)
+  (let ((font (ido-completing-read "Select LaTeX math font: " org-latex-math-font-alist)))
+    (insert (concat "$\\" font "{}$"))
+    (backward-char 2)))
+
+(defun org-insert-latex-math-environment ()
+  "Inserts a LaTeX math environment into an `org-mode' document."
+  (interactive)
+  (let ((environment (ido-completing-read "Select LaTeX math environment: " org-latex-environment-alist)))
+    (indent-relative-maybe)
+    (insert (concat "\\begin{" environment "}\n\n"))
+    (indent-relative-maybe)
+    (insert (concat "\\end{" environment "}"))
+    (previous-line)
+    (indent-relative-maybe)))
+
+(defun org-insert-latex-math-operator ()
+  "Inserts a LaTeX math operator into an `org-mode' document."
+  (message "Hello, world"))
+
+(defun org-insert-latex-clause ()
+  "Insert a LaTeX clause into an `org-mode' document."
+  (interactive)
+  (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
+    (funcall (intern (concat "org-insert-latex-math-" clause)))))
+
+(define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause)
 
 (provide 'org-config)

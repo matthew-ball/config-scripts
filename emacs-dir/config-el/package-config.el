@@ -45,7 +45,7 @@ NOTE: This function only needs to be called the first time emacs is run under th
     (emacs-custom-elpa-package-install))) ;; install custom packages
 
 ;;; COMMENT: system package manager
-(autoload 'apt "apt-mode" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
+(autoload 'apt "apt" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
 ;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
 
 (defun check-dist-name (name)

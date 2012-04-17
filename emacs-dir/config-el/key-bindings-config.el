@@ -34,12 +34,13 @@
 (global-set-key (kbd "C-<f10>") 'package-list-packages) ;; list available elpa packages
 (global-set-key (kbd "<f11>") 'emms) ;; start emacs multimedia system
 (global-set-key (kbd "M-<f11>") 'emms-player-mpd-connect) ;; connect emms to mpd
-;; (global-set-key (kbd "C-<f11>") 'function) ;; ...
+(global-set-key (kbd "C-<f11>") 'proced) ;; start a proced session (process manager)
 (global-set-key (kbd "<f12>") 'linum-mode) ;; turn on line numbering
 (global-set-key (kbd "M-<f12>") (lambda () (interactive) (switch-to-buffer "*scratch*"))) ;; switch to the scratch buffer
 (global-set-key (kbd "C-<f12>") 'regexp-builder) ;;  start regular-expression builder
 ;; ---
 (global-set-key (kbd "TAB") 'smart-tab) ;; use smart tab
+(global-set-key (kbd "C-<tab>") 'other-window) ;; C-TAB moves to other window
 (global-set-key (kbd "M-x") 'smex) ;; smex improves default ido at the mini buffer
 (global-set-key	(kbd "M-X") 'smex-major-mode-commands) ;; available major mode commands
 (global-set-key	(kbd "C-c C-c M-x") 'execute-extended-command) ;; original M-x command

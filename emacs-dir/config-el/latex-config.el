@@ -84,12 +84,6 @@
     (switch-to-buffer (current-buffer)) ;; refocus on main window
     (delete-other-windows)) ;; delete remaining window
 
-(defmacro latex-skeleton (code) ;; inserts a custom clause skeleton in a LaTeX document
-  (let ((func (intern (concat "latex-skeleton-" code)))
-	(doc (format "Inserts a %s clause in a LaTeX document." code)))
-    `(define-skeleton ,func ,doc "String: "
-       "\\" ,code  "{" str | "insert text" "}")))
-
 (defun latex-smart-underscore ()
   "Smart \"_\" key: insert \"_{}\". If the underscore key is pressed a second time, \"_{}\" is removed and replaced by the underscore."
   (interactive)
@@ -138,6 +132,12 @@
           (insert "."))
       (delete-horizontal-space)
       (insert ".  %%\n"))))
+
+(defmacro latex-skeleton (code) ;; inserts a custom clause skeleton in a LaTeX document
+  (let ((func (intern (concat "latex-skeleton-" code)))
+	(doc (format "Inserts a %s clause in a LaTeX document." code)))
+    `(define-skeleton ,func ,doc "String: "
+       "\\" ,code  "{" str | "insert text" "}")))
 
 (latex-skeleton "textbf") ;; inserts a bold clause
 (latex-skeleton "footnote") ;; inserts a footnote
