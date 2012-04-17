@@ -67,7 +67,6 @@
       header-line-format nil ;; turn off the topic (header) bar
       erc-max-buffer-size 20000 ;; truncate buffers (so they don't hog core)
       erc-truncate-buffer-on-save t
-      erc-timestamp-format "[%H:%M] " ;; time format for ERC messages
       erc-input-line-position -1 ;; keep input at the bottom
       ;; erc-keywords '("") ;; highlight specific keywords
       erc-echo-notices-in-minibuffer-flag t ;; notices in minibuffer
