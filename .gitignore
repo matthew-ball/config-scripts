@@ -14,11 +14,15 @@ emacs-dir/auto-complete.el
 emacs-dir/auto-complete.elc
 emacs-dir/auto-save-list/
 emacs-dir/apt-el/*
+emacs-dir/bookmarks
 emacs-dir/elpa/
 emacs-dir/emacs-desktop
+emacs-dir/eshell/history
+emacs-dir/eshell/lastdir
 emacs-dir/history
 emacs-dir/recentf
 emacs-dir/smex-items
+emacs-dir/tramp
 emacs-dir/eproject.lst
 emacs-dir/*.elc
 # emacs-dir/popup.elc
