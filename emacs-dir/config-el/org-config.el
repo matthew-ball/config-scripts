@@ -107,6 +107,7 @@
 	("n" "Note" entry (file+headline "notes.org" "Notes") ;; (expand-file-name user-org-notes-file)
 	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)))
 
+;;; COMMENT: school organisation
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
   (let ((course-details ""))
@@ -138,6 +139,24 @@
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
+;;; COMMENT: org-babel
+(org-babel-do-load-languages 'org-babel-load-languages
+			     '((R . t)
+			       (emacs-lisp . t)
+			       (haskell . t)
+			       (latex . t) ; this is the entry to activate LaTeX
+			       (gnuplot . nil)
+			       (perl . nil)
+			       (python . nil)
+			       (ruby . nil)
+			       (screen . nil)
+			       (sh . nil)))
+
+(setq org-confirm-babel-evaluate nil) ;; NOTE: don't worry about confirmation before evaluating code
+(setq org-src-fontify-natively t) ;; NOTE: fontify source code
+(setq org-src-tab-acts-natively t) ;; NOTE: tab works properly
+
+;;; COMMENT: org-mode latex exporting
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
 
@@ -217,18 +236,7 @@
                [EXTRA]"
 	       org-beamer-sectioning))
 
-(org-babel-do-load-languages 'org-babel-load-languages
-			     '((R . t)
-			       (emacs-lisp . t)
-			       (haskell . t)
-			       (latex . t) ; this is the entry to activate LaTeX
-			       (gnuplot . nil)
-			       (perl . nil)
-			       (python . nil)
-			       (ruby . nil)
-			       (screen . nil)
-			       (sh . nil)))
-
+;;; COMMENT: org-mode latex
 (setq org-export-latex-listings t) ;; NOTE: tell org to use listings
 
 (add-to-list 'org-entities-user '("neg" "\\neg" t "&not;" "[negation]" nil "¬"))
@@ -253,59 +261,24 @@
 ;; \mathbb{Q}		\mathbf{Q}		\mathcal{Q}		\mathfrak{Q}
 
 ;; TODO: add customizations for \mathcal{}'s
+
+;; COMMENT: enable latex source code highlighting
+(setq org-export-latex-listings t) ;; NOTE: enable listings features
+
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
 (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
 (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
 (add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
 
-(defun turn-on-custom-org-bindings ()
-  "Activate custom org-mode bindings."
-  (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; M-RET inserts a new heading
-  (define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; insert paper template with C-c p
-  (define-key org-mode-map (kbd "C-c b") 'insert-org-beamer)) ;; insert beamer template with C-c b
-
-;; TODO: finish this off
+;;; COMMENT: Insert a custom file template
 ;; FIX: doesn't work for some reason
-(defvar org-custom-file-alist (list "paper" "beamer" "assignment" "book") "List of custom file types for use with `org-mode' documents.")
+(defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
 
 (defun org-insert-custom-file ()
   "Insert custom `org-mode' file template."
   (interactive)
   (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
-    (insert (concat "Insert file type: " custom-file-type))))
-
-(defun turn-on-custom-org ()
-  "Active custom org-mode functionality."
-  (org-toggle-pretty-entities) ;; toggle UTF-8 unicode symbols
-  (turn-on-custom-org-bindings)) ;; enable custom org-mode bindings
-
-(defun get-page-title (url)
-  "Get title of web page, whose url can be found in the current line"
-  (interactive "sURL: ")
-  ;; Get title of web page, with the help of functions in url.el
-  (with-current-buffer (url-retrieve-synchronously url) ;; find title by grep the html code
-    (goto-char 0)
-    (re-search-forward "<title>\\([^<]*\\)</title>" nil t 1)
-    (setq web_title_str (match-string 1))
-    (goto-char 0)
-    (if (re-search-forward "charset=\\([-0-9a-zA-Z]*\\)" nil t 1) ;; find charset by grep the html code
-        (setq coding_charset (downcase (match-string 1)))
-      (setq coding_charset "utf-8") ;; find the charset, assume utf-8 otherwise
-      (setq web_title_str (decode-coding-string web_title_str (intern coding_charset)))) ;; decode the string of title.
-    (insert-string "\n\n\n")
-    (insert-string web_title_str)
-    (insert-string (concat "[[" url "][" web_title_str "]]"))
-    (insert-string (format "%s - %s" url web_title_str))
-    (insert "\n\n\n")
-    (insert web_title_str)
-    (insert (concat "[[" url "][" web_title_str "]]"))
-    (insert (format "%s - %s" url web_title_str))
-    (message (concat "title is: " web_title_str))))
-
-(add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
-(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
-
-;; TODO: add an org-post-export-hook function
+    (funcall (intern (concat "insert-org-" custom-file-type)))))
 
 (define-skeleton insert-org-paper
   "Inserts an `org-mode' paper template."
@@ -348,18 +321,16 @@
   (interactive)
   (generate-paper-list (file-name-directory (buffer-file-name))))
 
-;; COMMENT: This is a set of custom inserts for common clauses in an `org-mode' document
+;;; COMMENT: This is a set of custom inserts for common clauses in an `org-mode' document
 (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
   "Insert a footnote in an `org-mode' document."
   (interactive "sEnter footnote name: \nsEnter text: ")
   (save-excursion
     (insert (concat "[fn:" name "]"))
     (end-of-buffer)
-    (insert (concat "[fn:" name "] " text))))
+    (insert (concat "\n[fn:" name "] " text))))
 
-(define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote)
-
-;; COMMENT: This is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
+;;; COMMENT: This is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
 ;; TODO: write functions for the following `alist' variables
 (defvar org-latex-math-operator-alist (list "frac" "sqrt" "times") "List of mathematical operators in LaTeX.")
 
@@ -401,6 +372,46 @@
   (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
     (funcall (intern (concat "org-insert-latex-math-" clause)))))
 
-(define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause)
+;;; COMMENT: ...
+(defun get-page-title (url)
+  "Get title of web page, whose url can be found in the current line"
+  (interactive "sURL: ")
+  ;; Get title of web page, with the help of functions in url.el
+  (with-current-buffer (url-retrieve-synchronously url) ;; find title by grep the html code
+    (goto-char 0)
+    (re-search-forward "<title>\\([^<]*\\)</title>" nil t 1)
+    (setq web_title_str (match-string 1))
+    (goto-char 0)
+    (if (re-search-forward "charset=\\([-0-9a-zA-Z]*\\)" nil t 1) ;; find charset by grep the html code
+        (setq coding_charset (downcase (match-string 1)))
+      (setq coding_charset "utf-8") ;; find the charset, assume utf-8 otherwise
+      (setq web_title_str (decode-coding-string web_title_str (intern coding_charset)))) ;; decode the string of title.
+    (insert-string "\n\n\n")
+    (insert-string web_title_str)
+    (insert-string (concat "[[" url "][" web_title_str "]]"))
+    (insert-string (format "%s - %s" url web_title_str))
+    (insert "\n\n\n")
+    (insert web_title_str)
+    (insert (concat "[[" url "][" web_title_str "]]"))
+    (insert (format "%s - %s" url web_title_str))
+    (message (concat "title is: " web_title_str))))
+
+;;; COMMENT: customisations
+(defun turn-on-custom-org-bindings ()
+  "Activate custom `org-mode' bindings."
+  (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; NOTE: M-RET inserts a new heading
+  (define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; NOTE: insert paper template with C-c p
+  (define-key org-mode-map (kbd "C-c b") 'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
+  (define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
+  (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote)) ;; NOTE: insert a footnote with C-c f
+
+(defun turn-on-custom-org ()
+  "Active custom `org-mode' functionality."
+  (org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
+  (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
+
+(add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
+(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
+;; TODO: add an org-post-export-hook function
 
 (provide 'org-config)

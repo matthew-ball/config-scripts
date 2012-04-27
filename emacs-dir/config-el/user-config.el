@@ -31,6 +31,21 @@
       ;; browser-url-generic-program "x-www-browser" ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
       )
 
+;;; COMMENT: dictionary and thesaurus
+;; TODO: find a dictionary/thesaurus combination
+;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
+
+;; (require 'thesaurus) ;; TODO: change this to an autoload
+
+;; (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
+
+;; (define-key global-map (kbd "C-x t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: optional key binding (TODO: move to bindings.el)
+
+(defun dictionary-word (&rest junk)
+  "Dictionary definition of the current word."
+  (interactive)
+  (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
+
 ;;; COMMENT: w3m browser
 ;; (require 'w3m-load) ;; TEST: this still needs to be tested
 
@@ -94,21 +109,32 @@ NOTE: This function requires w3m to be running."
 (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
 ;;; COMMENT: internet connection
+;; TODO: rename as an alist?
 (defvar internet-connections (list "WiiBeard" "ANU-Secure") "List of internet connections available.")
+;; TODO: add potter's internet connection
 
 ;; TODO: have to clean this up (somehow)
 (defun internet-connection (&rest junk)
-  "Connect to the internet."
+  "Connect to the internet. A list of available connections is provided in the variable `internet-connections'.
+
+TODO: create a function to add a new connection (???)
+
+NOTE: if the connection is succesful, the async shell command window should be closed.
+      if the connection is insuccesful, the async window should be centred."
   (interactive)
-  (let ((connection (ido-completing-read "Select internet connection: " internet-connections)))
-    (message (concat "Connecting to internet connection \"" connection "\"..."))
-    (shell-command (concat "nmcli con up id " connection " &"))))
+  (save-excursion
+    (let ((connection (ido-completing-read "Select internet connection: " internet-connections)))
+      (message (concat "Connecting to internet connection \"" connection "\"..."))
+      (shell-command (concat "nmcli con up id " connection " &"))) ;; TODO: add some sort of confirmation message
+    (delete-other-windows)))
 
 ;;; COMMENT: screenshot
 (defun screenshot (file-name &rest junk)
   "Take a screenshot."
   (interactive "sFile name: ")
-  (shell-command (concat "import -window root \"" file-name "\" &"))
-  (delete-other-windows))
+  (save-excursion
+    (shell-command (concat "import -window root \"" file-name "\" &")) ;; TODO: add some sort of confirmation message
+  ;; (delete-other-windows)
+  ))
 
 (provide 'user-config)

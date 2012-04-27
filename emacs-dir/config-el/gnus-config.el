@@ -3,24 +3,26 @@
 
 ;; (require 'gnus nil 'noerror)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
+;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)
 
 ;;; COMMENT: personal settings
-(setq user-mail-address "mathew.ball@gmail.com" ;; user mail address (could use my school mail)
-      user-full-name "Matthew Ball" ;; user full-name
-      mail-aliases t ;; enable mail aliases
+(setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
+      ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
+      user-full-name "Matthew Ball" ;; NOTE: user full-name
+      mail-aliases t ;; NOTE: enable mail aliases
       auth-source-save-behavior nil
       gnus-inhibit-startup-message t
-      gnus-agent-expire-all t  ;; allow uncaching of unread articles
-      gnus-agent-article-alist-save-format 2 ; compress cache
-      ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; change directory where mail aliases are located
-      ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; change directory where authentication information is found
-      message-from-style 'angles ;; specifies how the "From" header appears
+      gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
+      gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
+      ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; NOTE: change directory where mail aliases are located
+      ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; NOTE: change directory where authentication information is found
+      message-from-style 'angles ;; NOTE: specifies how the "From" header appears
       read-mail-command 'gnus
-      message-send-mail-function 'smtpmail-send-it ;; for gnus (message-mode)
-      send-mail-function 'smtpmail-send-it) ;; not for gnus (mail-mode)
+      message-send-mail-function 'smtpmail-send-it ;; NOTE: for gnus (message-mode)
+      send-mail-function 'smtpmail-send-it) ;; NOTE: not for gnus (mail-mode)
 
-(setq custom-mail-dir "~/Mail/") ;; set directory for mail
-(setq custom-news-dir "~/News/") ;; set directory for news
+(setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
+(setq custom-news-dir "~/News/") ;; NOTE: set directory for news
 
 ;;; COMMENT: gnus settings
 (setq gnus-select-method '(nnml "")
@@ -32,15 +34,16 @@
       gnus-thread-ignore-subject t
       gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
-      gnus-posting-styles '((".*" (name "Matthew Ball"))
+      gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: clean this up ...
 			    ("gmail" (address "mathew.ball@gmail.com"))
 			    ("anumail" (address "u4537508@anu.edu.au"))))
 
-;; (setq gnus-save-newsrc-file nil
-;;       gnus-read-newsrc-file nil
-;;       gnus-interactive-exit nil
-;;       gnus-save-killed-list nil
-;;       gnus-check-new-newsgroups nil)
+(setq gnus-check-new-newsgroups nil ;; NOTE: suppress checking for new groups
+      gnus-save-newsrc-file nil ;; NOTE: turn off writing the `.newsrc' file
+      gnus-read-newsrc-file nil ;; NOTE: ignore the `.newsrc' file
+      gnus-interactive-exit nil
+      gnus-save-killed-list nil ;; NOTE: do not save a list of killed groups to startup file
+      )
 
 ;;; COMMENT: visible headers
 (setq gnus-visible-headers
@@ -49,24 +52,25 @@
 	      "\\|^To:\\|^Cc:\\|^Date:"))
 
 ;;; COMMENT: imap setup
-;; (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; set ssl
-;;       imap-log t ;; log the imap session
-;;       imap-store-password t ;; store the session password
-;;       gnus-secondary-select-methods
-;;       '((nnimap "gmail" ;; gmail login
-;; 		(nnimap-address "imap.gmail.com")
-;; 		(nnimap-server-port 993)
-;; 		;; (nnimap-authinfo-file "~/.authinfo")
-;; 		(nnimap-authenticator login)
-;; 		(nnimap-expunge-on-close 'never)
-;; 		(nnimap-stream ssl))
-;; 	(nnimap "anumail" ;; anumail login (THIS DOES NOT WORK)
-;; 		(nnimap-address "anumail.anu.edu.au")
-;; 		(nnimap-server-port 993)
-;; 		;; (nnimap-authinfo-file "~/.authinfo")
-;; 		;; (nnimap-authenticator login)
-;; 		;; (nnimap-expunge-on-close 'never)
-;; 		(nnimap-stream ssl))))
+(setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
+      imap-log t ;; NOTE: log the imap session
+      imap-store-password t ;; NOTE: store the session password
+      gnus-secondary-select-methods
+      '((nnimap "gmail" ;; NOTE: gmail login
+		(nnimap-address "imap.gmail.com")
+		(nnimap-server-port 993)
+		;; (nnimap-authinfo-file "~/.authinfo")
+		(nnimap-authenticator login)
+		(nnimap-expunge-on-close 'never)
+		(nnimap-stream ssl))
+	;; (nnimap "anumail" ;; NOTE: anumail login (ERROR: this does not work)
+	;; 	(nnimap-address "anumail.anu.edu.au")
+	;; 	(nnimap-server-port 993)
+	;; 	;; (nnimap-authinfo-file "~/.authinfo")
+	;; 	;; (nnimap-authenticator login)
+	;; 	;; (nnimap-expunge-on-close 'never)
+	;; 	(nnimap-stream ssl))
+	))
 
 ;;; COMMENT: smtp setup
 ;; (require 'smtpmail)
@@ -138,31 +142,51 @@
 (setq mm-inline-text-html-with-images t)
 (setq mm-inline-text-html-with-w3m-keymap nil)
 
+;;; COMMENT: mode-line
+;; (setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n") ;; NOTE: set mode-line
+
 ;;; COMMENT: rss config
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
 
-(setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n")
-
 ;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
 ;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
-     
-;; (add-to-list ;; NOTE: display 'text/html' parts in nnrss groups
-;;  'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
-(add-hook 'gnus-summary-mode-hook
-          (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
-		  (progn
-		    (make-local-variable 'gnus-show-threads)
-		    (make-local-variable 'gnus-article-sort-functions)
-		    (make-local-variable 'gnus-use-adaptive-scoring)
-		    (make-local-variable 'gnus-use-scoring)
-		    (make-local-variable 'gnus-score-find-score-files-function)
-		    (make-local-variable 'gnus-summary-line-format)
-		    (setq gnus-show-threads nil
-			  gnus-article-sort-functions 'gnus-article-sort-by-date
-			  gnus-use-adaptive-scoring nil
-			  gnus-use-scoring t
-			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
+;; NOTE: display 'text/html' parts in nnrss groups
+;; (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
+
+;;; COMMENT: gnus parameters
+;; (setq gnus-parameters
+;;       '(("mail\\..*"
+;; 	 (gnus-show-threads nil)
+;; 	 (gnus-use-scoring nil)
+;; 	 (gnus-summary-line-format "%U%R%z%I%(%[%d:%ub%-23,23f%]%) %s\n")
+;; 	 (gcc-self . t)
+;; 	 (display . all))
+
+;; 	("^nnimap:\\(foo.bar\\)$"
+;; 	 (to-group . "\\1"))
+
+;; 	("mail\\.me"
+;; 	 (gnus-use-scoring t))
+
+;; 	("list\\..*"
+;; 	 (total-expire . t)
+;; 	 (broken-reply-to . t))))
+
+;; (add-hook 'gnus-summary-mode-hook
+;;           (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
+;; 		  (progn
+;; 		    (make-local-variable 'gnus-show-threads)
+;; 		    (make-local-variable 'gnus-article-sort-functions)
+;; 		    (make-local-variable 'gnus-use-adaptive-scoring)
+;; 		    (make-local-variable 'gnus-use-scoring)
+;; 		    (make-local-variable 'gnus-score-find-score-files-function)
+;; 		    (make-local-variable 'gnus-summary-line-format)
+;; 		    (setq gnus-show-threads nil
+;; 			  gnus-article-sort-functions 'gnus-article-sort-by-date
+;; 			  gnus-use-adaptive-scoring nil
+;; 			  gnus-use-scoring t
+;; 			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
 
 ;; (defun browse-nnrss-url (arg)
 ;;   "Browse RSS url."

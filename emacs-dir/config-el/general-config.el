@@ -74,7 +74,7 @@
 (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
 (defvar custom-comment-tag-list '("AUTHOR" "BUG" "COMMENT" "DEBUG" "ERROR" "FILE" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
 (defvar custom-comment-tag-mode-hooks
-  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook)
+  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook haskell-mode scheme-mode)
   "Major modes which enable highlighting of custom comment tags.")
 
 ;; TODO: Differentiate between `comment' and `todo' tags
@@ -467,25 +467,25 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
   (interactive)
   (if (minibufferp)
       (unless (minibuffer-complete)
-	(auto-complete nil)) ;; use auto-complete
-	;; (hippie-expand nil)) ;; use hippie-expand
-	;; (dabbrev-expand nil)) ;; use dabbrev-expand
+	(auto-complete nil)) ;; NOTE: use auto-complete
+	;; (hippie-expand nil)) ;; NOTE: use hippie-expand
+	;; (dabbrev-expand nil)) ;; NOTE: use dabbrev-expand
     (if mark-active
 	(indent-region (region-beginning)
 		       (region-end))
       (if (looking-at "\\_>")
-	  (auto-complete nil) ;; use auto-complete
-	  ;; (hippie-expand nil)) ;; use hippie-expand
-	  ;; (dabbrev-expand nil) ;; use dabbrev-expand
+	  (auto-complete nil) ;; NOTE: use auto-complete
+	  ;; (hippie-expand nil)) ;; NOTE: use hippie-expand
+	  ;; (dabbrev-expand nil) ;; NOTE: use dabbrev-expand
 	(indent-for-tab-command)))))
 
 ;;; COMMENT: enable/disable functions
-(put 'overwrite-mode 'disabled t) ;; disable overwrite mode
+(put 'overwrite-mode 'disabled t) ;; NOTE: disable overwrite mode
 
 ;;; COMMENT: mini buffer
-(file-name-shadow-mode t) ;; be smart about filenames in the mini buffer
-(fset 'yes-or-no-p 'y-or-n-p) ;; changes all yes/no questions to y/n
-(savehist-mode t) ;; keep mini buffer history between session
+(file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini buffer
+(fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all yes/no questions to y/n
+;; (savehist-mode t) ;; NOTE: keep mini buffer history between session (IMPORTANT: may be deprecated)
 
 ;;; COMMENT: stumpwm mode
 (autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t)
@@ -510,39 +510,39 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 
 ;;; COMMENT: tramp
 (autoload 'tramp "Remote file manipulation with Tramp." t)
-(setq tramp-default-method "ssh") ;; use ssh for tramp
+(setq tramp-default-method "ssh") ;; NOTE: use ssh for tramp
 
 ;;; COMMENT: version control
-(autoload 'magit-status "magit" "Version control with Git." t) ;; magit for use with github
+(autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
 
-(setq magit-save-some-buffers t ;; ask me to save buffers before running magit-status
-      magit-process-popup-time 4) ;; Popup the process buffer if command takes too long
+(setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
+      magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
 
 ;;; COMMENT: backups
-(setq-default delete-old-versions t) ;; delete excess file backups silently
+(setq-default delete-old-versions t) ;; NOTE: delete excess file backups silently
 
-(setq ;; backup-by-copying t ;; don't clobber symlinks
-      ;; backup-inhibited t ;; disable backup
-      ;; auto-save-default nil ;; disable auto save
-      backup-directory-alist `(("." . ,(concat (expand-file-name user-emacs-directory) "save-files"))) ;; don't litter the fs
+(setq ;; backup-by-copying t ;; NOTE: don't clobber symlinks
+      ;; backup-inhibited t ;; NOTE: disable backup
+      ;; auto-save-default nil ;; NOTE: disable auto save
+      backup-directory-alist `(("." . ,(concat (expand-file-name user-emacs-directory) "save-files"))) ;; NOTE: don't litter the file-system
       kept-new-versions 6
       kept-old-versions 2
-      version-control t) ;; use versioned backups
+      version-control t) ;; NOTE: use versioned backups
 
 ;;; COMMENT: recent files
 ;; (require 'recentf)
 (autoload 'recentf-mode "recentf" "Recent files." t)
 
-(setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recentf") ;; recently saved files
-      recentf-max-saved-items 500 ;; maximum saved items is 500
-      recentf-max-menu-items 25) ;; maximum 25 files in menu
+(setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recentf") ;; NOTE: recently saved files
+      recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
+      recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
 (recentf-mode t)
 
 ;;; COMMENT: desktop save mode
 (autoload 'desktop-save-mode "desktop" "Save session file." t)
 
-(desktop-save-mode 1) ;; enable desktop save mode
+(desktop-save-mode 1) ;; NOTE: enable desktop save mode
 
 (setq desktop-path `(,(expand-file-name user-emacs-directory))
       desktop-dirname (expand-file-name user-emacs-directory)
@@ -551,7 +551,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
-(setq desktop-globals-to-save ;; save a bunch of variables to the desktop file (for lists specify the len of the maximal saved data also)
+(setq desktop-globals-to-save ;; NOTE: save a bunch of variables to the desktop file (for lists specify the len of the maximal saved data also)
       (append '((extended-command-history . 30)
                 (file-name-history        . 100)
                 (grep-history             . 30)
@@ -566,7 +566,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
                 tags-file-name
                 register-alist)))
 
-(defun emacs-process-p (pid) ;; over-ride stale lock
+(defun emacs-process-p (pid) ;; NOTE: over-ride stale lock
   "If pid is the process ID of an emacs process, return t, else nil. Also returns nil if pid is nil."
   (when pid
     (let* ((cmdline-file (concat "/proc/" (int-to-string pid) "/cmdline")))
@@ -584,7 +584,7 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 ;;; COMMENT: paredit
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
-(defun override-slime-repl-bindings-with-paredit () ;; stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
+(defun override-slime-repl-bindings-with-paredit () ;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
   (define-key slime-repl-mode-map
     (read-kbd-macro paredit-backward-delete-key) nil))
 
@@ -600,10 +600,10 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
 (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
 
-(add-hook 'text-mode-hook 'turn-on-flyspell) ;; turn on automatic spell check if in a text-mode
+(add-hook 'text-mode-hook 'turn-on-flyspell) ;; NOTE: turn on automatic spell check if in a text-mode
 
 ;;; COMMENT: ispell
-(setq ispell-program-name "aspell" ;; use aspell for automatic spelling
+(setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
       ispell-parser 'tex
       ispell-extra-args '("--sug-mode=ultra"))
 

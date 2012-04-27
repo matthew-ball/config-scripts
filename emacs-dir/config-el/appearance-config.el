@@ -100,5 +100,6 @@
 (eval-after-load "haskell-doc" '(diminish 'haskell-doc-mode ""))
 (eval-after-load "haskell-indent" '(diminish 'haskell-indent-mode ""))
 (eval-after-load "reftex" '(diminish 'reftex-mode ""))
+(eval-after-load "glasses" '(diminish 'glasses-mode ""))
 
 (provide 'appearance-config)

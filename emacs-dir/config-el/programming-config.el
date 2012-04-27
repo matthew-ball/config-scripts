@@ -1,11 +1,15 @@
 ;; FILE: ~/.emacs.d/config-el/programming-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
+;;; COMMENT: flymake
+(autoload 'flymake-mode "flymake" "On the fly compiling in GNU Emacs." t)
+
 ;;; COMMENT: general programming
 (defun turn-on-general-programming-mode ()
   "General function for programming modes."
-  (modify-syntax-entry ?- "w") ;; treat '-' as part of the word
-  ;; (flymake-mode) ;; turn on flymake mode
+  (modify-syntax-entry ?- "w") ;; NOTE: treat '-' as part of the word
+  ;; (flymake-mode) ;; NOTE: turn on flymake mode
+  (glasses-mode) ;; NOTE: turn on glasses mode
   (hs-minor-mode))
 
 ;;; COMMENT: emacs lisp programming
@@ -27,7 +31,6 @@
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
 (add-hook 'lisp-mode-hook '(lambda ()
-			     ;; (slime-mode t)
 			     (turn-on-general-programming-mode)))
 
 ;; (add-hook 'inferior-lisp-mode-hook '(lambda () ((inferior-slime-mode t))))
@@ -69,6 +72,9 @@
 ;; (add-hook 'slime-mode-hook '(lambda ()
 ;; 			      (turn-on-general-programming-mode)
 ;; 			      (start-slime-automatically)))
+
+;;; COMMENT: scheme programming
+(autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files");; TODO: find a `guile-mode' for scheme ...
 
 ;;; COMMENT: haskell programming
 (autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)

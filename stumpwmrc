@@ -45,8 +45,8 @@
 
 ;; TODO: find a better way to set default browser
 ;; (setf *browser* "x-www-browser") ;; NOTE: this does not work (but should!)
-;; (setf *browser* "conkeror") ;; set the default browser as conkeror
-(setf *browser* "chromium-browser") ;; set the default browser as chromium
+(setf *browser* "conkeror") ;; NOTE: set the default browser as conkeror
+;; (setf *browser* "chromium-browser") ;; NOTE: set the default browser as chromium
 
 ;;; COMMENT: general functions
 (defun cat (&rest strings) ;; TODO: rename to 'concat' (for consistency with emacs)
@@ -66,13 +66,13 @@
 ;; (load "/usr/share/common-lisp/source/slime/swank-loader.lisp")
 ;; (load "/home/chu/quicklisp/dists/quicklisp/software/slime-20120208-cvs/swank-loader.lisp")
 
-;; (require 'swank)
+;; (require 'swank) ;; ERROR: don't think this works anymore
 ;; (swank:create-server)
-
 ;; (swank-loader:init)
+
 ;; (defvar *swank-p* nil)
 
-;; (defcommand swank () ()
+;; (defcommand swank () () ;; NOTE: command to start a swank server
 ;;   "Starts a swank server on port 4005 and notifies the user."
 ;;   (setf *top-level-error-action* :break)
 ;;   (if *swank-p*
@@ -82,7 +82,9 @@
 ;;                            :style swank:*communication-style*
 ;;                            :dont-close t)
 ;;       (setf *swank-p* t)
-;;       (message "Starting swank (port 4005)."))))
+;;       (message "Starting swank server. M-x slime-connect RET RET, then (in-package :stumpwm)."))))
+
+;; (swank) ;; NOTE: start the swank server
 
 ;;; COMMENT: monitoring scripts
 (set-contrib-dir "/usr/share/common-lisp/source/stumpwm/contrib") ;; set contrib directory
