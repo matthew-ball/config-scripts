@@ -101,6 +101,9 @@
 (add-hook 'python-mode-hook '(lambda ()
 			       (turn-on-general-programming-mode)))
 
+;;; COMMENT: javascript programming
+(autoload 'javascript-mode "javascript" "Major mode for editing javascript source code." t)
+
 ;;; COMMENT: maxima
 (autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
 (autoload 'maxima "maxima" "Major mode for maxima interaction." t)

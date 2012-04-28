@@ -51,12 +51,10 @@
 	  (forward-line 1)))
     (message "There is no buffer named \"*Occur*\".")))
 
-(defun insert-custom-header-text (&rest junk) ;; NOTE: need (substring ...) otherwise we pick up the \n character
-  "Insert the header string for a file."
-  (interactive)
-  (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
-		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
-			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
+;;; COMMENT: highlight custom comment tags
+(require 'custom-comments)
+(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
+(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
 (defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
   "Show the outline structure of all files matching the same extension in a directory."
@@ -69,52 +67,12 @@
   (interactive)
   (show-custom-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
 
-;;; COMMENT: highlight custom comment tags
-(defvar font-lock-custom-comment-tag-face 'font-lock-custom-comment-tag-face "Face name to use for custom comment tags.")
-(defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))) "Font Lock mode face used to highlight custom comment tags." :group 'font-lock-faces)
-(defvar custom-comment-tag-list '("AUTHOR" "BUG" "COMMENT" "DEBUG" "ERROR" "FILE" "FIX" "IMPORTANT" "NOTE" "TEST" "TODO" "WARNING") "Available custom comment tags.")
-(defvar custom-comment-tag-mode-hooks
-  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode sh-mode-hook haskell-mode scheme-mode)
-  "Major modes which enable highlighting of custom comment tags.")
-
-;; TODO: Differentiate between `comment' and `todo' tags
-;; (defvar font-lock-custom-comment-tag-face)
-;; (defface font-lock-custom-comment-tag-face '((t (:foreground "SpringGreen"))))
-
-;; (defvar font-lock-custom-todo-tag-face)
-;; (defface font-lock-custom-todo-tag-face '((t (:foreground "OrangeRed"))))
-
-(defun custom-comment-tag-regexp (&rest junk)
-  "The \"optimised\" regular expresssion of the `custom-comment-tag-list' list variable."
-  (concat (regexp-opt custom-comment-tag-list 'words) ":"))
-
-(defun insert-custom-comment-tag (&rest junk) ;; TODO: there should be a check to make sure we have `ido-completing-read' available (???)
-  "Insert a custom comment tag (see: `custom-comment-tag-list') in a source code file."
+(defun insert-custom-header-text (&rest junk) ;; NOTE: need (substring ...) otherwise we pick up the \n character
+  "Insert the header string for a file."
   (interactive)
-  (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " custom-comment-tag-list) ": ")))
-
-(defun show-custom-comment-tag (&rest junk)
-  "Show the custom comment tags (defined in the variable `custom-comment-tag-list') in an outline-mode structure.
-This function depends on the multi-occur function `show-custom-structure'."
-  (interactive)
-  (show-custom-structure (custom-comment-tag-regexp)))
-
-(defun activate-highlight-custom-comment-tags (&rest junk) ;; ERROR: the regxp produces a string with only single backslahes, but font-lock-keywords wants double back-slashes
-  "Highlight custom comment tags in designated modes.
-The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
-The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
-  (mapc
-   (lambda (mode-hook)
-     (add-hook mode-hook
-	       (lambda ()
-		 (font-lock-add-keywords nil
-					 ;; '(((custom-comment-tag-regexp) 0 font-lock-custom-comment-tag-face t)))))) ;; ERROR: doesn't work
-					 '(("\\<\\(AUTHOR\\|BUG\\|COMMENT\\|DEBUG\\|ERROR\\|FI\\(?:LE\\|X\\)\\|IMPORTANT\\|NOTE\\|T\\(?:EST\\|ODO\\)\\|WARNING\\):"
-					    1 font-lock-custom-comment-tag-face t))))));; FIX: this string should not be hardcoded
-   custom-comment-tag-mode-hooks)
-  (message "Custom highlight tags activated."))
-
-(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
+  (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
+		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
+			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
 
 ;; TODO: move this somewhere ... (automatically generate it if possible)
 ;; TODO: this needs to be cleaned up ...
@@ -346,12 +304,25 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	      (mode . javascript-mode)
 	      (mode . scheme-mode)
 	      (mode . inferior-scheme-mode)
+	      (mode . compilation-mode)
+	      (mode . shell-script-mode)
+	      (mode . sh-mode)
 	      (name . "^\\*slime-events\\*$")
 	      (name . "^\\*slime-threads\\*$")
 	      (name . "^\\*slime-connections\\*$")
 	      (name . "^\\*slime-repl sbcl\\*$")
 	      (name . "^\\*slime-compilation\\*$")
 	      (name . "^\\*inferior-lisp\\*$")))
+	 ("Version Control" ;; version control related buffers
+	  (or (mode . diff-mode)
+	      (mode . magit-status-mode)
+	      (mode . magit-key-mode)
+	      (mode . magit-log-edit-mode)
+	      (mode . vc-mode)
+	      (mode . vc-dir-mode)
+	      (mode . vc-log-entry-mode)
+	      (name . "^\\*magit-process\\*$")
+	      (name . "^\\*magit-log-edit\\*$")))
 	 ("Organisation" ;; org-mode related buffers
 	  (or (mode . org-mode)
 	      (mode . org-agenda-mode)
@@ -397,16 +368,6 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
 	 ("Process Manager" ;; process manager related buffers
 	  (or (mode . proced-mode)
 	      (mode . process-menu-mode)))
-	 ("Version Control" ;; version control related buffers
-	  (or (mode . diff-mode)
-	      (mode . magit-status-mode)
-	      (mode . magit-key-mode)
-	      (mode . magit-log-edit-mode)
-	      (mode . vc-mode)
-	      (mode . vc-dir-mode)
-	      (mode . vc-log-entry-mode)
-	      (name . "^\\*magit-process\\*$")
-	      (name . "^\\*magit-log-edit\\*$")))
 	 ("Package Management" ;; apt-mode and elpa related buffers
 	  (or (mode . apt-mode)
 	      (mode . package-menu-mode)

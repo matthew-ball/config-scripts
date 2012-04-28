@@ -137,4 +137,7 @@ NOTE: if the connection is succesful, the async shell command window should be c
   ;; (delete-other-windows)
   ))
 
+;;; COMMENT: pastebin
+(autoload 'pastebin "pastebin" "Pastebin support for GNU Emacs." t)
+
 (provide 'user-config)
