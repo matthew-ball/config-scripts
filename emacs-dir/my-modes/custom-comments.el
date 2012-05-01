@@ -3,6 +3,7 @@
 
 ;; COMMENT:
 ;; Welcome to custom-comments - A minor mode extension for GNU Emacs managing highlighting of custom comments.
+;; The mode also allows users to examine the structure of their configuration files
 ;; The user just needs to enter what words they would like highlighted into the variables:
 ;; - `custom-comment-tag-alist-comment' : for 'comment' related comments.
 ;; - `custom-comment-tag-alist-warning' : for 'warning' related comments.
@@ -19,6 +20,7 @@
 ;; Make the two variables `custom-comment-tag-alist-comment' and `custom-comment-tag-alist-warning' both empty to start off with, and let the user populate them as they see fit.
 ;; Make the variable `custom-comment-tag-mode-hooks' empty to start off with, and let the user populate it as they see fit.
 ;; Create new variables `custom-comment-tag-colour-comment' and `custom-comment-tag-colour-warning' which set the font lock face colour for their respective tags (so this "mode" might work as intended a non-Zenburn theme).
+;; In the function `insert-custom-comment-tag', make sure we have available to use the `ido-completing-read' functionality.
 
 ;;; COMMENT: highlight custom comment tags
 (defvar custom-comment-tag-alist-comment '("AUTHOR" "COMMENT" "FILE" "IMPORTANT" "NOTE" "TODO") "Available custom comment tags.")
@@ -60,9 +62,12 @@ The \"designated\" modes are defined in the variable `custom-comment-tag-mode-ho
   "The \"optimised\" regular expresssion of the `custom-comment-tag-alist' list variable."
   (concat (regexp-opt custom-comment-tag-alist 'words) ":"))
 
-(defun insert-custom-comment-tag (&rest junk) ;; TODO: there should be a check to make sure we have `ido-completing-read' available (???)
+(defun insert-custom-comment-tag (&rest junk)
   "Insert a custom comment tag (see: `custom-comment-tag-alist') in a source code file."
   (interactive)
+  ;; (if (fboundp 'ido-completing-read) ;; NOTE: this is a check to make sure we have `ido-completing-read' available
+  ;;     (message "ido-completing-read is available.")
+  ;;   (message "ido-completing-read is not available."))
   (insert (concat "" (make-string 2 (aref comment-start 0)) " " (ido-completing-read "Insert comment tag: " custom-comment-tag-alist) ": ")))
 
 (defun show-custom-comment-tag (&rest junk)
