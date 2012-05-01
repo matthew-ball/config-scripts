@@ -8,6 +8,13 @@
 ;; - `custom-comment-tag-alist-warning' : for 'warning' related comments.
 ;; The major modes for which this extension works are available in the variable `custom-comment-tag-mode-hooks'.
 
+;; An example configuration would be:
+;; (require 'custom-comments)
+;; (setq custom-comment-suppress-init-message t)
+;; (add-to-list custom-comment-tag-alist-comment "COMMENT")
+;; (add-to-list custom-comment-tag-alist-warning "WARNING")
+;; (activate-highlight-custom-comment-tags)
+
 ;;; COMMENT: highlight custom comment tags
 (defvar custom-comment-tag-alist-comment '("AUTHOR" "COMMENT" "FILE" "IMPORTANT" "NOTE" "TODO") "Available custom comment tags.")
 (defvar custom-comment-tag-alist-warning '("BUG" "DEBUG" "ERROR" "FIX" "WARNING" "TEST") "Available custom warning tags.")
