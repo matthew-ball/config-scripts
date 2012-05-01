@@ -15,6 +15,11 @@
 ;; (add-to-list custom-comment-tag-alist-warning "WARNING")
 ;; (activate-highlight-custom-comment-tags)
 
+;; TODO:
+;; Make the two variables `custom-comment-tag-alist-comment' and `custom-comment-tag-alist-warning' both empty to start off with, and let the user populate them as they see fit.
+;; Make the variable `custom-comment-tag-mode-hooks' empty to start off with, and let the user populate it as they see fit.
+;; Create new variables `custom-comment-tag-colour-comment' and `custom-comment-tag-colour-warning' which set the font lock face colour for their respective tags (so this "mode" might work as intended a non-Zenburn theme).
+
 ;;; COMMENT: highlight custom comment tags
 (defvar custom-comment-tag-alist-comment '("AUTHOR" "COMMENT" "FILE" "IMPORTANT" "NOTE" "TODO") "Available custom comment tags.")
 (defvar custom-comment-tag-alist-warning '("BUG" "DEBUG" "ERROR" "FIX" "WARNING" "TEST") "Available custom warning tags.")
