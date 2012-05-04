@@ -40,7 +40,8 @@
 (global-set-key (kbd "C-<f12>") 'regexp-builder) ;; NOTE:  start regular-expression builder
 ;; ---
 (global-set-key (kbd "TAB") 'smart-tab) ;; NOTE: use smart tab
-(global-set-key (kbd "C-<tab>") 'other-window) ;; NOTE: C-TAB moves to other window
+(global-set-key (kbd "C-<tab>") 'other-window) ;; NOTE: C-TAB moves to other (next) window
+(global-set-key (kbd "M-<tab>") (lambda () (interactive (other-window -1)))) ;; NOTE: M-TAB moves to other (previous) window
 (global-set-key (kbd "M-x") 'smex) ;; NOTE: smex improves default ido at the mini buffer
 (global-set-key	(kbd "M-X") 'smex-major-mode-commands) ;; NOTE: available major mode commands
 (global-set-key	(kbd "C-c C-c M-x") 'execute-extended-command) ;; NOTE: original M-x command

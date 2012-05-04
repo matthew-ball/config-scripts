@@ -3,7 +3,7 @@
 
 ;; COMMENT:
 ;; Welcome to custom-comments - A minor mode extension for GNU Emacs managing highlighting of custom comments.
-;; The mode also allows users to examine the structure of their configuration files
+;; The mode also allows users to examine the structure of their configuration files.
 ;; The user just needs to enter what words they would like highlighted into the variables:
 ;; - `custom-comment-tag-alist-comment' : for 'comment' related comments.
 ;; - `custom-comment-tag-alist-warning' : for 'warning' related comments.

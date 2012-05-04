@@ -5,6 +5,10 @@
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
 ;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)
 
+;; (require 'nnimap)
+;; (require 'starttls)
+;; (require 'smtpmail)
+
 ;;; COMMENT: personal settings
 (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
       ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
@@ -21,6 +25,7 @@
       message-send-mail-function 'smtpmail-send-it ;; NOTE: for gnus (message-mode)
       send-mail-function 'smtpmail-send-it) ;; NOTE: not for gnus (mail-mode)
 
+;; TODO: set these to something else (???)
 (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
 (setq custom-news-dir "~/News/") ;; NOTE: set directory for news
 
@@ -44,6 +49,8 @@
       gnus-interactive-exit nil
       gnus-save-killed-list nil ;; NOTE: do not save a list of killed groups to startup file
       )
+
+(setq message-kill-buffer-on-exit t) ;; NOTE: kill the mail buffer after sending message
 
 ;;; COMMENT: visible headers
 (setq gnus-visible-headers
@@ -72,7 +79,17 @@
 	;; 	(nnimap-stream ssl))
 	))
 
-;;; COMMENT: smtp setup
+
+;;; COMMENT: smtp setup(single account)
+(require 'smtpmail)
+
+(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil)))
+
+;;; COMMENT: smtp setup (multipl accounts) (ERROR: this doe not work)
 ;; (require 'smtpmail)
 
 ;; (defvar smtp-accounts ;; available smtp accounts
@@ -132,7 +149,7 @@
 
 ;;; COMMENT: email config
 ;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
-;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; add tab completion to name in the "To:" field
+;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; NOTE: add tab completion to name in the "To:" field
 
 ;; (remove-hook 'gnus-summary-prepare-exit-hook
 ;; 	     'gnus-summary-expire-articles)
@@ -146,7 +163,7 @@
 ;; (setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n") ;; NOTE: set mode-line
 
 ;;; COMMENT: rss config
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; topic mode - tree view - is always active
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
 
 ;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
 ;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))

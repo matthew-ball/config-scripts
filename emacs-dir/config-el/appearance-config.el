@@ -38,9 +38,10 @@
       show-paren-delay 0.0)
 
 ;;; COMMENT: mode line
-(setq line-number-mode 1 ;; NOTE: turn on line numbers in the mode line
-      column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
-      size-indication-mode t) ;; NOTE: show file size in mode line
+(setq line-number-mode nil ;; NOTE: turn on line numbers in the mode line
+      ;; column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
+      ;; size-indication-mode t ;; NOTE: show file size in mode line
+      )
 
 (display-time-mode t) ;; NOTE: display time status in the mode line
 (display-battery-mode t) ;; NOTE: display battery status in the mode line
