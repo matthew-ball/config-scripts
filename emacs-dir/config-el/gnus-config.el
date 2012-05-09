@@ -1,6 +1,10 @@
 ;; FILE: ~/.emacs.d/config-el/gnus-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
+;; NOTE: the file ~/.authinfo contains the following:
+;; machine imap.gmail.com login mathew.ball@gmail.com port 993
+;; machine smtp.gmail.com login mathew.ball@gmail.com port 587
+
 ;; (require 'gnus nil 'noerror)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
 ;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)

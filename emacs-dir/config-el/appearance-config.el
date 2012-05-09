@@ -27,7 +27,12 @@
 ;;; COMMENT: line numbers
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum mode if in a file
+;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file (ERROR: this seems to hate something)
+
+;;; COMMENT: ruler mode
+;; (autoload 'rule-mode "ruler-mode" "Display a ruler which measures columns." t)
+
+;; (add-hook 'find-file-hook (lambda () (ruler-mode 1))) ;; NOTE: turn on ruler-mode if in a file
 
 ;;; COMMENT: indicate empty lines
 ;; (toggle-indicate-empty-lines)

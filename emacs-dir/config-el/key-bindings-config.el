@@ -12,7 +12,7 @@
 (global-set-key (kbd "M-<f3>") 'show-custom-comment-tag) ;; NOTE: show custom comment tags in an outline structure
 (global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; NOTE: show the structure of the "same" dot-config files ;; ERROR: this function only works with '.el' extensions
 (global-set-key (kbd "<f4>") 'erc-start-or-switch) ;; NOTE: start an erc session (or switch to the most active buffer)
-;; (global-set-key (kbd "M-<f4>") 'function) ;; NOTE: ...
+(global-set-key (kbd "M-<f4>") 'switch-term) ;; NOTE: switch to an ANSI terminal session
 (global-set-key (kbd "C-<f4>") 'gnus) ;; NOTE: start a gnus session (or switch to an existing session)
 (global-set-key (kbd "<f5>") 'eproject-setup-toggle) ;; NOTE: show/hide the project configuration browser
 (global-set-key (kbd "M-<f5>") 'magit-status) ;; NOTE: view the git-status of the current file with magit
@@ -41,7 +41,7 @@
 ;; ---
 (global-set-key (kbd "TAB") 'smart-tab) ;; NOTE: use smart tab
 (global-set-key (kbd "C-<tab>") 'other-window) ;; NOTE: C-TAB moves to other (next) window
-(global-set-key (kbd "M-<tab>") (lambda () (interactive (other-window -1)))) ;; NOTE: M-TAB moves to other (previous) window
+;; (global-set-key (kbd "M-<tab>") (lambda () (interactive (other-window -1)))) ;; NOTE: M-TAB moves to other (previous) window
 (global-set-key (kbd "M-x") 'smex) ;; NOTE: smex improves default ido at the mini buffer
 (global-set-key	(kbd "M-X") 'smex-major-mode-commands) ;; NOTE: available major mode commands
 (global-set-key	(kbd "C-c C-c M-x") 'execute-extended-command) ;; NOTE: original M-x command

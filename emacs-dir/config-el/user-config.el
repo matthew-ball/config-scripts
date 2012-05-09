@@ -26,9 +26,9 @@
 (setq browse-url-browser-function 'w3m-browse-url ;; NOTE: use w3m web browser
       browse-url-new-window-flag t
       ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
-      ;; browse-url-generic-program "conkeror" ;; default web browser set to conkeror
-      browse-url-generic-program "chromium-browser" ;; default web browser set to chromium-browser
-      ;; browser-url-generic-program "x-www-browser" ;; default web browser set to x-www-browser (NOTE: this may be Debian only?)
+      browse-url-generic-program "conkeror" ;; NOTE: default web browser set to conkeror
+      ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to chromium-browser
+      ;; browser-url-generic-program "x-www-browser" ;; NOTE: default web browser set to x-www-browser (NOTE: this may be Debian only?)
       )
 
 ;;; COMMENT: dictionary and thesaurus
@@ -47,17 +47,18 @@
   (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
 
 ;;; COMMENT: w3m browser
-;; (require 'w3m-load) ;; TEST: this still needs to be tested
+;; TODO: move w3m configuration into a new file ...
+(require 'w3m-load) ;; TEST: this still needs to be tested
 
-(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-(autoload 'w3m-goto-url-new-session "w3m" "Go to a URL in a new w3m buffer." t)
+;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+;; (autoload 'w3m-goto-url-new-session "w3m" "Go to a URL in a new w3m buffer." t)
 ;; (autoload 'w3m-mode-map "w3m" "The mode map for w3m." t) ;; ERROR: this does not work
 
-(setq w3m-key-binding 'info
-      ;; w3m-home-page "www.emacswiki.org"
-      ;; w3m-default-display-inline-images t
+;; COMMENT: interface
+(setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
+      w3m-home-page "www.emacswiki.org"
+      ;; w3m-default-display-inline-images t ;; NOTE: display images by default
       w3m-use-toolbar nil
-      w3m-use-cookies t
       w3m-coding-system 'utf-8
       w3m-file-coding-system 'utf-8
       w3m-file-name-coding-system 'utf-8
@@ -65,14 +66,30 @@
       w3m-output-coding-system 'utf-8
       w3m-terminal-coding-system 'utf-8)
 
-(defun open-blank-w3m (&rest junk)
+;; COMMENT: cookies
+(require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
+
+(setq w3m-use-cookies t ;; NOTE: use cookies in w3m
+      w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+      w3m-cookie-accept-bad-cookies t
+      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org"))
+
+;; COMMENT: w3m sessions
+(setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
+(setq w3m-use-tab t) ;; NOTE: C-c C-t creates new tab with line below
+
+;; COMMENT: w3m control and external browser support
+(defun open-blank-w3m (&rest junk) ;; NOTE: this is redundant - \\[w3m] just opens a blank w3m buffer now
   "Open a blank w3m buffer."
   (interactive)
   (w3m-goto-url-new-session "about:"))
 
-;; (define-key w3m-mode-map (kbd "C-c n") '(lambda () (interactive) (open-blank-w3m))) ;; ERROR: this does not work
+(defun w3m-new-tab () ;; TODO: need to rename buffer
+  "Open a new tab in w3m."
+  (interactive)
+  (w3m-copy-buffer nil "*w3m*" nil t))
 
-(defun open-url-under-point-chromium (&rest junk)
+(defun open-url-under-point-chromium (&rest junk) ;; NOTE: this is redundant as I no longer primarily use chromium as my browser
   "If there is a valid URL under point, open that URL in chromium web-browser. Otherwise, open the URL of the current page in chromium web-browser.
 
 NOTE: This function requires w3m to be running."
@@ -82,21 +99,13 @@ NOTE: This function requires w3m to be running."
 	(browse-url-chromium temp-url)
       (browse-url-chromium (w3m-print-current-url)))))
 
-(defun w3m-new-tab ()
-  "Open a new tab in w3m."
-  (interactive)
-  (w3m-copy-buffer nil nil nil t))
-
-;; (define-key w3m-mode-map (kbd "M") '(lambda () (interactive) (open-url-under-point-chromium))) ;; ERROR: this does not work
-
+;; COMMENT: w3m and save-desktop mode
 (defun w3m-register-desktop-save ()
   "Set `desktop-save-buffer' to a function returning the current URL."
   (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
 
-(add-hook 'w3m-mode-hook 'w3m-register-desktop-save)
-
 (defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
-  "Restore a `w3m' buffer on `desktop' load."
+  "Restore a `w3m' buffer on `save-desktop' load."
   (when (eq 'w3m-mode desktop-buffer-major-mode)
     (let ((url d-b-misc))
       (when url
@@ -107,6 +116,42 @@ NOTE: This function requires w3m to be running."
         (current-buffer)))))
 
 (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+
+;; COMMENT: w3m mode hooks
+(add-hook 'w3m-display-hook ;; NOTE: remove trailing whitespace in w3m buffer
+	  (lambda (url)
+	    (let ((buffer-read-only nil))
+	      (delete-trailing-whitespace))))
+
+(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: ...
+
+;; COMMENT: w3m key-bindings
+;; (define-key w3m-mode-map (kbd "C-c n") '(lambda () (interactive) (open-blank-w3m))) ;; ERROR: this does not work
+;; (define-key w3m-mode-map (kbd "M") '(lambda () (interactive) (open-url-under-point-chromium))) ;; ERROR: this does not work
+
+;; COMMENT: this is meant to disable `ido-mode' in w3m buffers ... it does not work
+;; (put 'w3m 'ido 'ignore) 
+
+;; (defadvice ido-read-buffer (around ido-read-buffer-possibly-ignore activate)
+;;   "Check to see if use wanted to avoid using ido."
+;;   (if (eq (get this-command 'ido) 'ignore)
+;;       (let ((read-buffer-function nil))
+;;         (run-hook-with-args 'ido-before-fallback-functions 'read-buffer)
+;;         (setq ad-return-value (apply 'read-buffer (ad-get-args 0))))
+;;     ad-do-it))
+
+;; COMMENT: adding a new search engine
+;; NOTE: Find the entry point of the search engine you want to add, for example: (where foobar is the term you want to search for)
+;;  http://my.searchengine.com/?query=foobar
+;; NOTE: Then add info to your ~/.emacs-w3m file:
+;;  (eval-after-load "w3m-search" '(add-to-list 'w3m-search-engine-alist '("My engine" "http://my.searchengine.com/?query=%s" nil)))
+
+;; COMMENT: available w3m search engines
+(eval-after-load "w3m-search"
+  '(setq w3m-search-engine-alist
+	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
+	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
 
 ;;; COMMENT: internet connection
 ;; TODO: rename as an alist?
@@ -120,7 +165,7 @@ NOTE: This function requires w3m to be running."
 TODO: create a function to add a new connection (???)
 
 NOTE: if the connection is succesful, the async shell command window should be closed.
-      if the connection is insuccesful, the async window should be centred."
+      if the connection is not succesful, the async window should be centred."
   (interactive)
   (save-excursion
     (let ((connection (ido-completing-read "Select internet connection: " internet-connections)))

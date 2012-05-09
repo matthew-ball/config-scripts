@@ -36,6 +36,11 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+;;; COMMENT: highlight custom comment tags
+(require 'custom-comments)
+(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
+(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
+
 (defun occur-mode-clean-buffer ()
   "Removes all commentary from the *Occur* buffer, leaving the unadorned lines."
   (interactive)
@@ -50,11 +55,6 @@
 	  (replace-match "")
 	  (forward-line 1)))
     (message "There is no buffer named \"*Occur*\".")))
-
-;;; COMMENT: highlight custom comment tags
-(require 'custom-comments)
-(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
-(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
 (defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
   "Show the outline structure of all files matching the same extension in a directory."
@@ -74,31 +74,43 @@
 		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
 			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
 
-;; TODO: move this somewhere ... (automatically generate it if possible)
-;; TODO: this needs to be cleaned up ...
-;; (defvar config-files (list 'appearance-config
-;; 			   'dired-config
-;; 			   'erc-config
-;; 			   'eshell-config
-;; 			   'general-config
-;; 			   'gnus-config
-;; 			   'key-bindings-config
-;; 			   'latex-config
-;; 			   'org-config
-;; 			   'package-config
-;; 			   'programming-config
-;; 			   'user-config) "Stores a list of the names of the configuration files.")
+;; TODO: move this somewhere ... this is like the beginning of a basic project management mode
+;; TODO: include `README' files
+(defvar config-files-alist '() "Stores a list of the names of the configuration files.")
 
-;; (defun open-emacs-config-files (&rest junk))
+(defun add-config-file (file)
+  "Add FILE to the list `config-files'."
+  (push file config-files-alist))
+
+(defun open-config-files (&rest junk)
+  "Opens all configuration files."
+  (interactive)
+  (add-emacs-config-files)
+  (dolist (file config-files-alist)
+    (find-file file)))
+
+(defun add-emacs-config-files (&rest junk)
+  "Adds all GNU Emacs related configuration files to the `config-files-alist' list."
+  (add-config-file (concat (expand-file-name user-emacs-directory) "init.el"))   ;; NOTE: add `init.el'
+  (save-excursion   ;; NOTE: add the contents of the `config-el' directory
+    (if (file-exists-p (concat user-emacs-directory "config-el/"))
+	(let (files result)
+	  (setq files (directory-files (concat (expand-file-name user-emacs-directory) "config-el/") t "\.el$" t))
+	  (dolist (file-name files)
+	    (when (and (file-readable-p file-name) (not (file-directory-p file-name)))
+	      ;; (setq result (cons file-name result))
+	      (add-config-file file-name))))))
+  (save-excursion   ;; NOTE: add the contents of the `my-modes' directory
+    (if (file-exists-p (concat user-emacs-directory "my-modes/"))
+	(let (files result)
+	  (setq files (directory-files (concat (expand-file-name user-emacs-directory) "my-modes/") t "\.el$" t))
+	  (dolist (file-name files)
+	    (when (and (file-readable-p file-name) (not (file-directory-p file-name)))
+	      ;; (setq result (cons file-name))
+	      (add-config-file file-name)))))))
+
 ;; (defun open-stumpwm-config-files (&rest junk))
 ;; (defun open-bash-config-files (&rest junk))
-;; (defun open-config-files (&rest junk) ;; TODO: extend this to all configuration files
-;;   "Opens all GNU Emacs user configuration files."
-;;   (interactive)
-;;   (find-file (concat (expand-file-name user-emacs-directory) "init.el"))
-;;   (mapc (lambda (config-file)
-;; 	  (find-file (concat (expand-file-name user-emacs-directory) "config-el/" (symbol-name config-file) ".el")))
-;; 	config-files))
 
 ;; TODO: this needs to be changed ...
 ;; TODO: could probably be a function which opens the config-el directory ...
@@ -147,22 +159,29 @@
 ;; (add-to-list 'auto-mode-alist '("stumpwmrc" . stumpwm-mode)) ;; open stumpwmrc file in stumpwm mode
 (add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; open README files in org-mode
 (add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; open NEWS files in org-mode
-(add-to-list 'auto-mode-alist '("/mutt" . mail-mode)) ;; open mutt-related buffers in mail mode
+;; (add-to-list 'auto-mode-alist '("/mutt" . mail-mode)) ;; open mutt-related buffers in mail mode
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; open *.org files in org-mode
 (add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode)) ;; open *.js files in javascript mode
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; open *.hs files in haskell mode
 (add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; open *.cabal files in haskell cabal mode
 (add-to-list 'auto-mode-alist '("\\.py$" . python-mode)) ;; open *.py files in python mode
-(add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)) ;; open *.cs files in c# mode
+;; (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)) ;; open *.cs files in c# mode
 (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; open *.tex files in LaTeX mode
-(add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; open word documents with antiword
-(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; open *.lua files in lua mode
-(add-to-list 'auto-mode-alist '("\\.ot$" . otter-mode)) ;; open *.ot files in otter mode
-(add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; open *.in files in otter mode
+;; (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; open word documents with antiword
+;; (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; open *.lua files in lua mode
+;; (add-to-list 'auto-mode-alist '("\\.ot$" . otter-mode)) ;; open *.ot files in otter mode
+;; (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; open *.in files in otter mode
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; open python files in a psuedo-python interpreter
 
 ;;; COMMENT: selection
 (delete-selection-mode 1) ;; replace (delete) selected region
+
+;;; COMMENT: uniquify (unique buffer names)
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t) ;; NOTE: rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ;; NOTE: don't muck with special buffers
 
 ;;; COMMENT: ido mode
 (require 'ido)
@@ -185,6 +204,7 @@
       ido-max-work-directory-list 30 ;; remember last used directories
       ido-max-work-file-list 50 ;; ... and files
       ido-max-prospects 8 ;; don't spam the mini buffer
+      ido-show-dot-for-dired t
       confirm-nonexistent-file-or-buffer nil) ;; the confirmation is rather annoying
 
 (defun recentf-ido-find-file () ;; replace recentf-open-files

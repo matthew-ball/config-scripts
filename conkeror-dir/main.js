@@ -72,6 +72,7 @@ define_webjump("g+", "http://plus.google.com", $description="Google+");
 define_webjump("gi", "http://google.com/ig", $description="iGoogle");
 define_webjump("reddit", "http://www.reddit.com", $description="Reddit");
 define_webjump("uf", "http://ubuntuforums.org", $description="Ubuntu Forums");
+define_webjump("lp", "https://launchpad.net/", $description="Launchpad");
 define_webjump("afl", "http://www.afl.com.au", $description="Australian Football League");
 define_webjump("modem", "http://gateway.2wire.net", $description="Telstra Modem Information");
 

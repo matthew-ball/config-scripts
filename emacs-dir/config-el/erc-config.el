@@ -74,7 +74,7 @@
       (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
 		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
-      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#scheme" "#guile" "#haskell" "#org-mode" "#ubuntu-offtopic" "#debian-offtopic" "#ubuntu-au" "##club-ubuntu" "##math" "##programming"))
+      erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#conkeror" "#lisp" "#scheme" "#guile" "#haskell" "#org-mode" "#ubuntu" "#ubuntu-offtopic" "#ubuntu-bots-devel" "#debian-offtopic" "#ubuntu-au" "##club-ubuntu" "##math" "##programming"))
       erc-join-buffer 'bury)
 
 (setq erc-modules (delq 'fill erc-modules)) ;; disable erc-fill-mode
@@ -197,6 +197,8 @@
   (interactive)
   (if (get-buffer "irc.freenode.net:6667") ;; if ERC is already active ...
       (erc-track-switch-buffer 1) ;; switch to last active buffer
-    (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name))) ;; else, start ERC
+    (erc :server "irc.freenode.net" :port erc-port :nick erc-nick :full-name erc-user-full-name) ;; else, start ERC
+    ;;(erc :server "irc.thesii.org" :port erc-port :nick erc-nick :full-name erc-user-full-name)
+    ))
 
 (provide 'erc-config)
