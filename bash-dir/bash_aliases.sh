@@ -20,6 +20,13 @@ alias gb="git branch "
 alias gm="git merge "
 
 # COMMENT: emacs related aliases
+alias et='emacsclient -t' # NOTE: open emacs in a terminal session
+alias ec='emacsclient -c -n' # NOTE: open emacs in an X session
+
+## WARNING: these don't really work ...
+# alias sudo_et='emacsclient -t "/sudo::$*"'
+# alias sudo_ec='emacsclient -c -n "/sudo::$*"'
+
 alias emacs_file='emacsclient -n' # NOTE: open file in the current emacs session
 
 alias jem='cd $(emacsclient -e "(with-current-buffer (window-buffer (frame-selected-window)) (expand-file-name default-directory))" | '"sed -E 's/(^\")|(\"$)//g')" # NOTE: jump to the current emacs directory
