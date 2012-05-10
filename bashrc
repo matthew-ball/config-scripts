@@ -7,6 +7,7 @@
 ### COMMENT: export functionality
 export HISTCONTROL=ignoredups # NOTE: don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
+export LOCALE=UTF-8
 
 export TERM=xterm-color # NOTE: export 8 colours in shell session
 # export TERM=xterm-256color # NOTE: export 256 colours in shell session
@@ -134,3 +135,9 @@ fi
 
 # stty rows 10000 columns 80  2>/dev/null
 # # echo "Welcome to emacs shell"
+
+# login shell
+# if shopt -q login_shell ; then
+#     : # NOTE: this is executed only when it is a login shell
+#     exec emacs --daemon
+# fi

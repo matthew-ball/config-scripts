@@ -462,7 +462,12 @@
 	(desktop-save-mode 1) ;; NOTE: enable desktop-save-mode also
 	(desktop-read))))) ;; NOTE: read the desktop file
 
-(restore-desktop-session)
+(defun save-desktop-session (&rest junk)
+  "Saves the current GNU Emacs session."
+  (interactive)
+  (desktop-save-in-desktop-dir))
+
+;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
 ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
 
 (setq desktop-path `(,(expand-file-name user-emacs-directory))

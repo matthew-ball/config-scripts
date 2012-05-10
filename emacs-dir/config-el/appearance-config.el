@@ -5,32 +5,28 @@
 ;; (autoload 'color-theme "color-theme" "Colour theme for GNU Emacs." t)
 ;; (autoload 'zenburn "zenburn" "Zenburn colour theme for GNU Emacs." t)
 
-;; WARNING: this is for the `emacs --daemon' service
-;; (defun apply-colour-theme (frame) ;; NOTE: frame specific color-themes
-;;   "Apply colour theme to a frame based on whether its a 'real' window or a console window."
-;;   (select-frame frame)
-;;    (when (window-system frame)
-;;     (progn
-;;       (require 'color-theme)
-;;       (set-face-attribute 'default nil :height 90)
-;;       (eval-after-load "color-theme" '(progn ;; TODO: this gives me the wrong `zenburn' theme
-;; 					(require 'zenburn)
-;; 					(zenburn)))
-;;       (setq frame-title-format "%b"
-;; 	    icon-title-format "%b"))))
+(defun decorate-frame (frame) ;; NOTE: apply `zenburn' theme to new frame
+  "Decorate new frame FRAME with `zenburn' theme."
+  (select-frame frame)
+  (let ((colour-theme-is-global nil))
+    (if (window-system)
+      (progn
+	(color-theme-zenburn)
+	(set-face-attribute 'default nil :height 90)
+	(setq frame-title-format "%b"
+	      icon-title-format "%b"))
+      (message "terminal session"))))
 
-;; (setq color-theme-is-global nil)
+(add-hook 'after-make-frame-functions 'decorate-frame)
 
-;; (add-hook 'after-make-frame-functions 'apply-colour-theme) ;; NOTE: when a new frame is opened, apply colour theme
-
-;; WARNING: this is for straight up emacs
-(when (eq window-system 'x)  ;; NOTE: when using x windows system
-  (require 'color-theme)
-  (require 'zenburn)
-  (set-face-attribute 'default nil :height 90) ;; NOTE: change font size
-  (eval-after-load "color-theme" '(zenburn)) ;; NOTE: apply zenburn colour theme
-  (setq frame-title-format "%b"
-	icon-title-format "%b"))
+;; WARNING: this is for straight up emacs (i.e. if non daemon)
+;; (when (eq window-system 'x)  ;; NOTE: when using x windows system
+;;   (require 'color-theme)
+;;   (require 'zenburn)
+;;   (set-face-attribute 'default nil :height 90) ;; NOTE: change font size
+;;   (eval-after-load "color-theme" '(zenburn)) ;; NOTE: apply zenburn colour theme
+;;   (setq frame-title-format "%b"
+;; 	icon-title-format "%b"))
 
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; NOTE: hide the tool bar

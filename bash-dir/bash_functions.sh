@@ -1,6 +1,11 @@
 # FILE: ~/.conf-scripts/bash-dir/bash_functions
 # AUTHOR: Matthew Ball (copyleft 2012)
 
+function start_stumpwm {
+    startx &
+    htop
+}
+
 function init_dist_variables { # initialise package manager variables for distribution
     DIST_TYPE=`/usr/bin/lsb_release -i` # $DIST_TYPE is 16 characters into the output of /usr/bin/lsb_release -i
     DIST_NAME=${DIST_TYPE:16}

@@ -18,11 +18,19 @@
 
 (set-prefix-key (kbd "s-z")) ;; set the stumpwm prefix key to super+z (default is C-t)
 
-(defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.") ;; zenburn foreground colour
-(defparameter *background-colour* "grey25" "Set the background colour.") ;; zenburn background colour
+;; COMMENT: old
+(defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.") ;; NOTE: old zenburn foreground colour
+(defparameter *background-colour* "grey25" "Set the background colour.") ;; NOTE: old zenburn background colour
 (defparameter *border-colour* "grey25" "Set the border colour.")
 (defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
 (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
+
+;; COMMENT: new
+;; (defparameter *foreground-colour* "grey" "Set the foreground colour.") ;; NOTE: new foreground colour
+;; (defparameter *background-colour* "grey25" "Set the background colour.") ;; NOTE: new background colour
+;; (defparameter *border-colour* "black" "Set the border colour.")
+;; (defparameter *focus-colour* "grey" "Set the focus colour.")
+;; (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
 
 ;; (defparameter *groups* '("default" "internet" "misc") "Default group names.") ;; TODO: should actually do something with this ...
 
@@ -30,16 +38,17 @@
 (defvar *browser* "" "Set the default web browser.") ;; TODO: this should be "x-www-browser"
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this line (and the previous) is redundant
 
-(defvar *editor* "emacs" "Set the default editor.") ;; NOTE: older, using the default emacs
-;; (defvar *editor* "emacsclient -c" "Set the default editor.") ;; NOTE: newer, using the `emacs --daemon' service
+;; (defvar *editor* "emacs" "Set the default editor.") ;; NOTE: older, using the default emacs
+(defvar *editor* "emacsclient -n -c" "Set the default editor.") ;; NOTE: newer, using the `emacs --daemon' service
 
 (defvar *file-manager* "pcmanfm" "Set the default file manager.")
 (defvar *package-manager* "aptitude" "Set the default package manager.")
-(defvar *system-monitor* "htop" "Set the default system monitor.") ;; NOTE: this is redundant
+(defvar *system-monitor* "htop" "Set the default system monitor.") ;; NOTE: can use `proced'
 (defvar *document-viewer* "evince" "Set the default document reader.")
-(defvar *audio-player* "ncmpcpp" "Set the default audio player.") ;; NOTE: can use emms ...
+(defvar *audio-player* "ncmpcpp" "Set the default audio player.") ;; NOTE: can use `emms'
 (defvar *video-player* "vlc" "Set the default video player.")
 
+;; (defvar *system-monitor* "proced" "Set the default system monitor.") ;; TODO: implement this in emacs
 ;; (defvar *audio-player* "emms" "Set the default audio player.") ;; TODO: implement this in emacs
 ;; (defvar *mail-client* "gnus" "Set the default mail application.") ;; TODO: implement this in emacs
 ;; (defvar *irc-client* "erc" "Set the default IRC client.") ;; TODO: implement this in emacs

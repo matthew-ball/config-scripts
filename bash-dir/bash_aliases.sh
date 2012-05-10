@@ -19,7 +19,11 @@ alias gco="git checkout "
 alias gb="git branch "
 alias gm="git merge "
 
+# COMMENT: stumpwm related aliases
+alias start_gdm='sudo /etc/init.d/gdm start'
+
 # COMMENT: emacs related aliases
+alias le='emacs --daemon'
 alias et='emacsclient -t' # NOTE: open emacs in a terminal session
 alias ec='emacsclient -c -n' # NOTE: open emacs in an X session
 

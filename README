@@ -74,6 +74,11 @@
 - =config-setup.sh= started
 
 ** Initial Configuration
+- The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
+- To start GDM manually: =sudo /etc/init.d/gdm start=
+- To restore defaults: =sudo update-rc.d gdm defaults=
+- TODO: the desktop (i.e. `exec stumpwm' is now called from the =.xinitrc= file
+
 *** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
 - the configuration script serves three main purposes:
   1. install the custom configuration
@@ -162,3 +167,7 @@
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
 
 [fn:broken-link] WARNING: Broken link.
+
+
+
+
