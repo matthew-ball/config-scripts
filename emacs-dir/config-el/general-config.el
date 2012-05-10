@@ -76,11 +76,10 @@
 
 ;;; COMMENT: default auto-mode list
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; open .screenrc in shell script mode
-;; (add-to-list 'auto-mode-alist '(".bash_aliases" . shell-script-mode)) ;; open .bash_aliases in shell script mode
 ;; (add-to-list 'auto-mode-alist '(".mpdconf/" . shell-script-mode)) ;; open any file in .mpdconf/ in shell script mode
 ;; (add-to-list 'auto-mode-alist '(".emacs" . emacs-lisp-mode)) ;; open .emacs in emacs lisp mode
 ;; (add-to-list 'auto-mode-alist '(".stumpwmrc$" . stumpwm-mode)) ;; open .stumpwmrc in stumpwm mode
-;; (add-to-list 'auto-mode-alist '(".conkerorrc/" . javascript-mode)) ;; open any file in .conkerorrc/ in javaescript mode
+;; (add-to-list 'auto-mode-alist '(".conkerorrc/" . javascript-mode)) ;; open any file in .conkerorrc/ in javascript mode
 (add-to-list 'auto-mode-alist '("bashrc" . shell-script-mode)) ;; open bashrc file in shell script mode
 (add-to-list 'auto-mode-alist '("stumpwmrc" . common-lisp-mode)) ;; open stumpwmrc file in common lisp mode
 ;; (add-to-list 'auto-mode-alist '("stumpwmrc" . stumpwm-mode)) ;; open stumpwmrc file in stumpwm mode
@@ -105,10 +104,10 @@
 
 ;;; COMMENT: uniquify (unique buffer names)
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'reverse)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t) ;; NOTE: rename after killing uniquified
-(setq uniquify-ignore-buffers-re "^\\*") ;; NOTE: don't muck with special buffers
+(setq uniquify-buffer-name-style 'reverse
+      uniquify-separator "/"
+      uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified
+      uniquify-ignore-buffers-re "^\\*") ;; NOTE: don't muck with special buffers
 
 ;;; COMMENT: ido mode
 (require 'ido)
@@ -216,7 +215,6 @@
 
 ;;; COMMENT: ibuffer
 (require 'ibuffer)
-
 (setq ibuffer-saved-filter-groups
       `(("default"
 	 ("Configuration" ;; run-time configuration related buffers
@@ -283,18 +281,18 @@
 	 ("File Manager" ;; dired related buffers
 	  (or (mode . dired-mode)
 	      (name . "^\\*Dired log\\*$")))
-	 ("Shell" ;; shell related buffers
+	 ("Shell" ;; NOTE: shell related buffers
 	  (or (mode . eshell-mode)
 	      (mode . shell-mode)
 	      (mode . term-mode)
 	      (mode . locate-mode)))
-	 ("Mathematics and Science" ;; buffers related to mathematics and science
+	 ("Mathematics and Science" ;; NOTE: buffers related to mathematics and science
 	  (or (mode . calculator-mode)
 	      (mode . calc-mode)
 	      (mode . calc-trail-mode)
 	      (mode . maxima-mode)
 	      (mode . inferior-maxima-mode)))
-	 ("Mail and News" ;; mail (and news) related buffers
+	 ("Mail and News" ;; NOTE: mail (and news) related buffers
 	  (or (mode . gnus-group-mode)
 	      (mode . gnus-topic-mode)
 	      (mode . gnus-browse-mode)
@@ -305,7 +303,7 @@
 	      (mode . message-mode)
 	      (name . "^\\*gnus trace\\*$")
 	      (filename . ".newsrc-dribble$")))
-	 ("Information" ;; info related buffers
+	 ("Information" ;; NOTE: info related buffers
 	  (or (mode . info-mode)
 	      (mode . Info-mode)
 	      (mode . apropos-mode)
@@ -313,14 +311,14 @@
 	      (mode . help-mode)
 	      (mode . Man-mode)
 	      (mode . woman-mode)))
-	 ("Process Manager" ;; process manager related buffers
+	 ("Process Manager" ;; NOTE: process manager related buffers
 	  (or (mode . proced-mode)
 	      (mode . process-menu-mode)))
-	 ("Package Management" ;; apt-mode and elpa related buffers
+	 ("Package Management" ;; NOTE: apt-mode and elpa related buffers
 	  (or (mode . apt-mode)
 	      (mode . package-menu-mode)
 	      (name . "^\\*Package Info\\*$")))
-	 ("Miscellaneous" ;; miscellaneous special buffers
+	 ("Miscellaneous" ;; NOTE: miscellaneous special buffers
 	  (or (mode . occur-mode)
 	      (mode . customize-mode)
 	      (mode . Custom-mode)
@@ -335,16 +333,16 @@
 	      (name . "\\*Help\\*$")
 	      (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
-(setq ibuffer-show-empty-filter-groups nil ;; do not display empty groups
-      ibuffer-default-sorting-mode 'major-mode ;; sort buffers by major-mode
-      ibuffer-expert t ;; don't ask for confirmation
+(setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
+      ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by major-mode
+      ibuffer-expert t ;; NOTE: don't ask for confirmation
       ibuffer-shrink-to-minimum-size t
       ibuffer-always-show-last-buffer nil
       ibuffer-sorting-mode 'recency
       ibuffer-use-header-line t)
 
 (add-hook 'ibuffer-mode-hook (lambda ()
-			       (ibuffer-auto-mode 1) ;; automatically update buffer list
+			       (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
 			       (ibuffer-switch-to-saved-filter-groups "default")))
 
 ;;; COMMENT: auto-complete mode
@@ -353,17 +351,17 @@
   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
   (ac-config-default))
 
-(setq ac-auto-start 5 ;; start auto-complete after five characters
-      ac-ignore-case t ;; always ignore case
-      ac-auto-show-menu t) ;; automatically show menu
+(setq ac-auto-start 5 ;; NOTE: start auto-complete after five characters
+      ac-ignore-case t ;; NOTE: always ignore case
+      ac-auto-show-menu t) ;; NOTE: automatically show menu
 
 (set-face-background 'ac-candidate-face "lightgray")
 (set-face-underline 'ac-candidate-face "darkgray")
 (set-face-background 'ac-selection-face "steelblue")
 
-(ac-flyspell-workaround) ;; apparently the flyspell-mode process disables auto-completion
+(ac-flyspell-workaround) ;; NOTE: apparently the flyspell-mode process disables auto-completion
 
-(define-globalized-minor-mode real-global-auto-complete-mode ;; dirty fix for having AC everywhere
+(define-globalized-minor-mode real-global-auto-complete-mode ;; NOTE: dirty fix for having AC everywhere
   auto-complete-mode (lambda ()
                        (if (not (minibufferp (current-buffer)))
 			   (auto-complete-mode 1))))
@@ -371,7 +369,7 @@
 (real-global-auto-complete-mode t)
 
 ;;; COMMENT: smart tab
-(defun smart-tab () ;; implement a smarter TAB
+(defun smart-tab () ;; NOTE: implement a smarter TAB
   "This smart tab is minibuffer compliant: it acts as usual in the minibuffer.
  Else, if mark is active, indents region. Else if point is at the end of a symbol, expands it.
  Else indents the current line."
