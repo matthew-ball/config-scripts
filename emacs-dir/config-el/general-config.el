@@ -217,19 +217,19 @@
 (require 'ibuffer)
 (setq ibuffer-saved-filter-groups
       `(("default"
-	 ("Configuration" ;; run-time configuration related buffers
+	 ("Configuration" ;; NOTE: run-time configuration related buffers
 	  (or (filename . ,(expand-file-name user-emacs-directory))
 	      (filename . ,(expand-file-name user-scripts-directory))))
-	 ("University" ;; university related buffers
+	 ("University" ;; NOTE: university related buffers
 	  (filename . ,(expand-file-name user-university-directory)))
-	 ("Reading" ;; reading (material and notes) related buffers
+	 ("Reading" ;; NOTE: reading (material and notes) related buffers
 	  (or (filename . ,(expand-file-name user-reading-directory))
 	      (mode . doc-view-mode)))
-	 ("Writing" ;; writing related buffers
+	 ("Writing" ;; NOTE: writing related buffers
 	  (filename . ,(expand-file-name user-writing-directory)))
-	 ("Projects" ;; project related buffers
+	 ("Projects" ;; NOTE: project related buffers
 	  (filename . ,(expand-file-name user-projects-directory)))
-	 ("Programming" ;; programming related buffers
+	 ("Programming" ;; NOTE: programming related buffers
 	  (or (mode . c-mode)
 	      (mode . c++-mode)
 	      (mode . haskell-mode)
@@ -260,7 +260,7 @@
 	      (name . "^\\*slime-repl sbcl\\*$")
 	      (name . "^\\*slime-compilation\\*$")
 	      (name . "^\\*inferior-lisp\\*$")))
-	 ("Version Control" ;; version control related buffers
+	 ("Version Control" ;; NOTE: version control related buffers
 	  (or (mode . diff-mode)
 	      (mode . magit-status-mode)
 	      (mode . magit-key-mode)
@@ -270,17 +270,17 @@
 	      (mode . vc-log-entry-mode)
 	      (name . "^\\*magit-process\\*$")
 	      (name . "^\\*magit-log-edit\\*$")))
-	 ("Organisation" ;; org-mode related buffers
+	 ("Organisation" ;; NOTE: org-mode related buffers
 	  (or (mode . org-mode)
 	      (mode . org-agenda-mode)
 	      (mode . calendar-mode)
 	      (mode . diary-mode)
 	      (filename . ,(expand-file-name user-organisation-directory))))
-	 ("ERC" ;; erc related buffers
+	 ("ERC" ;; NOTE: erc related buffers
 	  (mode . erc-mode))
-	 ("Web Browser" ;; w3m related buffers
+	 ("Web Browser" ;; NOTE: w3m related buffers
 	  (mode . w3m-mode))
-	 ("File Manager" ;; dired related buffers
+	 ("File Manager" ;; NOTE: dired related buffers
 	  (or (mode . dired-mode)
 	      (name . "^\\*Dired log\\*$")))
 	 ("Shell" ;; NOTE: shell related buffers
