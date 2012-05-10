@@ -182,8 +182,8 @@ NOTE: if the connection is succesful, the async shell command window should be c
   ;; (delete-other-windows)
   ))
 
-;;; COMMENT: pastebin
-(autoload 'pastebin "pastebin" "Pastebin support for GNU Emacs." t)
+;;; COMMENT: gist
+(autoload 'gist-region-or-buffer "gist" "Integrate with Github." t)
 
 ;;; COMMENT: highlight custom comment tags
 (require 'custom-comments)
