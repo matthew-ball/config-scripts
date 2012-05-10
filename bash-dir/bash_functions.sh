@@ -3,7 +3,7 @@
 
 function start_stumpwm {
     startx &
-    htop
+    screen
 }
 
 function init_dist_variables { # initialise package manager variables for distribution
