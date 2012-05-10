@@ -185,4 +185,19 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;;; COMMENT: pastebin
 (autoload 'pastebin "pastebin" "Pastebin support for GNU Emacs." t)
 
+;;; COMMENT: highlight custom comment tags
+(require 'custom-comments)
+(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
+(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
+
+;;; COMMENT: configuration files
+(require 'configuration-files)
+(add-config-file (concat (expand-file-name user-emacs-directory) "init.el")) ;; NOTE: add ~/.conf-scripts/emacs-dir/init.el
+(add-config-file (concat (expand-file-name user-scripts-directory) "stumpwmrc")) ;; NOTE: add ~/.conf-scripts/stumpwmrc
+(add-config-file (concat (expand-file-name user-scripts-directory) "bashrc")) ;; NOTE: add ~/.conf-scripts/bashrc
+(add-config-directory (concat user-emacs-directory "config-el/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/config-el/
+(add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/my-modes/
+(add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add .sh files in ~/.conf-scripts/bash-dir/
+(add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add .js files in ~/.conf-scripts/conkeror-dir/
+
 (provide 'user-config)
