@@ -8,13 +8,16 @@
 ;; (global-set-key (kbd "<f2>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "M-<f2>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "C-<f2>") 'function) ;; NOTE: ...
-(global-set-key (kbd "<f3>") 'switch-to-dot-emacs) ;; NOTE: switch to ~/.emacs.d/init.el file (or evaluate-buffer if already present)
-(global-set-key (kbd "M-<f3>") 'show-custom-comment-tag) ;; NOTE: show custom comment tags in an outline structure
-(global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; NOTE: show the structure of the "same" dot-config files ;; ERROR: this function only works with '.el' extensions
+(global-set-key (kbd "<f3>") 'show-custom-comment-tag) ;; NEW: NOTE: show custom comments
+;; (global-set-key (kbd "<f3>") 'switch-to-dot-emacs) ;; OLD: NOTE: switch to ~/.emacs.d/init.el file (or evaluate-buffer if already present)
+(global-set-key (kbd "M-<f3>") 'search-string) ;; NEW: NOTE: search for a string over buffers
+;; (global-set-key (kbd "M-<f3>") 'show-custom-comment-tag) ;; OLD: NOTE: show custom comment tags in an outline structure
+(global-set-key (kbd "C-<f3>") 'search-string-under-point) ;; NEW: NOTE: search string under point
+;; (global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; OLD: NOTE: show the structure of the "same" dot-config files ;; ERROR: this function only works with '.el' extensions
 (global-set-key (kbd "<f4>") 'erc-start-or-switch) ;; NOTE: start an erc session (or switch to the most active buffer)
 (global-set-key (kbd "M-<f4>") 'switch-term) ;; NOTE: switch to an ANSI terminal session
 (global-set-key (kbd "C-<f4>") 'gnus) ;; NOTE: start a gnus session (or switch to an existing session)
-(global-set-key (kbd "<f5>") 'eproject-setup-toggle) ;; NOTE: show/hide the project configuration browser
+;; (global-set-key (kbd "<f5>") 'eproject-setup-toggle) ;; NOTE: show/hide the project configuration browser
 (global-set-key (kbd "M-<f5>") 'magit-status) ;; NOTE: view the git-status of the current file with magit
 ;; (global-set-key (kbd "C-<f5>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "<f6>") 'function) ;; NOTE: ...
@@ -29,13 +32,13 @@
 ;; (global-set-key (kbd "<f9>") 'function) ;; NOTE: ...
 (global-set-key (kbd "M-<f9>") 'elisp-index-search) ;; NOTE: search for the documentation of an emacs lisp function
 (global-set-key (kbd "C-<f9>") 'emacs-index-search) ;; NOTE: search for the documentation of an emacs command
-(global-set-key (kbd "<f10>") 'browse-url) ;; NOTE: run web browser
+;; (global-set-key (kbd "<f10>") 'function) ;; NOTE: ...
 (global-set-key (kbd "M-<f10>") 'run-package-manager) ;; NOTE: run the system package manager
 (global-set-key (kbd "C-<f10>") 'package-list-packages) ;; NOTE: list available elpa packages
-(global-set-key (kbd "<f11>") 'emms) ;; NOTE: start emacs multimedia system
-(global-set-key (kbd "M-<f11>") 'emms-player-mpd-connect) ;; NOTE:  connect emms to mpd
+;; (global-set-key (kbd "<f11>") 'emms) ;; NOTE: start emacs multimedia system
+;; (global-set-key (kbd "M-<f11>") 'emms-player-mpd-connect) ;; NOTE:  connect emms to mpd
 (global-set-key (kbd "C-<f11>") 'proced) ;; NOTE:  start a proced session (process manager)
-(global-set-key (kbd "<f12>") 'linum-mode) ;; NOTE:  turn on line numbering
+(global-set-key (kbd "<f12>") 'w3m) ;; NOTE:  start a w3m session
 (global-set-key (kbd "M-<f12>") (lambda () (interactive) (switch-to-buffer "*scratch*"))) ;; NOTE: switch to the scratch buffer
 (global-set-key (kbd "C-<f12>") 'regexp-builder) ;; NOTE:  start regular-expression builder
 ;; ---

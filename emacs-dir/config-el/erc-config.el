@@ -2,8 +2,8 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: erc
-(autoload 'doctor-doc "doctor") ;; for use with erc doctor
-(autoload 'make-doctor-variables "doctor") ;; ...
+(autoload 'doctor-doc "doctor") ;; NOTE: for use with ERC doctor
+(autoload 'make-doctor-variables "doctor") ;; NOTE: for use with ERC doctor
 (autoload 'erc-select "erc" "The GNU Emacs IRC client." t)
 (autoload 'erc-match "erc" "ERC mode for checking whether messages match certain patterns." t)
 (autoload 'erc-join "erc" "ERC mode for automatically joining channels." t)
@@ -31,19 +31,20 @@
 (defface erc-prompt-face '((t (:foreground "yellow" :bold t))) "ERC prompt.")
 (defvar erc-insert-post-hook)
 
-(erc-autojoin-mode t) ;; enable autojoining
-(erc-track-mode t)
-(erc-match-mode t)
-(erc-fill-mode 0) ;; disable ERC fill
-(erc-fill-disable) ;; disable ERC fill
-(erc-ring-mode t)
-(erc-netsplit-mode t)
-(erc-timestamp-mode t) ;; enable ERC timestamp on
-(erc-button-mode t)
-(erc-spelling-mode t) ;; enable flyspell in ERC
+(eval-after-load "erc-join" '(erc-autojoin-mode t)) ;; NOTE: enable auto-joining mode
+(eval-after-load "erc-track" '(erc-track-mode t))
+(eval-after-load "erc-match" '(erc-match-mode t))
+(eval-after-load "erc-fill" '(erc-fill-mode 0)) ;; NOTE: disable ERC fill
+(eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fill
+(eval-after-load "erc-ring" '(erc-ring-mode t))
+(eval-after-load "erc-netsplit" '(erc-netsplit-mode t))
+(eval-after-load "erc-timestamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
+(eval-after-load "erc-button" '(erc-button-mode t))
+(eval-after-load "erc-spelling" '(erc-spelling-mode t)) ;; NOTE: enable flyspell in ERC
 
-(setq erc-server "irc.freenode.net" ;; default ERC server
-      erc-port 6667 ;; default ERC port
+;; TODO: use variables in here ...
+(setq erc-server "irc.freenode.net" ;; NOTE: default ERC server
+      erc-port 6667 ;; NOTE: default ERC port
       erc-nick "chu"
       erc-user-full-name user-full-name
       erc-email-userid "mathew.ball@gmail.com"

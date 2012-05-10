@@ -43,6 +43,7 @@ alias search='apt-cache search' # NOTE: search apt-cache for packages
 alias show='apt-cache show' # NOTE: show package details from apt-cache
 alias update='sudo apt-get update' # NOTE: update apt package
 alias upgrade='sudo apt-get upgrade' # NOTE: upgrade available apt packages
+alias upget='sudo apt-get update ; sudo apt-get upgrade' # NOTE: ...
 alias dist_upgrade='sudo apt-get dist-upgrade' # NOTE: upgrade apt packages
 alias install='sudo apt-get install' # NOTE: install package via apt-get
 alias remove='sudo apt-get remove' # NOTE: remove apt package

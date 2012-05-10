@@ -77,7 +77,7 @@ NOTE: This function depends on the multi-occur function `show-custom-structure'.
   (show-custom-structure (custom-comment-tag-regexp)))
 
 (defun occur-mode-clean-buffer ()
-  "Removes all commentary from the *Occur* buffer, leaving the unadorned lines."
+  "Removes all commentary from the `*Occur*' buffer, leaving the unadorned lines."
   (interactive)
   (if (get-buffer "*Occur*")
       (save-excursion
@@ -90,6 +90,16 @@ NOTE: This function depends on the multi-occur function `show-custom-structure'.
 	  (replace-match "")
 	  (forward-line 1)))
     (message "There is no buffer named \"*Occur*\".")))
+
+(defun search-string-under-point (&rest junk)
+  "Search for the string under point across all buffers with the same extension."
+  (interactive)
+  (show-custom-structure (thing-at-point 'word)))
+
+(defun search-string (string &rest junk) ;; TODO: accept regexps
+  "Show the outline of all file containings the text STRING in a single directory."
+  (interactive "sEnter search string: ")
+  (show-custom-structure string))
 
 (defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
   "Show the outline structure of all files matching the same extension in a directory."

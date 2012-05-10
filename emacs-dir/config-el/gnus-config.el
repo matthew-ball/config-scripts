@@ -1,9 +1,14 @@
 ;; FILE: ~/.emacs.d/config-el/gnus-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
-;; NOTE: the file ~/.authinfo contains the following:
-;; machine imap.gmail.com login mathew.ball@gmail.com port 993
-;; machine smtp.gmail.com login mathew.ball@gmail.com port 587
+;; TODO:
+;; if: there is no file at ~/.authinfo
+;; then: create new file ~/.authinfo generating the file:
+;;  machine imap.gmail.com login user-primary-email-address port 993
+;;  machine smtp.gmail.com login user-primary-email-address port 587
+;; else: 
+;; 1. use that information (i.e. start gnus)
+;; 2. re-write the file to disk (i.e. something has changed)
 
 ;; (require 'gnus nil 'noerror)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
@@ -43,7 +48,7 @@
       gnus-thread-ignore-subject t
       gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
       gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
-      gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: clean this up ...
+      gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: change email addresses
 			    ("gmail" (address "mathew.ball@gmail.com"))
 			    ("anumail" (address "u4537508@anu.edu.au"))))
 
@@ -68,7 +73,7 @@
       imap-store-password t ;; NOTE: store the session password
       gnus-secondary-select-methods
       '((nnimap "gmail" ;; NOTE: gmail login
-		(nnimap-address "imap.gmail.com")
+		(nnimap-address "imap.gmail.com") ;; NOTE: being the "gmail" account, this hard-coding is ok?
 		(nnimap-server-port 993)
 		;; (nnimap-authinfo-file "~/.authinfo")
 		(nnimap-authenticator login)
@@ -91,7 +96,7 @@
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil)))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))) ;; TODO: replace email address
 
 ;;; COMMENT: smtp setup (multipl accounts) (ERROR: this doe not work)
 ;; (require 'smtpmail)

@@ -71,6 +71,19 @@
 (display-battery-mode t) ;; NOTE: display battery status in the mode line
 ;; (which-function-mode t) ;; NOTE: show the current function in the mode line
 
+;;; COMMENT: column identifiers
+;; (setq fill-column 80) ;; NOTE: column width limit (DEFAULT: 80)
+
+;;; COMMENT: fill column indicator
+;; (require 'fill-column-indicator)
+;; (fci-mode 1)
+
+;;; COMMENT: whitespace mode
+;; ;; NOTE: this mode highlights any text beyond the limit defined in `whitespace-line-column'
+;; (require 'whitespace)
+;; (setq whitespace-style '(face empty tabs lines-tail trailing))
+;; (global-whitespace-mode t) ;; TODO: this probably only needs to be in the programming hook
+
 ;;; COMMENT: code folding
 (require 'hideshow)
 
@@ -125,7 +138,7 @@
 (eval-after-load "haskell-doc" '(diminish 'haskell-doc-mode ""))
 (eval-after-load "haskell-indent" '(diminish 'haskell-indent-mode ""))
 (eval-after-load "reftex" '(diminish 'reftex-mode ""))
-(eval-after-load "glasses" '(diminish 'glasses-mode ""))
+;; (eval-after-load "glasses" '(diminish 'glasses-mode ""))
 (eval-after-load "face-remap" '(diminish 'buffer-face-mode ""))
 (eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
 

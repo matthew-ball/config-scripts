@@ -448,19 +448,29 @@
       recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
       recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
-(recentf-mode t)
+(eval-after-load "recentf" (recentf-mode t))
 
 ;;; COMMENT: desktop save mode
 (autoload 'desktop-save-mode "desktop" "Save session file." t)
 
-(desktop-save-mode 1) ;; NOTE: enable desktop save mode
+(defun restore-desktop-session (&rest junk)
+  "Query the user to start the previous saved session or not."
+  (interactive)
+  (save-excursion
+    (when (y-or-n-p (format "Restore desktop session?"))
+      (progn
+	(desktop-save-mode 1) ;; NOTE: enable desktop-save-mode also
+	(desktop-read))))) ;; NOTE: read the desktop file
+
+(restore-desktop-session)
+;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
 
 (setq desktop-path `(,(expand-file-name user-emacs-directory))
       desktop-dirname (expand-file-name user-emacs-directory)
       desktop-base-file-name "emacs-desktop"
       history-length 250)
 
-(add-to-list 'desktop-globals-to-save 'file-name-history)
+(eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
 
 (setq desktop-globals-to-save ;; NOTE: save a bunch of variables to the desktop file (for lists specify the len of the maximal saved data also)
       (append '((extended-command-history . 30)
@@ -518,7 +528,9 @@
       ispell-parser 'tex
       ispell-extra-args '("--sug-mode=ultra"))
 
-;;; COMMENT: docview
+;;; COMMENT: doc-view
+(autoload 'doc-view-mode "doc-view" "Read PDFs with GNU Emacs." t)
+
 (setq doc-view-continuous t)
 
 ;;; COMMENT: ansi-terminal
@@ -552,5 +564,9 @@
 	(kill-buffer))))
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+;;; COMMENT: help mode
+(require 'help-mode)
+;; (load-library "help-mode")
 
 (provide 'general-config)

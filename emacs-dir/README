@@ -1,7 +1,8 @@
-
 =This README file is best read using functionality provided by org-mode=
 
 * GNU Emacs Configuration
+- This is an attempt at the full blown "GNU Emacs as an Operating System" configuration. Not all of the configuration needs to be used[fn:configuration-note], but a lot of it is recommended.
+
 - This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs
 - This configuration is a full-blown "emacs is an operating system" setup; this extra functionality is easily configured
 - This configuration optionally includes functionality for the following "external"[fn:external] operations:
@@ -19,7 +20,8 @@
 # TODO: this is more like the initiation file for the aforementioned project, create a proper "README" file
 
 ** GNU Emacs Version
-- This configuration is developed (and running) on GNU Emacs 24.0.92.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1) of 2012-01-19 on kutjera, modified by Debian.
+- This configuration is developed (and running) on GNU Emacs 24.1.50.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1)
+ of 2012-05-03 on cw-bkp0, modified by Debian.
 
 ** Initiation :: [[file:init.el][init.el]]
 - this file initialises the configuration:
@@ -46,6 +48,7 @@
     - eproject :: /description/
     - haskell-mode :: /description/
     - magit :: /description/
+    - gist :: /description/
     - slime :: the Superior Lisp Interaction mode for Emacs
     - smex :: /description/
     - zenburn :: just some alien fruit salad to keep you in the zone
@@ -54,6 +57,7 @@
   + the following files are not available from ELPA, but are required for complete working:
     - auto-complete :: start auto-completion at current point - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]]
     - apt-mode :: debian/ubuntu package management mode available from [[http://www.netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el][netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el]]
+    - fill-column-indicator :: /description/
     - ...
 
 ** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
@@ -154,3 +158,5 @@ Org is a mode for keeping notes, maintaining TODO lists, and doing project plann
 [fn:order-of-evaluation] The order these files are listed in is the order they are included in. This ordering may (or may not) be necessary.
 
 [fn:external] The word "external" in this context means something like "acting outside the traditional scope of a text-editor".
+
+[fn:configuration-note] This should be verified.

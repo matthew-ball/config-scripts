@@ -9,8 +9,9 @@
   "General function for programming modes."
   (modify-syntax-entry ?- "w") ;; NOTE: treat '-' as part of the word
   ;; (flymake-mode) ;; NOTE: turn on flymake mode
-  (glasses-mode) ;; NOTE: turn on glasses mode
-  (hs-minor-mode))
+  ;; (glasses-mode) ;; NOTE: turn on glasses mode
+  ;; (hs-minor-mode)
+  )
 
 ;;; COMMENT: emacs lisp programming
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
@@ -19,7 +20,7 @@
  'paredit-backward-delete
  'paredit-close-round)
 
-;; (add-hook 'after-save-hook  (lambda () ;; NOTE: automatically byte-compile .el files
+;; (add-hook 'after-save-hook (lambda () ;; NOTE: automatically byte-compile .el files
 ;; 			      (if (eq major-mode 'emacs-lisp-mode)
 ;; 				  (save-excursion (byte-compile-file buffer-file-name)))))
 
@@ -104,6 +105,10 @@
 ;;; COMMENT: javascript programming
 (autoload 'javascript-mode "javascript" "Major mode for editing javascript source code." t)
 
+;;; COMMENT: C/C++ programming
+(autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
+(autoload 'c++-mode "cc-mode" "Major mode for editing C++ source code." t)
+
 ;;; COMMENT: maxima
 (autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
 (autoload 'maxima "maxima" "Major mode for maxima interaction." t)
@@ -111,5 +116,7 @@
 (autoload 'imath-mode "imath" "Imath mode for math formula input." t)
 
 (setq imaxima-use-maxima-mode-flag t)
+
+;;; COMMENT: CEDET (collection of emacs development environment tools)
 
 (provide 'programming-config)
