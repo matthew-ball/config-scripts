@@ -36,6 +36,8 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+;; WARNING: since the following two "custom" minor modes require the user variables defined above ...
+;;          perhaps they should both be moved into the file `user-config.el'
 ;;; COMMENT: highlight custom comment tags
 (require 'custom-comments)
 (setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
@@ -43,6 +45,14 @@
 
 ;;; COMMENT: configuration files
 (require 'configuration-files)
+
+(add-config-file (concat (expand-file-name user-emacs-directory) "init.el")) ;; NOTE: add ~/.conf-scripts/emacs-dir/init.el
+(add-config-file (concat (expand-file-name user-scripts-directory) "stumpwmrc")) ;; NOTE: add ~/.conf-scripts/stumpwmrc
+(add-config-file (concat (expand-file-name user-scripts-directory) "bashrc")) ;; NOTE: add ~/.conf-scripts/bashrc
+(add-config-directory (concat user-emacs-directory "config-el/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/config-el/
+(add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/my-modes/
+(add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add .sh files in ~/.conf-scripts/bash-dir/
+(add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add .js files in ~/.conf-scripts/conkeror-dir/
 
 ;; TODO: this works, but as I no longer have my whole dot emacs file in a single location, it serves no purpose
 (defun switch-to-dot-emacs (&rest junk)
