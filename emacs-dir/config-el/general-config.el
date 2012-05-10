@@ -41,83 +41,11 @@
 (setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
 (activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
-(defun occur-mode-clean-buffer ()
-  "Removes all commentary from the *Occur* buffer, leaving the unadorned lines."
-  (interactive)
-  (if (get-buffer "*Occur*")
-      (save-excursion
-	(set-buffer (get-buffer "*Occur*"))
-	(goto-char (point-min))
-	(toggle-read-only 0)
-	(if (looking-at "^[0-9]+ lines matching \"")
-	    (kill-line 1))
-	(while (re-search-forward "^[ \t]*[0-9]+:" (point-max) t)
-	  (replace-match "")
-	  (forward-line 1)))
-    (message "There is no buffer named \"*Occur*\".")))
+;;; COMMENT: configuration files
+(require 'configuration-files)
 
-(defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
-  "Show the outline structure of all files matching the same extension in a directory."
-  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) string)
-  ;; (occur-mode-clean-buffer) ;; ;; NOTE: clean up the occur-mode buffer
-  (other-window 1))
-
-(defun show-dot-file-structure (&rest junk) ;; FIX: this currently only works for .el extensions (???)
-  "Show the outline structure of all configuration files matching the same extension."
-  (interactive)
-  (show-custom-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
-
-(defun insert-custom-header-text (&rest junk) ;; NOTE: need (substring ...) otherwise we pick up the \n character
-  "Insert the header string for a file."
-  (interactive)
-  (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
-		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
-			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
-
-;; TODO: move this somewhere ... this is like the beginning of a basic project management mode
-;; TODO: include `README' files
-;; NOTE: so this now depends upon the custom variables defined above
-;; NOTE: I think maybe this should just be a general `open-dircetory' mode
-;; NOTE: ... I don't need to worry about using `desktop-mode' (???)
-(defvar config-files-alist '() "Stores a list of the names of the configuration files.")
-
-(defun add-config-file (file)
-  "Add FILE to the list `config-files'."
-  (push file config-files-alist))
-
-(defun open-config-files (&rest junk)
-  "Opens all configuration files."
-  (interactive)
-  (add-emacs-config-files)
-  (dolist (file config-files-alist)
-    (find-file file)))
-
-(defun add-emacs-config-files (&rest junk)
-  "Adds all GNU Emacs related configuration files to the `config-files-alist' list."
-  (add-config-file (concat (expand-file-name user-emacs-directory) "init.el"))   ;; NOTE: add `init.el'
-  (save-excursion   ;; NOTE: add the contents of the `config-el' directory
-    (if (file-exists-p (concat user-emacs-directory "config-el/"))
-	(let (files result)
-	  (setq files (directory-files (concat (expand-file-name user-emacs-directory) "config-el/") t "\.el$" t))
-	  (dolist (file-name files)
-	    (when (and (file-readable-p file-name) (not (file-directory-p file-name)))
-	      ;; (setq result (cons file-name result))
-	      (add-config-file file-name))))))
-  (save-excursion   ;; NOTE: add the contents of the `my-modes' directory
-    (if (file-exists-p (concat user-emacs-directory "my-modes/"))
-	(let (files result)
-	  (setq files (directory-files (concat (expand-file-name user-emacs-directory) "my-modes/") t "\.el$" t))
-	  (dolist (file-name files)
-	    (when (and (file-readable-p file-name) (not (file-directory-p file-name)))
-	      ;; (setq result (cons file-name))
-	      (add-config-file file-name)))))))
-
-;; (defun open-stumpwm-config-files (&rest junk))
-;; (defun open-bash-config-files (&rest junk))
-
-;; TODO: this needs to be changed ...
-;; TODO: could probably be a function which opens the config-el directory ...
-(defun switch-to-dot-emacs (&rest junk) ;; NOTE: this function serves no purpose anymore ... consider removing this function ... (???)
+;; TODO: this works, but as I no longer have my whole dot emacs file in a single location, it serves no purpose
+(defun switch-to-dot-emacs (&rest junk)
   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
   (interactive)
   ;; (config files)
@@ -125,6 +53,7 @@
       (eval-buffer) ;; evaluate the current buffer
     (find-file (concat (expand-file-name user-emacs-directory) "init.el")))) ;; switch to the init.el file
 
+;;; COMMENT: initial minibuffer message
 (defun display-startup-echo-area-message (&rest junk)
   "Clear the message buffer initially."
   (message ""))

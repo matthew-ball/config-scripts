@@ -28,8 +28,11 @@
 
 ;;; COMMENT: default applications
 (defvar *browser* "" "Set the default web browser.") ;; TODO: this should be "x-www-browser"
-(defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this 1(and the previous) line is redundant
-(defvar *editor* "emacsclient -c" "Set the default editor.")
+(defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this line (and the previous) is redundant
+
+(defvar *editor* "emacs" "Set the default editor.") ;; NOTE: older, using the default emacs
+;; (defvar *editor* "emacsclient -c" "Set the default editor.") ;; NOTE: newer, using the `emacs --daemon' service
+
 (defvar *file-manager* "pcmanfm" "Set the default file manager.")
 (defvar *package-manager* "aptitude" "Set the default package manager.")
 (defvar *system-monitor* "htop" "Set the default system monitor.") ;; NOTE: this is redundant
@@ -534,7 +537,7 @@
 
 ;;; COMMENT: startup applications
 (when *initializing*
-  (run-shell-command "emacs --daemon") ;; NOTE: start emacs server process
+  ;; (run-shell-command "emacs --daemon") ;; NOTE: start emacs server process
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (run-editor) ;; NOTE: start the editor
   ;; (run-browser) ;; NOTE: start the browser

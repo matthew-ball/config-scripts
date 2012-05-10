@@ -5,30 +5,32 @@
 ;; (autoload 'color-theme "color-theme" "Colour theme for GNU Emacs." t)
 ;; (autoload 'zenburn "zenburn" "Zenburn colour theme for GNU Emacs." t)
 
-;; NOTE: frame specific color-themes
-(defun apply-colour-theme (frame)
-  "Apply colour theme to a frame based on whether its a 'real' window or a console window."
-  (select-frame frame)
-   (when (window-system frame)
-    (progn
-      (require 'color-theme)
-      ;;(require 'zenburn)
-      (set-face-attribute 'default nil :height 90)
-      ;;(eval-after-load "color-theme" '(zenburn))
-      (setq frame-title-format "%b"
-	    icon-title-format "%b"))))
+;; WARNING: this is for the `emacs --daemon' service
+;; (defun apply-colour-theme (frame) ;; NOTE: frame specific color-themes
+;;   "Apply colour theme to a frame based on whether its a 'real' window or a console window."
+;;   (select-frame frame)
+;;    (when (window-system frame)
+;;     (progn
+;;       (require 'color-theme)
+;;       (set-face-attribute 'default nil :height 90)
+;;       (eval-after-load "color-theme" '(progn ;; TODO: this gives me the wrong `zenburn' theme
+;; 					(require 'zenburn)
+;; 					(zenburn)))
+;;       (setq frame-title-format "%b"
+;; 	    icon-title-format "%b"))))
 
-(setq color-theme-is-global nil)
+;; (setq color-theme-is-global nil)
 
-(add-hook 'after-make-frame-functions 'apply-colour-theme) ;; NOTE: when a new frame is opened, apply colour theme
+;; (add-hook 'after-make-frame-functions 'apply-colour-theme) ;; NOTE: when a new frame is opened, apply colour theme
 
-;; (when (eq window-system 'x)  ;; NOTE: when using x windows system ...
-;;   (require 'color-theme)
-;;   (require 'zenburn)
-;;   (set-face-attribute 'default nil :height 90) ;; NOTE: change font size
-;;   (eval-after-load "color-theme" '(zenburn)) ;; NOTE: apply zenburn colour theme
-;;   (setq frame-title-format "%b"
-;; 	icon-title-format "%b"))
+;; WARNING: this is for straight up emacs
+(when (eq window-system 'x)  ;; NOTE: when using x windows system
+  (require 'color-theme)
+  (require 'zenburn)
+  (set-face-attribute 'default nil :height 90) ;; NOTE: change font size
+  (eval-after-load "color-theme" '(zenburn)) ;; NOTE: apply zenburn colour theme
+  (setq frame-title-format "%b"
+	icon-title-format "%b"))
 
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; NOTE: hide the tool bar
@@ -42,9 +44,9 @@
 (global-visual-line-mode t) ;; NOTE: enable visual line mode for all buffers (i.e. globally)
 
 ;;; COMMENT: line numbers
-;; (autoload 'linum-mode "linum" "Display line numbers." t)
+(autoload 'linum-mode "linum" "Display line numbers." t)
 
-;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file (ERROR: this seems to hate something)
+(add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file ;; WARNING: this does not like `doc-view-mode'
 
 ;;; COMMENT: ruler mode
 ;; (autoload 'rule-mode "ruler-mode" "Display a ruler which measures columns." t)

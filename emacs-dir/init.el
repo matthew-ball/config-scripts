@@ -32,7 +32,7 @@
 (require 'user-config)
 
 ;;; COMMENT: start emacs server
-;; (require 'server)
-;; (when (and (functionp 'server-running-p) (not (server-running-p))) ;; NOTE: don't start the server unless we know it isn't running
-;;   ;; (server-mode t) ;; enter server mode
-;;   (server-start))
+(require 'server)
+(when (and (functionp 'server-running-p) (not (server-running-p))) ;; NOTE: don't start the server unless we know it isn't running
+  ;; (server-mode t) ;; enter server mode
+  (server-start))

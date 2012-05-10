@@ -76,4 +76,38 @@ NOTE: This function depends on the multi-occur function `show-custom-structure'.
   (interactive)
   (show-custom-structure (custom-comment-tag-regexp)))
 
+(defun occur-mode-clean-buffer ()
+  "Removes all commentary from the *Occur* buffer, leaving the unadorned lines."
+  (interactive)
+  (if (get-buffer "*Occur*")
+      (save-excursion
+	(set-buffer (get-buffer "*Occur*"))
+	(goto-char (point-min))
+	(toggle-read-only 0)
+	(if (looking-at "^[0-9]+ lines matching \"")
+	    (kill-line 1))
+	(while (re-search-forward "^[ \t]*[0-9]+:" (point-max) t)
+	  (replace-match "")
+	  (forward-line 1)))
+    (message "There is no buffer named \"*Occur*\".")))
+
+(defun show-custom-structure (string &rest junk) ;; ERROR: seems to scan *all* buffers?
+  "Show the outline structure of all files matching the same extension in a directory."
+  (multi-occur-in-matching-buffers (file-name-extension (buffer-file-name)) string)
+  ;; (occur-mode-clean-buffer) ;; ;; NOTE: clean up the occur-mode buffer
+  (other-window 1))
+
+;; COMMENT: insert a custom header text (i.e. FILE and AUTHOR tags)
+(defun insert-custom-header-text (&rest junk) ;; NOTE: need (substring ...) otherwise we pick up the \n character
+  "Insert the header string for a file."
+  (interactive)
+  (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
+		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
+			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
+
+(defun show-dot-file-structure (&rest junk) ;; FIX: this currently only works for .el extensions (???)
+  "Show the outline structure of all configuration files matching the same extension."
+  (interactive)
+  (show-custom-structure (concat "^" (make-string 3 (aref comment-start 0)) "+")))
+
 (provide 'custom-comments)
