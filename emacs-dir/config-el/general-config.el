@@ -76,6 +76,9 @@
 
 ;; TODO: move this somewhere ... this is like the beginning of a basic project management mode
 ;; TODO: include `README' files
+;; NOTE: so this now depends upon the custom variables defined above
+;; NOTE: I think maybe this should just be a general `open-dircetory' mode
+;; NOTE: ... I don't need to worry about using `desktop-mode' (???)
 (defvar config-files-alist '() "Stores a list of the names of the configuration files.")
 
 (defun add-config-file (file)

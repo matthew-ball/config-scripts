@@ -45,13 +45,13 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 ### COMMENT: bash aliases (sourced from ~/.conf-scripts/bash-dir/bash_aliases)
-if [ -f ~/.conf-scripts/bash-dir/bash_aliases ]; then
-    . ~/.conf-scripts/bash-dir/bash_aliases
+if [ -f ~/.conf-scripts/bash-dir/bash_aliases.sh ]; then
+    . ~/.conf-scripts/bash-dir/bash_aliases.sh
 fi
 
 ### COMMENT: bash functions (sourced from ~/.conf-scripts/bash-dir/bash_functions) 
-if [ -f ~/.conf-scripts/bash-dir/bash_functions ]; then
-    . ~/.conf-scripts/bash-dir/bash_functions
+if [ -f ~/.conf-scripts/bash-dir/bash_functions.sh ]; then
+    . ~/.conf-scripts/bash-dir/bash_functions.sh
 fi
 
 # NOTE: prompt colours
