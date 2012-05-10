@@ -252,6 +252,8 @@
 	      (mode . compilation-mode)
 	      (mode . shell-script-mode)
 	      (mode . sh-mode)
+	      (mode . gist-list-mode)
+	      (mode . gist-menu-mode)
 	      (name . "^\\*slime-events\\*$")
 	      (name . "^\\*slime-threads\\*$")
 	      (name . "^\\*slime-connections\\*$")
