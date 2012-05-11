@@ -74,11 +74,24 @@
 - =config-setup.sh= started
 
 ** Initial Configuration
+# TODO: link to files
+- Ideally the =initial-build-script= will be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install
+- An install will just install the selected base (i.e. =arch= or =debian=) and then run the =initial-build-script=
+- The =initial-build-script= runs the following operations:
+  1. =clone= configuration directory from github
+  2. run =quicklisp= configuration
+  3. =symlink= appropriate configuration files (from =~/.conf-scripts/=)
+  4. restart system
+
+- Have two different versions of the configuration setups:
+  + `stable' :: guaranteed to work on both =debian= and =arch= installs
+  + `unstable' :: no guarantee it will work on a =debian= install
+
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
 - To start GDM manually: =sudo /etc/init.d/gdm start=
 - To restore defaults: =sudo update-rc.d gdm defaults=
-- TODO: the desktop (i.e. `exec stumpwm' is now called from the =.xinitrc= file
-
+- TODO: the desktop (i.e. `exec stumpwm') is now called from the =.xinitrc= file
+  
 *** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
 - the configuration script serves three main purposes:
   1. install the custom configuration

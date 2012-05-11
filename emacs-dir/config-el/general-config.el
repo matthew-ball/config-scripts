@@ -568,31 +568,28 @@
 	(term-kill-subjob)
 	(kill-buffer))))
 
-;; COMMENT: start htop session if and only if in a terminal session
-
+;;; COMMENT: ansi-term session management
 ;; (defun djcb-term-start-or-switch (prg &optional use-existing)
-;;   "* run program PRG in a terminal buffer. If USE-EXISTING is non-nil "
-;;   " and PRG is already running, switch to that buffer instead of starting"
-;;   " a new instance."
+;;   "Run program PRG in a terminal buffer.
+
+;; If USE-EXISTING is non-nil, and PRG is already running, switch to that buffer instead of starting a new instance."
 ;;   (interactive)
 ;;   (let ((bufname (concat "*" prg "*")))
 ;;     (when (not (and use-existing
-;;                  (let ((buf (get-buffer bufname)))
-;;                    (and buf (buffer-name (switch-to-buffer bufname))))))
+;; 		    (let ((buf (get-buffer bufname)))
+;; 		      (and buf (buffer-name (switch-to-buffer bufname))))))
 ;;       (ansi-term prg prg))))
 
-;; (defun djcb-term-start-or-switch (prg &optional use-existing)
-;;   "* run program PRG in a terminal buffer. If USE-EXISTING is non-nil "
-;;   " and PRG is already running, switch to that buffer instead of starting"
-;;   " a new instance."
-;;   (interactive)
-;;   (let ((bufname (concat "*" prg "*")))
-;;     (when (not (and use-existing
-;;                  (let ((buf (get-buffer bufname)))
-;;                    (and buf (buffer-name (switch-to-buffer bufname))))))
-;;       (ansi-term prg prg))))
+;; (defmacro djcb-program-shortcut (name key &optional use-existing)
+;;   "Macro to create a key binding KEY to start some terminal program PRG. I
 
-;;(djcb-program-shortcut "htop"  (kbd "<S-f4>") t)  ; my processes
+;; If USE-EXISTING is true, try to switch to an existing buffer."
+;;   `(global-set-key ,key
+;;      '(lambda()
+;;         (interactive)
+;;         (djcb-term-start-or-switch ,name ,use-existing))))
+
+;;(djcb-program-shortcut "htop"  (kbd "<S-f4>") t)  ;; NOTE: start htop session (if and only if in a terminal session)
 
 (defun switch-htop (&rest junk)
   "If running without an X window session, switch to a htop session."
