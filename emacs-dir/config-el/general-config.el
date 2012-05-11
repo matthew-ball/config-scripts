@@ -568,6 +568,66 @@
 	(term-kill-subjob)
 	(kill-buffer))))
 
+;; COMMENT: start htop session if and only if in a terminal session
+
+;; (defun djcb-term-start-or-switch (prg &optional use-existing)
+;;   "* run program PRG in a terminal buffer. If USE-EXISTING is non-nil "
+;;   " and PRG is already running, switch to that buffer instead of starting"
+;;   " a new instance."
+;;   (interactive)
+;;   (let ((bufname (concat "*" prg "*")))
+;;     (when (not (and use-existing
+;;                  (let ((buf (get-buffer bufname)))
+;;                    (and buf (buffer-name (switch-to-buffer bufname))))))
+;;       (ansi-term prg prg))))
+
+;; (defun djcb-term-start-or-switch (prg &optional use-existing)
+;;   "* run program PRG in a terminal buffer. If USE-EXISTING is non-nil "
+;;   " and PRG is already running, switch to that buffer instead of starting"
+;;   " a new instance."
+;;   (interactive)
+;;   (let ((bufname (concat "*" prg "*")))
+;;     (when (not (and use-existing
+;;                  (let ((buf (get-buffer bufname)))
+;;                    (and buf (buffer-name (switch-to-buffer bufname))))))
+;;       (ansi-term prg prg))))
+
+;;(djcb-program-shortcut "htop"  (kbd "<S-f4>") t)  ; my processes
+
+(defun switch-htop (&rest junk)
+  "If running without an X window session, switch to a htop session."
+  (when (eq window-system nil)
+    ))
+
+;;; COMMENT: interaction with transient mark mode
+(defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode
+  (set (make-local-variable 'transient-mark-mode) t))
+
+(ad-activate 'term-line-mode)
+
+(defadvice term-char-mode (after term-char-mode-fixes ()) ;; NOTE: disable transient mark modes in term-char-mode
+  (set (make-local-variable 'transient-mark-mode) nil))
+
+(ad-activate 'term-char-mode)
+
+;;; COMMENT: remote terminal hosts
+(defun remote-term (new-buffer-name cmd &rest switches) ;; NOTE: use this for remote so I can specify command line arguments
+  "Some documentation."
+  (setq term-ansi-buffer-name (concat "" new-buffer-name ""))
+  (setq term-ansi-buffer-name (generate-new-buffer-name term-ansi-buffer-name))
+  (setq term-ansi-buffer-name (apply 'make-term term-ansi-buffer-name cmd nil switches))
+  (set-buffer term-ansi-buffer-name)
+  (term-mode)
+  (term-char-mode)
+  (term-set-escape-char ?\C-x)
+  (switch-to-buffer term-ansi-buffer-name))
+
+(defun open-partch-connection (&rest junk)
+  "Open an SSH connection to the server `partch.anu.edu.au' with my university login number."
+  (interactive)
+  (remote-term "partch" "ssh" "u4537508@partch.anu.edu.au"))
+
+;;; COMMENT: ansi colour support
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;;; COMMENT: help mode
@@ -575,3 +635,5 @@
 ;; (load-library "help-mode")
 
 (provide 'general-config)
+
+
