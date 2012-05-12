@@ -32,6 +32,7 @@ emacs-dir/save-files/
 emacs-dir/url/
 emacs-dir/.emacs.desktop.lock
 emacs-dir/.emms-history
+emacs-dir/#*
 # ignore the mutt data
 mutt-dir/
 # ignore stumpwm's debug text
