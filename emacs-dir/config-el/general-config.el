@@ -569,27 +569,29 @@
 	(kill-buffer))))
 
 ;;; COMMENT: ansi-term session management
-;; (defun djcb-term-start-or-switch (prg &optional use-existing)
-;;   "Run program PRG in a terminal buffer.
+(defun terminal-start-or-switch (program &optional use-existing)
+  "Run program PROGRAM in a terminal buffer.
 
-;; If USE-EXISTING is non-nil, and PRG is already running, switch to that buffer instead of starting a new instance."
-;;   (interactive)
-;;   (let ((bufname (concat "*" prg "*")))
-;;     (when (not (and use-existing
-;; 		    (let ((buf (get-buffer bufname)))
-;; 		      (and buf (buffer-name (switch-to-buffer bufname))))))
-;;       (ansi-term prg prg))))
+If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffer instead of starting a new instance."
+  (interactive)
+  (let ((bufname (concat "*" program "*")))
+    (when (not (and use-existing
+		    (let ((buf (get-buffer bufname)))
+		      (and buf (buffer-name (switch-to-buffer bufname))))))
+      (ansi-term program program))))
 
-;; (defmacro djcb-program-shortcut (name key &optional use-existing)
-;;   "Macro to create a key binding KEY to start some terminal program PRG. I
+(defmacro terminal-program-shortcut (program key &optional use-existing)
+  "Macro to create a key binding KEY to start some terminal program PROGRAM.
 
-;; If USE-EXISTING is true, try to switch to an existing buffer."
-;;   `(global-set-key ,key
-;;      '(lambda()
-;;         (interactive)
-;;         (djcb-term-start-or-switch ,name ,use-existing))))
+If USE-EXISTING is true, try to switch to an existing buffer."
+  `(global-set-key ,key
+     '(lambda()
+        (interactive)
+        (terminal-start-or-switch ,program ,use-existing))))
 
-;;(djcb-program-shortcut "htop"  (kbd "<S-f4>") t)  ;; NOTE: start htop session (if and only if in a terminal session)
+(when (eq window-system nil) ;; NOTE: start sessions (if in a terminal)
+  (terminal-program-shortcut "bash"  (kbd "C-c B") t)
+  (terminal-program-shortcut "htop"  (kbd "C-c H") t))
 
 (defun switch-htop (&rest junk)
   "If running without an X window session, switch to a htop session."

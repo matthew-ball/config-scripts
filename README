@@ -65,7 +65,7 @@
 | bash\_aliases   |
 | passwords/      |
 | README          |
-| config-setup.sh |
+| [[file:config-setup.sh][config-setup.sh]] |
 |-----------------|
 
 *** TODO create script for symlinking files and directories
@@ -75,13 +75,19 @@
 
 ** Initial Configuration
 # TODO: link to files
-- Ideally the =initial-build-script= will be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install
-- An install will just install the selected base (i.e. =arch= or =debian=) and then run the =initial-build-script=
-- The =initial-build-script= runs the following operations:
+- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install
+- An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script
+- The [[file:config-setup.sh][config-setup.sh]] runs the following operations:
   1. =clone= configuration directory from github
   2. run =quicklisp= configuration
   3. =symlink= appropriate configuration files (from =~/.conf-scripts/=)
   4. restart system
+
+- =stumpwm= is loaded through `quicklisp' with the following command: sbcl --eval "(ql:quickload \"stumpwm\")"
+- TODO: finish this (i.e. what function do I call to /launch/ stumpwm)
+
+- Test bed for different commands:
+sbcl --eval "(ql:quicklisp 'stumpwm)" --eval "(stumpwm:stumpwm)"
 
 - Have two different versions of the configuration setups:
   + `stable' :: guaranteed to work on both =debian= and =arch= installs

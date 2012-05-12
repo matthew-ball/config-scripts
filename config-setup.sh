@@ -39,6 +39,21 @@ APTITUDE_DIR_DEST="~/.aptitude/"
 VERSION_NUMBER=0.01
 GITHUB_SRC="https://github.com/matthew-ball/config-scripts" # path to my github repository
 
+# TODO: clone github repository
+# TODO: run quicklisp configuration
+# TODO: symlink appropriate files
+# TODO: disable GDM
+
+# WARNING: system requires `git' to be installed
+function clone-git-project {
+    echo "clone git project"
+}
+
+# WARNING: requires `quicklisp' file to run
+function quicklisp-configuration {
+    echo "quicklisp configuration"
+}
+
 # i don't know if I will need these two check functions ...
 # function check-dir-exists {
 #     if [ -d $1]; then
