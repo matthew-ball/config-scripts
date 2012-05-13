@@ -10,12 +10,14 @@
   (select-frame frame)
   (let ((colour-theme-is-global nil))
     (if (window-system)
-      (progn
-	(color-theme-zenburn)
-	(set-face-attribute 'default nil :height 90)
-	(setq frame-title-format "%b"
-	      icon-title-format "%b"))
-      (message "terminal session"))))
+	(progn ;; NOTE: X session
+	  (color-theme-zenburn)
+	  (set-face-attribute 'default nil :height 90)
+	  (setq frame-title-format "%b"
+		icon-title-format "%b"))
+      (progn ;; NOTE: TTY session
+	;;(color-theme-dark-laptop) ;; ERROR: this does not work
+	))))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 

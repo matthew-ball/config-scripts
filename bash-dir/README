@@ -1,16 +1,16 @@
-
 =This README file is best read using functionality provided by org-mode=
 
-* BASH Configuration
-- the bash configuration is split over three files:
-  1. bashrc :: the bash rc file
-  2. bash\_aliases :: the bash alias definition file
-  3. bash\_functions :: the bash functions definition file
+* The =BASH= configuration
+- The bash configuration is split over the following files:
+  + [[file:init.sh][init.sh]] :: The bash init file.
+  + [[file:aliases.sh][aliases.sh]] :: The bash alias definitions file.
+  + [[file:functions.sh][functions.sh]] :: The bash functions definitions file.
+  + [[file:profile.sh][profile.sh]] :: The bash profile file.
 
-- the bash configuration makes an attempt at being somewhat "cross-platform":
-  + the current configuration includes a bash config for:
-    1. Debian
-    2. Ubuntu
-    3. Arch
+* TODO Rename bash config files like so:
+- profile.sh (this is the `bash__profile' script)
+- aliases.sh (this is the `bash__aliases' script)
+- functions.sh (this is the `bash__functions' script)
+- init.sh (this is the `bashrc' script)
 
 * Footnotes

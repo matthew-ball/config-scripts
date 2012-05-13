@@ -7,7 +7,7 @@
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add "~/.emacs.d/apt-el/" to user load-path
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "my-modes")) ;; NOTE: add "~/.emacs.d/my-modes/" to user load-path
 
-;; WARNING: this requires ELPA has been run and created its directory
+;; WARNING: this requires ELPA has been run and created its directory (or just create the ELPA directory first)
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
   (normal-top-level-add-subdirs-to-load-path)) ;; NOTE: recursively add sub-directories to load-path
 

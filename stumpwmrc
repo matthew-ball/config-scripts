@@ -19,11 +19,11 @@
 (set-prefix-key (kbd "s-z")) ;; set the stumpwm prefix key to super+z (default is C-t)
 
 ;; COMMENT: old
-(defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.") ;; NOTE: old zenburn foreground colour
-(defparameter *background-colour* "grey25" "Set the background colour.") ;; NOTE: old zenburn background colour
-(defparameter *border-colour* "grey25" "Set the border colour.")
-(defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
-(defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
+;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.") ;; NOTE: old zenburn foreground colour
+;; (defparameter *background-colour* "grey25" "Set the background colour.") ;; NOTE: old zenburn background colour
+;; (defparameter *border-colour* "grey25" "Set the border colour.")
+;; (defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
+;; (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
 
 ;; COMMENT: new
 ;; (defparameter *foreground-colour* "grey" "Set the foreground colour.") ;; NOTE: new foreground colour
@@ -102,16 +102,17 @@
 (set-contrib-dir "/usr/share/common-lisp/source/stumpwm/contrib") ;; set contrib directory
 
 (mapcar #'load-module '(;; "cpu" ;; load selected modules ;; ERROR: doesn't appear to work
-                        "mem"
-                        "battery-portable"
+                        ;; "mem"
+                        ;; "battery-portable"
 			;; "amixer"
 			;; "mpd"
 			;; "notifications"
 			;; "productivity"
                         ;; "net"
                         ;; "disk"
-                        "wifi"
-			"battery"))
+                        ;; "wifi"
+			;; "battery"
+			))
 
 ;;; COMMENT: window appearance
 (setf *normal-border-width* 0 ;; the width in pixels given to the borders of regular windows
@@ -125,46 +126,46 @@
 
 (set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1") ;; set the font for the message and input bars, and the mode line (emacs font)
 
-;;; COMMENT: message and input box
-(set-bg-color *background-colour*)
-(set-fg-color *foreground-colour*)
-(set-border-color *border-colour*)
-(set-focus-color *focus-colour*)
-(set-unfocus-color *unfocus-colour*)
+;; ;;; COMMENT: message and input box
+;; (set-bg-color *background-colour*)
+;; (set-fg-color *foreground-colour*)
+;; (set-border-color *border-colour*)
+;; (set-focus-color *focus-colour*)
+;; (set-unfocus-color *unfocus-colour*)
 (set-msg-border-width 0)
 
-(setf *message-window-gravity* :top-right ;; set the message-box to the top right
-      *input-window-gravity* :top-right ;; set the input-box to the top right
-      ;; *window-name-source* :title ;; windows get their name from their title property
-      *timeout-wait* 5) ;; how long a message will appear for (in seconds)
+(setf *message-window-gravity* :top-right ;; NOTE: set the message-box to the top right
+      *input-window-gravity* :top-right ;; NOTE: set the input-box to the top right
+      ;; *window-name-source* :title ;; NOTE: windows get their name from their title property
+      *timeout-wait* 5) ;; NOTE: how long a message will appear for (in seconds)
 
 ;;; COMMENT: mode line
 (set-frame-outline-width 0)
 
-(setf *mode-line-background-color* *background-colour*
-      *mode-line-foreground-color* *foreground-colour*
-      *mode-line-border-color* *border-colour*
-      *mode-line-border-width* 0 ;; set thickness of the mode line border
-      *mode-line-pad-x* 0 ;; set the padding between the mode line text and the sides
-      *mode-line-pad-y* 0 ;; set the padding between the mode line text and the top/bottom
+(setf ;; *mode-line-background-color* *background-colour*
+      ;; *mode-line-foreground-color* *foreground-colour*
+      ;; *mode-line-border-color* *border-colour*
+      *mode-line-border-width* 0 ;; NOTE: set thickness of the mode line border
+      *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
+      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
       *mode-line-position* :top
       *mode-line-screen-position* :top
       *mode-line-frame-position* :top
       *window-format* "%n%s %20t"
       *window-info-format* "[%i] - (%t)"
       *group-format* "%n:%t"
-      *mode-line-timeout* 1) ;; update every second (if nothing else has triggered it already)
+      *mode-line-timeout* 1) ;; NOTE: update every second (if nothing else has triggered it already)
 
 (setf *screen-mode-line-format*
       (list "[(^B%n^b) (^B%w^b)]" ;; current group/frames
        ;; "[(^B%g^bA)] [(^B%W^b)] " ;; groups/current frame
        ;; "[(%c) (%M)] " ;; cpu and memory
-       " [(%B) (%I)]" ;; battery and wireless
-       '(:eval (cat " [(^B" (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t) "^b)] ")) ;; time
+       ;; " [(%B) (%I)]" ;; battery and wireless
+       ;; '(:eval (cat " [(^B" (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t) "^b)] ")) ;; time
        ;; "[^B%m^b]" ;; mpd
        ))
 
-;; (when (not (head-mode-line (current-head))) ;; turn on the mode line
+;; (when (not (head-mode-line (current-head))) ;; NOTE: turn on the mode line
 ;;   (toggle-mode-line (current-screen) (current-head)))
 
 ;;; COMMENT: key bindings
@@ -182,21 +183,21 @@
   (let ((ks (mapcar #'(lambda (k) (cons 'defkey-root k)) keys)))
     `(progn ,@ks)))
 
-(defkeys-root ;; define root-map keys
-  ("s-g" "google") ;; quick search google
-  ("s-w" "wikipedia") ;; quick search wikipedia
-  ("s-A" "title") ;; modify current frame's title
-  ("s-R" "loadrc") ;; reload run-time configuartion file
-  ("M-b" "show-battery") ;; show battery status
-  ("M-u" "show-uptime") ;; show uptime status
-  ("M-h" "show-hostname") ;; show hostname
+(defkeys-root ;; NOTE: define root-map keys
+  ;; ("s-g" "google") ;; NOTE: quick search google
+  ;; ("s-w" "wikipedia") ;; NOTE: quick search wikipedia
+  ("s-A" "title") ;; NOTE: modify current frame's title
+  ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
+  ("M-b" "show-battery") ;; NOTE: show battery status
+  ("M-u" "show-uptime") ;; NOTE: show uptime status
+  ("M-h" "show-hostname") ;; NOTE: show hostname
   ("M-i" "show-window-properties")) ;; show current window's properties
 
-(defkeys-top ;; define top-map keys (these don't require prefix key)
+(defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
   ("s-E" '*emacs-map*)
-  ("s-M" '*mpd-map*)
+  ;; ("s-M" '*mpd-map*)
   ("s-S" '*sudo-map*)
-  ("s-V" '*volume-map*)
+  ;; ("s-V" '*volume-map*)
   ;; ("s-N" '*notifications-map*) ;; TODO: setup
   ("s-a" "run-audio-player") ;; open (or switch to an existing instance of) *audio-player*
   ("s-b" "run-browser") ;; open (or switch to an existing instance of) *browser*
@@ -210,35 +211,36 @@
   ("s-v" "run-video-player")) ;; open (or switch to an existing instance of) *video-player*
 
 (defvar *sudo-map* nil "Super-user specific key-bindings.")
-(defvar *emacs-map* nil "Emacs specific key-bindings.")
-(defvar *volume-map* nil "Control volume key-bindings.")
+;; (defvar *emacs-map* nil "Emacs specific key-bindings.")
+;; (defvar *volume-map* nil "Control volume key-bindings.")
 
 (fill-keymap *sudo-map*
              (kbd "r") "reboot"
 	     (kbd "s") "shutdown"
              (kbd "h") "hibernate")
 
-(fill-keymap *emacs-map*
-             (kbd "a") "emacs-agenda"
-	     (kbd "b") "emacs-bookmarks"
-             (kbd "c") "emacs-capture"
-             (kbd "d") "emacs-dired"
-	     (kbd "e") "emacs-erc"
-	     (kbd "g") "emacs-gnus"
-	     (kbd "i") "emacs-info"
-	     (kbd "t") "emacs-term"
-             (kbd "C") "emacs-calendar")
+;; (fill-keymap *emacs-map*
+;;              (kbd "a") "emacs-agenda"
+;; 	     (kbd "b") "emacs-bookmarks"
+;;              (kbd "c") "emacs-capture"
+;;              (kbd "d") "emacs-dired"
+;; 	     (kbd "e") "emacs-erc"
+;; 	     (kbd "g") "emacs-gnus"
+;; 	     (kbd "i") "emacs-info"
+;; 	     (kbd "t") "emacs-term"
+;;              (kbd "C") "emacs-calendar")
 
-(fill-keymap *volume-map*
-	     (kbd "u") "volume-up"
-	     (kbd "d") "volume-down"
-	     (kbd "m") "volume-toggle-mute")
+;; (fill-keymap *volume-map*
+;; 	     (kbd "u") "volume-up"
+;; 	     (kbd "d") "volume-down"
+;; 	     (kbd "m") "volume-toggle-mute")
 
 ;;; COMMENT: virtual desktops
-(setf (group-name (first (screen-groups (current-screen)))) "default") ;; rename 'Default' group 'default'
+(setf (group-name (first (screen-groups (current-screen)))) "default") ;; NOTE: rename 'Default' group 'default'
 
-(run-commands "gnewbg internet" ;; create internet group
-	      "gnewbg misc") ;; create misc group
+;; NOTE: don't really need this anymore
+;; (run-commands "gnewbg internet" ;; NOTE: create internet group
+;; 	      "gnewbg misc") ;; NOTE: create misc group
 
 ;;; COMMENT: run applications
 (defun run-app (cmd prop &optional args) ;; FIX: fix
@@ -288,15 +290,15 @@
 
 ;; FIX: clean these rules up (the property names shouldn't be hardcoded)
 ;; instance rules
-(frame-preference-rule "default" 'i "emacs")         ;; => *editor*
-(frame-preference-rule "default" 'i "pcmanfm")             ;; => *file-manager*
-(frame-preference-rule "default" 'i "x-terminal-emulator") ;; => *terminal*
-(frame-preference-rule "default" 'i "evince")              ;; => *document-viewer*
-(frame-preference-rule "internet" 'i "browser")            ;; => *browser*
+;; (frame-preference-rule "default" 'i "emacs")         ;; => *editor*
+;; (frame-preference-rule "default" 'i "pcmanfm")             ;; => *file-manager*
+;; (frame-preference-rule "default" 'i "x-terminal-emulator") ;; => *terminal*
+;; (frame-preference-rule "default" 'i "evince")              ;; => *document-viewer*
+;; (frame-preference-rule "internet" 'i "browser")            ;; => *browser*
 ;; (frame-preference-rule "internet" 'i "x-www-browser")   ;; => *browser*
 ;; title rules
-(frame-preference-rule "misc" 't "htop")                   ;; => *system-monitor*
-(frame-preference-rule "misc" 't "aptitude")               ;; => *package-manager*
+;; (frame-preference-rule "misc" 't "htop")                   ;; => *system-monitor*
+;; (frame-preference-rule "misc" 't "aptitude")               ;; => *package-manager*
 
 ;;; COMMENT: user commands
 ;; TODO: add `package-manager' commands
@@ -373,12 +375,12 @@
 (replace-hook *key-press-hook* 'key-press-hook)
 
 ;;; COMMENT: web jumping
-(defmacro make-web-jump (name url-prefix)
-  `(defcommand ,name (search) ((:rest ,(string-capitalize (string-downcase (concatenate 'string "Search in " (symbol-name name) " for: ")))))
-     (run-shell-command (format nil (concatenate 'string *browser* " '~A=~A'") ,url-prefix (substitute #\+ #\Space search)))))
+;; (defmacro make-web-jump (name url-prefix)
+;;   `(defcommand ,name (search) ((:rest ,(string-capitalize (string-downcase (concatenate 'string "Search in " (symbol-name name) " for: ")))))
+;;      (run-shell-command (format nil (concatenate 'string *browser* " '~A=~A'") ,url-prefix (substitute #\+ #\Space search)))))
 
-(make-web-jump google "http://www.google.com/search?q")
-(make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
+;; (make-web-jump google "http://www.google.com/search?q")
+;; (make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
 
 ;;; COMMENT: safe quit
 (defcommand safe-quit () () ;; redefine the "quit" command (only leave the stumpwm session if there are no windows open)
@@ -455,94 +457,94 @@
 ;;       *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; mode-line format for mpd
 
 ;;; COMMENT: volume control
-(defcommand volume-up () ()
-  "Increase volume level."
-  (dotimes (n 10)
-    (run-commands "amixer-Master-1+"))) ;; increase master volume +10
+;; (defcommand volume-up () ()
+;;   "Increase volume level."
+;;   (dotimes (n 10)
+;;     (run-commands "amixer-Master-1+"))) ;; increase master volume +10
 
-(defcommand volume-down () ()
-  "Decrease volume level."
-  (dotimes (n 10)
-    (run-commands "amixer-Master-1-"))) ;; decrease master volume -10
+;; (defcommand volume-down () ()
+;;   "Decrease volume level."
+;;   (dotimes (n 10)
+;;     (run-commands "amixer-Master-1-"))) ;; decrease master volume -10
 
-(defcommand volume-toggle-mute () ()
-  "Toggle between mute/unmute volume level."
-  (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
+;; (defcommand volume-toggle-mute () ()
+;;   "Toggle between mute/unmute volume level."
+;;   (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
 
 ;;; COMMENT: interact with emacs
-(defun send-emacs-key-command (cmd) ;; FIX: fix
-  "Send a key-command to an existing emacs session."
-  (emacs)
-  (send-meta-key (current-screen) (kbd cmd)))
+;; (defun send-emacs-key-command (cmd) ;; FIX: fix
+;;   "Send a key-command to an existing emacs session."
+;;   (emacs)
+;;   (send-meta-key (current-screen) (kbd cmd)))
 
-(defun send-emacs-string (str)
-  "Send a string to an extisting emacs session."
-  (emacs)
-  (window-send-string str))
+;; (defun send-emacs-string (str)
+;;   "Send a string to an extisting emacs session."
+;;   (emacs)
+;;   (window-send-string str))
 
-(defcommand emacs-agenda () ()
-  "View agenda in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "org-agenda")
-  (send-emacs-key-command "RET")
-  (message "Starting agenda."))
+;; (defcommand emacs-agenda () ()
+;;   "View agenda in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "org-agenda")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting agenda."))
 
-(defcommand emacs-bookmarks () ()
-  "Open bookmarks in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "list-bookmarks")
-  (send-emacs-key-command "RET")
-  (message "Starting bookmarks."))
+;; (defcommand emacs-bookmarks () ()
+;;   "Open bookmarks in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "list-bookmarks")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting bookmarks."))
 
-(defcommand emacs-capture () ()
-  "Capture note in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "org-capture")
-  (send-emacs-key-command "RET")
-  (message "Starting capture."))
+;; (defcommand emacs-capture () ()
+;;   "Capture note in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "org-capture")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting capture."))
 
-(defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIX: fix
-  "Open directory for file management in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "ido-dired")
-  (send-emacs-key-command "RET")
-  (send-emacs-string directory)
-  (send-emacs-key-command "RET")
-  (message "Starting dired."))
+;; (defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIX: fix
+;;   "Open directory for file management in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "ido-dired")
+;;   (send-emacs-key-command "RET")
+;;   (send-emacs-string directory)
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting dired."))
 
-(defcommand emacs-calendar () ()
-  "Open calendar in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "calendar")
-  (send-emacs-key-command "RET")
-  (message "Starting calendar."))
+;; (defcommand emacs-calendar () ()
+;;   "Open calendar in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "calendar")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting calendar."))
 
-(defcommand emacs-erc () ()
-  "Start an IRC connection in Emacs with ERC."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "erc-start-or-switch")
-  (send-emacs-key-command "RET")
-  (message "Starting ERC."))
+;; (defcommand emacs-erc () ()
+;;   "Start an IRC connection in Emacs with ERC."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "erc-start-or-switch")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting ERC."))
 
-(defcommand emacs-gnus () ()
-  "Read mail and RSS feeds in Emacs with GNUS."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "gnus")
-  (send-emacs-key-command "RET")
-  (message "Starting GNUS."))
+;; (defcommand emacs-gnus () ()
+;;   "Read mail and RSS feeds in Emacs with GNUS."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "gnus")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting GNUS."))
 
-(defcommand emacs-info () ()
-  "Open info documentation in Emacs."
-  (send-emacs-key-command "C-h")
-  (send-emacs-key-command "i")
-  (message "Starting info."))
+;; (defcommand emacs-info () ()
+;;   "Open info documentation in Emacs."
+;;   (send-emacs-key-command "C-h")
+;;   (send-emacs-key-command "i")
+;;   (message "Starting info."))
 
-(defcommand emacs-term () ()
-  "Start a new (or switch to an existing) ANSI terminal session in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "switch-term")
-  (send-emacs-key-command "RET")
-  (message "Starting term."))
+;; (defcommand emacs-term () ()
+;;   "Start a new (or switch to an existing) ANSI terminal session in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "switch-term")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting term."))
 
 ;;; COMMENT: startup applications
 (when *initializing*

@@ -326,6 +326,7 @@
 	      (mode . Custom-mode)
 	      (mode . completion-list-mode)
 	      (mode . finder-mode)
+	      (mode . color-theme-mode)
 	      (name . "\\*scratch\\*$")
 	      (name . "\\*Messages\\*$")
 	      (name . "\\*Keys\\*$")
@@ -465,7 +466,9 @@
 (defun save-desktop-session (&rest junk)
   "Saves the current GNU Emacs session."
   (interactive)
-  (desktop-save-in-desktop-dir))
+  ;;(desktop-save)
+  (desktop-save-in-desktop-dir)
+  )
 
 ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
 ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
@@ -476,6 +479,8 @@
       history-length 250)
 
 (eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
+
+(add-hook 'find-file-hook (lambda () (desktop-save-in-desktop-dir))) ;; NOTE: save the desktop everytime a file is opened
 
 (setq desktop-globals-to-save ;; NOTE: save a bunch of variables to the desktop file (for lists specify the len of the maximal saved data also)
       (append '((extended-command-history . 30)
@@ -589,14 +594,15 @@ If USE-EXISTING is true, try to switch to an existing buffer."
         (interactive)
         (terminal-start-or-switch ,program ,use-existing))))
 
-(when (eq window-system nil) ;; NOTE: start sessions (if in a terminal)
-  (terminal-program-shortcut "bash"  (kbd "C-c B") t)
-  (terminal-program-shortcut "htop"  (kbd "C-c H") t))
+;; TODO: this is a bit silly ...
+;; (when (eq window-system nil) ;; NOTE: start sessions (if in a terminal)
+;;   (terminal-program-shortcut "bash"  (kbd "C-c B") t)
+;;   (terminal-program-shortcut "htop"  (kbd "C-c H") t))
 
-(defun switch-htop (&rest junk)
-  "If running without an X window session, switch to a htop session."
-  (when (eq window-system nil)
-    ))
+;; (defun switch-htop (&rest junk)
+;;   "If running without an X window session, switch to a htop session."
+;;   (when (eq window-system nil)
+;;     ))
 
 ;;; COMMENT: interaction with transient mark mode
 (defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode
@@ -634,5 +640,3 @@ If USE-EXISTING is true, try to switch to an existing buffer."
 ;; (load-library "help-mode")
 
 (provide 'general-config)
-
-

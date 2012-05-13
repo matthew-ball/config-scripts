@@ -1,10 +1,10 @@
 =This README file is best read using functionality provided by org-mode=
 
-* GNU Emacs Configuration
+* The =GNU Emacs= configuration
 - This is an attempt at the full blown "GNU Emacs as an Operating System" configuration. Not all of the configuration needs to be used[fn:configuration-note], but a lot of it is recommended.
 
-- This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs
-- This configuration is a full-blown "emacs is an operating system" setup; this extra functionality is easily configured
+- This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs.
+
 - This configuration optionally includes functionality for the following "external"[fn:external] operations:
   + ERC :: an IRC client for GNU Emacs
   + GNUS :: a mail and newsreader client for GNU Emacs
@@ -12,12 +12,6 @@
   + eshell :: a shell emulator for GNU Emacs
   + package :: an emacs-lisp package manager
   + package-manager :: a front-end to the system package manager
-
-** TODO This project is based on the idea available from Eric Schulte at [[http://eschulte.me/emacs-starter-kit/starter-kit.html][Emacs Starter Kit]] to turn the dot file setup into an org-file setup.
-
-# TODO: create a "literate" dot emacs initialisation file
-# run org-babel on start ...
-# TODO: this is more like the initiation file for the aforementioned project, create a proper "README" file
 
 ** GNU Emacs Version
 - This configuration is developed (and running) on GNU Emacs 24.1.50.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1)
@@ -145,6 +139,24 @@ Org is a mode for keeping notes, maintaining TODO lists, and doing project plann
   + ...
 
 ** User Settings :: [[file:config-el/user-config.el][user-config.el]]
+** Activated Major Modes
+- =ido-mode= :: /description/
+- =ido-ubiquitous-mode= :: /description/
+- =smex-mode= :: /description/
+- =ibuffer-mode= :: /description/
+- =stumpwm-mode= :: /description/
+- =tramp-mode= :: /description/
+- =magit-mode= :: /description/
+- =recentf-mode= :: /description/
+- =desktop-save-mode= :: /description/
+- =paredit-mode= :: /description/
+- =flyspell-mode= :: /description/
+- =doc-view-mode= :: /description/
+- =uniquify-mode= :: /description/
+- =help-mode= :: /description/
+- =auto-complete-mode= :: /description/
+
+** Activated Minor Modes
 * Footnotes
 
 [fn:ELPA] GNU Emacs Lisp Package Archiver.

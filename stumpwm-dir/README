@@ -1,7 +1,6 @@
-
 =This README file is best read using functionality provided by org-mode=
 
-* StumpWM Initialisation
+* The =StumpWM= configuration
 ** Appearance Configuration
 - The following variables are set:
   + foreground :: ...

@@ -1,25 +1,22 @@
-# ~/.conf-scripts/README
-# Matthew Ball (copyleft 2012)
-
 =This README file is best read using functionality provided by org-mode=
 
-* Configuration Files:
-- this directory houses the configuration files most important for the perfect[fn:subjective] working system
-- install, backup and restore scripts are provided to control the config project
-- the configuration script is designed for use with:
-  + Debian Squeeze
-    - Version: 0.00
+* The =Configuration Script= project
+- This directory houses the configuration files most important for the perfect[fn:subjective] working system.
+
+- An [[file:config-setup.sh][install]] scripts is provided which includes functionality to save and restore the configuration project.
+
+- The =configuration script= project is designed for use with the following applications:
   + BASH Terminal
     - Version: 0.00
   + StumpWM Window Manager
     - Version: 0.00
   + GNU Emacs Editor
     - Version: 24.0.92.1
-    + Org Extension
+    - Org Extension
       - Version: 7.8.03
-    + ERC Extension
+    - ERC Extension
       - Version: 5.3
-    + Gnus Extension
+    - Gnus Extension
       - Version: 5.13
   + Conkeror Web Browser
     - Version: 0.00
@@ -31,42 +28,77 @@
     - Version: 0.00
   + NMCLI Network Manager
     - Version: 0.00
-- the configuration will hopefully represent a possible "desktop" shell setup for GNU/Linux which is cross-platform across distributions, the setup currently supports:
-  + debian
-  + ubuntu
-  + arch
+
+- The configuration will hopefully represent a possible "desktop" shell setup for GNU/Linux which is cross-platform across distributions. Because the system is designed to work across different distributions, there must be two development repositories - one for /stable/ development builds, and one for /unstable/ development builds. The setup currently supports:
+  + debian :: /stable/ repositories (/unstable/ may work)
+  + ubuntu :: /stable/ repositories (/unstable/ may work)
+  + arch :: /stable/ and /unstable/ repositories
+
+** TODO Rename configuration files
+- All config files are placed in their respective directories, and titled with their function and file extensions.
+  - ~/.conf-scripts/emacs-dir/ -> ~/.emacs.d/
+  - ~/.conf-scripts/stumpwm-dir/init.lisp -> ~/.stumpwmrc
+  - ~/.conf-scripts/bash-dir/init.sh -> ~/.bashrc
 
 ** Linking Files
-- this configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required
-- the files and directories of the config project can then be symlink'ed from their source to a destination location
-- NOTE: the linking process should be run from the conf project root directory
+- This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
+
+- The files and directories of the =configuration scripts= project can then be =symlink='d from their source to a destination location.
+
+- WARNING: The linking process needs to be run from the =configuration scripts= project root directory.
 
 *** List of link files:
-|----------------------------+----------------+-----------------------------------------------|
-| Source:                    | Destination:   | Command:                                      |
-|----------------------------+----------------+-----------------------------------------------|
-| aptitude-dir/              | ~/.aptitude/   | ln -s aptitude-dir/ ~/.aptitude               |
-| bash-dir/                  | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                     |
-| conkeror-dir/              | ~/.conkerorrc/ | ln -s conkeror-dir/ ~/.conkerorrc             |
-| emacs-dir/                 | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d                   |
-| ncmpcpp-dir/               | ~/.ncmpcpp/    | ln -s ncmpcpp-dir/ ~/.ncmpcpp                 |
-| stumpwm-dir/               | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d               |
-|----------------------------+----------------+-----------------------------------------------|
-| bash-dir/bash.sh           | ~/.bashrc      | ln -s bash-dir/bash.sh ~/.bashrc              |
-| mpd-dir/mpd.conf           | ~/.mpdconf     | ln -s mpd-dir/mpd.conf ~/.mpdconf             |
-| stumpwm-dir/stumpwmrc.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/stumpwmrc.lisp ~/.stumpwmrc |
-|----------------------------+----------------+-----------------------------------------------|
+|-----------------------+----------------+------------------------------------------|
+| Source:               | Destination:   | Command:                                 |
+|-----------------------+----------------+------------------------------------------|
+| aptitude-dir/         | ~/.aptitude/   | ln -s aptitude-dir/ ~/.aptitude          |
+| bash-dir/             | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                |
+| conkeror-dir/         | ~/.conkerorrc/ | ln -s conkeror-dir/ ~/.conkerorrc        |
+| emacs-dir/            | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d              |
+| ncmpcpp-dir/          | ~/.ncmpcpp/    | ln -s ncmpcpp-dir/ ~/.ncmpcpp            |
+| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
+|-----------------------+----------------+------------------------------------------|
+| bash-dir/init.sh      | ~/.bashrc      | ln -s bash-dir/init.sh ~/.bashrc         |
+| mpd-dir/mpd.conf      | ~/.mpdconf     | ln -s mpd-dir/mpd.conf ~/.mpdconf        |
+| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
+|-----------------------+----------------+------------------------------------------|
+
+- aptitude-dir
+  + README
+- bash-dir
+  + README
+  + init.sh
+  + profile.sh
+  + aliases.sh
+  + functions.sh
+- conkeror-dir
+  + README
+  + init.js
+- emacs-dir
+  + README
+  + init.el
+- mpd-dir
+  + README
+  + init.conf
+- ncmpcpp-dir
+  + README
+- stumpwm-dir
+  + README
+  + init.lisp
+- xinit-dir
+  + README
+  + init.sh
 
 *** List of non-link files:
-|-----------------|
-| File Name:      |
-|-----------------|
-| .gitignore      |
-| bash\_aliases   |
-| passwords/      |
-| README          |
-| [[file:config-setup.sh][config-setup.sh]] |
-|-----------------|
+|-------------------|
+| File Name:        |
+|-------------------|
+| [[file:.gitignore][.gitignore]]        |
+| [[file:~/.conf-scripts][README]]            |
+| [[file:config-setup.sh][config-setup.sh]]   |
+| [[file:restore-script.sh][restore-script.sh]] |
+| [[file:backup-script.sh][backup-script.sh]]  |
+|-------------------|
 
 *** TODO create script for symlinking files and directories
 - the symlink command is: =ln -s <src> <dst>=
@@ -75,31 +107,28 @@
 
 ** Initial Configuration
 # TODO: link to files
-- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install
-- An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script
+- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install.
+
+- An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script.
+
 - The [[file:config-setup.sh][config-setup.sh]] runs the following operations:
-  1. =clone= configuration directory from github
-  2. run =quicklisp= configuration
+  1. =clone= the =configuration scripts= project directory from [[http://www.github.com][github]]
+  2. run =quicklisp= configuration (available from [[http://www.google.com][here]])
   3. =symlink= appropriate configuration files (from =~/.conf-scripts/=)
   4. restart system
 
-- =stumpwm= is loaded through `quicklisp' with the following command: sbcl --eval "(ql:quickload \"stumpwm\")"
-- TODO: finish this (i.e. what function do I call to /launch/ stumpwm)
-
-- Test bed for different commands:
-sbcl --eval "(ql:quicklisp 'stumpwm)" --eval "(stumpwm:stumpwm)"
+- =stumpwm= is loaded through `quicklisp' with the following command: sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" - This is handled in the [[file:xinit-dir/rc.sh][xinit/init.sh]] script called when =startx= is launched.
 
 - Have two different versions of the configuration setups:
-  + `stable' :: guaranteed to work on both =debian= and =arch= installs
-  + `unstable' :: no guarantee it will work on a =debian= install
+  + `stable' :: Guaranteed to work on both =debian= and =arch= installs.
+  + `unstable' :: No guarantee it will work on a =debian= install.
 
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
 - To start GDM manually: =sudo /etc/init.d/gdm start=
 - To restore defaults: =sudo update-rc.d gdm defaults=
-- TODO: the desktop (i.e. `exec stumpwm') is now called from the =.xinitrc= file
   
 *** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
-- the configuration script serves three main purposes:
+- The =configuration script= serves three main purposes:
   1. install the custom configuration
   2. backup the custom configuration
   3. restore the custom configuration
@@ -141,18 +170,6 @@ sbcl --eval "(ql:quicklisp 'stumpwm)" --eval "(stumpwm:stumpwm)"
 - the minimal process allows one to configure the system from this custom config setup script
   + create symlink's from $SRC to $DEST
 
-**** TODO move stumpwmrc to stumpwm-dir/init.lisp
-
-**** TODO move bashrc (and bash\_aliases) into bash-dir/
-
-**** TODO clean up mpd.conf file (rename to mpdrc)
-
-**** Backup Script
-- the backup script will ...
-
-**** Restore Script
-- the restore script will ...
-
 *** Backup Script :: [[file:backup-script.sh][backup-script.sh]]
 - the backup script ...
 
@@ -181,6 +198,12 @@ sbcl --eval "(ql:quicklisp 'stumpwm)" --eval "(stumpwm:stumpwm)"
 *** MPD Configuration :: [[file:~/.conf-scripts/mpd-dir/][mpd-dir/]]
 - the MPD configuration is explained in the [[file:mpd-dir/README][README]] file of the =mpd-dir= directory
 
+** TODO Create a /literate/ configuration script
+- Based on the idea available from Eric Schulte at [[http://eschulte.me/emacs-starter-kit/starter-kit.html][Emacs Starter Kit]].
+
+# TODO: create a "literate" configuration script initialisation file
+
+# run org-babel on start ...
 * Footnotes
 
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
