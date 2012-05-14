@@ -34,12 +34,6 @@
   + ubuntu :: /stable/ repositories (/unstable/ may work)
   + arch :: /stable/ and /unstable/ repositories
 
-** TODO Rename configuration files
-- All config files are placed in their respective directories, and titled with their function and file extensions.
-  - ~/.conf-scripts/emacs-dir/ -> ~/.emacs.d/
-  - ~/.conf-scripts/stumpwm-dir/init.lisp -> ~/.stumpwmrc
-  - ~/.conf-scripts/bash-dir/init.sh -> ~/.bashrc
-
 ** Linking Files
 - This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
 
@@ -48,43 +42,53 @@
 - WARNING: The linking process needs to be run from the =configuration scripts= project root directory.
 
 *** List of link files:
-|-----------------------+----------------+------------------------------------------|
-| Source:               | Destination:   | Command:                                 |
-|-----------------------+----------------+------------------------------------------|
-| aptitude-dir/         | ~/.aptitude/   | ln -s aptitude-dir/ ~/.aptitude          |
-| bash-dir/             | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                |
-| conkeror-dir/         | ~/.conkerorrc/ | ln -s conkeror-dir/ ~/.conkerorrc        |
-| emacs-dir/            | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d              |
-| ncmpcpp-dir/          | ~/.ncmpcpp/    | ln -s ncmpcpp-dir/ ~/.ncmpcpp            |
-| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
-|-----------------------+----------------+------------------------------------------|
-| bash-dir/init.sh      | ~/.bashrc      | ln -s bash-dir/init.sh ~/.bashrc         |
-| mpd-dir/mpd.conf      | ~/.mpdconf     | ln -s mpd-dir/mpd.conf ~/.mpdconf        |
-| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
-|-----------------------+----------------+------------------------------------------|
+|-----------------------+------------------+--------------------------------------------|
+| Source:               | Destination:     | Command:                                   |
+|-----------------------+------------------+--------------------------------------------|
+| aptitude-dir/         | ~/.aptitude/     | ln -s aptitude-dir/ ~/.aptitude            |
+| bash-dir/             | ~/.bash.d/       | ln -s bash-dir/ ~/.bash.d                  |
+| conkeror-dir/         | ~/.conkerorrc/   | ln -s conkeror-dir/ ~/.conkerorrc          |
+| emacs-dir/            | ~/.emacs.d/      | ln -s emacs-dir/ ~/.emacs.d                |
+| ncmpcpp-dir/          | ~/.ncmpcpp/      | ln -s ncmpcpp-dir/ ~/.ncmpcpp              |
+| stumpwm-dir/          | ~/.stumpwm.d/    | ln -s stumpwm-dir/ ~/.stumpwm.d            |
+|-----------------------+------------------+--------------------------------------------|
+| bash-dir/init.sh      | ~/.bashrc        | ln -s bash-dir/init.sh ~/.bashrc           |
+| bash-dir/profile.sh   | ~/.bash\_profile | ln -s bash-dir/profile.sh ~/.bash\_profile |
+| mpd-dir/mpd.conf      | ~/.mpdconf       | ln -s mpd-dir/mpd.conf ~/.mpdconf          |
+| xinit-dir/init.sh     | ~/.xinitrc       | ln -s xinit-dir/init.sh ~/.xinitrc         |
+| stumpwm-dir/init.lisp | ~/.stumpwmrc     | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc   |
+|-----------------------+------------------+--------------------------------------------|
 
+**** verbose
 - aptitude-dir
   + README
+
 - bash-dir
   + README
   + init.sh
   + profile.sh
   + aliases.sh
   + functions.sh
+
 - conkeror-dir
   + README
   + init.js
+
 - emacs-dir
   + README
   + init.el
+
 - mpd-dir
   + README
   + init.conf
+
 - ncmpcpp-dir
   + README
+
 - stumpwm-dir
   + README
   + init.lisp
+
 - xinit-dir
   + README
   + init.sh
@@ -106,16 +110,16 @@
 - =config-setup.sh= started
 
 ** Initial Configuration
-# TODO: link to files
 - The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install.
 
-- An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script.
-
 - The [[file:config-setup.sh][config-setup.sh]] runs the following operations:
-  1. =clone= the =configuration scripts= project directory from [[http://www.github.com][github]]
-  2. run =quicklisp= configuration (available from [[http://www.google.com][here]])
-  3. =symlink= appropriate configuration files (from =~/.conf-scripts/=)
-  4. restart system
+  1. Execute =clone= on the =configuration scripts= project directory from [[http://www.github.com][github]].
+  2. Add the =emacs-snapshot= repository to the package manager (NOTE: maybe Debian only?).
+  3. Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
+  4. Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
+  5. Restart system.
+
+- An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script.
 
 - =stumpwm= is loaded through `quicklisp' with the following command: sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" - This is handled in the [[file:xinit-dir/rc.sh][xinit/init.sh]] script called when =startx= is launched.
 

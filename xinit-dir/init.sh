@@ -1,4 +1,3 @@
-#!/bin/sh
 ## FILE: /home/chu/.conf-scripts/xinit-dir/init.sh
 ## AUTHOR: Matthew Ball (copyleft 2012)
 
