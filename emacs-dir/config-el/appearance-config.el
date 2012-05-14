@@ -11,7 +11,7 @@
   (let ((colour-theme-is-global nil))
     (if (window-system)
 	(progn ;; NOTE: X session
-	  ;; (color-theme-zenburn) ;; NOTE: apply `zenburn' theme to a new frame
+	  (color-theme-zenburn) ;; NOTE: apply `zenburn' theme to a new frame
 	  (set-face-attribute 'default nil :height 90)
 	  (setq frame-title-format "%b"
 		icon-title-format "%b"))

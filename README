@@ -3,22 +3,16 @@
 * The =Configuration Script= project
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system.
 
-- An [[file:config-setup.sh][install]] script is provided which includes functionality to save and restore the configuration project.
+- An [[file:config-setup.sh][install]] script is provided which includes functionality to save, restore, and update the configuration script project.
 
 - The =configuration script= project is designed for use with the following applications:
-  + BASH Terminal
+  + =BASH= Terminal :: [[file:bash-dir/README][README]]
     - Version: 0.00
-  + StumpWM Window Manager
+  + =StumpWM= Window Manager :: [[file:stumpwm-dir/README][README]]
     - Version: 0.00
-  + GNU Emacs Editor
+  + =GNU Emacs= Editor :: [[file:emacs-dir/README][README]]
     - Version: 24.0.92.1
-    - Org Extension
-      - Version: 7.8.03
-    - ERC Extension
-      - Version: 5.3
-    - Gnus Extension
-      - Version: 5.13
-  + Conkeror Web Browser
+  + =Conkeror= Web Browser :: [[file:conkeror-dir/README][README]]
     - Version: 0.00
   + Music Player Daemon
     - Version: 0.00
@@ -53,13 +47,13 @@
 | stumpwm-dir/          | ~/.stumpwm.d/    | ln -s stumpwm-dir/ ~/.stumpwm.d            |
 |-----------------------+------------------+--------------------------------------------|
 | bash-dir/init.sh      | ~/.bashrc        | ln -s bash-dir/init.sh ~/.bashrc           |
-| bash-dir/profile.sh   | ~/.bash\_profile | ln -s bash-dir/profile.sh ~/.bash\_profile |
 | mpd-dir/mpd.conf      | ~/.mpdconf       | ln -s mpd-dir/mpd.conf ~/.mpdconf          |
 | xinit-dir/init.sh     | ~/.xinitrc       | ln -s xinit-dir/init.sh ~/.xinitrc         |
 | stumpwm-dir/init.lisp | ~/.stumpwmrc     | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc   |
+| bash-dir/profile.sh   | ~/.bash\_profile | ln -s bash-dir/profile.sh ~/.bash\_profile |
 |-----------------------+------------------+--------------------------------------------|
 
-**** verbose
+**** Files
 - aptitude-dir
   + README
 
@@ -94,6 +88,7 @@
   + init.sh
 
 *** List of non-link files:
+# TODO: add README files
 |-------------------|
 | File Name:        |
 |-------------------|
@@ -127,7 +122,8 @@
   + `stable' :: Guaranteed to work on both =debian= and =arch= installs.
   + `unstable' :: No guarantee it will work on a =debian= install.
 
-*** GNOME Desktop Manager
+*** Desktop Manager
+**** GNOME Desktop Manager
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
 - To start GDM manually: =sudo /etc/init.d/gdm start=
 - To restore defaults: =sudo update-rc.d gdm defaults=
@@ -181,29 +177,9 @@
 *** Restore Script :: [[file:restore-script.sh][restore-script.sh]]
 - the restore script ...
 
-** Application Configuration
-*** Aptitude Configuration :: [[~/.conf-scripts/aptitude-dir/][aptitude-dir/]]
-- the Aptitude configuration is explained in the [[file:aptitude-dir/README][README]] file of =aptitude-dir= directory
+** TODO Create a =mailconfig= file for handling the email configuration
+- symlink to ~/.authinfo
 
-*** BASH Configuration :: [[file:bash-dir/][bash-dir/]]
-- the BASH configuration is explained in the [[file:bash-dir/README][README]] file of the =bash-dir= directory
-
-*** Conkeror Configuration :: [[file:conkeror-dir/][conkeror-dir/]]
-- the Conkeror configuration is explained in the [[file:conkeror-dir/README][README]] file of the =conkeror-dir= directory
-
-*** GNU Emacs Configuration :: [[file:emacs-dir/][emacs-dir/]]
-- the GNU Emacs configuration is explained in the [[file:emacs-dir/README][README]] file of the =emacs-dir= directory
-
-*** StumpWM Configuration :: [[~/.conf-scripts/stumpwm-dir/][stumpwm-dir/]]
-- the StumpWM configuration is explained in the [[file:stumpwm-dir/README][README]] file of the =stumpwm-dir= directory
-
-*** NCMPCPP Configuration :: [[file:~/.conf-scripts/ncmpcpp-dir/][ncmpcpp-dir/]]
-- the NCMPCPP configuration is explained in the [[file:ncmpcpp-dir/README][README]] file of the =ncmpcpp-dir= directory
-
-*** MPD Configuration :: [[file:~/.conf-scripts/mpd-dir/][mpd-dir/]]
-- the MPD configuration is explained in the [[file:mpd-dir/README][README]] file of the =mpd-dir= directory
-
-** TODO Create a =mailconf= file for handling the email configuration
 ** TODO Create a /literate/ configuration script
 - This would bring GNU Emacs to the centre of this configuration setup; which is a desired goal.
 
@@ -216,7 +192,3 @@
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
 
 [fn:broken-link] WARNING: Broken link.
-
-
-
-

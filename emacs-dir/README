@@ -5,30 +5,32 @@
 
 - This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs.
 
-- This configuration optionally includes functionality for the following "external"[fn:external] operations:
-  + ERC :: An IRC client for GNU Emacs.
-  + GNUS :: A mail and newsreader client for GNU Emacs.
-  + Dired :: A file system browser for GNU Emacs.
+- This configuration optionally includes functionality for the following operations:
+  + org :: /description/
+    - Version: 7.8.03
+  + erc :: An IRC client for GNU Emacs.
+    - Version: 5.3
+  + gnus :: A mail and newsreader client for GNU Emacs.
+    - Version: 5.13
+  + dired :: A file system browser for GNU Emacs.
   + eshell :: A shell emulator for GNU Emacs.
   + package :: An emacs-lisp package manager.
   + package-manager :: A front-end to the system package manager.
-
-- This configuration optionally includes functionality for the following "internal" operations:
-  + ido-mode :: /description/
-  + ido-ubiquitous-mode :: /description/
-  + smex-mode :: /description/
-  + ibuffer-mode :: /description/
-  + stumpwm-mode :: /description/
-  + tramp-mode :: /description/
-  + magit-mode :: /description/
-  + recentf-mode :: /description/
-  + desktop-save-mode :: /description/
-  + paredit-mode :: /description/
-  + flyspell-mode :: /description/
-  + doc-view-mode :: /description/
-  + uniquify-mode :: /description/
-  + help-mode :: /description/
-  + auto-complete-mode :: /description/
+  + ido :: /description/
+  + ido-ubiquitous :: /description/
+  + smex :: /description/
+  + ibuffer :: /description/
+  + stumpwm :: /description/
+  + tramp :: /description/
+  + magit :: /description/
+  + recentf :: /description/
+  + desktop-save :: /description/
+  + paredit :: /description/
+  + flyspell :: /description/
+  + doc-view :: /description/
+  + uniquify :: /description/
+  + help :: /description/
+  + auto-complete :: /description/
 
 ** GNU Emacs Version
 - This configuration is developed (and running) on GNU Emacs 24.1.50.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1)

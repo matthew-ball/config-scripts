@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # IMPORTANT: to give this script execute permissions run the command: 'chmod +x config-setup'
-# TODO: doesn't like the "~" variable (i.e. doesn't expand file names), replace with expanded address: "/home/$USER/"
 
 # TODO: task list
 # 1. Execute =clone= on the =configuration scripts= project directory from [[http://www.github.com][github]].
@@ -11,44 +10,35 @@
 # 5. Disable display manager.
 # 6. Restart system.
 
-### COMMENT: application variables
-# NOTE: emacs configuration files
-EMACS_DIR_SRC="~/.conf-scripts/emacs-dir/"
-EMACS_DIR_DEST="~/.emacs.d/"
-
-# NOTE: conkeror configuration files
-CONKEROR_DIR_SRC="~/.conf-scripts/conkeror-dir/"
-CONKEROR_DIR_DEST="~/.conkerorrc/"
-
-# NOTE: stumpwm configuration files
-STUMPWM_DIR_SRC="~/.conf-scripts/stumpwm-dir/"
-STUMPWM_DIR_DEST="~/.stumpwm.d/"
-
-STUMPWM_RC_SRC="~/.conf-scripts/stumpwm-dir/init.lisp"
-STUMPWM_RC_DEST="~/.stumpwmrc"
-
-# NOTE: bash configuration files
-BASH_DIR_SRC="~/.conf-scripts/bash-dir/"
-BASH_DIR_DEST="~/.bash.d/"
-
-BASH_RC_SRC="~/.conf-scripts/bash-dir/init.sh"
-BASH_RC_DEST="~/.bashrc"
-
-# NOTE: mpd configuration files # TODO: clean up mpd stuff
-MPD_RC_SRC="~/.conf-scripts/mpd-dir/mpdrc"
-MPD_RC_DEST="~/.mpdconf"
-
-# NOTE: ncmpcpp configuration files # TODO: populate ncmpcpp stuff
-NCMPCPP_DIR_SRC="~/.conf-scripts/ncmpcpp-dir/"
-NCMPCPP_DIR_DEST="~/.ncmpcpp/"
-
-# NOTE: aptitude configuration files # TODO: populate aptitude stuff
-APTITUDE_DIR_SRC="~/.conf-scripts/aptitude-dir/"
-APTITUDE_DIR_DEST="~/.aptitude/"
-
 ### COMMENT: general variables
 VERSION_NUMBER=0.01
-GITHUB_SRC="https://github.com/matthew-ball/config-scripts" # NOTE: path to my github repository
+GITHUB_SRC="https://github.com/matthew-ball/config-scripts" # NOTE: path to github repository
+
+### COMMENT: application variables
+# NOTE: emacs configuration files
+EMACS_DIR_SRC="/home/$USER/.conf-scripts/emacs-dir/"
+EMACS_DIR_DEST="/home/$USER/.emacs.d/"
+
+# NOTE: conkeror configuration files
+CONKEROR_DIR_SRC="/home/$USER/.conf-scripts/conkeror-dir/"
+CONKEROR_DIR_DEST="/home/$USER/.conkerorrc/"
+
+# NOTE: stumpwm configuration files
+STUMPWM_DIR_SRC="/home/$USER/.conf-scripts/stumpwm-dir/"
+STUMPWM_DIR_DEST="/home/$USER/.stumpwm.d/"
+
+STUMPWM_RC_SRC="/home/$USER/.conf-scripts/stumpwm-dir/init.lisp"
+STUMPWM_RC_DEST="/home/$USER/.stumpwmrc"
+
+# NOTE: bash configuration files
+BASH_DIR_SRC="/home/$USER/.conf-scripts/bash-dir/"
+BASH_DIR_DEST="/home/$USER/.bash.d/"
+
+BASH_RC_SRC="/home/$USER/.conf-scripts/bash-dir/init.sh"
+BASH_RC_DEST="/home/$USER/.bashrc"
+
+BASH_PR_SRC="/home/$USER/.conf-scripts/bash-dir/profile.sh"
+BASH_PR_DEST="/home/$USER/.bash_profile"
 
 ### COMMENT: user functions
 function sources-list-configuration { # COMMENT: modify sources.list # WARNING: need to be root
@@ -148,7 +138,7 @@ function maximal-configuration-setup {
     echo "- maximal configuration setup initiated ..."
     echo "  + downloading config files from $GITHUB_SRC ..."
     echo "  + config files downloaded ..."
-    minimal-setup # NOTE: run minimal-setup
+    minimal-configuration-setup # NOTE: run minimal configuration setup
     # do-something-else # NOTE: install extra functionality
 }
 
@@ -159,13 +149,13 @@ function unknown-input {
 }
 
 ### COMMENT: main process
-function main-program {
+function main-program { # TODO: reorder processes
     menu_option=5
     while [ $menu_option -ne 4 ]; do
 	echo "- configuration script functionality menu:"
-	echo "  0. custom config install"
-	echo "  1. custom config backup"
-	echo "  2. custom config restore"
+	echo "  0. install configuration script"
+	echo "  1. backup configuration script"
+	echo "  2. restore configuration script"
 	echo "  3. update configuration script"
 	echo "  4. quit"
 	echo -e "  + make selection: \c "
@@ -177,7 +167,7 @@ function main-program {
 	    echo -e "  + run maximal setup process? [0/1] \c "
 	    read confirm_process
 	    if [ $confirm_process -eq 0 ]; then
-		maximal-setup # NOTE: run maximal configuration setup
+		maximal-configuration-setup # NOTE: run maximal configuration setup
 	    else
 		if [ $confirm_process -eq 1 ]; then
 		    minimal-configuration-setup # NOTE: run minimal configuration setup
