@@ -105,18 +105,25 @@
 - =config-setup.sh= started
 
 ** Initial Configuration
-- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture - it will run on an =arch= install, or a =debian= install.
-
-- The [[file:config-setup.sh][config-setup.sh]] runs the following operations:
-  1. Execute =clone= on the =configuration scripts= project directory from [[http://www.github.com][github]].
-  2. Add the [[http://emacs.naquadah.org][emacs-snapshot]] repository to the package manager (NOTE: maybe Debian only?).
-  3. Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
-  4. Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
-  5. Restart system.
+- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; it will run on an =arch= install or a =debian= install.
 
 - An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script.
 
-- =stumpwm= is loaded through `quicklisp' with the following command: sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" - This is handled in the [[file:xinit-dir/rc.sh][xinit/init.sh]] script called when =startx= is launched.
+- The script runs the following operations:
+  + Execute =clone= on the /configuration scripts/ project directory from [[http://www.github.com][github]].
+  + Add the [[http://emacs.naquadah.org][emacs-snapshot]] repository to the package manager (NOTE: maybe Debian only?).
+  + Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
+  + Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
+  + Restart system.
+
+- The user =BASH= profile is launched with the [[file:bash-dir/profile.sh][bash-dir/profile.sh]] script.
+  + TODO: document the profile file
+
+- =startx= is launched with the [[file:xinit-dir/rc.sh][xinit/init.sh]] script.
+  + - =stumpwm= is loaded with the  command: 
+   #+begin_src shell-script
+     exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)"
+   #+end_src
 
 - Have two different versions of the configuration setups:
   + `stable' :: Guaranteed to work on both =debian= and =arch= installs.
