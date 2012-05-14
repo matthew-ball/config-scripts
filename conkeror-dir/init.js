@@ -1,72 +1,58 @@
-// ============================
-// custom .conkerorrc file
-// Matthew Ball (copyleft 2011)
-// ============================
+// FILE: /home/chu/.conf-scripts/conkeror-dir/init.js
+// AUTHOR: Matthew Ball (copyleft 2012)
 
-// ==========
-/// variables
-// ==========
-load_paths.unshift("chrome://conkeror-contrib/content/"); // load path: allow for 'contrib' stuff
-homepage = "http://www.google.com/ig"; // homepage
-dowload_buffer_automatic_open_target = [OPEN_NEW_BUFFER_BACKGROUND, OPEN_NEW_WINDOW]; // open downloads in a new buffer
-minibuffer_auto_complete_default = true; // auto-completion in the mini-buffer
-minibuffer_read_url_select_initial = false; // T and O shouldn't keave the URL highlighted
-url_completion_use_webjumps = true; // complete webjumps
-url_completion_use_history = true; // should work since (bf05c87405)
-url_completion_use_bookmarks = false; // bookmarks are now done through webjump
-url_remoting_fn = load_url_in_new_buffer; // open external links in a new buffer
-hints_display_url_panel = true; // display properties of the current selected node during the hints interaction
+/// COMMENT: variables
+load_paths.unshift("chrome://conkeror-contrib/content/"); // NOTE: load path: allow for 'contrib' stuff
+homepage = "http://www.google.com/ig"; // NOTE: homepage
+dowload_buffer_automatic_open_target = [OPEN_NEW_BUFFER_BACKGROUND, OPEN_NEW_WINDOW]; // NOTE: open downloads in a new buffer
+minibuffer_auto_complete_default = true; // NOTE: auto-completion in the mini-buffer
+minibuffer_read_url_select_initial = false; // NOTE: T and O shouldn't keave the URL highlighted
+url_completion_use_webjumps = true; // NOTE: complete webjumps
+url_completion_use_history = true; // NOTE: should work since (bf05c87405)
+url_completion_use_bookmarks = false; // NOTE: bookmarks are now done through webjump
+url_remoting_fn = load_url_in_new_buffer; // NOTE: open external links in a new buffer
+hints_display_url_panel = true; // NOTE: display properties of the current selected node during the hints interaction
 can_kill_last_buffer = false;
-view_source_use_external_editor = true; // view page source in editor
-isearch_keep_selection = true; // keep found item selected after search-mode ends
+view_source_use_external_editor = true; // NOTE: view page source in editor
+isearch_keep_selection = true; // NOTE: keep found item selected after search-mode ends
 
-// ===========
-/// MIME types
-// ===========
-content_handlers.set("application/pdf", content_handler_save); // automatically handle some mime types internally
+/// COMMENT: MIME types
+content_handlers.set("application/pdf", content_handler_save); // NOTE: automatically handle some mime types internally
 
 external_content_handlers.set("application/pdf", "evince");
 external_content_handlers.set("application/x-dvi", "evince");
 
-// ==========
-/// mode-line
-// ==========
+/// COMMENT: mode-line
 require("mode-line.js");
 require("mode-line-buttons.js");
 
 // add_hook("mode_line_hook", mode_line_adder(current_buffer_name_widget));
-add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true); // shows how many buffers are currently loading
-add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true); // shows how many buffers are currently open
+add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true); // NOTE: shows how many buffers are currently loading
+add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true); // NOTE: shows how many buffers are currently open
 remove_hook("mode_line_hook", mode_line_adder(clock_widget));
 // remove_hook("mode_line_hook", mode_line_adder(current_buffer_scroll_position_widget));
 
 mode_line_add_buttons(standard_mode_line_buttons, true);
 
-// =========
-/// favicons
-// =========
+/// COMMENT: favicons
 require("favicon");
 
 add_hook("mode_line_hook", mode_line_adder(buffer_icon_widget), true);
-read_buffer_show_icons = true; // show favicons in the open buffer completions listing
+read_buffer_show_icons = true; // NOTE: show favicons in the open buffer completions listing
 
-// =============
-/// tab-bar mode
-// =============
-// require("new-tabs.js"); // show tabs
-require("clicks-in-new-buffer.js"); // open buffers (tabs) in the background
+/// COMMENT: tab-bar mode
+// require("new-tabs.js"); // NOTE: show tabs
+require("clicks-in-new-buffer.js"); // NOTE: open buffers (tabs) in the background
 
 clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND;
-clicks_in_new_buffer_button = 1; //  middle-click opens links in new buffers
+clicks_in_new_buffer_button = 1; // NOTE: middle-click opens links in new buffers
 
-// ========================
-/// webjumps and smartlinks
-// ========================
+/// COMMENT: webjumps and smartlinks
 define_webjump("bookmark", function(term) {return term;},
                $completer = history_completer($use_history = false, $use_bookmarks = true, $match_required = true),
                $description = "Visit a Conkeror bookmark.");
 
-// procrastination stuff
+// NOTE: procrastination stuff
 define_webjump("fb", "http://www.facebook.com", $description="Facebook");
 define_webjump("g+", "http://plus.google.com", $description="Google+");
 define_webjump("gi", "http://google.com/ig", $description="iGoogle");
@@ -76,14 +62,14 @@ define_webjump("lp", "https://launchpad.net/", $description="Launchpad");
 define_webjump("afl", "http://www.afl.com.au", $description="Australian Football League");
 define_webjump("modem", "http://gateway.2wire.net", $description="Telstra Modem Information");
 
-// mailing lists
+// NOTE: mailing lists
 define_webjump("orgml", "http://lists.gnu.org/mailman/listinfo/emacs-orgmode", $description="Org-Mode Mailing List");
 define_webjump("ircml", "http://lists.ubuntu.com/archives/ubuntu-irc/", $description="Ubuntu IRC Mailing List");
 define_webjump("gnuml", "http://lists.gnu.org/mailman/listinfo", $description="GNU Mailing Lists");
 define_webjump("ubumla", "http://lists.ubuntu.com/archive/", $description="Ubuntu Mailing Lists Archive");
 define_webjump("gnumla", "http://lists.gnu.org/archive/html/", $description="GNU Mailing Lists Archive (Most Recent to Oldest)");
 
-// school stuff
+// NOTE: school stuff
 define_webjump("pp", "http://philpapers.org", $description="Philosophy Papers");
 define_webjump("stanford", "http://plato.stanford.edu/search/searcher.py?query=%s", $alternative="http://plato.stanford.edu", $description="Stanford Encyclopedia of Philosophy");
 define_webjump("jstor", "http://www.jstor.org.virtual.anu.edu.au", $description="Journal Storage");
@@ -94,7 +80,7 @@ define_webjump("webmail", "https://anumail.anu.edu.au", $description="ANU Webmai
 define_webjump("isis", "https://esapps.anu.edu.au/sscsprod/psp/sscsprod", $description="ANU ISIS and HORUS");
 define_webjump("aarnet", "http://www.aarnet.edu.au", $description="Australia's Academic and Reseach Network");
 
-// search stuff
+// NOTE: search stuff
 define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search=Search", $alternative="http://www.youtube.com", $description="Search YouTube");
 define_webjump("hoogle", "http://haskell.org/hoogle/?hoogle=%s", $alternative="http://haskell.org/hoogle/", $description="Search Hoogle");
 define_webjump("org-mode","https://www.google.com/cse?cx=002987994228320350715%3Az4glpcrritm&q=%s&sa=Search&siteurl=orgmode.org%2Fworg", $alternative="http://orgmode.org", $description="Search Org-Mode");
@@ -102,21 +88,21 @@ define_webjump("conkerorwiki", "http://conkeror.org/FrontPage?action=fullsearch&
 define_webjump("stumpwmwiki", "http://stumpwm.svkt.org/cgi-bin/wiki.pl?search=%s&dosearch=Go%21", $alternative="http://stumpwm.antidesktop.net/cgi-bin/wiki.pl", $description="Search StumpWM Wiki");
 define_webjump("emacswiki", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=emacswiki.org%2F", $alternative="http://www.emacswiki.org", $description="Search Emacs Wiki");
 
-// google specialised searching
+// NOTE: google specialised searching
 define_webjump("scholar", "http://scholar.google.com/scholar?q=%s", $alternative="http://scholar.google.com", $description="Search Google Scholar");
 define_webjump("books", "http://www.google.com/search?q=%s&tbm=bks", $alternative="http://books.google.com", $description="Search Google Books");
 define_webjump("code", "http://www.code.google.com/query/#q=%s", $alternative="http://www.code.google.com", $description="Search Google Code");
-define_webjump("translate", "http://translate.google.com", $description="Google Translate"); // there is no search here
+define_webjump("translate", "http://translate.google.com", $description="Google Translate"); // NOTE: there is no search here
 
-// ubuntu (and launchpad) specialised search
+// NOTE: ubuntu (and launchpad) specialised search
 define_webjump("ubuntupkg", "http://packages.ubuntu.com/%s", $description="Search Ubuntu Packages");
 define_webjump("ubuntubugs", "http://bugs.launchpad.net/ubuntu/+source/%s", $description="Search Ubuntu Bugs");
 define_webjump("launchpad", "https://launchpad.net/+search?field.text=%s", $description="Search Launchpad");
 
-define_webjump("github", "http://github.com/search?q=%s", $alternative="http://github.com", $description="Search GitHub"); // github search
-define_webjump("gitorious", "http://gitorious.org/search?q=%s", $alternative="http://gitorious.org", $description="Search Gitorious"); // gitorious search
+define_webjump("github", "http://github.com/search?q=%s", $alternative="http://github.com", $description="Search GitHub"); // NOTE: github search
+define_webjump("gitorious", "http://gitorious.org/search?q=%s", $alternative="http://gitorious.org", $description="Search Gitorious"); // NOTE: gitorious search
 
-// selection searches
+// NOTE: selection searches
 // TODO: fix
 // function create_selection_search(webjump, key) {
 //   interactive(webjump+"-selection-search",
@@ -140,25 +126,21 @@ define_webjump("gitorious", "http://gitorious.org/search?q=%s", $alternative="ht
 // create_selection_search("amazon","a");
 // create_selection_search("youtube","y");
 
-read_url_handler_list = [read_url_make_default_webjump_handler("google")]; // default webjump
+read_url_handler_list = [read_url_make_default_webjump_handler("google")]; // NOTE: default webjump
 
-// ===========
-/// quickjumps
-// ===========
-interactive("open-gmail", "Open gmail inbox.", "follow-new-buffer", $browser_object = "http://gmail.com/"); // open gmail (an alias of the follow-new-buffer command)
+/// COMMENT: quickjumps
+interactive("open-gmail", "Open gmail inbox.", "follow-new-buffer", $browser_object = "http://gmail.com/"); // NOTE: open gmail (an alias of the follow-new-buffer command)
 
 interactive("open-school-all","Open school related web-sites.",
 	    function(I) {
-	      load_url_in_new_buffer("http://wattle.anu.edu.au",I.window); // wattle
-	      load_url_in_new_buffer("http://anumail.anu.edu.au",I.window); // webmail
+	      load_url_in_new_buffer("http://wattle.anu.edu.au",I.window); // NOTE: wattle
+	      load_url_in_new_buffer("http://anumail.anu.edu.au",I.window); // NOTE: webmail
 	    });
 
-// ==================
-/// emacs integration
-// ==================
-editor_shell_command = "emacsclient -c"; // edit form text with emacs
+/// COMMENT: emacs integration
+editor_shell_command = "emacsclient -c"; // NOTE: edit form text with emacs
 
-function org_capture(key, text, window) { // org-protocol capture
+function org_capture(key, text, window) { // NOTE: org-protocol capture
   var command_string = 'emacsclient \"org-protocol:/capture:/'+key+'/'+text+'\"';
   if (window != null) {
     window.minibuffer.message('Issuing: ' + command_string);
@@ -174,7 +156,7 @@ interactive("bookmark-capture", "Capture a bookmark via org-protocol.",
 	      org_capture("k", bookmark_string, I.window);
 	    });
 
-// FIXME: doesn't capture the price ...
+// FIX: doesn't capture the price ...
 interactive("book-capture", "Capture a book via org-protocol.",
 	    function (I) {
 	      var book_url = (yield I.buffer.display_uri_string);
@@ -186,9 +168,7 @@ interactive("book-capture", "Capture a book via org-protocol.",
 	      org_capture("b", book_string, I.window);
 	    });
 
-// ===============
-/// user functions
-// ===============
+/// COMMENT: user functions
 function echo_message(window, message) {
   window.minibuffer.message(message);
 }
@@ -218,12 +198,10 @@ interactive("reload-config", "Reload ~/.conkerorrc file.",
 
 interactive("url-completion-toggle", "toggle between bookmark and history completion", url_completion_toggle);
 
-// NOTE: this doesn't appear to work
-// url_completion_toggle; // open only bookmarks by default (toggle to using history with C-c t)
+// ERROR: this doesn't appear to work
+// url_completion_toggle; // NOTE: open only bookmarks by default (toggle to using history with C-c t)
 
-// ===================
-/// download directory
-// ===================
+/// COMMENT: download directory
 {
   let _save_path = get_home_directory();
 
@@ -240,9 +218,7 @@ interactive("url-completion-toggle", "toggle between bookmark and history comple
   }
 }
 
-// =============
-/// key bindings
-// =============
+/// COMMENT: key bindings
 key_bindings_ignore_capslock = true;
 
 define_key(default_global_keymap, "C-c u", "copy-url"); // copy url with C-c u
@@ -258,25 +234,17 @@ define_key(content_buffer_normal_keymap, "C-c t", "url-completion-toggle"); // u
 define_key(content_buffer_normal_keymap, "f1", "open-school-all"); // open school urls with f1
 define_key(content_buffer_normal_keymap, "f2", "open-gmail"); // open gmail inbox with f2
 
-// ==========
-/// xkcd mode
-// ==========
+/// COMMENT: xkcd mode
 xkcd_add_title = true;
 
-// ===============
-/// wikipedia mode
-// ===============
+/// COMMENT: wikipedia mode
 require("page-modes/wikipedia.js")
 wikipedia_enable_didyoumean = true; // automatically follow "did you mean" links on wikipedia search pages
 
-// ============
-/// reddit mode
-// ============
+/// COMMENT: reddit mode
 require("reddit");
 
-// ========================
-/// auto-hide the mode-line
-// ========================
+/// COMMENT: auto-hide the mode-line
 // var minibuffer_autohide_timer = null;
 // var minibuffer_autohide_message_timeout = 3000; //milliseconds to show messages
 // var minibuffer_mutually_exclusive_with_mode_line = true;
@@ -335,9 +303,7 @@ require("reddit");
 //   old_minibuffer_clear.call(this);
 // };
 
-// =======
-/// google
-// =======
+/// COMMENT: google
 // register_user_stylesheet(
 //   "data:text/css,"+
 //   escape(
@@ -345,17 +311,13 @@ require("reddit");
 //     "{#leftnav {display: none !important;}"+
 //     "#center_col {margin-left: 0px !important;}}"));
 
-// ========
-/// session
-// ========
+/// COMMENT: session
 require("session.js");
 // session_auto_save_file = "./session"
 session_auto_save_auto_load = true; // automatically load saved session on startup
 // session_auto_save_auto_load = "prompt";
 
-// ========
-/// history
-// ========
+/// COMMENT: history
 session_pref('browser.history_expire_days', 2); // history expires after two days
 
 // NOTE: don't think I will actually need any of the following:
@@ -381,9 +343,7 @@ session_pref('browser.history_expire_days', 2); // history expires after two day
 // define_key(content_buffer_normal_keymap, "h", "find-url-from-history-new-buffer");
 // define_key(content_buffer_normal_keymap, "H", "find-url-from-history");
 
-// =======
-/// daemon
-// =======
+/// COMMENT: daemon
 // NOTE: apparently the session module does not work correctly with daemon
 // require('daemon');
 // daemon_mode(1);

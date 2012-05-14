@@ -1,4 +1,4 @@
-;; FILE: ~/.conf-scripts/stumpwmrc
+;; FILE: /home/chu/.conf-scripts/stumpwm-dir/init.lisp
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: lisp implementation

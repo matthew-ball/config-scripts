@@ -37,7 +37,7 @@
 (defface font-lock-custom-comment-tag-face-warning '((t (:foreground "OrangeRed"))) "Font lock face to highlight custom `custom-comment-tag-alist-warning' tags." :group 'font-lock-faces)
 
 (defvar custom-comment-tag-mode-hooks
-  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode-hook sh-mode-hook haskell-mode-hook scheme-mode-hook cc-mode-hook c-mode-hook python-mode-hook)
+  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode-hook sh-mode-hook haskell-mode-hook scheme-mode-hook cc-mode-hook c-mode-hook python-mode-hook javascript-mode-hook)
   "Major modes which enable highlighting of custom comment tags.")
 
 (defvar custom-comment-suppress-init-message nil "Suppress the printing of the initial activation message.")

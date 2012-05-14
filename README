@@ -3,7 +3,7 @@
 * The =Configuration Script= project
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system.
 
-- An [[file:config-setup.sh][install]] scripts is provided which includes functionality to save and restore the configuration project.
+- An [[file:config-setup.sh][install]] script is provided which includes functionality to save and restore the configuration project.
 
 - The =configuration script= project is designed for use with the following applications:
   + BASH Terminal
@@ -114,7 +114,7 @@
 
 - The [[file:config-setup.sh][config-setup.sh]] runs the following operations:
   1. Execute =clone= on the =configuration scripts= project directory from [[http://www.github.com][github]].
-  2. Add the =emacs-snapshot= repository to the package manager (NOTE: maybe Debian only?).
+  2. Add the [[http://emacs.naquadah.org][emacs-snapshot]] repository to the package manager (NOTE: maybe Debian only?).
   3. Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
   4. Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
   5. Restart system.
@@ -127,6 +127,7 @@
   + `stable' :: Guaranteed to work on both =debian= and =arch= installs.
   + `unstable' :: No guarantee it will work on a =debian= install.
 
+*** GNOME Desktop Manager
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
 - To start GDM manually: =sudo /etc/init.d/gdm start=
 - To restore defaults: =sudo update-rc.d gdm defaults=
@@ -202,12 +203,14 @@
 *** MPD Configuration :: [[file:~/.conf-scripts/mpd-dir/][mpd-dir/]]
 - the MPD configuration is explained in the [[file:mpd-dir/README][README]] file of the =mpd-dir= directory
 
+** TODO Create a =mailconf= file for handling the email configuration
 ** TODO Create a /literate/ configuration script
+- This would bring GNU Emacs to the centre of this configuration setup; which is a desired goal.
+
 - Based on the idea available from Eric Schulte at [[http://eschulte.me/emacs-starter-kit/starter-kit.html][Emacs Starter Kit]].
 
-# TODO: create a "literate" configuration script initialisation file
+- Cannot start this *until* the original project is functioning.
 
-# run org-babel on start ...
 * Footnotes
 
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
