@@ -191,13 +191,13 @@ NOTE: if the connection is succesful, the async shell command window should be c
 (activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
 ;;; COMMENT: configuration files
+;; TODO: add `README' files
 (require 'configuration-files)
 (add-config-file (concat (expand-file-name user-emacs-directory) "init.el")) ;; NOTE: add ~/.conf-scripts/emacs-dir/init.el
-(add-config-file (concat (expand-file-name user-scripts-directory) "stumpwmrc")) ;; NOTE: add ~/.conf-scripts/stumpwmrc
-(add-config-file (concat (expand-file-name user-scripts-directory) "bashrc")) ;; NOTE: add ~/.conf-scripts/bashrc
 (add-config-directory (concat user-emacs-directory "config-el/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/config-el/
 (add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/my-modes/
 (add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add .sh files in ~/.conf-scripts/bash-dir/
 (add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add .js files in ~/.conf-scripts/conkeror-dir/
+(add-config-directory (concat user-scripts-directory "stumpwm-dir/") ".lisp$") ;; NOTE: add .lisp files in ~/.conf-scripts/stumpwm-dir/
 
 (provide 'user-config)

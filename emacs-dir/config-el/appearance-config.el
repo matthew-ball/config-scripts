@@ -5,13 +5,13 @@
 ;; (autoload 'color-theme "color-theme" "Colour theme for GNU Emacs." t)
 ;; (autoload 'zenburn "zenburn" "Zenburn colour theme for GNU Emacs." t)
 
-(defun decorate-frame (frame) ;; NOTE: apply `zenburn' theme to new frame
-  "Decorate new frame FRAME with `zenburn' theme."
+(defun decorate-frame (frame)
+  "Decorate new frame FRAME with THEME."
   (select-frame frame)
   (let ((colour-theme-is-global nil))
     (if (window-system)
 	(progn ;; NOTE: X session
-	  (color-theme-zenburn)
+	  ;; (color-theme-zenburn) ;; NOTE: apply `zenburn' theme to a new frame
 	  (set-face-attribute 'default nil :height 90)
 	  (setq frame-title-format "%b"
 		icon-title-format "%b"))

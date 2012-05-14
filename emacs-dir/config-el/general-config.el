@@ -480,7 +480,8 @@
 
 (eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
 
-(add-hook 'find-file-hook (lambda () (desktop-save-in-desktop-dir))) ;; NOTE: save the desktop everytime a file is opened
+;; ERROR: this does not work
+;; (add-hook 'find-file-hook (lambda () (desktop-save-in-desktop-dir))) ;; NOTE: save the desktop everytime a file is opened
 
 (setq desktop-globals-to-save ;; NOTE: save a bunch of variables to the desktop file (for lists specify the len of the maximal saved data also)
       (append '((extended-command-history . 30)
