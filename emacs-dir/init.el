@@ -37,3 +37,11 @@
 ;; (when (and (functionp 'server-running-p) (not (server-running-p))) ;; NOTE: don't start the server unless we know it isn't running
 ;;   ;; (server-mode t) ;; enter server mode
 ;;   (server-start))
+
+;;; COMMENT: shutdown emacs server
+(defun server-shutdown ()
+  "Save buffers, quit, and shutdown (kill) GNU Emacs server."
+  (interactive)
+  (save-some-buffers) ;; NOTE: ask to save any modified buffers
+  (desktop-save-in-desktop-dir) ;; NOTE: save desktop session
+  (kill-emacs)) ;; NOTE: kill GNU Emacs instance

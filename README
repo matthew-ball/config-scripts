@@ -1,6 +1,6 @@
 =This README file is best read using functionality provided by org-mode=
 
-* The =Configuration Script= project
+* The =configuration script= project
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system.
 
 - An [[file:config-setup.sh][install]] script is provided which includes functionality to save, restore, and update the configuration script project.
@@ -23,10 +23,16 @@
   + NMCLI Network Manager
     - Version: 0.00
 
-- The configuration will hopefully represent a possible "desktop" shell setup for GNU/Linux which is cross-platform across distributions. Because the system is designed to work across different distributions, there must be two development repositories - one for /stable/ development builds, and one for /unstable/ development builds. The setup currently supports:
-  + debian :: /stable/ repositories (/unstable/ may work)
-  + ubuntu :: /stable/ repositories (/unstable/ may work)
-  + arch :: /stable/ and /unstable/ repositories
+- The configuration represents a possible "desktop" shell for GNU/Linux which works across multiple distributions.
+
+- The system is designed to work across different distributions, there must be two development repositories:
+  1. /stable/ development builds; and
+  2. /unstable/ development builds.
+
+- The setup currently supports:
+  + debian :: /stable/ repositories (/unstable/ may work).
+  + ubuntu :: /stable/ repositories (/unstable/ may work).
+  + arch :: /stable/ and /unstable/ repositories.
 
 ** Linking Files
 - This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
@@ -186,6 +192,12 @@
 
 ** TODO Create a =mailconfig= file for handling the email configuration
 - symlink to ~/.authinfo
+   #+begin_src shell-script
+     machine imap.gmail.com login user-primary-email-address port 993
+     machine smtp.gmail.com login user-primary-email-address port 587
+   #+end_src
+
+*** TODO write a script to split the user-primary-email-address into user-address '@' user-provider
 
 ** TODO Create a /literate/ configuration script
 - This would bring GNU Emacs to the centre of this configuration setup; which is a desired goal.

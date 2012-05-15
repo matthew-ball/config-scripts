@@ -545,65 +545,58 @@
 (setq doc-view-continuous t)
 
 ;;; COMMENT: ansi-terminal
-(defun symbol-value-in-buffer (sym buf)
-  "Return the value of 'sym' in 'buf'."
-  (save-excursion
-    (with-current-buffer buf
-      (symbol-value sym))))
+;; TODO: let us reconsider how we do `ANSI-TERM' stuff ...
+(getenv "TERM") ;; NOTE: the terminal used when GNU Emacs was started
 
-(defun start-term (&rest junk)
- "Start an `ansi-term' shell in the directory of current buffer."
- (ansi-term "/bin/bash")
- ;; (term-line-mode)
- (message "Starting terminal session."))
+;; TODO: add a prefix argument for `term-line-mode' and `term-char-mode'
+(defun start-new-term (&optional term-mode)
+  "Start a new `ansi-term' shell in the directory of current buffer."
+  (ansi-term "/bin/bash")
+  ;; (if (eq term-mode nil)
+  ;;     ;; (term-char-mode) ;; NOTE: make it feel like a character terminal
+  ;;     (term-line-mode)) ;; NOTE: make it feel like a GNU Emacs session
+  (message "Starting terminal session."))
 
-(defun switch-term (&rest junk)
-  "Switch to an active shell (if one exists) or create a new shell (if none exists)."
-  (interactive)
-  (let ((found nil))
-    (loop for b in (buffer-list)
-	  if (eq (symbol-value-in-buffer 'major-mode b) 'term-mode)
-	  do (switch-to-buffer b) (setq found t))
-    (when (not found) (start-term))))
-
-(defun kill-term (&rest junk)
-  "Close an ansi shell session and kill the remaining buffer."
-  (interactive)
-  (when (equal major-mode (or 'term-mode 'eshell-mode))
-      (progn
-	(term-kill-subjob)
-	(kill-buffer))))
-
-;;; COMMENT: ansi-term session management
+;;; COMMENT: `ansi-term' session management
 (defun terminal-start-or-switch (program &optional use-existing)
   "Run program PROGRAM in a terminal buffer.
 
 If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffer instead of starting a new instance."
-  (interactive)
-  (let ((bufname (concat "*" program "*")))
+  (interactive "sEnter program: ")
+  (let ((bufname (concat "" program "")))
     (when (not (and use-existing
 		    (let ((buf (get-buffer bufname)))
 		      (and buf (buffer-name (switch-to-buffer bufname))))))
       (ansi-term program program))))
 
-(defmacro terminal-program-shortcut (program key &optional use-existing)
-  "Macro to create a key binding KEY to start some terminal program PROGRAM.
+(defmacro start-term-program-shortcut (program)
+  "Macro to launch PROGRAM in TERMINAL."
+  (let ((func (intern (concat "start-" program)))
+	(doc (format "Launch %s in an `ansi-term' session." program)))
+    `(defun ,func nil
+       ,doc
+       (interactive)
+       (terminal-start-or-switch ,program t))))
 
-If USE-EXISTING is true, try to switch to an existing buffer."
-  `(global-set-key ,key
-     '(lambda()
-        (interactive)
-        (terminal-start-or-switch ,program ,use-existing))))
+(defun kill-term (&rest junk)
+  "Close an `ansi-shell' session and kill the remaining buffer."
+  (interactive)
+  (when (equal major-mode 'term-mode)
+   (progn
+      (term-kill-subjob)
+      (kill-buffer))))
 
-;; TODO: this is a bit silly ...
-;; (when (eq window-system nil) ;; NOTE: start sessions (if in a terminal)
-;;   (terminal-program-shortcut "bash"  (kbd "C-c B") t)
-;;   (terminal-program-shortcut "htop"  (kbd "C-c H") t))
+;;(define-key term-mode-map (kbd "C-c q") 'kill-term) ;; TODO: map (kcd "C-c q") to `kill-term' function
 
-;; (defun switch-htop (&rest junk)
-;;   "If running without an X window session, switch to a htop session."
-;;   (when (eq window-system nil)
-;;     ))
+;; (defun start-term (&rest junk)
+;;   "..."
+;;   (interactive)
+;;   (terminal-start-or-switch "bash" t))
+
+(start-term-program-shortcut "bash") ;; NOTE: create command `start-bash'
+(start-term-program-shortcut "htop") ;; NOTE: create command `start-htop'
+;; (start-term-program-shortcut "mutt") ;; NOTE: create command `start-mutt'
+;; (start-term-program-shortcut "aptitude") ;; NOTE: create command `aptitude-start'
 
 ;;; COMMENT: interaction with transient mark mode
 (defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode

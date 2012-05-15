@@ -82,8 +82,13 @@
 ;; (setq whitespace-style '(face empty tabs lines-tail trailing))
 ;; (global-whitespace-mode t) ;; TODO: this probably only needs to be in the programming hook
 
+;;; COMMENT: highlight changes mode
+;; (global-highlight-changes-mode t) ;; NOTE: enable highlight changes mode in all buffers
+
+;; TODO: create key-bindings to jump around changes.
+
 ;;; COMMENT: code folding
-(require 'hideshow)
+;; (require 'hideshow)
 
 ;; TODO: add custom modes
 ;; (defvar hs-special-modes-alist
@@ -94,27 +99,27 @@
 ;;     (java-mode "{" "}" "/[*/]" nil nil)
 ;;     (js-mode "{" "}" "/[*/]" nil))))
 
-(setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
-(setq hs-isearch-open 'x) ;; NOTE: set whether isearch opens folded comments, code, or both where x is code, comments, t (both), or nil (neither)
+;; (setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
+;; (setq hs-isearch-open 'x) ;; NOTE: set whether isearch opens folded comments, code, or both where x is code, comments, t (both), or nil (neither)
 
-(defun toggle-selective-display (column)
-  (interactive "P")
-  (set-selective-display
-   (or column
-       (unless selective-display
-	 (1+ (current-column))))))
+;; (defun toggle-selective-display (column)
+;;   (interactive "P")
+;;   (set-selective-display
+;;    (or column
+;;        (unless selective-display
+;; 	 (1+ (current-column))))))
 
-(defun toggle-hiding (column)
-  (interactive "P")
-  (if hs-minor-mode
-      (if (condition-case nil
-	      (hs-toggle-hiding)
-	    (error t))
-	  (hs-show-all))
-    (toggle-selective-display column)))
+;; (defun toggle-hiding (column)
+;;   (interactive "P")
+;;   (if hs-minor-mode
+;;       (if (condition-case nil
+;; 	      (hs-toggle-hiding)
+;; 	    (error t))
+;; 	  (hs-show-all))
+;;     (toggle-selective-display column)))
 
-(global-set-key (kbd "C-+")   'toggle-hiding)
-(global-set-key (kbd "C-M-+") 'toggle-selective-display)
+;; (global-set-key (kbd "C-+")   'toggle-hiding)
+;; (global-set-key (kbd "C-M-+") 'toggle-selective-display)
 
 ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
@@ -139,5 +144,6 @@
 ;; (eval-after-load "glasses" '(diminish 'glasses-mode ""))
 (eval-after-load "face-remap" '(diminish 'buffer-face-mode ""))
 (eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
+(eval-after-load "hilit-chg" '(diminish 'highlight-changes-mode ""))
 
 (provide 'appearance-config)

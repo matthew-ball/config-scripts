@@ -60,14 +60,17 @@ function quicklisp-configuration { # COMMENT: quicklisp configuration # WARNING:
 function symlink-configuration { # COMMENT: symlink configuration
     echo "symlink"
     FILE_SRC=$1
-    FILE_DEST=$2
-    # symlink-file $FILE_SRC $FILE_DEST
+    FILE_DST=$2
+    # symlink-file $FILE_SRC $FILE_DST
 }
 
 # NOTE: example: symlink-file bashrc .bashrc
 function symlink-file {
     # NOTE: the first argument is the file source
     # NOTE: the second argument is the file destination
+
+    FILE_SRC=$1
+    FILE_DST=$2
 
     if [ -e $2 ]; then
 	echo "- destination file $2 exists"
@@ -88,16 +91,19 @@ function echo-source-and-destination {
     #symlink-file $2 $3
 }
 
+
+### COMMENT: minimal set up
 function minimal-configuration-setup { # TODO: add others ...
-    setup_choice=4
+    setup_choice=5
     echo "- minimal setup initiated ..."
-    while [ $setup_choice -ne 3 ]; do
+    while [ $setup_choice -ne 4 ]; do
 	echo "- Welcome to the \"configuration script\" project menu:"
 	echo "0. Set =BASH= configuration."
 	echo "1. Set =GNU Emacs= configuration."
 	echo "2. Set =StumpWM= configuration."
 	echo "3. Set =Conkeror= configuration."
 	echo "4. Set all of the above."
+	echo "5. Back."
 	echo -e " + make selection: \c "
 	read setup_choice
 	echo ""
@@ -124,7 +130,11 @@ function minimal-configuration-setup { # TODO: add others ...
 			    echo-source-and-destination "bash-rc" $BASH_RC_SRC $BASH_RC_DEST
 			    echo ""
 			else
-			    unknown-input # ERROR: unknown input
+			    if [ $setup_choice -eq 5 ]; then # NOTE: Back
+				main-program
+			    else
+				unknown-input # ERROR: unknown input
+			    fi
 			fi
 		    fi
 		fi
@@ -142,7 +152,7 @@ function maximal-configuration-setup {
     # do-something-else # NOTE: install extra functionality
 }
 
-# DEBUG: ...
+### DEBUG: unknown input
 function unknown-input {
     echo "- unknown input ..."
     exit

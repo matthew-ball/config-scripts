@@ -15,7 +15,7 @@
 (global-set-key (kbd "C-<f3>") 'search-string-under-point) ;; NEW: NOTE: search string under point
 ;; (global-set-key (kbd "C-<f3>") 'show-dot-file-structure) ;; OLD: NOTE: show the structure of the "same" dot-config files ;; ERROR: this function only works with '.el' extensions
 (global-set-key (kbd "<f4>") 'erc-start-or-switch) ;; NOTE: start an erc session (or switch to the most active buffer)
-(global-set-key (kbd "M-<f4>") 'switch-term) ;; NOTE: switch to an ANSI terminal session
+(global-set-key (kbd "M-<f4>") 'terminal-start-or-switch) ;; NOTE: switch to an ANSI terminal session
 (global-set-key (kbd "C-<f4>") 'gnus) ;; NOTE: start a gnus session (or switch to an existing session)
 ;; (global-set-key (kbd "<f5>") 'eproject-setup-toggle) ;; NOTE: show/hide the project configuration browser
 (global-set-key (kbd "M-<f5>") 'magit-status) ;; NOTE: view the git-status of the current file with magit
@@ -73,5 +73,8 @@
 ;; (global-set-key (kbd "s-<menu>") 'function) ;; NOTE: ...
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; NOTE: remove binding on C-z (suspend-frame)
+
+;;; COMMENT: for terminal mode
+(global-set-key (kbd "C-c e") 'erc-start-or-switch)
 
 (provide 'key-bindings-config)
