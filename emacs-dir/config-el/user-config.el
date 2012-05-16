@@ -205,25 +205,37 @@ NOTE: if the connection is succesful, the async shell command window should be c
   ))
 
 ;;; COMMENT: highlight custom comment tags
+;; NOTE: i suppose technically this should be in the `appearance-config.el' file
 (require 'custom-comments)
-;; add `comment' tags to highlighting ...
-;; (push "AUTHOR" custom-comment-tag-alist-comment)
-;; (push "COMMENT" custom-comment-tag-alist-comment)
-;; (push "FILE" custom-comment-tag-alist-comment)
-;; (push "IMPORTANT" custom-comment-tag-alist-comment)
-;; (push "SOURCE" custom-comment-tag-alist-comment)
-;; (push "NOTE" custom-comment-tag-alist-comment)
-;; (push "TODO" custom-comment-tag-alist-comment)
-;; (push "TIME" custom-comment-tag-alist-comment) ;; ERROR: does not work
-(add-to-list 'custom-comment-tag-alist-comment "TIME")
+(setq custom-comment-tag-alist-comment '("AUTHOR"
+					 "COMMENT"
+					 "FILE"
+					 "IMPORTANT"
+					 "SOURCE"
+					 "NOTE"
+					 "TODO"
+					 "TIME")) ;; NOTE: add `comment' tags to highlighting
 
-;; add `warning' tages to highlighting ...
-;; (push "BUG" custom-comment-tag-alist-warning)
-;; (push "DEBUG" custom-comment-tag-alist-warning)
-;; (push "ERROR" custom-comment-tag-alist-warning)
-;; (push "FIX" custom-comment-tag-alist-warning)
-;; (push "WARNING" custom-comment-tag-alist-warning)
-;; (push "TEST" custom-comment-tag-alist-warning)
+(add-to-list 'custom-comment-tag-alist-comment "TIME") ;; NOTE: this is not in the default `comment'list
+
+(setq custom-comment-tag-alist-warning '("BUG"
+					 "DEBUG"
+					 "ERROR"
+					 "FIX"
+					 "WARNING"
+					 "TEST")) ;; NOTE: add `warning' tages to highlighting
+
+(setq custom-comment-tag-mode-hooks '(emacs-lisp-mode-hook
+				      lisp-mode-hook
+				      shell-script-mode-hook
+				      sh-mode-hook
+				      haskell-mode-hook
+				      scheme-mode-hook
+				      cc-mode-hook
+				      c++-mode-hook
+				      c-mode-hook
+				      python-mode-hook
+				      javascript-mode-hook)) ;; NOTE: add `major-modes' to highlighting list
 
 (setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
 (activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags

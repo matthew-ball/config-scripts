@@ -2,23 +2,19 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 ;; TIME: Wed 16 May 2012 17:12:27 EST
 
-;;; COMMENT: org mode
-;; SOURCE: http://emacswiki.org/emacs/OrgMode
+;;; COMMENT: org-mode :: "A GNU Emacs Major Mode for notes, project planning, and authoring."
+;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
+;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
+;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
+;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/'
+;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
+;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
 (autoload 'org-install "org-exp" "Organise tasks with `org-mode'." t)
-
-;; SOURCE: http://orgmode.org/manual/Special-symbols.html
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
-
-;; SOURCE: http://orgmode.org/worg/org-contrib/org-protocol.html
 (autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
-
-;; SOURCE: http://orgmode.org/worg/org-contrib/org-special-blocks.html
+(autoload 'org-babel "org-babel" "Interact with programming languages in `org-mode'." t)
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
-
-;; SOURCE: http://orgmode.org/worg/org-tutorials/org-latex-export.html
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
-
-;; SOURCE: http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
 (setq org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
