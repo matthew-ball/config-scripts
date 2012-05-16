@@ -39,7 +39,7 @@ alias jem='cd $(emacsclient -e "(with-current-buffer (window-buffer (frame-selec
 # COMMENT: system aliases
 alias temp='acpi -t' # NOTE: show battery status details
 alias screenshot='import -window root' # NOTE: capture screenshot
-alias resume='screen -r' # NOTE: resume screen session
+alias resume='screen -D -R' # NOTE: resume screen session
 alias connect='nmcli con up id' # NOTE: connect to network
 alias resource='source ~/.bashrc' # NOTE: re-source bashrc file
 

@@ -8,7 +8,7 @@
 ;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
 
-;; ;; (emms-devel)
+;; ;; (emms-devel) ;; DEBUG: apparently not what I want
 ;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable emms features
 ;; (emms-default-players)
 
@@ -46,7 +46,7 @@
 
 ;; (define-key global-map (kbd "C-x t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: optional key binding (TODO: move to bindings.el)
 
-(defun dictionary-word (&rest junk)
+(defun dictionary-word (&rest junk) ;; TODO: i don't like how this one works
   "Dictionary definition of the current word."
   (interactive)
   (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))

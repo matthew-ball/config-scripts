@@ -55,50 +55,50 @@
   (message ""))
 
 ;;; COMMENT: default variable values
-(setq inhibit-startup-message t ;; turn off startup message
-      inhibit-startup-echo-area-message t ;; turn off startup echo area message
+(setq inhibit-startup-message t ;; NOTE: turn off startup message
+      inhibit-startup-echo-area-message t ;; NOTE: turn off startup echo area message
       initial-scratch-message (concat ";; For information about "
 				      (substring (emacs-version) 0 16)
-				      " and the GNU system, type C-h C-a.\n\n") ;; initial scratch message
-      completion-ignore-case t ;; ignore case in auto-completing text
-      read-file-name-completion-ignore-case t ;; ignore cases in filenames
-      auto-compression-mode 1 ;; automatically parse an archive
-      message-log-max 2000 ;; maximum number of lines to keep in the message log buffer (default is 100)
-      show-trailing-whitespace 1 ;; show trailing whitespace
-      scroll-margin 0 ;; use smooth scrolling
-      scroll-conservatively 100000 ;; ... the defaults
-      scroll-up-aggressively 0 ;; ... are very
-      scroll-down-aggressively 0 ;; ... annoying
-      scroll-preserve-screen-position t ;; preserve screen position with C-v/M-v
-      auto-save-interval 1000 ;; change auto-save interval from 300 to 1000 keystrokes
-      sentence-end-double-space 'nil ;; sentences end with a single space
-      echo-keystrokes 0.1 ;; see what you are typing
-      suggest-key-bindings nil) ;; do not show respective key-bindings
+				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
+      completion-ignore-case t ;; NOTE: ignore case in auto-completing text
+      read-file-name-completion-ignore-case t ;; NOTE: ignore cases in filenames
+      auto-compression-mode 1 ;; NOTE: automatically parse an archive
+      message-log-max 2000 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
+      show-trailing-whitespace 1 ;; NOTE: show trailing whitespace
+      scroll-margin 0 ;; NOTE: use smooth scrolling
+      scroll-conservatively 100000 ;; NOTE: ... the defaults
+      scroll-up-aggressively 0 ;; NOTE: ... are very
+      scroll-down-aggressively 0 ;; NOTE: ... annoying
+      scroll-preserve-screen-position t ;; NOTE: preserve screen position with C-v/M-v
+      auto-save-interval 1000 ;; NOTE: change auto-save interval from 300 to 1000 keystrokes
+      sentence-end-double-space 'nil ;; NOTE: sentences end with a single space
+      echo-keystrokes 0.1 ;; NOTE: see what you are typing
+      suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings
 
 ;;; COMMENT: default auto-mode list
-;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; open .screenrc in shell script mode
-;; (add-to-list 'auto-mode-alist '(".mpdconf/" . shell-script-mode)) ;; open any file in .mpdconf/ in shell script mode
-;; (add-to-list 'auto-mode-alist '(".emacs" . emacs-lisp-mode)) ;; open .emacs in emacs lisp mode
-;; (add-to-list 'auto-mode-alist '(".stumpwmrc$" . stumpwm-mode)) ;; open .stumpwmrc in stumpwm mode
-;; (add-to-list 'auto-mode-alist '(".conkerorrc/" . javascript-mode)) ;; open any file in .conkerorrc/ in javascript mode
-(add-to-list 'auto-mode-alist '("bashrc" . shell-script-mode)) ;; open bashrc file in shell script mode
-(add-to-list 'auto-mode-alist '("stumpwmrc" . common-lisp-mode)) ;; open stumpwmrc file in common lisp mode
-;; (add-to-list 'auto-mode-alist '("stumpwmrc" . stumpwm-mode)) ;; open stumpwmrc file in stumpwm mode
-(add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; open README files in org-mode
-(add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; open NEWS files in org-mode
-;; (add-to-list 'auto-mode-alist '("/mutt" . mail-mode)) ;; open mutt-related buffers in mail mode
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; open *.org files in org-mode
-(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode)) ;; open *.js files in javascript mode
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; open *.hs files in haskell mode
-(add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; open *.cabal files in haskell cabal mode
-(add-to-list 'auto-mode-alist '("\\.py$" . python-mode)) ;; open *.py files in python mode
-;; (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)) ;; open *.cs files in c# mode
-(add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; open *.tex files in LaTeX mode
-;; (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; open word documents with antiword
-;; (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; open *.lua files in lua mode
-;; (add-to-list 'auto-mode-alist '("\\.ot$" . otter-mode)) ;; open *.ot files in otter mode
-;; (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; open *.in files in otter mode
-(add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; open python files in a psuedo-python interpreter
+;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; NOTE: open .screenrc in `shell-script-mode'
+;; (add-to-list 'auto-mode-alist '(".mpdconf/" . shell-script-mode)) ;; NOTE: open `.mpdconf/' files in `shell-script-mode'
+;; (add-to-list 'auto-mode-alist '(".emacs" . emacs-lisp-mode)) ;; NOTE: open .emacs in `emacs-lisp-mode'
+;; (add-to-list 'auto-mode-alist '(".stumpwmrc$" . stumpwm-mode)) ;; NOTE: open .stumpwmrc in `stumpwm-mode'
+;; (add-to-list 'auto-mode-alist '(".conkerorrc/" . javascript-mode)) ;; NOTE: open `.conkerorrc/' files in `javascript-mode'
+(add-to-list 'auto-mode-alist '("bashrc" . shell-script-mode)) ;; NOTE: open `.bashrc' file in `shell-script-mode'
+(add-to-list 'auto-mode-alist '("stumpwmrc" . common-lisp-mode)) ;; NOTE: open `.stumpwmrc' file in `common-lisp-mode'
+;; (add-to-list 'auto-mode-alist '("stumpwmrc" . stumpwm-mode)) ;; NOTE: open `.stumpwmrc' file in `stumpwm-mode'
+(add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; NOTE: open `README' files in `org-mode'
+(add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; NOTE: open `NEWS' files in `org-mode'
+;; (add-to-list 'auto-mode-alist '("/mutt" . mail-mode)) ;; NOTE: open `mutt'-related buffers in `mail-mode'
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; NOTE: open `*.org' files in `org-mode'
+(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode)) ;; NOTE: open `*.js' files in `javascript-mode'
+(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; NOTE: open `*.hs' files in `haskell-mode'
+(add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; NOTE: open `*.cabal' files in `haskell-cabal-mode'
+(add-to-list 'auto-mode-alist '("\\.py$" . python-mode)) ;; NOTE: open `*.py' files in `python-mode'
+;; (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)) ;; NOTE: open `*.cs' files in `c-sharp-mode'
+(add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; NOTE: open `*.tex' files in `latex-mode'
+;; (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; NOTE: open `*.doc' documents with `antiword'
+;; (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; NOTE: open `*.lua' files in `lua-mode'
+;; (add-to-list 'auto-mode-alist '("\\.ot$" . otter-mode)) ;; NOTE: open `*.ot' files in `otter-mode'
+;; (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; NOTE: open`*.in' files in `otter-mode'
+(add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; NOTE: open python files in a psuedo-python interpreter
 
 ;;; COMMENT: selection
 (delete-selection-mode 1) ;; replace (delete) selected region
@@ -380,25 +380,25 @@
 ;;; COMMENT: smart tab
 (defun smart-tab () ;; NOTE: implement a smarter TAB
   "This smart tab is minibuffer compliant: it acts as usual in the minibuffer.
- Else, if mark is active, indents region. Else if point is at the end of a symbol, expands it.
- Else indents the current line."
+
+If mark is active, indents region. Else if point is at the end of a symbol, expands it. Else indents the current line."
   (interactive)
   (if (minibufferp)
       (unless (minibuffer-complete)
-	(auto-complete nil)) ;; NOTE: use auto-complete
-	;; (hippie-expand nil)) ;; NOTE: use hippie-expand
-	;; (dabbrev-expand nil)) ;; NOTE: use dabbrev-expand
+	(auto-complete nil)) ;; NOTE: use `auto-complete'
+	;; (hippie-expand nil)) ;; NOTE: use `hippie-expand'
+	;; (dabbrev-expand nil)) ;; NOTE: use `dabbrev-expand'
     (if mark-active
 	(indent-region (region-beginning)
 		       (region-end))
       (if (looking-at "\\_>")
-	  (auto-complete nil) ;; NOTE: use auto-complete
-	  ;; (hippie-expand nil)) ;; NOTE: use hippie-expand
-	  ;; (dabbrev-expand nil) ;; NOTE: use dabbrev-expand
+	  (auto-complete nil) ;; NOTE: use `auto-complete'
+	  ;; (hippie-expand nil)) ;; NOTE: use `hippie-expand'
+	  ;; (dabbrev-expand nil) ;; NOTE: use `dabbrev-expand'
 	(indent-for-tab-command)))))
 
 ;;; COMMENT: enable/disable functions
-(put 'overwrite-mode 'disabled t) ;; NOTE: disable overwrite mode
+(put 'overwrite-mode 'disabled t) ;; NOTE: disable `overwrite-mode'
 
 ;;; COMMENT: mini buffer
 (file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini buffer
