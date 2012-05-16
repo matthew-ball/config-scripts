@@ -3,7 +3,7 @@
 ;; TIME: Wed 16 May 2012 15:05:35 EST
 
 ;;; COMMENT: dired
-;; SOURCE: http://emacswiki.org/emacs/DiredMode
+;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
 (put 'dired-find-alternate-file 'disabled nil) ;; NOTE: enable re-use of dired buffers
 
 (require 'dired-x) ;; FIX: change this to an autoload

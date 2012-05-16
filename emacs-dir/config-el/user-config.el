@@ -1,37 +1,37 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/user-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:02:23 EST
+;; TIME: Wed 16 May 2012 22:40:57 EST
 
 ;;; COMMENT: emacs multimedia system
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/EMMS'
 ;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
-;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
+;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between `EMMS' and `MPD'." t)
 
 ;; ;; (emms-devel) ;; DEBUG: apparently not what I want
-;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable emms features
+;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable `emms' features
 ;; (emms-default-players)
 
 ;; (setq emms-player-mpd-server-name "localhost")
 ;; (setq emms-player-mpd-server-port "7700")
 
-;; (add-to-list 'emms-info-functions 'emms-info-mpd) ;; NOTE: get track information from mpd
-;; (add-to-list 'emms-player-list 'emms-player-mpd) ;; NOTE: add mpd to the emms player list
+;; (add-to-list 'emms-info-functions 'emms-info-mpd) ;; NOTE: get track information from `mpd'
+;; (add-to-list 'emms-player-list 'emms-player-mpd) ;; NOTE: add `mpd' to the `emms' player list
 
-;; (emms-player-mpd-connect) ;; NOTE: connect emms to mpd
+;; (emms-player-mpd-connect) ;; NOTE: connect `emms' to `mpd'
 
 ;;; COMMENT: project management
 ;; SOURCE: `http://emacswiki.org/emacs/eproject'
 ;; (require 'eproject) ;; FIX: change this to an autoload
-;; TODO: learn eproject
+;; TODO: learn `eproject'
 
 ;;; COMMENT: default browser
-(setq browse-url-browser-function 'w3m-browse-url ;; NOTE: use w3m web browser
+(setq browse-url-browser-function 'w3m-browse-url ;; NOTE: use `w3m' web browser
       browse-url-new-window-flag t
       ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
-      browse-url-generic-program "conkeror" ;; NOTE: default web browser set to conkeror
-      ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to chromium-browser
-      ;; browser-url-generic-program "x-www-browser" ;; NOTE: default web browser set to x-www-browser (NOTE: this may be Debian only?)
+      browse-url-generic-program "conkeror" ;; NOTE: default web browser set to `conkeror'
+      ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to `chromium-browser'
+      ;; browser-url-generic-program "x-www-browser" ;; NOTE: default web browser set to `x-www-browser'
       )
 
 ;;; COMMENT: dictionary and thesaurus
@@ -53,6 +53,7 @@
 
 ;;; COMMENT: w3m browser
 ;; SOURCE: `http://www.emacswiki.org/emacs/emacs-w3m'
+;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMTabs'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMHintsAndTips'
 ;; TODO: move w3m configuration into a new file ... (???)
 (require 'w3m-load) ;; TEST: this still needs to be tested
@@ -61,6 +62,8 @@
 ;; (autoload 'w3m-search "w3m-search" "Search with a WWW browser." t)
 ;; (autoload 'w3m-goto-url-new-session "w3m" "Go to a URL in a new w3m buffer." t)
 ;; (autoload 'w3m-mode-map "w3m" "The mode map for w3m." t) ;; ERROR: this does not work
+
+;; (w3m-lnum-mode 1) ;; NOTE: apparently an extension to w3m
 
 ;; COMMENT: interface
 (setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
@@ -154,12 +157,19 @@ NOTE: This function requires w3m to be running."
 ;; NOTE: Then add info to your ~/.emacs-w3m file:
 ;;  (eval-after-load "w3m-search" '(add-to-list 'w3m-search-engine-alist '("My engine" "http://my.searchengine.com/?query=%s" nil)))
 
-;; COMMENT: available w3m search engines
+;; COMMENT: w3m search
+;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
 (eval-after-load "w3m-search"
   '(setq w3m-search-engine-alist
 	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
 	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
 	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
+
+;; COMMENT: open web site in w3m
+(defun browse-facebook (&rest junk)
+  "Browse `http://m.facebook.com' with `w3m'."
+  (interactive)
+  (w3m-browse-url "http://m.facebook.com"))
 
 ;;; COMMENT: gist
 ;; SOURCE: `https://github.com/defunkt/gist.el'

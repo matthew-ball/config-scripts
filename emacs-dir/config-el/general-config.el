@@ -104,7 +104,7 @@
 (delete-selection-mode 1) ;; replace (delete) selected region
 
 ;;; COMMENT: uniquify (unique buffer names)
-;; SOURCE: http://emacswiki.org/emacs/uniquify
+;; SOURCE: `http://emacswiki.org/emacs/uniquify'
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse
       uniquify-separator "/"
@@ -112,7 +112,7 @@
       uniquify-ignore-buffers-re "^\\*") ;; NOTE: don't muck with special buffers
 
 ;;; COMMENT: ido mode
-;; SOURCE: http://emacswiki.org/emacs/InteractivelyDoThings
+;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
 (require 'ido)
 (require 'ido-ubiquitous)
 
@@ -212,13 +212,13 @@
 	ad-do-it))))
 
 ;;; COMMENT: smex mode
-;; SOURCE: http://emacswiki.org/emacs/Smex
+;; SOURCE: `http://emacswiki.org/emacs/Smex'
 (require 'smex)
 (setq smex-save-file (concat user-emacs-directory "smex-items"))
 (smex-initialize) ;; super-charge ido mode
 
 ;;; COMMENT: ibuffer
-;; SOURCE: http://www.emacswiki.org/emacs/IbufferMode
+;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
 (require 'ibuffer)
 (setq ibuffer-saved-filter-groups
       `(("default"
@@ -354,7 +354,7 @@
 			       (ibuffer-switch-to-saved-filter-groups "default")))
 
 ;;; COMMENT: auto-complete mode
-;; SOURCE: http://emacswiki.org/emacs/AutoComplete
+;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
 (when (require 'auto-complete-config nil 'noerror)
   (add-to-list 'ac-dictionary-directories (concat (expand-file-name user-emacs-directory) "ac-dict"))
   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
@@ -406,7 +406,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;; (savehist-mode t) ;; NOTE: keep mini buffer history between session (IMPORTANT: may be deprecated)
 
 ;;; COMMENT: stumpwm mode
-;; SOURCE: http://www.emacswiki.org/emacs/StumpWM
+;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
 (autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t)
 
 ;; FIX: this doesn't appear to work ...
@@ -428,12 +428,12 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;;       (list (line-beginning-position) (line-beginning-position 2)))))
 
 ;;; COMMENT: tramp
-;; SOURCE: http://emacswiki.org/cgi-bin/wiki/TrampMode
+;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
 (autoload 'tramp "Remote file manipulation with Tramp." t)
 (setq tramp-default-method "ssh") ;; NOTE: use ssh for tramp
 
 ;;; COMMENT: version control
-;; SOURCE: http://www.emacswiki.org/emacs/Magit
+;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
 (autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
 
 (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
@@ -451,7 +451,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
       version-control t) ;; NOTE: use versioned backups
 
 ;;; COMMENT: recent files
-;; SOURCE: http://emacswiki.org/emacs/RecentFiles
+;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
 ;; (require 'recentf)
 (autoload 'recentf-mode "recentf" "Recent files." t)
 
@@ -462,7 +462,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (eval-after-load "recentf" (recentf-mode t))
 
 ;;; COMMENT: desktop save mode
-;; SOURCE: http://emacswiki.org/emacs/DeskTop
+;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
 (autoload 'desktop-save-mode "desktop" "Save session file." t)
 
 (defun restore-desktop-session (&rest junk)
@@ -525,7 +525,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
     (setq ad-return-value nil)))
 
 ;;; COMMENT: paredit
-;; SOURCE: http://emacswiki.org/emacs/ParEdit
+;; SOURCE: `http://emacswiki.org/emacs/ParEdit'
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
 (defun override-slime-repl-bindings-with-paredit () ;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
@@ -540,7 +540,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
 
 ;;; COMMENT: flyspell
-;; SOURCE: http://www.emacswiki.org/emacs/FlySpell
+;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checking" t)
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
 (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
@@ -553,13 +553,13 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
       ispell-extra-args '("--sug-mode=ultra"))
 
 ;;; COMMENT: doc-view
-;; SOURCE: http://www.emacswiki.org/emacs/DocViewMode
+;; SOURCE: `http://www.emacswiki.org/emacs/DocViewMode'
 (autoload 'doc-view-mode "doc-view" "Read PDFs with GNU Emacs." t)
 
 (setq doc-view-continuous t)
 
 ;;; COMMENT: ansi-terminal
-;; SOURCE: http://www.emacswiki.org/emacs/AnsiTerm
+;; SOURCE: `http://www.emacswiki.org/emacs/AnsiTerm'
 (getenv "TERM") ;; NOTE: the terminal used when GNU Emacs was started
 
 ;; TODO: add a prefix argument for `term-line-mode' and `term-char-mode'

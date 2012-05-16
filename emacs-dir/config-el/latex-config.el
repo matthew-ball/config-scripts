@@ -3,7 +3,8 @@
 ;; TIME: Wed 16 May 2012 15:04:54 EST
 
 ;;; COMMENT: latex
-;; SOURCE: http://emacswiki.org/emacs/LaTeX
+;; SOURCE: `http://emacswiki.org/emacs/LaTeX'
+;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
 (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
 (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
 (autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)

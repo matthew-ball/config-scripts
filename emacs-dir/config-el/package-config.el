@@ -3,7 +3,7 @@
 ;; TIME: Wed 16 May 2012 15:05:54 EST
 
 ;;; COMMENT: emacs package manager
-;; SOURCE: http://emacswiki.org/emacs/ELPA
+;; SOURCE: `http://emacswiki.org/emacs/ELPA'
 (autoload 'package "package" "GNU Emacs lisp package management." t)
 
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")

@@ -161,7 +161,7 @@
       (forward-line 9))))
 
 ;;; COMMENT: `org-babel'
-;; SOURCE: http://orgmode.org/worg/org-contrib/babel/intro.html
+;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (org-babel-do-load-languages 'org-babel-load-languages
 			     '((R . t)
 			       (emacs-lisp . t)
@@ -179,7 +179,7 @@
 (setq org-src-tab-acts-natively t) ;; NOTE: tab works properly
 
 ;;; COMMENT: `org-latex-export'
-;; SOURCE: http://orgmode.org/worg/org-tutorials/org-latex-export.html
+;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
 
@@ -260,7 +260,7 @@
 	       org-beamer-sectioning))
 
 ;;; COMMENT: `org-entities'
-;; SOURCE: http://orgmode.org/manual/Special-symbols.html
+;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
 (add-to-list 'org-entities-user '("neg" "\\neg" t "&not;" "[negation]" nil "¬"))
 (add-to-list 'org-entities-user '("iff" "\\iff" t "&iff;" "[if and only if]" nil "↔"))
 (add-to-list 'org-entities-user '("top" "\\top" t "&top;" "[top (true)]" nil "⊤"))

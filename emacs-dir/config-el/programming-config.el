@@ -3,7 +3,7 @@
 ;; TIME: Wed 16 May 2012 15:05:14 EST
 
 ;;; COMMENT: flymake
-;; SOURCE: http://www.emacswiki.org/emacs/FlyMake
+;; SOURCE: `http://www.emacswiki.org/emacs/FlyMake'
 (autoload 'flymake-mode "flymake" "On the fly compiling in GNU Emacs." t)
 
 ;;; COMMENT: general programming
@@ -16,7 +16,7 @@
   )
 
 ;;; COMMENT: emacs lisp programming
-;; SOURCE: http://emacswiki.org/emacs/EmacsLispIntro
+;; SOURCE: `http://emacswiki.org/emacs/EmacsLispIntro'
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
 (eldoc-add-command
@@ -32,7 +32,7 @@
 				   (eldoc-mode t)))
 
 ;;; COMMENT: common lisp programming
-;; SOURCE: http://emacswiki.org/emacs/CommonLisp
+;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
 (add-hook 'lisp-mode-hook '(lambda ()
@@ -79,11 +79,11 @@
 ;; 			      (start-slime-automatically)))
 
 ;;; COMMENT: scheme programming
-;; SOURCE: http://emacswiki.org/emacs/Scheme
+;; SOURCE: `http://emacswiki.org/emacs/Scheme'
 (autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files");; TODO: find a `guile-mode' for scheme ...
 
 ;;; COMMENT: haskell programming
-;; SOURCE: http://www.emacswiki.org/emacs/Haskell
+;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
 (autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)
 
 (setq haskell-font-lock-symbols t) ;; enable unicode symbols for haskell
@@ -97,30 +97,30 @@
 				(custom-turn-on-haskell-modes)))
 
 ;;; COMMENT: shell script
-;; SOURCE: http://emacswiki.org/emacs/ShMode
+;; SOURCE: `http://emacswiki.org/emacs/ShMode'
 (autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
 
 (add-hook 'shell-script-mode '(lambda ()
 				(turn-on-general-programming-mode)))
 
 ;;; COMMENT: python programming
-;; SOURCE: http://emacswiki.org/emacs/PythonProgrammingInEmacs
+;; SOURCE: `http://emacswiki.org/emacs/PythonProgrammingInEmacs'
 (autoload 'python-mode "python" "Major mode for editing python source code." t)
 
 (add-hook 'python-mode-hook '(lambda ()
 			       (turn-on-general-programming-mode)))
 
 ;;; COMMENT: javascript programming
-;; SOURCE: http://www.emacswiki.org/emacs/JavaScriptMode
+;; SOURCE: `http://www.emacswiki.org/emacs/JavaScriptMode'
 (autoload 'javascript-mode "javascript" "Major mode for editing javascript source code." t)
 
 ;;; COMMENT: C/C++ programming
-;; SOURCE: http://www.emacswiki.org/emacs/CcMode
+;; SOURCE: `http://www.emacswiki.org/emacs/CcMode'
 (autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
 (autoload 'c++-mode "cc-mode" "Major mode for editing C++ source code." t)
 
 ;;; COMMENT: maxima
-;; SOURCE: http://emacswiki.org/emacs/MaximaMode
+;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
 (autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
 (autoload 'maxima "maxima" "Major mode for maxima interaction." t)
 (autoload 'imaxima "imaxima" "Major mode frontend for maxima with image support." t)
@@ -129,6 +129,6 @@
 (setq imaxima-use-maxima-mode-flag t)
 
 ;;; COMMENT: CEDET (collection of emacs development environment tools)
-;; SOURCE: http://emacswiki.org/emacs/CollectionOfEmacsDevelopmentEnvironmentTools
+;; SOURCE: `http://emacswiki.org/emacs/CollectionOfEmacsDevelopmentEnvironmentTools'
 
 (provide 'programming-config)

@@ -3,7 +3,7 @@
 ;; TIME: Wed 16 May 2012 15:05:26 EST
 
 ;;; COMMENT: eshell
-;; SOURCE: http://emacswiki.org/emacs/CategoryEshell
+;; SOURCE: `http://emacswiki.org/emacs/CategoryEshell'
 (require 'ansi-color)
 (require 'eshell)
 (require 'esh-opt)

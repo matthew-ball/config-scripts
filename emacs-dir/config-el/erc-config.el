@@ -3,7 +3,7 @@
 ;; TIME: Wed 16 May 2012 15:04:41 EST
 
 ;;; COMMENT: erc
-;; SOURCE: http://emacswiki.org/emacs/ERC
+;; SOURCE: `http://emacswiki.org/emacs/ERC'
 (autoload 'doctor-doc "doctor") ;; NOTE: for use with ERC doctor
 (autoload 'make-doctor-variables "doctor") ;; NOTE: for use with ERC doctor
 (autoload 'erc-select "erc" "The GNU Emacs IRC client." t)

@@ -158,15 +158,16 @@
       *mode-line-timeout* 1) ;; NOTE: update every second (if nothing else has triggered it already)
 
 (setf *screen-mode-line-format*
-      (list "[(^B%n^b) (^B%w^b)]" ;; current group/frames
-       ;; "[(^B%g^bA)] [(^B%W^b)] " ;; groups/current frame
-       ;; "[(%c) (%M)] " ;; cpu and memory
-       ;; " [(%B) (%I)]" ;; battery and wireless
-       ;; '(:eval (cat " [(^B" (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t) "^b)] ")) ;; time
-       ;; "[^B%m^b]" ;; mpd
+      (list 
+       ;; '(:eval (cat " [(^B" (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t) "^b)] ")) ;; NOTE: display time
+       ;; "[(^B%w^b)]" ;; NOTE: display current group/frames
+       ;; "[(^B%g^bA)] [(^B%W^b)] " ;; NOTE: display groups/current frame
+       ;; "[(%c) (%M)] " ;; NOTE: display cpu and memory
+       ;; " [(%B) (%I)]" ;; NOTE: display battery and wireless
+       ;; "[^B%m^b]" ;; NOTE: display mpd
        ))
 
-;; (when (not (head-mode-line (current-head))) ;; NOTE: turn on the mode line
+;; (when (not (head-mode-line (current-head))) ;; NOTE: turn on the `mode-line'
 ;;   (toggle-mode-line (current-screen) (current-head)))
 
 ;;; COMMENT: key bindings
