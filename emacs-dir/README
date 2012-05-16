@@ -16,7 +16,7 @@
   + eshell :: A shell emulator for GNU Emacs.
   + package :: An emacs-lisp package manager.
   + package-manager :: A front-end to the system package manager.
-  + ido :: /description/
+  + ido :: Interactively do things.
   + ido-ubiquitous :: /description/
   + smex :: /description/
   + ibuffer :: /description/

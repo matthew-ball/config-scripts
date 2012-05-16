@@ -245,6 +245,7 @@ NOTE: if the connection is succesful, the async shell command window should be c
 				      c++-mode-hook
 				      c-mode-hook
 				      python-mode-hook
+				      js-mode-hook
 				      javascript-mode-hook)) ;; NOTE: add `major-modes' to highlighting list
 
 (setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message

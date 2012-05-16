@@ -112,7 +112,8 @@
 
 ;;; COMMENT: javascript programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/JavaScriptMode'
-(autoload 'javascript-mode "javascript" "Major mode for editing javascript source code." t)
+;; (autoload 'javascript-mode "javascript" "Major mode for editing javascript source code." t)
+(autoload 'js-mode "js" "Major mode for editing javascript source code." t)
 
 ;;; COMMENT: C/C++ programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/CcMode'
