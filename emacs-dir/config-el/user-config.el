@@ -3,7 +3,7 @@
 ;; TIME: Wed 16 May 2012 15:02:23 EST
 
 ;;; COMMENT: emacs multimedia system
-;; SOURCE: http://emacswiki.org/cgi-bin/wiki/EMMS
+;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/EMMS'
 ;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
@@ -21,7 +21,7 @@
 ;; (emms-player-mpd-connect) ;; NOTE: connect emms to mpd
 
 ;;; COMMENT: project management
-;; SOURCE: http://emacswiki.org/emacs/eproject
+;; SOURCE: `http://emacswiki.org/emacs/eproject'
 ;; (require 'eproject) ;; FIX: change this to an autoload
 ;; TODO: learn eproject
 
@@ -35,8 +35,8 @@
       )
 
 ;;; COMMENT: dictionary and thesaurus
-;; SOURCE: http://emacswiki.org/emacs/dict.el
-;; SOURCE: http://emacswiki.org/emacs/thesaurus.el
+;; SOURCE: `http://emacswiki.org/emacs/dict.el'
+;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
 ;; TODO: find a dictionary/thesaurus combination
 ;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
@@ -52,8 +52,8 @@
   (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
 
 ;;; COMMENT: w3m browser
-;; SOURCE: http://www.emacswiki.org/emacs/emacs-w3m
-;; SOURCE: http://www.emacswiki.org/emacs/WThreeMHintsAndTips
+;; SOURCE: `http://www.emacswiki.org/emacs/emacs-w3m'
+;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMHintsAndTips'
 ;; TODO: move w3m configuration into a new file ... (???)
 (require 'w3m-load) ;; TEST: this still needs to be tested
 
@@ -80,7 +80,7 @@
 (setq w3m-use-cookies t ;; NOTE: use cookies in w3m
       w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
       w3m-cookie-accept-bad-cookies t
-      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org"))
+      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com"))
 
 ;; COMMENT: w3m sessions
 (setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
@@ -162,11 +162,11 @@ NOTE: This function requires w3m to be running."
 	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
 
 ;;; COMMENT: gist
-;; SOURCE: https://github.com/defunkt/gist.el
+;; SOURCE: `https://github.com/defunkt/gist.el'
 (autoload 'gist-region-or-buffer "gist" "Integrate with Github." t)
 
 ;;; COMMENT: insert date and time
-;; SOURCE: http://www.emacswiki.org/emacs/InsertDate
+;; SOURCE: `http://www.emacswiki.org/emacs/InsertDate'
 (defun insert-date (format)
   "Wrapper around format-time-string."
   (interactive "MFormat: ")

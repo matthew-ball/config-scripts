@@ -12,15 +12,12 @@
   "Decorate new frame FRAME with THEME."
   (select-frame frame)
   (let ((colour-theme-is-global nil))
-    (if (window-system)
-	(progn ;; NOTE: X session
-	  (color-theme-zenburn) ;; NOTE: apply `zenburn' theme to a new frame
-	  (set-face-attribute 'default nil :height 90)
-	  (setq frame-title-format "%b"
-		icon-title-format "%b"))
-      (progn ;; NOTE: TTY session
-	;;(color-theme-dark-laptop) ;; ERROR: this does not work
-	))))
+    (color-theme-zenburn) ;; NOTE: apply `color-theme-zenburn' theme to a new frame (`window-system' or otherwise)
+    (when (window-system)
+      (progn ;; NOTE: X session
+	(set-face-attribute 'default nil :height 90)
+	(setq frame-title-format "%b"
+	      icon-title-format "%b")))))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 
