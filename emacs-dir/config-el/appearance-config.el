@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/appearance-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/appearance-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:05:45 EST
 
 ;;; COMMENT: appearance
 ;; (autoload 'color-theme "color-theme" "Colour theme for GNU Emacs." t)

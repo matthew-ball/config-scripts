@@ -1,5 +1,6 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/my-modes/custom-comments.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:03:22 EST
 
 ;; COMMENT:
 ;; Welcome to custom-comments - A minor mode extension for GNU Emacs managing highlighting of custom comments.
@@ -113,7 +114,8 @@ NOTE: This function depends on the multi-occur function `show-custom-structure'.
   (interactive)
   (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
 		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
-			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")"))))
+			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")\n")
+		  (concat (make-string 2 (aref comment-start 0)) " TIME: " (format-time-string "%c") "\n"))))
 
 (defun show-dot-file-structure (&rest junk) ;; FIX: this currently only works for .el extensions (???)
   "Show the outline structure of all configuration files matching the same extension."

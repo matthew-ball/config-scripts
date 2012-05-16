@@ -1,20 +1,24 @@
-;; FILE: ~/.conf-scripts/emacs-dir/init.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/init.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:03:46 EST
 
 ;;; COMMENT: load path
-(add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; NOTE: add "~/.emacs.d/" to user load path
-(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add "~/.emacs.d/config-el/" to user load-path
-(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add "~/.emacs.d/apt-el/" to user load-path
-(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "my-modes")) ;; NOTE: add "~/.emacs.d/my-modes/" to user load-path
+;; SOURCE: http://emacswiki.org/emacs/LoadPath
+(add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; NOTE: add `~/.emacs.d/' to user `load-path' variable
+(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add `~/.emacs.d/config-el/' to `load-path' variable
+(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add `~/.emacs.d/apt-el/' to `load-path' variable
+(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "my-modes")) ;; NOTE: add `~/.emacs.d/my-modes/' to `load-path' variable
 
-;; WARNING: this requires ELPA has created its directory
+;; WARNING: this requires `ELPA' has created its directory
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
-  (normal-top-level-add-subdirs-to-load-path)) ;; NOTE: recursively add sub-directories to load-path
+  (normal-top-level-add-subdirs-to-load-path)) ;; NOTE: recursively add sub-directories to `load-path' variable
 
 ;;; COMMENT: common lisp
+;; SOURCE: http://emacswiki.org/emacs/CommonLispForEmacs
 (eval-when-compile (require 'cl))
 
 ;;; COMMENT: customize configuration file
+;; SOURCE: http://www.emacswiki.org/emacs/CustomFile
 (setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
 (load custom-file 'noerror)
 

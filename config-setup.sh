@@ -1,4 +1,8 @@
 #!/bin/bash
+## FILE: /home/chu/.conf-scripts/config-setup.sh
+## AUTHOR: Matthew Ball (copyleft 2012)
+## TIME: Wed 16 May 2012 15:06:52 EST
+
 
 # IMPORTANT: to give this script execute permissions run the command: 'chmod +x config-setup'
 

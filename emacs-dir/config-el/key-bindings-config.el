@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/key-bindings-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/key-bindings-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:06:02 EST
 
 ;;; COMMENT: global key-bindings
 ;; (global-set-key (kbd "<f1>") 'function) ;; NOTE: ...

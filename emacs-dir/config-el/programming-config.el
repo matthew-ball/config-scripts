@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/programming-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/programming-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:05:14 EST
 
 ;;; COMMENT: flymake
 ;; SOURCE: http://www.emacswiki.org/emacs/FlyMake

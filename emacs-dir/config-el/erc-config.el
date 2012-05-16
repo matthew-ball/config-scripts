@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/erc-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/erc-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:04:41 EST
 
 ;;; COMMENT: erc
 ;; SOURCE: http://emacswiki.org/emacs/ERC

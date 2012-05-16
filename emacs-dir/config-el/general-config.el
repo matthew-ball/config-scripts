@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/general-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/general-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:04:05 EST
 
 ;;; COMMENT: user variables
 (defvar user-home-directory "~/" "Directory for user's home files.")

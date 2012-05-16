@@ -1,5 +1,6 @@
 // FILE: /home/chu/.conf-scripts/conkeror-dir/init.js
 // AUTHOR: Matthew Ball (copyleft 2012)
+// TIME: Wed 16 May 2012 15:06:30 EST
 
 /// COMMENT: variables
 load_paths.unshift("chrome://conkeror-contrib/content/"); // NOTE: load path: allow for 'contrib' stuff

@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/dired-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/dired-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:05:35 EST
 
 ;;; COMMENT: dired
 ;; SOURCE: http://emacswiki.org/emacs/DiredMode

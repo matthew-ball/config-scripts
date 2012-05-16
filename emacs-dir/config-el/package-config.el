@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/package-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/package-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:05:54 EST
 
 ;;; COMMENT: emacs package manager
 ;; SOURCE: http://emacswiki.org/emacs/ELPA

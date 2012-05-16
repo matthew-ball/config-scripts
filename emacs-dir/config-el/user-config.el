@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/user-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/user-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:02:23 EST
 
 ;;; COMMENT: emacs multimedia system
 ;; SOURCE: http://emacswiki.org/cgi-bin/wiki/EMMS
@@ -205,9 +206,6 @@ NOTE: if the connection is succesful, the async shell command window should be c
 
 ;;; COMMENT: highlight custom comment tags
 (require 'custom-comments)
-(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
-(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
-
 ;; add `comment' tags to highlighting ...
 ;; (push "AUTHOR" custom-comment-tag-alist-comment)
 ;; (push "COMMENT" custom-comment-tag-alist-comment)
@@ -216,6 +214,8 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;; (push "SOURCE" custom-comment-tag-alist-comment)
 ;; (push "NOTE" custom-comment-tag-alist-comment)
 ;; (push "TODO" custom-comment-tag-alist-comment)
+;; (push "TIME" custom-comment-tag-alist-comment) ;; ERROR: does not work
+(add-to-list 'custom-comment-tag-alist-comment "TIME")
 
 ;; add `warning' tages to highlighting ...
 ;; (push "BUG" custom-comment-tag-alist-warning)
@@ -224,6 +224,9 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;; (push "FIX" custom-comment-tag-alist-warning)
 ;; (push "WARNING" custom-comment-tag-alist-warning)
 ;; (push "TEST" custom-comment-tag-alist-warning)
+
+(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
+(activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
 ;;; COMMENT: configuration files
 ;; TODO: add `README' files

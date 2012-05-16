@@ -1,5 +1,6 @@
 ;; FILE: /home/chu/.conf-scripts/stumpwm-dir/init.lisp
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:06:40 EST
 
 ;;; COMMENT: lisp implementation
 ;debian=sbcl

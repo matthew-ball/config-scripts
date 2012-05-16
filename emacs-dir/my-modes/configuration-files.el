@@ -1,5 +1,6 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/my-modes/configuration-files.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:06:15 EST
 
 ;; COMMENT:
 ;; <insert description of file>

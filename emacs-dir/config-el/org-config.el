@@ -1,5 +1,6 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:05:05 EST
 
 ;;; COMMENT: org mode
 ;; SOURCE: http://emacswiki.org/emacs/OrgMode

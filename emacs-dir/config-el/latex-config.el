@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/latex-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/latex-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:04:54 EST
 
 ;;; COMMENT: latex
 ;; SOURCE: http://emacswiki.org/emacs/LaTeX

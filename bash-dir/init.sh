@@ -1,5 +1,6 @@
 ## FILE: /home/chu/.conf-scripts/bash-dir/init.sh
 ## AUTHOR: Matthew Ball (copyleft 2012)
+## TIME: Wed 16 May 2012 15:07:02 EST
 
 # NOTE: if not running interactively, don't do anything
 [ -z "$PS1" ] && return

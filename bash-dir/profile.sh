@@ -1,5 +1,6 @@
-## FILE: /home/chu/.conf-scripts/bash-dir/bash_profile.sh
+## FILE: /home/chu/.conf-scripts/bash-dir/profile.sh
 ## AUTHOR: Matthew Ball (copyleft 2012)
+## TIME: Wed 16 May 2012 15:07:17 EST
 
 ### COMMENT:
 # the point of this `bash_profile' configuration is to start any programs which will be needed at run-time

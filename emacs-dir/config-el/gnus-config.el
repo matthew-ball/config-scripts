@@ -1,5 +1,6 @@
-;; FILE: ~/.emacs.d/config-el/gnus-config.el
+;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/gnus-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
+;; TIME: Wed 16 May 2012 15:04:15 EST
 
 ;; TODO:
 ;; if: there is no file at ~/.authinfo

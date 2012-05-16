@@ -1,5 +1,6 @@
-## FILE: ~/.conf-scripts/bash-dir/bash_aliases
+## FILE: /home/chu/.conf-scripts/bash-dir/aliases.sh
 ## AUTHOR: Matthew Ball (copyleft 2012)
+## TIME: Wed 16 May 2012 15:07:32 EST
 
 # COMMENT: shortcut aliases
 # alias lsr='ls -R' # NOTE: recursive directory listing
@@ -19,7 +20,7 @@ alias gco="git checkout "
 alias gb="git branch "
 alias gm="git merge "
 
-# COMMENT: stumpwm related aliases
+# COMMENT: X related aliases
 alias start_gdm='sudo /etc/init.d/gdm start'
 
 # COMMENT: emacs related aliases
