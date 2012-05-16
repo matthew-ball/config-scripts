@@ -1,14 +1,21 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:05:05 EST
+;; TIME: Wed 16 May 2012 17:12:27 EST
 
 ;;; COMMENT: org mode
 ;; SOURCE: http://emacswiki.org/emacs/OrgMode
 (autoload 'org-install "org-exp" "Organise tasks with `org-mode'." t)
 
+;; SOURCE: http://orgmode.org/manual/Special-symbols.html
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
+
+;; SOURCE: http://orgmode.org/worg/org-contrib/org-protocol.html
 (autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
+
+;; SOURCE: http://orgmode.org/worg/org-contrib/org-special-blocks.html
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
+
+;; SOURCE: http://orgmode.org/worg/org-tutorials/org-latex-export.html
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 
 ;; SOURCE: http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html
@@ -157,7 +164,8 @@
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
-;;; COMMENT: org-babel
+;;; COMMENT: `org-babel'
+;; SOURCE: http://orgmode.org/worg/org-contrib/babel/intro.html
 (org-babel-do-load-languages 'org-babel-load-languages
 			     '((R . t)
 			       (emacs-lisp . t)
@@ -174,7 +182,8 @@
 (setq org-src-fontify-natively t) ;; NOTE: fontify source code
 (setq org-src-tab-acts-natively t) ;; NOTE: tab works properly
 
-;;; COMMENT: org-mode latex exporting
+;;; COMMENT: `org-latex-export'
+;; SOURCE: http://orgmode.org/worg/org-tutorials/org-latex-export.html
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
 
@@ -254,9 +263,8 @@
                [EXTRA]"
 	       org-beamer-sectioning))
 
-;;; COMMENT: org-mode latex
-(setq org-export-latex-listings t) ;; NOTE: tell org to use listings
-
+;;; COMMENT: `org-entities'
+;; SOURCE: http://orgmode.org/manual/Special-symbols.html
 (add-to-list 'org-entities-user '("neg" "\\neg" t "&not;" "[negation]" nil "¬"))
 (add-to-list 'org-entities-user '("iff" "\\iff" t "&iff;" "[if and only if]" nil "↔"))
 (add-to-list 'org-entities-user '("top" "\\top" t "&top;" "[top (true)]" nil "⊤"))
@@ -289,7 +297,6 @@
 (add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
 
 ;;; COMMENT: Insert a custom file template
-;; FIX: doesn't work for some reason
 (defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
 
 (define-skeleton insert-org-paper
@@ -313,7 +320,7 @@
   (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
     (funcall (intern (concat "insert-org-" custom-file-type)))))
 
-;;; COMMENT: This is a set of custom inserts for common clauses in an `org-mode' document
+;;; COMMENT: this is a set of custom inserts for common clauses in an `org-mode' document
 (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
   "Insert a footnote in an `org-mode' document."
   (interactive "sEnter footnote name: \nsEnter text: ")
@@ -322,7 +329,7 @@
     (end-of-buffer)
     (insert (concat "\n[fn:" name "] " text))))
 
-;;; COMMENT: This is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
+;;; COMMENT: this is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
 ;; TODO: write functions for the following `alist' variables
 (defvar org-latex-math-operator-alist (list "frac" "sqrt" "times") "List of mathematical operators in LaTeX.")
 
@@ -364,8 +371,11 @@
   (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
     (funcall (intern (concat "org-insert-latex-math-" clause)))))
 
-;;; COMMENT: org-ref-man
+;;; COMMENT: `org-ref-man'
 ;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
+;; TODO:
+;; - Learn `org-bibtex'.
+;; - Integrate `org-ref-man' and `org-bibtex'.
 (defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
   "Generate an `org-mode' style file link."
   (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
@@ -381,14 +391,14 @@
 	    (generate-paper-entry file)))
 	result)))
 
-(defun generate-paper-list-current-buffer ()
+(defun generate-paper-list-current-buffer (&rest junk)
   "Generate a list of documents from the directory of the current buffer."
   (interactive)
   (generate-paper-list (file-name-directory (buffer-file-name))))
 
 ;;; COMMENT: ...
-(defun get-page-title (url)
-  "Get title of web page, whose url can be found in the current line"
+(defun get-page-title (url) ;; FIX: does this actually work?
+  "Get title of web page, whose url can be found in the current line."
   (interactive "sURL: ")
   ;; Get title of web page, with the help of functions in url.el
   (with-current-buffer (url-retrieve-synchronously url) ;; find title by grep the html code
@@ -427,6 +437,6 @@
 
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
-;; TODO: add an org-post-export-hook function
+;; TODO: add an org-post-export-hook function (to delete `latex' buffers)
 
 (provide 'org-config)
