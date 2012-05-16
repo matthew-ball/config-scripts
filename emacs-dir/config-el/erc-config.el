@@ -2,6 +2,7 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: erc
+;; SOURCE: http://emacswiki.org/emacs/ERC
 (autoload 'doctor-doc "doctor") ;; NOTE: for use with ERC doctor
 (autoload 'make-doctor-variables "doctor") ;; NOTE: for use with ERC doctor
 (autoload 'erc-select "erc" "The GNU Emacs IRC client." t)

@@ -2,6 +2,7 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: dired
+;; SOURCE: http://emacswiki.org/emacs/DiredMode
 (put 'dired-find-alternate-file 'disabled nil) ;; NOTE: enable re-use of dired buffers
 
 (require 'dired-x) ;; FIX: change this to an autoload

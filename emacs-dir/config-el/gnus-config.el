@@ -10,6 +10,9 @@
 ;; 1. use that information (i.e. start gnus)
 ;; 2. re-write the file to disk (i.e. something has changed)
 
+;;; COMMENT: gnus
+;; SOURCE: http://emacswiki.org/emacs/CategoryGnus
+;; SOURCE: http://emacswiki.org/emacs/Gnus
 ;; (require 'gnus nil 'noerror)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
 ;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)

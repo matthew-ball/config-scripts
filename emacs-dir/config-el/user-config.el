@@ -2,6 +2,7 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: emacs multimedia system
+;; SOURCE: http://emacswiki.org/cgi-bin/wiki/EMMS
 ;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between EMMS and MPD." t)
@@ -19,6 +20,7 @@
 ;; (emms-player-mpd-connect) ;; NOTE: connect emms to mpd
 
 ;;; COMMENT: project management
+;; SOURCE: http://emacswiki.org/emacs/eproject
 ;; (require 'eproject) ;; FIX: change this to an autoload
 ;; TODO: learn eproject
 
@@ -32,6 +34,8 @@
       )
 
 ;;; COMMENT: dictionary and thesaurus
+;; SOURCE: http://emacswiki.org/emacs/dict.el
+;; SOURCE: http://emacswiki.org/emacs/thesaurus.el
 ;; TODO: find a dictionary/thesaurus combination
 ;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
@@ -47,10 +51,13 @@
   (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
 
 ;;; COMMENT: w3m browser
-;; TODO: move w3m configuration into a new file ...
+;; SOURCE: http://www.emacswiki.org/emacs/emacs-w3m
+;; SOURCE: http://www.emacswiki.org/emacs/WThreeMHintsAndTips
+;; TODO: move w3m configuration into a new file ... (???)
 (require 'w3m-load) ;; TEST: this still needs to be tested
 
 ;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+;; (autoload 'w3m-search "w3m-search" "Search with a WWW browser." t)
 ;; (autoload 'w3m-goto-url-new-session "w3m" "Go to a URL in a new w3m buffer." t)
 ;; (autoload 'w3m-mode-map "w3m" "The mode map for w3m." t) ;; ERROR: this does not work
 
@@ -153,13 +160,27 @@ NOTE: This function requires w3m to be running."
 	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
 	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
 
+;;; COMMENT: gist
+;; SOURCE: https://github.com/defunkt/gist.el
+(autoload 'gist-region-or-buffer "gist" "Integrate with Github." t)
+
+;;; COMMENT: insert date and time
+;; SOURCE: http://www.emacswiki.org/emacs/InsertDate
+(defun insert-date (format)
+  "Wrapper around format-time-string."
+  (interactive "MFormat: ")
+  (insert (format-time-string format)))
+
+(defun insert-standard-date ()
+  "Inserts standard date time string."
+  (interactive)
+  (insert (format-time-string "%c")))
+
 ;;; COMMENT: internet connection
-;; TODO: rename as an alist?
-(defvar internet-connections (list "WiiBeard" "ANU-Secure") "List of internet connections available.")
+(defvar internet-connections-alist (list "WiiBeard" "ANU-Secure") "List of internet connections available.")
 ;; TODO: add potter's internet connection
 
-;; TODO: have to clean this up (somehow)
-(defun internet-connection (&rest junk)
+(defun internet-connection (&rest junk) ;; TODO: have to clean this up (somehow)
   "Connect to the internet. A list of available connections is provided in the variable `internet-connections'.
 
 TODO: create a function to add a new connection (???)
@@ -168,7 +189,7 @@ NOTE: if the connection is succesful, the async shell command window should be c
       if the connection is not succesful, the async window should be centred."
   (interactive)
   (save-excursion
-    (let ((connection (ido-completing-read "Select internet connection: " internet-connections)))
+    (let ((connection (ido-completing-read "Select internet connection: " internet-connections-alist)))
       (message (concat "Connecting to internet connection \"" connection "\"..."))
       (shell-command (concat "nmcli con up id " connection " &"))) ;; TODO: add some sort of confirmation message
     (delete-other-windows)))
@@ -182,13 +203,27 @@ NOTE: if the connection is succesful, the async shell command window should be c
   ;; (delete-other-windows)
   ))
 
-;;; COMMENT: gist
-(autoload 'gist-region-or-buffer "gist" "Integrate with Github." t)
-
 ;;; COMMENT: highlight custom comment tags
 (require 'custom-comments)
 (setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
 (activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
+
+;; add `comment' tags to highlighting ...
+;; (push "AUTHOR" custom-comment-tag-alist-comment)
+;; (push "COMMENT" custom-comment-tag-alist-comment)
+;; (push "FILE" custom-comment-tag-alist-comment)
+;; (push "IMPORTANT" custom-comment-tag-alist-comment)
+;; (push "SOURCE" custom-comment-tag-alist-comment)
+;; (push "NOTE" custom-comment-tag-alist-comment)
+;; (push "TODO" custom-comment-tag-alist-comment)
+
+;; add `warning' tages to highlighting ...
+;; (push "BUG" custom-comment-tag-alist-warning)
+;; (push "DEBUG" custom-comment-tag-alist-warning)
+;; (push "ERROR" custom-comment-tag-alist-warning)
+;; (push "FIX" custom-comment-tag-alist-warning)
+;; (push "WARNING" custom-comment-tag-alist-warning)
+;; (push "TEST" custom-comment-tag-alist-warning)
 
 ;;; COMMENT: configuration files
 ;; TODO: add `README' files
@@ -199,27 +234,5 @@ NOTE: if the connection is succesful, the async shell command window should be c
 (add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add .sh files in ~/.conf-scripts/bash-dir/
 (add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add .js files in ~/.conf-scripts/conkeror-dir/
 (add-config-directory (concat user-scripts-directory "stumpwm-dir/") ".lisp$") ;; NOTE: add .lisp files in ~/.conf-scripts/stumpwm-dir/
-
-;;; COMMENT: insert date and time
-;; NOTE: http://www.emacswiki.org/emacs/InsertDate
-(defun insert-date (prefix)
-  "Insert the current date. With prefix-argument, use ISO format. With two prefix arguments, write out the day and month name."
-  (interactive "P")
-  (let ((format (cond
-		 ((not prefix) "%d.%m.%Y")
-		 ((equal prefix '(4)) "%Y-%m-%d")
-		 ((equal prefix '(16)) "%A, %d. %B %Y")))
-	(system-time-locale "de_DE"))
-    (insert (format-time-string format))))
-
-(defun insert-date (format)
-  "Wrapper around format-time-string."
-  (interactive "MFormat: ")
-  (insert (format-time-string format)))
-
-(defun insert-standard-date ()
-  "Inserts standard date time string."
-  (interactive)
-  (insert (format-time-string "%c")))
 
 (provide 'user-config)

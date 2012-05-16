@@ -32,6 +32,11 @@
   + help :: /description/
   + auto-complete :: /description/
 
+** TODO Source Contributions
+- All GNU Emacs Major and Minor Modes need to be sourced correctly.
+
+- I have started attempting to cite my emacs lisp configuration file - at least from [[http://www.emacswiki.org][emacswiki.org]].
+
 ** GNU Emacs Version
 - This configuration is developed (and running) on GNU Emacs 24.1.50.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1)
  of 2012-05-03 on cw-bkp0, modified by Debian.

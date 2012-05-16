@@ -2,6 +2,7 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: org mode
+;; SOURCE: http://emacswiki.org/emacs/OrgMode
 (autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
 ;; (autoload 'org-entities "org" "Enable unicode support for org-mode." t)
 (autoload 'org-protocol "org-protocol" "Use org-mode with emacsclient." t)

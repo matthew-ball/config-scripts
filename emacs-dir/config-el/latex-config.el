@@ -2,6 +2,7 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: latex
+;; SOURCE: http://emacswiki.org/emacs/LaTeX
 (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
 (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
 (autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)

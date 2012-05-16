@@ -23,7 +23,7 @@
 ;; In the function `insert-custom-comment-tag', make sure we have available to use the `ido-completing-read' functionality.
 
 ;;; COMMENT: highlight custom comment tags
-(defvar custom-comment-tag-alist-comment '("AUTHOR" "COMMENT" "FILE" "IMPORTANT" "NOTE" "TODO") "Available custom comment tags.")
+(defvar custom-comment-tag-alist-comment '("AUTHOR" "COMMENT" "FILE" "IMPORTANT" "SOURCE" "NOTE" "TODO") "Available custom comment tags.")
 (defvar custom-comment-tag-alist-warning '("BUG" "DEBUG" "ERROR" "FIX" "WARNING" "TEST") "Available custom warning tags.")
 (defvar custom-comment-tag-alist (append custom-comment-tag-alist-comment custom-comment-tag-alist-warning) "Available custom tags.")
 

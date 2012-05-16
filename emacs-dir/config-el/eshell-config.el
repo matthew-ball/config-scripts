@@ -2,6 +2,7 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 
 ;;; COMMENT: eshell
+;; SOURCE: http://emacswiki.org/emacs/CategoryEshell
 (require 'ansi-color)
 (require 'eshell)
 (require 'esh-opt)
@@ -25,8 +26,8 @@
 (defun eshell/emacs (&rest args)
   "Open a list of files in emacs."
   (if (null args)
-      (bury-buffer) ;; return to emacs
-    ;; have to expand the file names or else naming a directory in an argument causes later arguments to be looked for in that directory, not the starting directory
+      (bury-buffer) ;; NOTE: return to emacs
+    ;; NOTE: have to expand the file names or else naming a directory in an argument causes later arguments to be looked for in that directory, not the starting directory
     (mapc #'find-file (mapcar #'expand-file-name (eshell-flatten-list (reverse args))))))
 
 (defun eshell/clear (&rest junk)
