@@ -4,13 +4,15 @@
 
 ;;; COMMENT: org mode
 ;; SOURCE: http://emacswiki.org/emacs/OrgMode
-(autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
-;; (autoload 'org-entities "org" "Enable unicode support for org-mode." t)
-(autoload 'org-protocol "org-protocol" "Use org-mode with emacsclient." t)
-(autoload 'org-latex "org-latex" "Render LaTeX with org-mode." t)
-(autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
+(autoload 'org-install "org-exp" "Organise tasks with `org-mode'." t)
 
-(require 'org-entities) ;; TODO: change this to an autoload
+(autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
+(autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
+(autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
+(autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
+
+;; SOURCE: http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html
+(autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
 (setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; use RETURN to follow links
@@ -42,6 +44,20 @@
       org-agenda-dim-blocked-tasks nil ;; do not dim blocked tasks
       org-directory (expand-file-name user-organisation-directory) ;; default directory for org mode
       org-default-notes-file (expand-file-name user-org-notes-file) ;; file for quick notes
+      org-modules '(org-modules '(org-bbdb
+				  org-bibtex
+				  org-crypt
+				  org-docview
+				  org-gnus
+				  org-info
+				  org-jsinfo
+				  org-irc
+				  org-mew
+				  org-mhe
+				  org-rmail
+				  org-vm
+				  org-wl
+				  org-w3m))
       org-agenda-span 'month ;; show a month of agendas
       org-agenda-files `(,(expand-file-name user-org-notes-file)
 			 ,(expand-file-name user-org-university-file)
@@ -276,12 +292,6 @@
 ;; FIX: doesn't work for some reason
 (defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
 
-(defun org-insert-custom-file ()
-  "Insert custom `org-mode' file template."
-  (interactive)
-  (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
-    (funcall (intern (concat "insert-org-" custom-file-type)))))
-
 (define-skeleton insert-org-paper
   "Inserts an `org-mode' paper template."
   "Insert paper title: "
@@ -297,31 +307,11 @@
   "Insert presentation title: "
   "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
 
-(defun insert-org-latex-document (&rest junk)
-  "Inserts an `org-mode' document template."
-  )
-
-;;; COMMENT: org-ref-man
-;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
-(defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
-  "Generate an `org-mode' style file link."
-  (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
-
-(defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
-  "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
-  (if (file-exists-p dir-name)
-      (let (files result)
-	(setq files (directory-files dir-name t (concat "\.pdf$") t))
-	(dolist (file files)
-	  (when (and (file-readable-p file) (not (file-directory-p file)))
-	    (setq result (cons file result))
-	    (generate-paper-entry file)))
-	result)))
-
-(defun generate-paper-list-current-buffer ()
-  "Generate a list of documents from the directory of the current buffer."
+(defun org-insert-custom-file ()
+  "Insert custom `org-mode' file template."
   (interactive)
-  (generate-paper-list (file-name-directory (buffer-file-name))))
+  (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
+    (funcall (intern (concat "insert-org-" custom-file-type)))))
 
 ;;; COMMENT: This is a set of custom inserts for common clauses in an `org-mode' document
 (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
@@ -374,6 +364,28 @@
   (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
     (funcall (intern (concat "org-insert-latex-math-" clause)))))
 
+;;; COMMENT: org-ref-man
+;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
+(defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
+  "Generate an `org-mode' style file link."
+  (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
+
+(defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
+  "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
+  (if (file-exists-p dir-name)
+      (let (files result)
+	(setq files (directory-files dir-name t (concat "\.pdf$") t))
+	(dolist (file files)
+	  (when (and (file-readable-p file) (not (file-directory-p file)))
+	    (setq result (cons file result))
+	    (generate-paper-entry file)))
+	result)))
+
+(defun generate-paper-list-current-buffer ()
+  "Generate a list of documents from the directory of the current buffer."
+  (interactive)
+  (generate-paper-list (file-name-directory (buffer-file-name))))
+
 ;;; COMMENT: ...
 (defun get-page-title (url)
   "Get title of web page, whose url can be found in the current line"
@@ -401,6 +413,7 @@
 ;;; COMMENT: customisations
 (defun turn-on-custom-org-bindings ()
   "Activate custom `org-mode' bindings."
+  ;; TODO: add binding for `org-insert-custom-file' command
   (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; NOTE: M-RET inserts a new heading
   (define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; NOTE: insert paper template with C-c p
   (define-key org-mode-map (kbd "C-c b") 'insert-org-beamer) ;; NOTE: insert beamer template with C-c b

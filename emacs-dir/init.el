@@ -10,6 +10,7 @@
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "my-modes")) ;; NOTE: add `~/.emacs.d/my-modes/' to `load-path' variable
 
 ;; WARNING: this requires `ELPA' has created its directory
+;; TODO: I should just create the ELPA directory during install
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
   (normal-top-level-add-subdirs-to-load-path)) ;; NOTE: recursively add sub-directories to `load-path' variable
 
@@ -45,7 +46,7 @@
 
 ;;; COMMENT: shutdown emacs server
 ;; SOURCE: http://www.emacswiki.org/emacs/EmacsAsDaemon
-(defun server-shutdown ()
+(defun server-shutdown (&rest junk)
   "Save buffers, quit, and shutdown (kill) GNU Emacs server."
   (interactive)
   (save-some-buffers) ;; NOTE: ask to save any modified buffers

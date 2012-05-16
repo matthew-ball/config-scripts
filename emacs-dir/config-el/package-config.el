@@ -53,7 +53,7 @@ NOTE: This function only needs to be called the first time emacs is run under th
 (autoload 'apt "apt" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
 ;; (autoload 'arch "arch-mode" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
 
-(defun check-dist-name (name)
+(defun check-dist-name (name &rest junk)
   "Return true if distribution name matches NAME string, false otherwise.
 
 NOTE: distribution name is 16 characters into the output of 'lsb_release -i'."
