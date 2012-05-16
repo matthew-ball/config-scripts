@@ -21,36 +21,36 @@
 ;; SOURCE: http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
-(setq org-support-shift-select 1 ;; enable using SHIFT + ARROW keys to highlight text
-      org-return-follows-link t ;; use RETURN to follow links
-      org-log-done 'time ;; capture a timestamp for when a task changes state
-      org-src-fontify-natively t ;; enable fontify in source code blocks
-      ;; org-read-date-display-live nil ;; disable the live date-display
+(setq org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
+      org-return-follows-link t ;; NOTE: use RETURN to follow links
+      org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
+      org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
+      ;; org-read-date-display-live nil ;; NOTE: disable the live date-display
       ;; org-insert-mode-line-in-empty-file t
-      ;; org-indent-mode t ;; enable org indent mode
-      ;; org-indent-indentation-per-level 2 ;; two indents per level
-      ;; org-startup-indented t ;; indent text in org documents (WARNING: can crash emacs)
-      ;; org-odd-levels-only t ;; use only odd levels for an outline
-      ;; org-hide-leading-stars t ;; hide leading stars in a headline
-      ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; ignore processing
-      ;; org-use-property-inheritance t ;; children tasks inherit properties from their parent
-      ;; org-agenda-include-diary t ;; include entries from the emacs diary
+      ;; org-indent-mode t ;; NOTE: enable org indent mode
+      ;; org-indent-indentation-per-level 2 ;; NOTE: two indents per level
+      ;; org-startup-indented t ;; NOTE: indent text in org documents (WARNING: can crash emacs)
+      ;; org-odd-levels-only t ;; NOTE: use only odd levels for an outline
+      ;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
+      ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
+      ;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
+      ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
-      org-completion-use-ido t ;; enable ido for target (buffer) completion
-      org-log-into-drawer 'LOGBOOK ;; log changes in the LOGBOOK drawer
-      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; targets include this file and any file contributing to the agenda - up to 5 levels deep
-      org-refile-use-outline-path 'file ;; targets start with the file name - allows creating level 1 tasks
-      org-outline-path-complete-in-steps t ;; targets complete in steps so we start with filename, TAB shows the next level of targets etc
-      org-refile-allow-creating-parent-nodes 'confirm ;; allow refile to create parent tasks with confirmation
-      org-footnote-auto-adjust t ;; automatically handle footnotes
-      org-agenda-skip-additional-timestamps-same-entry nil ;; don't skip multiple entries per day
-      org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; file for archiving items
-      org-use-fast-todo-selection t ;; enable fast task state switching
-      org-use-tag-inheritance nil ;; disable tag inheritance
-      org-agenda-dim-blocked-tasks nil ;; do not dim blocked tasks
-      org-directory (expand-file-name user-organisation-directory) ;; default directory for org mode
-      org-default-notes-file (expand-file-name user-org-notes-file) ;; file for quick notes
+      org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
+      org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
+      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: targets include this file and any file contributing to the agenda - up to 5 levels deep
+      org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
+      org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
+      org-refile-allow-creating-parent-nodes 'confirm ;; NOTE: allow refile to create parent tasks with confirmation
+      org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
+      org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
+      org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
+      org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
+      org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
+      org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
+      org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
+      org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
       org-modules '(org-modules '(org-bbdb
 				  org-bibtex
 				  org-crypt
@@ -65,7 +65,7 @@
 				  org-vm
 				  org-wl
 				  org-w3m))
-      org-agenda-span 'month ;; show a month of agendas
+      org-agenda-span 'month ;; NOTE: show a month of agendas
       org-agenda-files `(,(expand-file-name user-org-notes-file)
 			 ,(expand-file-name user-org-university-file)
 			 ,(expand-file-name user-org-projects-file)
@@ -78,16 +78,16 @@
       '(("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r) ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n)
 	("WEBSITE" . ?w) ("BOOKMARK" . ?b) ("PHILOSOPHY" . ?s) ("COMPUTER SCIENCE" . ?c) ("MATHEMATICS" . ?m) ("WRITING" . ?t)) ;; tags for `org-set-tags'
 
-      org-agenda-custom-commands '(("q" "Show All Tasks" ((agenda "" ((org-agenda-ndays 7) ;; overview of tasks
-								      (org-agenda-start-on-weekday nil) ;; calendar begins today
+      org-agenda-custom-commands '(("q" "Show All Tasks" ((agenda "" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
+								      (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
 								      (org-agenda-repeating-timestamp-show-all t)
 								      (org-agenda-entry-types '(:timestamp :sexp))))
-							  (agenda "" ((org-agenda-ndays 1) ;; daily agenda
-								      (org-deadline-warning-days 7) ;; seven day advanced warning for deadlines
+							  (agenda "" ((org-agenda-ndays 1) ;; NOTE: daily agenda
+								      (org-deadline-warning-days 7) ;; NOTE: seven day advanced warning for deadlines
 								      (org-agenda-todo-keyword-format "[ ]")
 								      (org-agenda-scheduled-leaders '("" ""))
 								      (org-agenda-prefix-format "%t%s")))
-							  (todo "TODO" ;; todos searched by context
+							  (todo "TODO" ;; NOTE: todos searched by context
 								((org-agenda-prefix-format "[ ] %T: ")
 								 (org-agenda-sorting-strategy '(tag-up priority-down))
 								 (org-agenda-todo-keyword-format "")
@@ -95,12 +95,12 @@
 				    ((org-agenda-compact-blocks t)
 				     (org-agenda-remove-tags t)))
 				   ("h" "Home" ((org-agenda-list nil nil 1) (tags-todo "HOME") (tags-todo "GENERAL")) "HOME"
-				    (org-agenda-files '("home.org" "notes.org"))) ;; tasks for HOME
+				    (org-agenda-files '("home.org" "notes.org"))) ;; NOTE: tasks for HOME
 				   ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; tasks for UNIVERSITY
 				   ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context)
-				   ("p" "Projects" ((org-agenda-list nil nil 1) (tags-todo "PROJECTS")) "PROJECTS") ;; PROJECT tasks
-				   ("g" "General" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags "NOTES")) "GENERAL") ;; tasks for GENERAL
-				   ("r" "Reading" ((org-agenda-list nil nil 1) (tags "READING") (tags "WEBSITE")) "READING")) ;; tasks for READING
+				   ("p" "Projects" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags-todo "HOME") (tags-todo "PROJECTS")) "PROJECTS" (org-agenda-files '("home.org" "notes.org" "projects.org"))) ;; NOTE: PROJECT tasks
+				   ("g" "General" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags "NOTES")) "GENERAL") ;; NOTE: tasks for GENERAL
+				   ("r" "Reading" ((org-agenda-list nil nil 1) (tags "READING") (tags "WEBSITE")) "READING")) ;; NOTE: tasks for READING
 
       org-capture-templates ;; TODO: replace with custom variables
       '(("h" "Home" entry (file+headline "home.org" "Home") ;; (concat (expand-file-name user-organisation-directory) "home.org")
