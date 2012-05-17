@@ -508,9 +508,10 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 ;;; COMMENT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checking" t)
+(autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
+(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-(autoload 'tex-mode-flyspell-verify "flyspell" "" t)
+(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
 
 (add-hook 'text-mode-hook 'turn-on-flyspell) ;; NOTE: turn on automatic spell check if in a `text-mode'
 

@@ -11,10 +11,12 @@
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
 ;;; COMMENT: general programming
+;; TODO: make this a `programming-mode-hook'
 (defun turn-on-general-programming-mode (&rest junk)
   "General function for programming modes."
   (modify-syntax-entry ?- "w") ;; NOTE: treat '-' as part of the word
   ;; (flymake-mode) ;; NOTE: turn on flymake mode
+  (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings (TODO: not sure about this function)
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   )

@@ -192,7 +192,7 @@ NOTE: This function requires w3m to be running."
 ;; TODO: add potter's internet connection
 
 (defun internet-connection (&rest junk) ;; TODO: have to clean this up (somehow)
-  "Connect to the internet. A list of available connections is provided in the variable `internet-connections'.
+  "Connect to the internet. A list of available connections is provided in the variable `internet-connections-alist'.
 
 TODO: create a function to add a new connection (???)
 
