@@ -10,9 +10,10 @@
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "my-modes")) ;; NOTE: add `~/.emacs.d/my-modes/' to `load-path' variable
 
 ;; WARNING: this requires `ELPA' has created its directory
-;; TODO: I should just create the ELPA directory during install
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
-  (normal-top-level-add-subdirs-to-load-path)) ;; NOTE: recursively add sub-directories to `load-path' variable
+  (if (file-exists-p default-directory) ;; NOTE: if the directory exists ...
+      (normal-top-level-add-subdirs-to-load-path) ;; NOTE: recursively add sub-directories to `load-path' variable
+    (message "create directory!"))) ;; NOTE: ... else create it ...
 
 ;;; COMMENT: common lisp
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'

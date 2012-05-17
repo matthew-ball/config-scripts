@@ -9,8 +9,9 @@
 (defvar user-documents-directory (concat user-home-directory "Documents/") "Directory for user's documents.")
 
 ;; TODO: set up the following ...
-;; (defvar user-news-directory '() "Directory for user's news.")
-;; (defvar user-mail-directory '() "Directory for user's mail.")
+(defvar user-news-directory (concat user-home-directory "News/") "Directory for user's news.")
+(defvar user-mail-directory (concat user-home-directory "Mail/") "Directory for user's mail.")
+
 (defvar user-audio-directory (concat user-home-directory "Music/") "Directory for user's music.")
 (defvar user-video-directory (concat user-home-directory "Videos/") "Directory for user's videos.")
 
@@ -29,8 +30,10 @@
 (defvar user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user.")
 (defvar user-secondary-email-address (concat user-university-id "@anu.edu.au") "Secondary email address for the user.")
 
+(setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
+
 ;;; COMMENT: user functions
-(defun eval-and-replace ()
+(defun eval-and-replace (&rest junk)
   "Replace the preceding s-expression with its value."
   (interactive)
   (backward-kill-sexp)
@@ -100,9 +103,6 @@
 ;; (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; NOTE: open`*.in' files in `otter-mode'
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; NOTE: open python files in a psuedo-python interpreter
 
-;;; COMMENT: considering changing the `Ctrl' key to `CapsLock'
-;; TODO: should be moved to `key-bindings-config.el'
-
 ;;; COMMENT: selection
 (delete-selection-mode 1) ;; replace (delete) selected region
 
@@ -119,34 +119,36 @@
 (require 'ido)
 (require 'ido-ubiquitous)
 
-(ido-mode 'both) ;; turn on interactive mode (files and buffers)
+(ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
 (ido-ubiquitous-mode t)
 
-(setq ido-enable-flex-matching t ;; enable fuzzy matching
-      ido-everywhere t ;; enable ido everywhere
-      ido-create-new-buffer 'always ;; create new buffers (if name does not exist)
-      ido-ignore-extensions t ;; ignore extentions
-      ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; ignore
+(setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
+      ido-everywhere t ;; NOTE: enable ido everywhere
+      ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
+      ido-ignore-extensions t ;; NOTE: ignore extentions
+      ido-ignore-buffers'("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
+			  "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
       ido-work-directory-list `(,(expand-file-name user-home-directory)
       				,(expand-file-name user-documents-directory)
       				,(expand-file-name user-university-directory)
       				,(expand-file-name user-organisation-directory))
-      ido-case-fold t ;; enable case-insensitivity
-      ido-enable-last-directory-history t ;; enable directory history
-      ido-max-work-directory-list 30 ;; remember last used directories
-      ido-max-work-file-list 50 ;; ... and files
-      ido-max-prospects 8 ;; don't spam the mini buffer
+      ido-case-fold t ;; NOTE: enable case-insensitivity
+      ido-enable-last-directory-history t ;; NOTE: enable directory history
+      ido-max-work-directory-list 30 ;; NOTE: remember last used directories
+      ido-max-work-file-list 50 ;; NOTE: ... and files
+      ido-max-prospects 8 ;; NOTE: don't spam the mini buffer
       ido-show-dot-for-dired t
-      confirm-nonexistent-file-or-buffer nil) ;; the confirmation is rather annoying
+      confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
+      )
 
-(defun recentf-ido-find-file () ;; replace recentf-open-files
-  "Find a recent file using Ido."
+(defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
+  "Find a recent file using `ido-mode'."
   (interactive)
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file (find-file file))))
 
 (defun ido-goto-symbol (&optional symbol-list)
-  "Refresh imenu and jump to a place in the buffer using Ido."
+  "Refresh `imenu' and jump to a place in the buffer using `ido-mode'."
   (interactive)
   (unless (featurep 'imenu)
     (require 'imenu nil t))
@@ -192,33 +194,11 @@
 	  (add-to-list 'symbol-names name)
 	  (add-to-list 'name-and-pos (cons name position))))))))
 
-(defvar ido-enable-replace-completing-read t
-  "If t, use ido-completing-read instead of completing-read if possible.
-    Set it to nil using let in around-advice for functions where the
-    original completing-read is required.  For example, if a function
-    foo absolutely must use the original completing-read, define some
-    advice like this:
-
-    (defadvice foo (around original-completing-read-only activate)
-      (let (ido-enable-replace-completing-read) ad-do-it))")
-
-(defadvice completing-read ;; replace completing-read wherever possible, unless directed otherwise
-  (around use-ido-when-possible activate)
-  (if (or (not ido-enable-replace-completing-read) ;; manual override disable ido
-	  (and (boundp 'ido-cur-list)
-	       ido-cur-list)) ;; avoid infinite loop from ido calling this
-      ad-do-it
-    (let ((allcomp (all-completions "" collection predicate)))
-      (if allcomp
-	  (setq ad-return-value
-		(ido-completing-read prompt allcomp nil require-match initial-input hist def))
-	ad-do-it))))
-
 ;;; COMMENT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
 (require 'smex)
 (setq smex-save-file (concat user-emacs-directory "smex-items"))
-(smex-initialize) ;; super-charge ido mode
+(smex-initialize) ;; NOTE: super-charge `ido-mode'
 
 ;;; COMMENT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
@@ -403,16 +383,16 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;;; COMMENT: enable/disable functions
 (put 'overwrite-mode 'disabled t) ;; NOTE: disable `overwrite-mode'
 
-;;; COMMENT: mini buffer
-(file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini buffer
-(fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all yes/no questions to y/n
+;;; COMMENT: mini-buffer
+(file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
+(fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
 ;; (savehist-mode t) ;; NOTE: keep mini buffer history between session (IMPORTANT: may be deprecated)
 
 ;;; COMMENT: stumpwm mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
-(autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t)
+(autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
 
-;; FIX: this doesn't appear to work ...
+;; FIX: this doesn't appear to work with emacs 24...
 ;;; COMMENT: single line copy
 ;; (defadvice kill-ring-save (before slick-copy activate compile)
 ;;   "When called interactively with no active region, copy a single line instead."
@@ -421,7 +401,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;;       (message "Copied line")
 ;;       (list (line-beginning-position) (line-beginning-position 2)))))
 
-;; FIX: this doesn't appear to work ...
+;; FIX: this doesn't appear to work with emacs 24...
 ;;; COMMENT: single line cut
 ;; (defadvice kill-region (before slick-cut activate compile)
 ;;   "When called interactively with no active region, kill a single line instead."
@@ -481,8 +461,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
   "Saves the current GNU Emacs session."
   (interactive)
   ;;(desktop-save)
-  (desktop-save-in-desktop-dir)
-  )
+  (desktop-save-in-desktop-dir))
 
 ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
 ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
@@ -494,10 +473,10 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 (eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
 
-;; ERROR: this does not work
-;; (add-hook 'find-file-hook (lambda () (desktop-save-in-desktop-dir))) ;; NOTE: save the desktop everytime a file is opened
+;; ERROR: this (obviously) does not work as expected
+;; (add-hook 'find-file-hook (lambda () (desktop-save-in-desktop-dir))) ;; NOTE: save the desktop everytime a (new) file is opened
 
-(setq desktop-globals-to-save ;; NOTE: save a bunch of variables to the desktop file (for lists specify the len of the maximal saved data also)
+(setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
       (append '((extended-command-history . 30)
                 (file-name-history        . 100)
                 (grep-history             . 30)
@@ -513,7 +492,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
                 register-alist)))
 
 (defun emacs-process-p (pid) ;; NOTE: over-ride stale lock
-  "If pid is the process ID of an emacs process, return t, else nil. Also returns nil if pid is nil."
+  "If PID is the process ID of an emacs process, return t, else nil. Also returns nil if PID is nil."
   (when pid
     (let* ((cmdline-file (concat "/proc/" (int-to-string pid) "/cmdline")))
       (when (file-exists-p cmdline-file)
@@ -523,24 +502,9 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
           (search-forward "emacs" nil t) pid)))))
 
 (defadvice desktop-owner (after pry-from-cold-dead-hands activate)
-  "Don't allow dead emacsen to own the desktop file."
+  "Don't allow dead GNU Emacsen to own the desktop file."
   (when (not (emacs-process-p ad-return-value))
     (setq ad-return-value nil)))
-
-;;; COMMENT: paredit
-;; SOURCE: `http://emacswiki.org/emacs/ParEdit'
-(autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
-
-(defun override-slime-repl-bindings-with-paredit () ;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
-  (define-key slime-repl-mode-map
-    (read-kbd-macro paredit-backward-delete-key) nil))
-
-;; TODO: move hooks to programming-config.el
-(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'lisp-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode t)))
-(add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
 
 ;;; COMMENT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
@@ -548,7 +512,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
 (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
 
-(add-hook 'text-mode-hook 'turn-on-flyspell) ;; NOTE: turn on automatic spell check if in a text-mode
+(add-hook 'text-mode-hook 'turn-on-flyspell) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
 ;;; COMMENT: ispell
 (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
@@ -603,30 +567,8 @@ If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffe
       (term-kill-subjob)
       (kill-buffer))))
 
-;;(define-key term-mode-map (kbd "C-c q") 'kill-term) ;; TODO: map (kcd "C-c q") to `kill-term' function
-
-;; (defun start-term (&rest junk)
-;;   "..."
-;;   (interactive)
-;;   (terminal-start-or-switch "bash" t))
-
-(start-term-program-shortcut "bash") ;; NOTE: create command `start-bash'
-(start-term-program-shortcut "htop") ;; NOTE: create command `start-htop'
-;; (start-term-program-shortcut "mutt") ;; NOTE: create command `start-mutt'
-;; (start-term-program-shortcut "aptitude") ;; NOTE: create command `aptitude-start'
-
-;;; COMMENT: interaction with transient mark mode
-(defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode
-  (set (make-local-variable 'transient-mark-mode) t))
-
-(ad-activate 'term-line-mode)
-
-(defadvice term-char-mode (after term-char-mode-fixes ()) ;; NOTE: disable transient mark modes in term-char-mode
-  (set (make-local-variable 'transient-mark-mode) nil))
-
-(ad-activate 'term-char-mode)
-
 ;;; COMMENT: remote terminal hosts
+;; FIX: use the new functions above
 (defun remote-term (new-buffer-name cmd &rest switches) ;; NOTE: use this for remote so I can specify command line arguments
   "Some documentation."
   (setq term-ansi-buffer-name (concat "" new-buffer-name ""))
@@ -638,10 +580,29 @@ If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffe
   (term-set-escape-char ?\C-x)
   (switch-to-buffer term-ansi-buffer-name))
 
-(defun open-partch-connection (&rest junk)
-  "Open an SSH connection to the server `partch.anu.edu.au' with my university login number."
-  (interactive)
+;; TODO: I think I will need to learn `comint-mode' a bit more for this (I think the above fix is ugly)
+(defun open-partch-connection (&rest junk) ;; FIX: does not work
+  "Open an SSH connection to the server `partch.anu.edu.au' with a university login number."
   (remote-term "partch" "ssh" "u4537508@partch.anu.edu.au"))
+
+;; FIX: make this work
+;;(define-key term-mode-map (kbd "C-c q") 'kill-term) ;; TODO: map (kcd "C-c q") to `kill-term' function
+
+(start-term-program-shortcut "bash") ;; NOTE: create command `start-bash'
+(start-term-program-shortcut "htop") ;; NOTE: create command `start-htop'
+;; (start-term-program-shortcut "mutt") ;; NOTE: create command `start-mutt'
+;; (start-term-program-shortcut "aptitude") ;; NOTE: create command `start-aptitude'
+
+;;; COMMENT: interaction with `transient-mark-mode'
+(defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode
+  (set (make-local-variable 'transient-mark-mode) t))
+
+(ad-activate 'term-line-mode)
+
+(defadvice term-char-mode (after term-char-mode-fixes ()) ;; NOTE: disable transient mark modes in term-char-mode
+  (set (make-local-variable 'transient-mark-mode) nil))
+
+(ad-activate 'term-char-mode)
 
 ;;; COMMENT: ansi colour support
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)

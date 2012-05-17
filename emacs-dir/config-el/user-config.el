@@ -110,7 +110,7 @@ NOTE: This function requires w3m to be running."
 	(browse-url-chromium temp-url)
       (browse-url-chromium (w3m-print-current-url)))))
 
-;; COMMENT: w3m and save-desktop mode
+;; COMMENT: w3m and save desktop mode
 (defun w3m-register-desktop-save ()
   "Set `desktop-save-buffer' to a function returning the current URL."
   (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
@@ -217,16 +217,17 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;;; COMMENT: highlight custom comment tags
 ;; NOTE: i suppose technically this should be in the `appearance-config.el' file
 (require 'custom-comments)
-(setq custom-comment-tag-alist-comment '("AUTHOR"
+(setq custom-comment-tag-alist-heading '("AUTHOR"
 					 "COMMENT"
-					 "FILE"
-					 "IMPORTANT"
+					 "FILE"))
+
+(add-to-list 'custom-comment-tag-alist-heading "TIME") ;; NOTE: this is not in the default `heading' list
+
+(setq custom-comment-tag-alist-comment '("IMPORTANT"
 					 "SOURCE"
 					 "NOTE"
 					 "TODO"
 					 "TIME")) ;; NOTE: add `comment' tags to highlighting
-
-(add-to-list 'custom-comment-tag-alist-comment "TIME") ;; NOTE: this is not in the default `comment'list
 
 (setq custom-comment-tag-alist-warning '("BUG"
 					 "DEBUG"

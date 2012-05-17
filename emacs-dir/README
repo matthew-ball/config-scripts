@@ -2,7 +2,7 @@
 
 * The =GNU Emacs= configuration
 - This is an attempt at the full blown "=GNU Emacs= as an Operating System" configuration.
-  + Not all of the configuration needs to be used[fn:configuration-note], but a lot of it is recommended.
+  + Not all of the configuration needs to be used[fn:configuration-note], but it is recommended.
 
 # NOTE: this is incredibly pointless ...
 - This configuration optionally includes functionality for the following operations:
@@ -67,24 +67,41 @@
 ** Package Management :: [[file:config-el/package-config.el][package-config.el]]
 - This file provides a configuration for packages not available by default in =GNU Emacs=.
   + The following files[fn:auto-setup] are installed from the =ELPA= package manager[fn:ELPA]:
-    - color-theme :: /description/
-    - c-eldoc :: /description/
+    - The following list are the necessary packages; the =core-packages=:
+      #+begin_src emacs-lisp
+        (setq core-packages
+              (list 'diminish 'color-theme 'smex 'zenburn 'paredit 'ido-ubiquitous))
+      #+end_src
+
+    - The following list are the user choice packages; the =user-packages=:
+      #+begin_src emacs-lisp
+        (setq user-packages
+              (list 'emms 'eproject 'fill-column-indicator 'magit 'gh 'gist 'c-eldoc 'haskell-mode))
+      #+end_src
+
     - diminish :: /description/
+    - color-theme :: /description/
+    - smex :: /description/
+    - zenburn :: just some alien fruit salad to keep you in the zone
+    - paredit :: minor mode for pseudo-structurally editing Lisp code
+    - ido-ubiquitous :: use `ido-completing-read' instead of `completing-read'
+    - c-eldoc :: /description/
     - fill-column-indicator :: /description/
     - gh :: /description/
     - gist :: /description/
     - eproject :: /description/
     - haskell-mode :: /description/
-    - ido-ubiquitous :: use `ido-completing-read' instead of `completing-read' almost everywhere
     - magit :: /description/
-    - smex :: /description/
-    - paredit :: minor mode for pseudo-structurally editing Lisp code
-    - zenburn :: just some alien fruit salad to keep you in the zone
 
   + The following files are not available from =ELPA=, but are required for complete working:
-    - auto-complete :: start auto-completion at current point - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]] (not available in =ELPA=)
-    - apt-mode :: debian/ubuntu package management mode available from [[http://www.netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el][netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el]]
+    - auto-complete :: auto-complete functionality - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]] (not available in =ELPA=)
+    - apt-mode :: debian/ubuntu package management - available from [[http://www.netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el][netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el]]
     - ...
+
+ + The setup has a =run-initial-setup= function:
+   -This function downloads the custom packages from =ELPA= (WARNING: Internet connection required.)
+
+- This file includes an interface to the system package manager ...
 
 ** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
 - This file provides a configuration for visual appearance:

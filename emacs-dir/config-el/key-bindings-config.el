@@ -2,6 +2,9 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 ;; TIME: Wed 16 May 2012 15:06:02 EST
 
+;;; COMMENT: considering changing the `Ctrl' key to `CapsLock'
+;; TODO: should be moved to `key-bindings-config.el'
+
 ;;; COMMENT: global key-bindings
 ;; (global-set-key (kbd "<f1>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "M-<f1>") 'function) ;; NOTE: ...
@@ -72,6 +75,9 @@
 ;; (global-set-key (kbd "M-<menu>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "C-<menu>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "s-<menu>") 'function) ;; NOTE: ...
+;; ---
+(global-set-key (kbd "C-+") 'toggle-hiding)
+(global-set-key (kbd "C-M-+") 'toggle-selective-display)
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; NOTE: remove binding on C-z (suspend-frame)
 

@@ -25,8 +25,8 @@
 ;;; COMMENT: personal settings
 (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
       ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
-      user-full-name "Matthew Ball" ;; NOTE: user full-name
-      mail-aliases t ;; NOTE: enable mail aliases
+      ;; user-full-name "Matthew Ball" ;; NOTE: user full-name
+      mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file'
       auth-source-save-behavior nil
       gnus-inhibit-startup-message t
       gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
@@ -38,9 +38,12 @@
       message-send-mail-function 'smtpmail-send-it ;; NOTE: for gnus (message-mode)
       send-mail-function 'smtpmail-send-it) ;; NOTE: not for gnus (mail-mode)
 
-;; TODO: set these to something else (???)
-(setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
-(setq custom-news-dir "~/News/") ;; NOTE: set directory for news
+;; TODO: can these be set in `general-config.el' (???)
+(setq custom-mail-dir (expand-file-name user-mail-directory)) ;; NOTE: set directory for mail
+(setq custom-mail-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
+
+;; (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
+;; (setq custom-news-dir "~/News/") ;; NOTE: set directory for news
 
 ;;; COMMENT: gnus settings
 (setq gnus-select-method '(nnml "")

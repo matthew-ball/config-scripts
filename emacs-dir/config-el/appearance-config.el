@@ -106,6 +106,7 @@
 ;;; COMMENT: code folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
 ;; (require 'hideshow)
+(autoload 'hs-minor-mode "hideshow" "Fold code with GNU Emacs." t)
 
 ;; TODO: add custom modes
 ;; (defvar hs-special-modes-alist
@@ -116,27 +117,24 @@
 ;;     (java-mode "{" "}" "/[*/]" nil nil)
 ;;     (js-mode "{" "}" "/[*/]" nil))))
 
-;; (setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
-;; (setq hs-isearch-open 'x) ;; NOTE: set whether isearch opens folded comments, code, or both where x is code, comments, t (both), or nil (neither)
+(setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
+(setq hs-isearch-open 'x) ;; NOTE: set whether isearch opens folded comments, code, or both where x is code, comments, t (both), or nil (neither)
 
-;; (defun toggle-selective-display (column)
-;;   (interactive "P")
-;;   (set-selective-display
-;;    (or column
-;;        (unless selective-display
-;; 	 (1+ (current-column))))))
+(defun toggle-selective-display (column)
+  (interactive "P")
+  (set-selective-display
+   (or column
+       (unless selective-display
+	 (1+ (current-column))))))
 
-;; (defun toggle-hiding (column)
-;;   (interactive "P")
-;;   (if hs-minor-mode
-;;       (if (condition-case nil
-;; 	      (hs-toggle-hiding)
-;; 	    (error t))
-;; 	  (hs-show-all))
-;;     (toggle-selective-display column)))
-
-;; (global-set-key (kbd "C-+")   'toggle-hiding)
-;; (global-set-key (kbd "C-M-+") 'toggle-selective-display)
+(defun toggle-hiding (column)
+  (interactive "P")
+  (if hs-minor-mode
+      (if (condition-case nil
+	      (hs-toggle-hiding)
+	    (error t))
+	  (hs-show-all))
+    (toggle-selective-display column)))
 
 ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
