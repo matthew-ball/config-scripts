@@ -100,6 +100,9 @@
 ;; (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; NOTE: open`*.in' files in `otter-mode'
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; NOTE: open python files in a psuedo-python interpreter
 
+;;; COMMENT: considering changing the `Ctrl' key to `CapsLock'
+;; TODO: should be moved to `key-bindings-config.el'
+
 ;;; COMMENT: selection
 (delete-selection-mode 1) ;; replace (delete) selected region
 

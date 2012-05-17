@@ -31,6 +31,10 @@
 				   (turn-on-general-programming-mode)
 				   (eldoc-mode t)))
 
+;;; COMMENT: eldoc
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
 ;;; COMMENT: common lisp programming
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
 (setq inferior-lisp-program "/usr/bin/sbcl")
@@ -119,6 +123,12 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/CcMode'
 (autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
 (autoload 'c++-mode "cc-mode" "Major mode for editing C++ source code." t)
+;;(autoload 'c-turn-on-eldoc-mode "c-edloc" "Minor mode for viewing function arguments." t) ;; TODO: add to hook
+
+
+(add-hook 'c-mode-hook '(lambda ()
+			  (c-turn-on-eldoc-mode)
+			  (turn-on-general-programming-mode)))
 
 ;;; COMMENT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'

@@ -2,7 +2,11 @@
 ## AUTHOR: Matthew Ball (copyleft 2012)
 ## TIME: Wed 16 May 2012 15:07:10 EST
 
-exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" # NOTE: launch stumpwm from quicklisp
+# ERROR: I don't think that actually worked
+# TODO: compile stumpwm!!
+#exec /home/chu/Programming/lisp/common-lisp/stumpwm/stumpwm # DEBUG: testing some thing
+
+exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" # NOTE: launch stumpwm with quicklisp
 
 #exec stumpwm # NOTE: launch stumpwm session
 #exec openbox # NOTE: launch openbox

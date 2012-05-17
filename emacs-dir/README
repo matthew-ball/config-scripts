@@ -1,10 +1,10 @@
 =This README file is best read using functionality provided by org-mode=
 
 * The =GNU Emacs= configuration
-- This is an attempt at the full blown "GNU Emacs as an Operating System" configuration. Not all of the configuration needs to be used[fn:configuration-note], but a lot of it is recommended.
+- This is an attempt at the full blown "=GNU Emacs= as an Operating System" configuration.
+  + Not all of the configuration needs to be used[fn:configuration-note], but a lot of it is recommended.
 
-- This configuration enables many useful modes and functionality which are not configured/enabled/available in the vanilla version of GNU Emacs.
-
+# NOTE: this is incredibly pointless ...
 - This configuration optionally includes functionality for the following operations:
   + org :: /description/
     - Version: 7.8.03
@@ -15,7 +15,7 @@
   + dired :: A file system browser for GNU Emacs.
   + eshell :: A shell emulator for GNU Emacs.
   + package :: An emacs-lisp package manager.
-  + package-manager :: A front-end to the system package manager.
+  + package-manager :: [[...]] :: A front-end to the system package manager.
   + ido :: Interactively do things.
   + ido-ubiquitous :: /description/
   + smex :: /description/
@@ -43,12 +43,14 @@
 
 ** Initiation :: [[file:init.el][init.el]]
 - This file initialises the configuration:
-  + Adds "~/.emacs.d/" to the load-path.
+  + Adds "~/.emacs.d/" (and "~/.emacs.d/config-el/", "~/.emacs.d/apt-el/", and "~/.emacs.d/my-modes/") to the load-path.
   + Requires common-lisp package.
   + Sets custom configuration file.
-  + Requires specific configuration files, a brief description of each module is provided in the following sections[fn:order-of-evaluation]:
+  + Requires specific configuration files[fn:order-of-evaluation]:
     - *package-config*
     - *appearance-config*
+    - *dired-config*
+    - *eshell-config*
     - *general-config*
     - *key-bindings-config*
     - *programming-config*
@@ -57,34 +59,41 @@
     - *erc-config*
     - *gnus-config*
     - *user-config*
-
-- This initiation process is started after the initial user login; when a call to "emacs --daemon" is launched and creates the GNU Emacs server.
+  + The [[file:init.el][init.el]] file also provides the user with the command `[[file:init.el::%3B%3B%3B%20COMMENT:%20shutdown%20emacs%20server][server-shutdown]]':
+    - This will save any (modified) buffers, save the emacs daemon process, and kill the server.
+- This initiation process is started after the initial user login:
+  - After logic, a call to =emacs --daemon= is launched which creates the GNU Emacs server.
 
 ** Package Management :: [[file:config-el/package-config.el][package-config.el]]
-- This file provides a configuration for packages not available by default in GNU Emacs.
-  + The following files[fn:auto-setup] are installed from ELPA[fn:ELPA]:
+- This file provides a configuration for packages not available by default in =GNU Emacs=.
+  + The following files[fn:auto-setup] are installed from the =ELPA= package manager[fn:ELPA]:
     - color-theme :: /description/
+    - c-eldoc :: /description/
     - diminish :: /description/
+    - fill-column-indicator :: /description/
+    - gh :: /description/
+    - gist :: /description/
     - eproject :: /description/
     - haskell-mode :: /description/
-    - magit :: /description/
-    - gist :: /description/
-    - slime :: the Superior Lisp Interaction mode for Emacs
-    - smex :: /description/
-    - zenburn :: just some alien fruit salad to keep you in the zone
-    - paredit :: minor mode for pseudo-structurally editing Lisp code
     - ido-ubiquitous :: use `ido-completing-read' instead of `completing-read' almost everywhere
-  + The following files are not available from ELPA, but are required for complete working:
-    - auto-complete :: start auto-completion at current point - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]]
+    - magit :: /description/
+    - smex :: /description/
+    - paredit :: minor mode for pseudo-structurally editing Lisp code
+    - zenburn :: just some alien fruit salad to keep you in the zone
+
+  + The following files are not available from =ELPA=, but are required for complete working:
+    - auto-complete :: start auto-completion at current point - available from [[http://cx4a.org/software/auto-complete/][cx4a.org/software/auto-complete/]] (not available in =ELPA=)
     - apt-mode :: debian/ubuntu package management mode available from [[http://www.netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el][netfort.gr.jp/~dancer/software/downloads/list.cgi#apt-el]]
-    - fill-column-indicator :: /description/
     - ...
 
 ** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
 - This file provides a configuration for visual appearance:
-  + Sets the colour theme to "zenburn"[fn:requires-zenburn]
+  + Sets the colour theme to =zenburn= theme[fn:requires-zenburn].
 
 ** Dired Settings :: [[file:config-el/dired-config.el][dired-config.el]]
+- This file provides a configuration for =dired=:
+  + ...
+
 ** General Settings :: [[file:config-el/general-config.el][general-config.el]]
 - This file provides a configuration for general GNU Emacs usage:
   + /User variables/
@@ -136,32 +145,35 @@
   + ...
 
 ** Programming Settings :: [[file:config-el/programming-config.el][programming-config.el]]
+# ===UPDATE===
 - This file provides a configuration for the following programming modes:
-  + "emacs-lisp" Programming
-  + "common-lisp" Programming
-  + "haskell" Programming
-  + "python" Programming
-  + "slime"
-  + maxima
+  + =emacs-lisp= Programming
+  + =common-lisp= Programming
+  + =haskell= Programming
+  + =python= Programming
+  + =slime=
+  + =maxima=
 
 ** Organisation Settings :: [[file:config-el/org-config.el][org-config.el]]
 #+begin_quote
 Org is a mode for keeping notes, maintaining TODO lists, and doing project planning with a fast and effective plain text system.
 #+end_quote
 
-- This file provides a configuration for org-mode:
+- This file provides a configuration for =Org-Mode=:
   + ...
 
+- The ultimate idea is to write a "literate" configuration script - using GNU Emacs and org-mode.
+
 ** LaTeX Settings :: [[file:config-el/latex-config.el][latex-config.el]]
-- This file provides a configuration for LaTeX:
+- This file provides a configuration for =LaTeX=:
   + ...
 
 ** ERC Settings :: [[file:config-el/erc-config.el][erc-config.el]]
-- This file provides a configuration for ERC (the GNU Emacs IRC Client):
+- This file provides a configuration for =ERC= (the GNU Emacs IRC Client):
   + ...
 
 ** GNUS Settings :: [[file:config-el/gnus-config.el][gnus-config.el]]
-- This file provides a configuration for GNUS (the GNU Emacs Mail and News Reader):
+- This file provides a configuration for =GNUS= (the GNU Emacs Mail and News Reader):
   + ...
 
 ** User Settings :: [[file:config-el/user-config.el][user-config.el]]

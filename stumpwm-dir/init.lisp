@@ -6,18 +6,18 @@
 ;debian=sbcl
 
 ;;; COMMENT: initial config
-(in-package :stumpwm) ;; declare the package scope
+(in-package :stumpwm) ;; NOTE: declare the package scope
 
-(setf *default-package* :stumpwm ;; set default package to be stumpwm
+(setf *default-package* :stumpwm ;; NOTE: set default package to be stumpwm
       *startup-message* "Welcome to stumpwm, happy hacking!"
-      ;; *startup-message* nil ;; suppress the startup message
-      ;; *debug-level* 10 ;; turn on stumpwm debugging (WARNING: creates massive text dumps)
-      *shell-program* (getenv "SHELL") ;; set the default shell
-      *mouse-focus-policy* :sloppy) ;; set the mouse policy so focus follows mouse (alternatives are: :click, :ignore, :sloppy)
+      ;; *startup-message* nil ;; NOTE: suppress the startup message
+      ;; *debug-level* 10 ;; NOTE: turn on stumpwm debugging (WARNING: creates massive text dumps)
+      *shell-program* (getenv "SHELL") ;; NOTE: set the default shell
+      *mouse-focus-policy* :sloppy) ;; NOTE: set the mouse policy so focus follows mouse (alternatives are: :click, :ignore, :sloppy)
 
-(redirect-all-output (data-dir-file "debug-output" "txt")) ;; send debug information to ~/.stumpwm.d/debug-output.txt
+(redirect-all-output (data-dir-file "debug-output" "txt")) ;; NOTE: send debug information to ~/.stumpwm.d/debug-output.txt
 
-(set-prefix-key (kbd "s-z")) ;; set the stumpwm prefix key to super+z (default is C-t)
+(set-prefix-key (kbd "s-z")) ;; NOTE: set the stumpwm prefix key to super+z (default is C-t)
 
 ;; COMMENT: old
 ;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.") ;; NOTE: old zenburn foreground colour
@@ -76,22 +76,22 @@
 
 ;;; COMMENT: slime and swank
 ;; NOTE: requires `quicklisp'
+;; ERROR: this is not very wise to run with an sbcl session underneath (??!?!?!?!)
 ;; (load "/usr/share/common-lisp/source/slime/swank-loader.lisp")
-;; (load "/home/chu/quicklisp/dists/quicklisp/software/slime-20120208-cvs/swank-loader.lisp")
-
-;; (require 'swank) ;; ERROR: don't think this works anymore
+;; (load "/home/chu/quicklisp/dists/quicklisp/software/slime-20120208-cvs/swank-loader.lisp") ;; ERROR: should not be hardcoded
+;; (require 'swank) ;; NOTE: am I dreaming, or does this work ...
 ;; (swank:create-server)
 ;; (swank-loader:init)
 
 ;; (defvar *swank-p* nil)
 
 ;; (defcommand swank () () ;; NOTE: command to start a swank server
-;;   "Starts a swank server on port 4005 and notifies the user."
+;;   "Starts a swank server on port 4006 and notifies the user."
 ;;   (setf *top-level-error-action* :break)
 ;;   (if *swank-p*
 ;;       (message "Swank server already running.")
 ;;     (progn
-;;       (swank:create-server :port 4005
+;;       (swank:create-server :port 4006
 ;;                            :style swank:*communication-style*
 ;;                            :dont-close t)
 ;;       (setf *swank-p* t)
