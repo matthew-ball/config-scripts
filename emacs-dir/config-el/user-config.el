@@ -31,7 +31,7 @@
       ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
       browse-url-generic-program "conkeror" ;; NOTE: default web browser set to `conkeror'
       ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to `chromium-browser'
-      ;; browser-url-generic-program "x-www-browser" ;; NOTE: default web browser set to `x-www-browser'
+      ;; browse-url-generic-program "x-www-browser" ;; NOTE: default web browser set to `x-www-browser'
       )
 
 ;;; COMMENT: dictionary and thesaurus
@@ -217,17 +217,19 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;;; COMMENT: highlight custom comment tags
 ;; NOTE: i suppose technically this should be in the `appearance-config.el' file
 (require 'custom-comments)
+
+(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
+
 (setq custom-comment-tag-alist-heading '("AUTHOR"
+					 "SOURCE"
 					 "COMMENT"
-					 "FILE"))
+					 "FILE")) ;; NOTE: add `heading' tags to highlighting
 
 (add-to-list 'custom-comment-tag-alist-heading "TIME") ;; NOTE: this is not in the default `heading' list
 
 (setq custom-comment-tag-alist-comment '("IMPORTANT"
-					 "SOURCE"
 					 "NOTE"
-					 "TODO"
-					 "TIME")) ;; NOTE: add `comment' tags to highlighting
+					 "TODO")) ;; NOTE: add `comment' tags to highlighting
 
 (setq custom-comment-tag-alist-warning '("BUG"
 					 "DEBUG"
@@ -249,17 +251,16 @@ NOTE: if the connection is succesful, the async shell command window should be c
 				      js-mode-hook
 				      javascript-mode-hook)) ;; NOTE: add `major-modes' to highlighting list
 
-(setq custom-comment-suppress-init-message t) ;; NOTE: suppress initial confirmation message
 (activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
 ;;; COMMENT: configuration files
 ;; TODO: add `README' files
 (require 'configuration-files)
-(add-config-file (concat (expand-file-name user-emacs-directory) "init.el")) ;; NOTE: add ~/.conf-scripts/emacs-dir/init.el
-(add-config-directory (concat user-emacs-directory "config-el/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/config-el/
-(add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/my-modes/
-(add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add .sh files in ~/.conf-scripts/bash-dir/
-(add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add .js files in ~/.conf-scripts/conkeror-dir/
-(add-config-directory (concat user-scripts-directory "stumpwm-dir/") ".lisp$") ;; NOTE: add .lisp files in ~/.conf-scripts/stumpwm-dir/
+(add-config-file (concat user-emacs-directory "init.el")) ;; NOTE: add `~/.conf-scripts/emacs-dir/init.el'
+(add-config-directory (concat user-emacs-directory "config-el/") "\.el$") ;; NOTE: add `*.el' files in `~/.conf-scripts/emacs-dir/config-el/'
+(add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add `*.el' files in `~/.conf-scripts/emacs-dir/my-modes/'
+(add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add `*.sh' files in `~/.conf-scripts/bash-dir/'
+(add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add `*.js' files in `~/.conf-scripts/conkeror-dir/'
+(add-config-directory (concat user-scripts-directory "stumpwm-dir/") ".lisp$") ;; NOTE: add `*.lisp' files in `~/.conf-scripts/stumpwm-dir/'
 
 (provide 'user-config)

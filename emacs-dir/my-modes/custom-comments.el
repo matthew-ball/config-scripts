@@ -3,8 +3,8 @@
 ;; TIME: Wed 16 May 2012 15:03:22 EST
 
 ;; COMMENT:
-;; Welcome to custom-comments - A minor mode extension for GNU Emacs managing highlighting of custom comments.
-;; The mode also allows users to examine the structure of their configuration files.
+;; Welcome to `custom-comments' - A minor mode extension for GNU Emacs managing the highlighting of custom comments.
+;; This mode is rather simple, but allows the user to quickly examine the structure of their source code (and configuration) files.
 ;; The user just needs to enter what words they would like highlighted into the variables:
 ;; - `custom-comment-tag-alist-heading' : for 'heading' related comments.
 ;; - `custom-comment-tag-alist-comment' : for 'comment' related comments.
@@ -17,42 +17,39 @@
 ;; (add-to-list custom-comment-tag-alist-heading "HEADING")
 ;; (add-to-list custom-comment-tag-alist-comment "COMMENT")
 ;; (add-to-list custom-comment-tag-alist-warning "WARNING")
+;; (setq custom-comment-tag-mode-hooks '(cc-mode-hook c++-mode-hook c-mode-hook))
 ;; (activate-highlight-custom-comment-tags)
 
 ;; TODO:
-;; I have now added a new third colour section without finishing (nor updating) the following:
-;; Make the two variables `custom-comment-tag-alist-comment' and `custom-comment-tag-alist-warning' both empty to start off with, and let the user populate them as they see fit.
-;; Make the variable `custom-comment-tag-mode-hooks' empty to start off empty, and let the user populate it as they see fit.
-;; Create new variables `custom-comment-tag-colour-comment' and `custom-comment-tag-colour-warning' which set the font lock face colour for their respective tags (so this "mode" might work as intended a non-Zenburn theme).
+;; Create new variables `custom-comment-tag-colour-comment', `custom-comment-tag-colour-warning' and `custom-comment-tag-colour-heading' which set the font lock face colour for their respective tags (so this "mode" might work as intended a non-Zenburn theme).
 ;; In the function `insert-custom-comment-tag', make sure we have available to use the `ido-completing-read' functionality.
 
 ;;; COMMENT: highlight custom comment tags
-(defvar custom-comment-tag-alist-heading '("AUTHOR" "SOURCE" "COMMENT" "FILE") "Available custom comment heading tags.")
-(defvar custom-comment-tag-alist-comment '("IMPORTANT" "NOTE" "TODO") "Available custom comment tags.")
-(defvar custom-comment-tag-alist-warning '("BUG" "DEBUG" "ERROR" "FIX" "WARNING" "TEST") "Available custom warning tags.")
+(defvar custom-comment-tag-alist-heading nil "Available custom comment heading tags.")
+(defvar custom-comment-tag-alist-comment nil "Available custom comment tags.")
+(defvar custom-comment-tag-alist-warning nil "Available custom warning tags.")
 (defvar custom-comment-tag-alist
   (append custom-comment-tag-alist-comment custom-comment-tag-alist-warning custom-comment-tag-alist-heading) "Available custom tags.")
 
-;; NOTE: there's some obvious commonality between these two "sets"
+(defvar custom-comment-tag-mode-hooks nil "Major modes which enable highlighting of custom comment tags.")
+(defvar custom-comment-suppress-init-message nil "Suppress the printing of the initial activation message.")
+
+;; NOTE: there's some obvious commonality between these three "sets"
 (defvar font-lock-custom-comment-tag-face-heading 'font-lock-custom-comment-tag-face-heading "Face name to use for `custom-comment-tag-alist-heading' tags.")
-(defface font-lock-custom-comment-tag-face-heading '((t (:foreground "DeepSkyBlue"))) "Font lock face to highlight custom `custom-comment-tag-alist-heading' tags." :group 'font-lock-faces)
 
 (defvar font-lock-custom-comment-tag-face-comment 'font-lock-custom-comment-tag-face-comment "Face name to use for `custom-comment-tag-alist-comment' tags.")
 
 (defvar font-lock-custom-comment-tag-face-warning 'font-lock-custom-comment-tag-face-warning "Face name to use for `custom-comment-tag-alist-warning' tags.")
 
+(defface font-lock-custom-comment-tag-face-heading '((t (:foreground "DeepSkyBlue"))) "Font lock face to highlight custom `custom-comment-tag-alist-heading' tags." :group 'font-lock-faces)
+
 (defface font-lock-custom-comment-tag-face-comment '((t (:foreground "SpringGreen"))) "Font lock face to highlight custom `custom-comment-tag-alist-comment' tags." :group 'font-lock-faces)
 
 (defface font-lock-custom-comment-tag-face-warning '((t (:foreground "OrangeRed"))) "Font lock face to highlight custom `custom-comment-tag-alist-warning' tags." :group 'font-lock-faces)
 
-(defvar custom-comment-tag-mode-hooks
-  '(emacs-lisp-mode-hook lisp-mode-hook shell-script-mode-hook sh-mode-hook haskell-mode-hook scheme-mode-hook cc-mode-hook c-mode-hook python-mode-hook javascript-mode-hook)
-  "Major modes which enable highlighting of custom comment tags.")
-
-(defvar custom-comment-suppress-init-message nil "Suppress the printing of the initial activation message.")
-
-(defun activate-highlight-custom-comment-tags (&rest junk)
+(defun activate-highlight-custom-comment-tags (&rest junk) ;; TODO: clean this up
   "Highlight custom comment tags in designated modes.
+
 The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
 The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
   (setq temp-custom-comment-tag-alist-heading (concat "\\<" (regexp-opt custom-comment-tag-alist-heading) ":"))
