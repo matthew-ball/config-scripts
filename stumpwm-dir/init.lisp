@@ -125,7 +125,7 @@
 (set-maxsize-gravity :center)
 (set-transient-gravity :center)
 
-(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1") ;; set the font for the message and input bars, and the mode line (emacs font)
+(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1") ;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
 
 ;; ;;; COMMENT: message and input box
 ;; (set-bg-color *background-colour*)

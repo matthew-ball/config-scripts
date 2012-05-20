@@ -118,7 +118,7 @@
 ;;     (js-mode "{" "}" "/[*/]" nil))))
 
 (setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
-(setq hs-isearch-open 'x) ;; NOTE: set whether isearch opens folded comments, code, or both where x is code, comments, t (both), or nil (neither)
+(setq hs-isearch-open 'x) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
 
 (defun toggle-selective-display (column)
   (interactive "P")

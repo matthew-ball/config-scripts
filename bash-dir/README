@@ -7,10 +7,4 @@
   + [[file:functions.sh][functions.sh]] :: The bash functions definitions file.
   + [[file:profile.sh][profile.sh]] :: The bash profile file.
 
-* TODO Rename bash config files like so:
-- profile.sh (this is the `bash__profile' script)
-- aliases.sh (this is the `bash__aliases' script)
-- functions.sh (this is the `bash__functions' script)
-- init.sh (this is the `bashrc' script)
-
 * Footnotes

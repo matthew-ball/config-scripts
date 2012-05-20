@@ -106,6 +106,13 @@
 ;;; COMMENT: selection
 (delete-selection-mode 1) ;; replace (delete) selected region
 
+;; TODO: these could possibly be moved to `appearance-config.el'
+;;; COMMENT: visible alarm
+;; (setq visible-bell t) ;; NOTE: flash the current frame on error (instead of beep)
+
+;;; COMMENT: error bell
+(setq ring-bell-function 'ignore) ;; NOTE: ignore error bell
+
 ;;; COMMENT: uniquify (unique buffer names)
 ;; SOURCE: `http://emacswiki.org/emacs/uniquify'
 (require 'uniquify)
@@ -300,7 +307,9 @@
 	      (mode . Help-Mode)
 	      (mode . help-mode)
 	      (mode . Man-mode)
-	      (mode . woman-mode)))
+	      (mode . woman-mode)
+	      (name . "^\\*WoMan-Log\\*$")
+	      ))
 	 ("Process Manager" ;; NOTE: process manager related buffers
 	  (or (mode . proced-mode)
 	      (mode . process-menu-mode)))
@@ -611,5 +620,30 @@ If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffe
 ;;; COMMENT: help mode
 (require 'help-mode)
 ;; (load-library "help-mode")
+
+;;; COMMENT: smart buffer switching
+(defun next-user-buffer ()
+  "Switch to the next user buffer in cyclic order.
+
+User buffers are those not starting with *."
+  (interactive)
+  (next-buffer)
+  (let ((i 0))
+    (while (and (string-match "^*" (buffer-name)) (< i 50))
+      (setq i (1+ i)) (next-buffer) )))
+
+(defun previous-user-buffer ()
+  "Switch to the previous user buffer in cyclic order.
+
+User buffers are those not starting with *."
+  (interactive)
+  (previous-buffer)
+  (let ((i 0))
+    (while (and (string-match "^*" (buffer-name)) (< i 50))
+      (setq i (1+ i)) (previous-buffer) )))
+
+;; TODO: move to `key-bindings-config.el'
+(global-set-key (kbd "C-<prior>") 'previous-user-buffer) ;; NOTE: bind C-<PGUP> to oldest buffer
+(global-set-key (kbd "C-<next>") 'next-user-buffer) ;; NOTE: bind C-<PGDN> to most recently used
 
 (provide 'general-config)

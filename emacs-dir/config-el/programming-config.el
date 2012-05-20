@@ -22,7 +22,8 @@
   )
 
 ;;; COMMENT: emacs lisp programming
-;; SOURCE: `http://emacswiki.org/emacs/EmacsLispIntro'
+;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLisp'
+;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
 (defun turn-on-byte-compile-file (&rest junk)

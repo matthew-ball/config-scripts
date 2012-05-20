@@ -194,6 +194,11 @@ Org is a mode for keeping notes, maintaining TODO lists, and doing project plann
   + ...
 
 ** User Settings :: [[file:config-el/user-config.el][user-config.el]]
+- Included among the user settings are emms settings.
+  + this includes support for music player daemon
+  + this includes, for instance, using MPlayer to play videos.
+  + flash video support for emms has been provided.
+
 * Footnotes
 
 [fn:ELPA] GNU Emacs Lisp Package Archiver.

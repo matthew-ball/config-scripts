@@ -25,4 +25,19 @@
   (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; NOTE: was dired-advertised-find-file
   (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was dired-up-directory
 
+;; TODO: test these things
+;; (autoload 'dired-jump "dired-x" "Jump to dired buffer corresponding to current buffer." 'interactive)
+;; (autoload 'dired-jump-other-window "dired-x" "Like \\[dired-jump] (`dired-jump') but in other window." 'interactive)
+
+;; (setq dired-bind-jump t)
+
+;; (global-set-key "\C-x\C-j" 'dired-jump)
+;; (global-set-key "\C-x4\C-j" 'dired-jump-other-window)
+
+;; (setq dired-x-hands-off-my-keys t)
+;; (setq dired-bind-man nil)
+;; (setq dired-bind-info nil)
+;; (eval-after-load "dired" '(setq dired-mode-map-orig dired-mode-map))
+;; (eval-after-load "dired-x" '(setq dired-mode-map dired-mode-map-orig))
+
 (provide 'dired-config)

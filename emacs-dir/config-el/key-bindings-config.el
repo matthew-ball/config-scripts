@@ -39,10 +39,10 @@
 ;; (global-set-key (kbd "<f10>") 'function) ;; NOTE: ...
 (global-set-key (kbd "M-<f10>") 'run-package-manager) ;; NOTE: run the system package manager
 (global-set-key (kbd "C-<f10>") 'package-list-packages) ;; NOTE: list available elpa packages
-;; (global-set-key (kbd "<f11>") 'emms) ;; NOTE: start emacs multimedia system
+(global-set-key (kbd "<f11>") 'emms) ;; NOTE: start emacs multimedia system
 ;; (global-set-key (kbd "M-<f11>") 'emms-player-mpd-connect) ;; NOTE:  connect emms to mpd
 (global-set-key (kbd "C-<f11>") 'proced) ;; NOTE:  start a proced session (process manager)
-(global-set-key (kbd "<f12>") 'w3m) ;; NOTE:  start a w3m session
+(global-set-key (kbd "<f12>") 'browse-url) ;; NOTE:  browse a URL session
 (global-set-key (kbd "M-<f12>") (lambda () (interactive) (switch-to-buffer "*scratch*"))) ;; NOTE: switch to the scratch buffer
 (global-set-key (kbd "C-<f12>") 'regexp-builder) ;; NOTE:  start regular-expression builder
 ;; ---

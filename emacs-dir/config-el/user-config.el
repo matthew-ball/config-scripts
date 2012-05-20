@@ -4,13 +4,20 @@
 
 ;;; COMMENT: emacs multimedia system
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/EMMS'
-;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
-;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
+;; NOTE: this is really messy, could do with some clean-up
+;; (require 'emms-autoloads) ;; NOTE: this could work best
+(autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
+(autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
+;; (autoload 'emms-player-mplayer "emms-player-mplayer" "MPlayer interface with GNU Emacs multimedia." t)  ;; ERROR: does not work
 ;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between `EMMS' and `MPD'." t)
 
-;; ;; (emms-devel) ;; DEBUG: apparently not what I want
-;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable `emms' features
-;; (emms-default-players)
+;; (emms-standard) ;; NOTE: runs just the `emms-standard' configuration
+;; (emms-devel) ;; DEBUG: apparently not what I want
+(emms-all) ;; NOTE: runs `emms-standard' and adds stable `emms' features
+(emms-default-players)
+
+;; TODO: set with variable
+(setq emms-source-file-default-directory "~/Music/") ;; NOTE: when asked for `emms-play-directory' always start from this one
 
 ;; (setq emms-player-mpd-server-name "localhost")
 ;; (setq emms-player-mpd-server-port "7700")
@@ -20,19 +27,63 @@
 
 ;; (emms-player-mpd-connect) ;; NOTE: connect `emms' to `mpd'
 
+(setq emms-show-format "NP: %s") ;; NOTE: starts to play a track with "NP: "
+(add-hook 'emms-player-started-hook 'emms-show) ;; NOTE: show the current track with `emms'
+
+;; (setq emms-player-mpg321-parameters '("-o" "alsa")) ;;NOTE: use alsa with mpg321
+
+;;(require 'emms-player-simple) ;; NOTE: could be needed
+(define-emms-simple-player flash '(file) "\\.flv$" "mplayer" "-fs") ;; NOTE: play `*.flv' files with `mplayer' (opening full-screen)
+
+(add-to-list 'emms-player-list 'emms-player-flash)
+
+;; COMMENT: `emms' with `mplayer'
+;; NOTE: I don't think I need this
+;; (setq emms-player-mplayer-command-name "mplayer"
+;;       emms-player-mplayer-parameters '("-slave")
+;;       emms-player-mpg321-command-name "mpg123"
+;;       ;; emms-player-list '(emms-player-mplayer
+;;       ;; 			 emms-player-mplayer-playlist
+;;       ;; 			 emms-player-mpg321
+;;       ;; 			 emms-player-ogg123)
+;;       )
+
+;; (push emms-player-mplayer emms-player-list)
+;; (push emms-player-mplayer-playlist emms-player-list)
+
+(defun ddliu-emms-player-mplayer-volume-up ()
+  "Depends on mplayer’s -slave mode."
+  (interactive)
+  (process-send-string
+   emms-player-simple-process-name "volume 1\n"))
+
 ;;; COMMENT: project management
 ;; SOURCE: `http://emacswiki.org/emacs/eproject'
 ;; (require 'eproject) ;; FIX: change this to an autoload
 ;; TODO: learn `eproject'
 
 ;;; COMMENT: default browser
-(setq browse-url-browser-function 'w3m-browse-url ;; NOTE: use `w3m' web browser
-      browse-url-new-window-flag t
+(setq browse-url-new-window-flag t
+      ;; NOTE: I could ask if they wanted w3m or externel browser?
+      ;; browse-url-browser-function 'w3m-browse-url ;; NOTE: use `w3m' web browser
       ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
+      browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
       browse-url-generic-program "conkeror" ;; NOTE: default web browser set to `conkeror'
       ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to `chromium-browser'
+      ;; browse-url-generic-program "firefox" ;; NOTE: default web browser set to `firefox'
+      ;; browse-url-generic-program "iceweasel" ;; NOTE: default web browser set to `iceweasel'
       ;; browse-url-generic-program "x-www-browser" ;; NOTE: default web browser set to `x-www-browser'
       )
+
+;; TODO: do I want to make a `external-browser-alist' variable which is a listn of available browsers?
+(defun choose-browser (url &rest junk) ;; NOTE: select which browser to use (i.e. internal or external)
+  "Navigate a web browser (either \"emacs-w3m\" or \"conkeror\" to URL.
+
+Although this is interactive, call this with \\[browse-url]."
+  (interactive "sURL: ")
+  (if (y-or-n-p "Use w3m web browser? ")
+      (w3m-browse-url url)
+    (browse-url-generic url)))
 
 ;;; COMMENT: dictionary and thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/dict.el'
@@ -256,11 +307,24 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;;; COMMENT: configuration files
 ;; TODO: add `README' files
 (require 'configuration-files)
+
+;; TODO: incorporate "pair values" (i.e. [file,ext]) somehow
+(setq config-dir-and-ext '((concat user-emacs-directory "config-el/")
+			   (concat user-emacs-directory "my-modes/")
+			   (concat user-scripts-directory "bash-dir/")
+			   (concat user-scripts-directory "conkeror-dir/")
+			   (concat user-scripts-directory "stumpwm-dir/")))
+
 (add-config-file (concat user-emacs-directory "init.el")) ;; NOTE: add `~/.conf-scripts/emacs-dir/init.el'
 (add-config-directory (concat user-emacs-directory "config-el/") "\.el$") ;; NOTE: add `*.el' files in `~/.conf-scripts/emacs-dir/config-el/'
 (add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add `*.el' files in `~/.conf-scripts/emacs-dir/my-modes/'
 (add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add `*.sh' files in `~/.conf-scripts/bash-dir/'
 (add-config-directory (concat user-scripts-directory "conkeror-dir/") ".js$") ;; NOTE: add `*.js' files in `~/.conf-scripts/conkeror-dir/'
 (add-config-directory (concat user-scripts-directory "stumpwm-dir/") ".lisp$") ;; NOTE: add `*.lisp' files in `~/.conf-scripts/stumpwm-dir/'
+
+;; TODO: something
+;; (defun config-files-add-files (&rest junk)
+;;   "..."
+;;   )
 
 (provide 'user-config)

@@ -3,7 +3,6 @@
 ## AUTHOR: Matthew Ball (copyleft 2012)
 ## TIME: Wed 16 May 2012 15:06:52 EST
 
-
 # IMPORTANT: to give this script execute permissions run the command: 'chmod +x config-setup'
 
 # TODO: task list
