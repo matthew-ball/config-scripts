@@ -5,7 +5,7 @@
 ;;; COMMENT: appearance
 ;; SOURCE: `http://emacswiki.org/emacs/ColorTheme'
 ;; (autoload 'color-theme "color-theme" "Colour theme for GNU Emacs." t)
-;; (autoload 'zenburn "zenburn" "Zenburn colour theme for GNU Emacs." t)
+;; (autoload 'color-theme-zenburn "zenburn" "The `zenburn' colour theme for GNU Emacs." t)
 
 ;; COMMENT: apply colour theme to a GNU Emacs frame (i.e. `emacsclient')
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
@@ -13,10 +13,13 @@
   "Decorate new frame FRAME with `zenburn' colour theme."
   (select-frame frame)
   (let ((colour-theme-is-global nil))
-    (color-theme-zenburn) ;; NOTE: apply `color-theme-zenburn' theme to a new frame (`window-system' or otherwise)
+    (require 'color-theme)
+    ;; (eval-after-load "color-theme"
+    ;;   '(color-theme-zenburn)) ;; NOTE: apply `color-theme-zenburn' theme to a new frame ;; ERROR: doesn't work
+    ;;(color-theme-zenburn)
     (when (window-system)
       (progn ;; NOTE: X session
-	(set-face-attribute 'default nil :height 90)
+	(set-face-attribute 'default nil :height 80)
 	(setq frame-title-format "%b"
 	      icon-title-format "%b")))))
 
@@ -26,7 +29,7 @@
 ;; (when (eq window-system 'x)  ;; NOTE: when using x windows system
 ;;   (require 'color-theme)
 ;;   (require 'zenburn)
-;;   (eval-after-load "color-theme" '(zenburn)) ;; NOTE: apply zenburn colour theme
+;;   (eval-after-load "color-theme" '(color-theme-zenburn)) ;; NOTE: apply `color-theme-zenburn' colour theme
 ;;   (set-face-attribute 'default nil :height 90) ;; NOTE: change font size
 ;;   (setq frame-title-format "%b"
 ;; 	icon-title-format "%b"))
@@ -45,9 +48,9 @@
 
 ;;; COMMENT: line numbers
 ;; SOURCE: `http://www.emacswiki.org/emacs/line-num.el'
-(autoload 'linum-mode "linum" "Display line numbers." t)
+;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-(add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file ;; WARNING: this does not like `doc-view-mode'
+;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file ;; WARNING: this does not like `doc-view-mode'
 
 ;;; COMMENT: ruler mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/RulerMode'
@@ -66,9 +69,9 @@
 
 ;;; COMMENT: mode line
 ;; SOURCE: `http://www.emacswiki.org/emacs/ModeLineConfiguration'
-(setq line-number-mode nil ;; NOTE: turn on line numbers in the mode line
-      ;; column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
-      ;; size-indication-mode t ;; NOTE: show file size in mode line
+(setq line-number-mode 1 ;; NOTE: turn on line numbers in the mode line
+      column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
+      size-indication-mode t ;; NOTE: show file size in mode line
       )
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
@@ -76,6 +79,10 @@
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
 (display-battery-mode t) ;; NOTE: display battery status in the mode line
+
+;; SOURCE: `http://gitorious.org/wireless'
+(require 'wireless)
+(display-wireless-mode t) ;; NOTE: display wireless connection strength in mode line
 
 ;; (which-function-mode t) ;; NOTE: show the current function in the mode line
 
@@ -118,7 +125,7 @@
 ;;     (js-mode "{" "}" "/[*/]" nil))))
 
 (setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
-(setq hs-isearch-open 'x) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
+(setq hs-isearch-open 't) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
 
 (defun toggle-selective-display (column)
   (interactive "P")
@@ -161,5 +168,41 @@
 (eval-after-load "face-remap" '(diminish 'buffer-face-mode ""))
 (eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
 (eval-after-load "hilit-chg" '(diminish 'highlight-changes-mode ""))
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
+(eval-after-load "longlines" '(diminish 'longlines-mode ""))
+
+;; TODO: consider removing the `mode-line' 
+;;(setq mode-line-format nil) ;; NOTE: removes the mode-line
+
+;; NOTE: original mode-line-format
+;; (setq mode-line-format '("%e"
+;; 			 (:eval
+;; 			  (if
+;; 			      (display-graphic-p)
+;; 			      #(" " 0 1
+;; 				(help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))
+;; 			    #("-" 0 1
+;; 			      (help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))))
+;; 			 mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification
+;; 			 #("   " 0 3
+;; 			   (help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))
+;; 			 mode-line-position
+;; 			 (vc-mode vc-mode)
+;; 			 #("  " 0 2
+;; 			   (help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))
+;; 			 mode-line-modes
+;; 			 (which-func-mode
+;; 			  ("" which-func-format
+;; 			   #(" " 0 1
+;; 			     (help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))))
+;; 			 (global-mode-string
+;; 			  ("" global-mode-string
+;; 			   #(" " 0 1
+;; 			     (help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))))
+;; 			 (:eval
+;; 			  (unless
+;; 			      (display-graphic-p)
+;; 			    #("-%-" 0 3
+;; 			      (help-echo "mouse-1: Select (drag to resize)\nmouse-2: Make current window occupy the whole frame\nmouse-3: Remove current window from display"))))))
 
 (provide 'appearance-config)

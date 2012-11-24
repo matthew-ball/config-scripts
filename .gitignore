@@ -16,6 +16,7 @@ emacs-dir/auto-complete.elc
 emacs-dir/auto-save-list/
 emacs-dir/apt-el/*
 emacs-dir/bookmarks
+emacs-dir/newsticker/*
 emacs-dir/elpa/
 emacs-dir/emacs-desktop
 emacs-dir/eshell/history

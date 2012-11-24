@@ -11,6 +11,8 @@ alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars 
 alias grep='grep --color=auto'
 alias clr='clear'
 
+# COMMENT: function aliases
+
 # COMMENT: git command aliases
 alias gst="git status "
 alias gc="git commit "

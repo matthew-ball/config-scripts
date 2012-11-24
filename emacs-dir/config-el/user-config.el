@@ -2,6 +2,13 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012)
 ;; TIME: Wed 16 May 2012 22:40:57 EST
 
+;; COMMENT: dired application management
+(setq dired-guess-shell-alist-user
+      (list
+       (list "\\.pdf$" "evince")
+       (list "\\.PDF$" "evince")
+       ))
+
 ;;; COMMENT: emacs multimedia system
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/EMMS'
 ;; NOTE: this is really messy, could do with some clean-up
@@ -17,7 +24,7 @@
 (emms-default-players)
 
 ;; TODO: set with variable
-(setq emms-source-file-default-directory "~/Music/") ;; NOTE: when asked for `emms-play-directory' always start from this one
+(setq emms-source-file-default-directory "~/Music/") ;; NOTE: when asked for `emms-play-directory' always start from this
 
 ;; (setq emms-player-mpd-server-name "localhost")
 ;; (setq emms-player-mpd-server-port "7700")
@@ -51,11 +58,11 @@
 ;; (push emms-player-mplayer emms-player-list)
 ;; (push emms-player-mplayer-playlist emms-player-list)
 
-(defun ddliu-emms-player-mplayer-volume-up ()
-  "Depends on mplayer’s -slave mode."
-  (interactive)
-  (process-send-string
-   emms-player-simple-process-name "volume 1\n"))
+;; (defun ddliu-emms-player-mplayer-volume-up ()
+;;   "Depends on mplayer’s -slave mode."
+;;   (interactive)
+;;   (process-send-string
+;;    emms-player-simple-process-name "volume 1\n"))
 
 ;;; COMMENT: project management
 ;; SOURCE: `http://emacswiki.org/emacs/eproject'
@@ -82,12 +89,13 @@
 Although this is interactive, call this with \\[browse-url]."
   (interactive "sURL: ")
   (if (y-or-n-p "Use w3m web browser? ")
-      (w3m-browse-url url)
+      (w3m-browse-url url t)
     (browse-url-generic url)))
 
 ;;; COMMENT: dictionary and thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/dict.el'
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
+;; SOURCE: `http://www.emacswiki.org/emacs/DictionaryDotCom'
 ;; TODO: find a dictionary/thesaurus combination
 ;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
@@ -101,6 +109,26 @@ Although this is interactive, call this with \\[browse-url]."
   "Dictionary definition of the current word."
   (interactive)
   (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
+
+;;; COMMENT: quick jump
+(defvar quick-jump-list nil "List of sites for quick jump functionality.")
+
+(setq quick-jump-list (list "www.google.com"
+			    "www.emacswiki.org"
+			    "www.wikipedia.org"
+			    "plato.stanford.edu"))
+
+(defun quick-jump (&rest junk)
+  "Open a quick-jump URL in `w3m-mode'."
+  (interactive)
+  (let ((user-input (ido-completing-read "Select site: " quick-jump-list)))
+    (w3m-goto-url-new-session user-input)))
+
+;;; COMMENT: w3m buffers
+(defun w3m-buffer ()
+  (interactive)
+  (let ((new-buffer (ido-completing-read "Select buffer: " (w3m-list-buffers))))
+    (switch-to-buffer new-buffer)))
 
 ;;; COMMENT: w3m browser
 ;; SOURCE: `http://www.emacswiki.org/emacs/emacs-w3m'
@@ -134,7 +162,7 @@ Although this is interactive, call this with \\[browse-url]."
 (setq w3m-use-cookies t ;; NOTE: use cookies in w3m
       w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
       w3m-cookie-accept-bad-cookies t
-      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com"))
+      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com" "http://plato.stanford.edu"))
 
 ;; COMMENT: w3m sessions
 (setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
@@ -151,7 +179,48 @@ Although this is interactive, call this with \\[browse-url]."
   (interactive)
   (w3m-copy-buffer nil "*w3m*" nil t))
 
-(defun open-url-under-point-chromium (&rest junk) ;; NOTE: this is redundant as I no longer primarily use chromium as my browser
+;; TODO: write a `w3m-download-with-wget' function
+;; NOTE: this requires the `emacs-wget' package from ELPA
+;; TODO: clean this up
+;; (defun w3m-download-with-wget (loc)
+;;   (interactive "DSave to: ")
+;;   (let ((url (w3m-anchor)))
+;;     (if url
+;;         (wget url loc))))
+
+;; COMMENT: `w3m', `youtube-dl' and `mplayer'
+;; NOTE: this doesn't work just yet
+(defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
+
+(setq youtube-videos-directory "~/Videos/youtube/")
+
+(defun w3m-youtube-video ()
+  "..."
+  (interactive)
+  (let* ((video (w3m-print-current-url))
+	 (output (format "%s/%s.mp4" youtube-videos-directory video)))
+    (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" output video)
+    (emms-play-file output)))
+
+;; TODO: ...
+(defun view-youtube-video (&rest junk)
+  "Download and play a YouTube video."
+  )
+
+(defun w3m-youtube-view ()
+  "View a YouTube link with youtube-dl and mplayer."
+  (interactive)
+  (let ((url (or (w3m-anchor) (w3m-image))))
+    (string-match "[^v]*v.\\([^&]*\\)" url)
+    (let* ((vid (match-string 1 url))
+           (out (format "%s/%s.mp4" youtube-videos-directory vid)))
+      (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" out url)
+      (emms-play-file "out")
+      ;;(start-process "mplayer" nil "mplayer" "-quiet" out)
+      )))
+
+;; NOTE: this is redundant as I no longer primarily use chromium as my browser
+(defun open-url-under-point-chromium (&rest junk)
   "If there is a valid URL under point, open that URL in chromium web-browser. Otherwise, open the URL of the current page in chromium web-browser.
 
 NOTE: This function requires w3m to be running."
@@ -214,7 +283,8 @@ NOTE: This function requires w3m to be running."
   '(setq w3m-search-engine-alist
 	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
 	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8))))
+	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
+	   ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
 ;; COMMENT: open web site in w3m
 (defun browse-facebook (&rest junk)
@@ -239,7 +309,7 @@ NOTE: This function requires w3m to be running."
   (insert (format-time-string "%c")))
 
 ;;; COMMENT: internet connection
-(defvar internet-connections-alist (list "WiiBeard" "ANU-Secure") "List of internet connections available.")
+(defvar internet-connections-alist (list "WiiBeard" "ANU-Secure" "belkin.90") "List of internet connections available.")
 ;; TODO: add potter's internet connection
 
 (defun internet-connection (&rest junk) ;; TODO: have to clean this up (somehow)
@@ -261,9 +331,9 @@ NOTE: if the connection is succesful, the async shell command window should be c
   "Take a screenshot."
   (interactive "sFile name: ")
   (save-excursion
-    (shell-command (concat "import -window root \"" file-name "\" &")) ;; TODO: add some sort of confirmation message
-  ;; (delete-other-windows)
-  ))
+    (shell-command (concat "import -window root \"" (expand-file-name file-name) "\" &")) ;; TODO: add some sort of confirmation message
+    ;;(delete-other-windows)
+    ))
 
 ;;; COMMENT: highlight custom comment tags
 ;; NOTE: i suppose technically this should be in the `appearance-config.el' file
@@ -293,6 +363,7 @@ NOTE: if the connection is succesful, the async shell command window should be c
 				      lisp-mode-hook
 				      shell-script-mode-hook
 				      sh-mode-hook
+				      conf-mode-hook
 				      haskell-mode-hook
 				      scheme-mode-hook
 				      cc-mode-hook
@@ -300,7 +371,9 @@ NOTE: if the connection is succesful, the async shell command window should be c
 				      c-mode-hook
 				      python-mode-hook
 				      js-mode-hook
-				      javascript-mode-hook)) ;; NOTE: add `major-modes' to highlighting list
+				      javascript-mode-hook
+				      bibtex-mode
+				      )) ;; NOTE: add `major-modes' to highlighting list
 
 (activate-highlight-custom-comment-tags) ;; NOTE: activate custom comment tags
 
@@ -326,5 +399,40 @@ NOTE: if the connection is succesful, the async shell command window should be c
 ;; (defun config-files-add-files (&rest junk)
 ;;   "..."
 ;;   )
+
+;;; COMMENT: undo tree
+;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
+(autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
+
+(global-undo-tree-mode) ;; NOTE: enable undo-tree mode
+
+;; COMMENT: insert license
+(defun insert-mit-license (&rest junk)
+  "..."
+  (insert (concat "    Copyright (C) 2012 chu
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+    documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+    persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+    Software.
+
+    THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.")))
+
+(defun insert-gpl-license (&rest junk)
+  "...")
+
+;;; COMMENT: diary mode
+;; SOURCE: http://www.emacswiki.org/emacs/DiaryMode
+;; (setq view-diary-entries-initially t
+;;       mark-diary-entries-in-calendar t
+;;       number-of-diary-entries 7)
+
+;; (add-hook 'diary-display-hook 'fancy-diary-display)
+;; (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
 
 (provide 'user-config)

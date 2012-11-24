@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 17:12:27 EST
 
 ;;; COMMENT: org-mode :: "A GNU Emacs Major Mode for notes, project planning, and authoring."
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
@@ -12,7 +11,7 @@
 (autoload 'org-install "org-exp" "Organise tasks with `org-mode'." t)
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
 (autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
-(autoload 'org-babel "org-babel" "Interact with programming languages in `org-mode'." t)
+;;(autoload 'org-babel "org-babel" "Interact with programming languages in `org-mode'." t)
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
@@ -30,105 +29,206 @@
       ;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
       ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
       ;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
-      ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
       org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
       org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
-      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: targets include this file and any file contributing to the agenda - up to 5 levels deep
+      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
       org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
       org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
       org-refile-allow-creating-parent-nodes 'confirm ;; NOTE: allow refile to create parent tasks with confirmation
       org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
-      org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
       org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
       org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
       org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
-      org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
       org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
       org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
-      org-modules '(org-modules '(org-bbdb
-				  org-bibtex
-				  org-crypt
-				  org-docview
-				  org-gnus
-				  org-info
-				  org-jsinfo
-				  org-irc
-				  org-mew
-				  org-mhe
-				  org-rmail
-				  org-vm
-				  org-wl
-				  org-w3m))
+      ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+      org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
+      org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
       org-agenda-span 'month ;; NOTE: show a month of agendas
-      org-agenda-files `(,(expand-file-name user-org-notes-file)
+      ;; org-modules '(org-modules '(org-bbdb ;; ERROR: for some reason, this does not work
+      ;; 				  org-bibtex
+      ;; 				  org-crypt
+      ;; 				  org-docview
+      ;; 				  org-gnus
+      ;; 				  org-info
+      ;; 				  org-jsinfo
+      ;; 				  org-irc
+      ;; 				  org-mew
+      ;; 				  org-mhe
+      ;; 				  org-rmail
+      ;; 				  org-vm
+      ;; 				  org-wl
+      ;; 				  org-w3m))
+      )
+
+;; COMMENT: `org-capture' and `org-agenda' commands
+;; WARNING: don't hard-code the file paths
+;; NOTE: should probably just add the entire `/organisation/' directory (???)
+(setq org-agenda-files `(,(expand-file-name user-org-notes-file)
 			 ,(expand-file-name user-org-university-file)
 			 ,(expand-file-name user-org-projects-file)
-			 ,(concat user-organisation-directory "home.org")
-			 ,(concat user-organisation-directory "bookmarks.org")
-			 ,(concat user-reading-directory "readings.org")
-			 ,(concat user-writing-directory "writings.org")))
+			 ,(concat (expand-file-name user-organisation-directory) "journal.org") ;; TODO: make this the main file
+			 ;; ,(concat user-organisation-directory "home.org")
+			 ,(concat (expand-file-name user-organisation-directory) "birthday.org")
+			 ,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
+			 ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
+			 ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
+			 ))
 
-(setq org-tag-alist ;; TODO: create customisations
-      '(("HOME" . ?h) ("UNIVERSITY" . ?u) ("ASSIGNMENT" . ?a) ("READING" . ?r) ("GENERAL" . ?g) ("PROJECT" . ?p) ("NOTES" . ?n)
-	("WEBSITE" . ?w) ("BOOKMARK" . ?b) ("PHILOSOPHY" . ?s) ("COMPUTER SCIENCE" . ?c) ("MATHEMATICS" . ?m) ("WRITING" . ?t)) ;; tags for `org-set-tags'
+;; TODO: re-order
+;; TODO: add new tags
+(setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
+      '(("ASSIGNMENT"       . ?a)
+	("BOOKMARK"         . ?b)
+	("COMPUTER SCIENCE" . ?c)
+	("GENERAL"          . ?g)
+	("HOLIDAY"          . ?h)
+	;; ("IDEAS"            . ?i)
+	("JOURNAL"          . ?j)
+	("NOTES"            . ?n)
+	("MATHEMATICS"      . ?m)
+	("PROJECT"          . ?p)
+	("PROGRAMMING"      . ?P)
+	("READING"          . ?r)
+	("PHILOSOPHY"       . ?s)
+	("TRAVEL"           . ?t)
+	("WRITING"          . ?T)
+	("UNIVERSITY"       . ?u)
+	("WEBSITE"          . ?w)
+      )) ;; NOTE: tags for `org-set-tags'
 
-      org-agenda-custom-commands '(("q" "Show All Tasks" ((agenda "" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
-								      (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
-								      (org-agenda-repeating-timestamp-show-all t)
-								      (org-agenda-entry-types '(:timestamp :sexp))))
-							  (agenda "" ((org-agenda-ndays 1) ;; NOTE: daily agenda
-								      (org-deadline-warning-days 7) ;; NOTE: seven day advanced warning for deadlines
-								      (org-agenda-todo-keyword-format "[ ]")
-								      (org-agenda-scheduled-leaders '("" ""))
-								      (org-agenda-prefix-format "%t%s")))
-							  (todo "TODO" ;; NOTE: todos searched by context
-								((org-agenda-prefix-format "[ ] %T: ")
-								 (org-agenda-sorting-strategy '(tag-up priority-down))
-								 (org-agenda-todo-keyword-format "")
-								 (org-agenda-overriding-header "\n===========\n All Tasks\n==========="))))
-				    ((org-agenda-compact-blocks t)
-				     (org-agenda-remove-tags t)))
-				   ("h" "Home" ((org-agenda-list nil nil 1) (tags-todo "HOME") (tags-todo "GENERAL")) "HOME"
-				    (org-agenda-files '("home.org" "notes.org"))) ;; NOTE: tasks for HOME
-				   ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; tasks for UNIVERSITY
-				   ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context)
-				   ("p" "Projects" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags-todo "HOME") (tags-todo "PROJECTS")) "PROJECTS" (org-agenda-files '("home.org" "notes.org" "projects.org"))) ;; NOTE: PROJECT tasks
-				   ("g" "General" ((org-agenda-list nil nil 1) (tags-todo "GENERAL") (tags "NOTES")) "GENERAL") ;; NOTE: tasks for GENERAL
-				   ("r" "Reading" ((org-agenda-list nil nil 1) (tags "READING") (tags "WEBSITE")) "READING")) ;; NOTE: tasks for READING
+;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
+(setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
+      '(("A" "All" ((agenda "" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
+				(org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
+				(org-agenda-repeating-timestamp-show-all t)
+				(org-agenda-entry-types '(:timestamp :sexp))))
+		    (agenda "" ((org-agenda-ndays 1) ;; NOTE: daily agenda
+				(org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
+				(org-agenda-todo-keyword-format "[ ]")
+				(org-agenda-scheduled-leaders '("" ""))
+				(org-agenda-prefix-format "%t%s")))
+		    (todo "TODO" ;; NOTE: todos searched by context
+			  ((org-agenda-prefix-format "[ ] %T: ")
+			   (org-agenda-sorting-strategy '(tag-up priority-down))
+			   (org-agenda-todo-keyword-format "")
+			   (org-agenda-overriding-header "\n All Tasks \n"))))
+	 "ALL"
+	 ((org-agenda-compact-blocks t)
+	  (org-agenda-remove-tags t))
+	 ) ;; NOTE: `ALL' tasks
+	("u" "University"
+	 ((org-agenda-list nil nil 1)
+	  (tags "UNIVERSITY")
+	  (tags-todo "ASSIGNMENT"))
+	 "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
+	("p" "Project"
+	 ((tags-todo "PROJECT")
+	  (tags-todo "TRAVEL")
+	  (tags-todo "GENERAL")
+	  (tags-todo "WRITING")
+	  (tags-todo "UNIVERSITY")
+	  (tags-todo "NOTES"))
+	 "PROJECTS") ;; NOTE: `PROJECT' tasks
+	("j" "Journal"
+	 ((tags "JOURNAL"))
+	 "JOURNAL")
+	("r" "Reading"
+	 ((tags "READING")
+	  (tags "WEBSITE"))
+	 "READING") ;; NOTE: `READING' tasks
+	))
 
-      org-capture-templates ;; TODO: replace with custom variables
-      '(("h" "Home" entry (file+headline "home.org" "Home") ;; (concat (expand-file-name user-organisation-directory) "home.org")
-	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	;; ("u" "University" entry (file+headline "school.org" "University")
-	;;  "** %^{Course Code} %?%^g\n TITLE: %^{Course Title}\n LECTURER: %^{Lecturer}\n" :empty-lines 1 :immediate-finish 1)
-	("u" "University" entry (file+headline "school.org" "University") ;; (expand-file-name user-org-university-file)
-	 "%(add-course)" :empty-lines 1 :immediate-finish 1)
-	("a" "Assignment" plain (file+function "school.org" course-code) ;; (expand-file-name user-org-university-file)
+;;; COMMENT: capture templates
+;; WARNING: do not use 'C' or 'q' characters for binding
+(setq org-capture-templates  ;; NOTE: templates for `org-capture'
+      '(("a" "Assignment"    ;; NOTE: `assignment' capture
+	 plain (file+function (expand-file-name user-org-university-file) course-code)
 	 "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	;; ("b" "Book to Purchase" table-line (file+headline "books/books.org" "Books to Purchase") ;; WARNING: out-dated books.org
-	;;  "| [[%^{Link}][%^{Title}]] | %^{Author} | %^{Price} |" :immediate-finish 1) ;; manual version
-	("b" "Purchase" table-line (file+headline "readings/readings.org" "Purchase") ;; (concat (expand-file-name user-reading-directory) "readings.org")
-	 "| %c | %i | %^{Price} |" :immediate-finish 1) ;; conkeror version
-	("r" "Book to Read" table-line (file+headline "readings/readings.org" "Reading") ;; (concat (expand-file-name user-reading-directory) "readings.org")
-	 "| %^{Title} | %^{Author} | %^{Year} | N/A |" :immediate-finish 1)
-	("p" "Paper to Read" table-line (file+headline "readings/readings.org" "Reading") ;; (concat (expand-file-name user-reading-directory) "readings.org")
-	 "| %^{Title} | %^{Author} | %^{Year} | %^{Journal} |" :immediate-finish 1)
-	("k" "Internet Bookmark" table-line (file+headline "bookmarks.org" "Internet Bookmarks") ;; (concat (expand-file-name user-organisation-directory) "bookmarks.org")
-	 "| %c |" :immediate-finish 1)
-	("f" "File Bookmark" table-line (file+headline "bookmarks.org" "File Bookmarks") ;; (concat (expand-file-name user-organisation-directory) "bookmarks.org")
+	("A" "Anniversary"   ;; NOTE: `anniversary' capture
+	 entry (file+headline (concat (expand-file-name user-organisation-directory) "birthday.org") "Birthdays")
+	 "** %^{Name} %?%^G\n%^{Birthday}t\n" :empty-lines 1 :immediate-finish 1)
+	("b" "Purchase"      ;; NOTE: `purchase' capture
+	 table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Purchase")
+	 "| %c | %i | %^{Price} |" :immediate-finish 1) ;; NOTE: capture from `Conkeror'
+	("f" "File"          ;; NOTE: `file-bookmark' capture
+	 table-line (file+headline (concat (expand-file-name user-organisation-directory) "bookmarks.org") "File Bookmarks")
 	 "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |" :immediate-finish 1)
-	("w" "Website" table-line (file+headline "readings/readings.org" "Websites") ;; (concat (expand-file-name user-reading-directory) "readings.org")
-	 "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1)
-	("j" "Project" entry (file+headline "projects.org" "Projects") ;; (expand-file-name user-org-projects-file)
+	("g" "General"       ;; NOTE: `general' capture (is a `project')
+	 entry (file+headline (expand-file-name user-org-notes-file) "General")
 	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	("g" "General" entry (file+headline "notes.org" "General") ;; (expand-file-name user-org-notes-file)
-	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	("n" "Note" entry (file+headline "notes.org" "Notes") ;; (expand-file-name user-org-notes-file)
-	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)))
+	("j" "Journal"       ;; NOTE: `journal' capture
+	 entry (file+datetree (expand-file-name user-org-notes-file))
+	 "* %?\nEntered on %U\n  %i\n  %a")
+	("k" "Internet"      ;; NOTE: `internet-bookmark' capture
+	 table-line (file+headline (concat (expand-file-name user-organisation-directory) "bookmarks.org") "Internet Bookmarks")
+	 "| %c |" :immediate-finish 1) ;; TODO: this *is* `website' capture, right?
+	("n" "Note"          ;; NOTE: `note' capture
+	 entry (file+headline (expand-file-name user-org-notes-file) "Notes")
+	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	("p" "Paper to Read" ;; NOTE: `paper-read' capture
+	 table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Reading")
+	 "| %^{Title} | %^{Author} | %^{Year} | %^{Journal} |" :immediate-finish 1)
+	;; ("P" "Project"       ;; NOTE: `project' capture (is a `project')
+	;;  entry (file+headline (expand-file-name user-org-projects-file) "Projects")
+	;;  "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	("P" "Project"
+	 plain (file+function (expand-file-name user-org-projects-file) project-capture)
+	 "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)  ;; FIX: update the `Project' capture
+	("r" "Book to Read"  ;; NOTE: `book-read' capture
+	 table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Reading")
+	 "| %^{Title} | %^{Author} | %^{Year} | N/A |" :immediate-finish 1)
+	("t" "Travel"        ;; NOTE: `travel' capture (is a `project') ;; COMMENT: finish
+	 entry (file+headline (expand-file-name user-org-projects-file) "Travel")
+	 "*** TODO %^{Title} %?%^g\n - FROM: %^T\n - UNTIL: %^T\n" :empty-lines 1 :immediate-finish 1)
+	("u" "University"    ;; NOTE: `university' capture
+	 entry (file+headline (expand-file-name user-org-university-file) "University")
+	 "%(add-course)" :empty-lines 1 :immediate-finish 1)
+	("w" "Writing"       ;; NOTE: `writing' capture (is a `project') ;; COMMENT: finish
+	 entry (file+headline (concat (expand-file-name user-writing-directory) "writings.org") "Writing")
+	 "** TODO %^{Title} %?%^g" :empty-lines 1 :immediate-finish 1)))
+
+;; COMMENT: older capture ideas
+;; ("T" "test"
+;;  plain (file+function (expand-file-name user-org-projects-file) project-capture)
+;;  "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1) ;; NOTE: No more.
+;; ("w" "Website"    ;; NOTE: `website' capture
+;;  table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Websites")
+;;  "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1) ;; NOTE: this is redundant
+
+;;; COMMENT: project capture
+;; NOTE: this is probably not the best way of doing this
+(defvar project-options-alist nil "List of available project types.")
+
+(add-to-list 'project-options-alist "Travel")
+;;(add-to-list 'project-options-alist "Ideas")
+(add-to-list 'project-options-alist "Programming")
+(add-to-list 'project-options-alist "Writing")
+(add-to-list 'project-options-alist "General")
+
+(defun search-for-heading (file heading prefix &rest junk)
+  "Search for an `org-heading' HEADING in an FILE."
+  (switch-to-buffer file)
+  (goto-char (point-min))
+  (when (search-forward (concat prefix heading "\t") nil nil)
+    (progn
+      ;;(beginning-of-line)
+      (end-of-line)
+      ;;(insert "\n")
+      )))
+
+;; TODO: write some way of "counting" the stars (something like `depth')
+(defun project-capture (&rest junk)
+  "Capture a `project' through one of its variants."
+  (let ((project-type (ido-completing-read "Project Type: " project-options-alist))
+  	;;(project-str "")
+	)
+    (search-for-heading "projects.org" project-type "** ")))
 
 ;;; COMMENT: school organisation
+;; TODO: integrate with `ido-mode' somehow
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
   (let ((course-details ""))
@@ -136,9 +236,11 @@
 				 " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
 				 " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
 				 " LECTURES: \n + %^T : " (read-from-minibuffer "Room Location: ") "\n"))
-    (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y") ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
+    ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
+    (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y")
       (setq course-details (concat course-details " + %^T  : " (read-from-minibuffer "Room Location: ") "\n")))
-    (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t") ;; this technically lies, t for "tutorial", any other input means "seminar"
+    ;; this technically lies, t for "tutorial", any other input means "seminar"
+    (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t")
 				   "TUTORIAL: "
 				 "SEMINAR: ")
 	    "\n + %^T : " (read-from-minibuffer "Room Location: ") "\n")))
@@ -163,10 +265,12 @@
 ;;; COMMENT: `org-babel'
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (org-babel-do-load-languages 'org-babel-load-languages
-			     '((R . t)
-			       (emacs-lisp . t)
+			     '((emacs-lisp . t)
+			       ;;(common-lisp . t)
+			       (scheme . t)
 			       (haskell . t)
-			       (latex . t) ; this is the entry to activate LaTeX
+			       (latex . t) ;; NOTE: this is the entry to activate LaTeX
+			       (R . nil)
 			       (gnuplot . nil)
 			       (perl . nil)
 			       (python . nil)
@@ -174,9 +278,11 @@
 			       (screen . nil)
 			       (sh . nil)))
 
-(setq org-confirm-babel-evaluate nil) ;; NOTE: don't worry about confirmation before evaluating code
-(setq org-src-fontify-natively t) ;; NOTE: fontify source code
-(setq org-src-tab-acts-natively t) ;; NOTE: tab works properly
+(setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
+      org-src-fontify-natively t ;; NOTE: fontify source code
+      org-src-tab-acts-natively t ;; NOTE: tab works properly
+      org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
+      )
 
 ;;; COMMENT: `org-latex-export'
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
@@ -186,8 +292,6 @@
 (add-to-list 'org-export-latex-classes
 	     '("paper"
 	       "\\documentclass[12pt,a4paper,oneside]{paper}
-               \\usepackage{hyperref}
-               \\usepackage{amsmath}
                \\usepackage{amsfonts}
                \\usepackage{amsthm}
                \\setcounter{secnumdepth}{0}
@@ -202,9 +306,7 @@
 (add-to-list 'org-export-latex-classes
 	     '("book"
 	       "\\documentclass[12pt,a4paper,oneside]{book}
-               \\usepackage{hyperref}
-               \\usepackage{amsmath}
-               \\usepackage{amssymb}
+               \\usepackage{amsfonts}
                \\usepackage{amsthm}
                \\usepackage{mathtools}
                \\usepackage{makeidx}
@@ -220,9 +322,7 @@
 (add-to-list 'org-export-latex-classes
 	     '("assignment"
 	       "\\documentclass[10pt,a4paper]{article}
-               \\usepackage{hyperref}
-               \\usepackage{amsmath}
-               \\usepackage{amssymb}
+               \\usepackage{amsfonts}
                \\usepackage{amsthm}
                \\usepackage[cm]{fullpage}
                \\usepackage{multicol}
@@ -242,7 +342,6 @@
 (add-to-list 'org-export-latex-classes
 	     '("article"
 	       "\\documentclass[12pt,a4paper]{article}
-               \\usepackage{hyperref}
                \\setcounter{secnumdepth}{0}
                [NO-DEFAULT-PACKAGES]
                [EXTRA]"
@@ -259,24 +358,49 @@
                [EXTRA]"
 	       org-beamer-sectioning))
 
+;; COMMENT: enable latex source code highlighting
+(setq org-export-latex-listings t) ;; NOTE: enable listings features
+
+;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
+(add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
+(add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
+;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
+(add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
+(add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
+(add-to-list 'org-export-latex-packages-alist '("" "hyperref")) ;; NOTE: hyper-references
+
 ;;; COMMENT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
-(add-to-list 'org-entities-user '("neg" "\\neg" t "&not;" "[negation]" nil "¬"))
-(add-to-list 'org-entities-user '("iff" "\\iff" t "&iff;" "[if and only if]" nil "↔"))
-(add-to-list 'org-entities-user '("top" "\\top" t "&top;" "[top (true)]" nil "⊤"))
-(add-to-list 'org-entities-user '("bot" "\\bot" t "&bot;" "[bot (false)]" nil "⊥"))
-(add-to-list 'org-entities-user '("vdash" "\\vdash" t "&vdash;" "[derives]" nil "⊢"))
-(add-to-list 'org-entities-user '("models" "\\models" t "&mod;" "[models]" nil "⊨"))
-(add-to-list 'org-entities-user '("Box" "\\Box" t "&box;" "[box]" nil "☐"))
-(add-to-list 'org-entities-user '("cdots" "\\cdots" t "&cdots;" "[center dots]" nil "⋯"))
-(add-to-list 'org-entities-user '("ldots" "\\ldots" t "&ldots;" "[line dots]" nil "…"))
-(add-to-list 'org-entities-user '("reals" "\\mathbb{R}" t "&reals;" "[real numbers]" nil "ℝ"))
-(add-to-list 'org-entities-user '("integers" "\\mathbb{Z}" t "&integers;" "[integers]" nil "ℤ"))
-(add-to-list 'org-entities-user '("primes" "\\mathbb{P}" t "&primes;" "[prime numbers]" nil "ℙ"))
-(add-to-list 'org-entities-user '("naturals" "\\mathbb{N}" t "&naturals;" "[natural numbers]" nil "ℕ"))
-(add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" t "&irrationals;" "[irrational numbers]" nil "𝕀"))
-(add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" t "&rationals;" "[rational numbers]" nil "ℚ"))
-(add-to-list 'org-entities-user '("complex" "\\mathbb{C}" t "&complex;" "[complex numbers]" nil "ℂ"))
+(add-to-list 'org-entities-user '("neg"            "\\neg" t "&not;" "[negation]" nil "¬"))
+;;(add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "↔"))
+(add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "\leftrightarrow"))
+(add-to-list 'org-entities-user '("top"            "\\top" t "&top;" "[top (true)]" nil "⊤"))
+(add-to-list 'org-entities-user '("bot"            "\\bot" t "&bot;" "[bot (false)]" nil "⊥"))
+(add-to-list 'org-entities-user '("therefore"      "\\therefore" t "&therefore;" "[therefore]" nil "∴"))
+(add-to-list 'org-entities-user '("because"        "\\because" t "&because;" "[because]" nil "∵"))
+(add-to-list 'org-entities-user '("derives"        "\\vdash" t "&vdash;" "[derives]" nil "⊢"))
+(add-to-list 'org-entities-user '("notderives"     "\\not\\vdash" t "&notvdash" "[notderives]" nil "⊬"))
+(add-to-list 'org-entities-user '("models"         "\\models" t "&mod;" "[models]" nil "⊨"))
+(add-to-list 'org-entities-user '("notmodels"      "\\not\\models" t "&notmodels" "[notmodels]" nil "⊭"))
+(add-to-list 'org-entities-user '("forces"         "\\Vdash" t "&forces" "[forces]" nil "⊩"))
+(add-to-list 'org-entities-user '("notforces"      "\\not\\Vdash" t "&notforces" "[notforces]" nil "⊮"))
+(add-to-list 'org-entities-user '("boxconditional" "\\boxconditional" t "&boxcond;" "[boxcond]" nil "□→"))
+(add-to-list 'org-entities-user '("box"            "\\Box" t "&box;" "[box]" nil "□"))
+(add-to-list `org-entities-user '("diamond"        "\\Diamond" t "&diamond;" "[diamond]" nil "◇"))
+(add-to-list 'org-entities-user '("cdots"          "\\cdots" t "&cdots;" "[center dots]" nil "⋯"))
+(add-to-list 'org-entities-user '("ldots"          "\\ldots" t "&ldots;" "[line dots]" nil "…"))
+(add-to-list 'org-entities-user '("reals"          "\\mathbb{R}" t "&reals;" "[real numbers]" nil "ℝ"))
+(add-to-list 'org-entities-user '("integers"       "\\mathbb{Z}" t "&integers;" "[integers]" nil "ℤ"))
+(add-to-list 'org-entities-user '("primes"         "\\mathbb{P}" t "&primes;" "[prime numbers]" nil "ℙ"))
+(add-to-list 'org-entities-user '("naturals"       "\\mathbb{N}" t "&naturals;" "[natural numbers]" nil "ℕ"))
+(add-to-list 'org-entities-user '("irrationals"    "\\mathbb{I}" t "&irrationals;" "[irrational numbers]" nil "𝕀"))
+(add-to-list 'org-entities-user '("rationals"      "\\mathbb{Q}" t "&rationals;" "[rational numbers]" nil "ℚ"))
+(add-to-list 'org-entities-user '("complex"        "\\mathbb{C}" t "&complex;" "[complex numbers]" nil "ℂ"))
+;; TODO: ...
+;; (add-to-list 'org-entities-user '("box" "\\Box" t "&box;" "[box]" nil "□"))
+;; (add-to-list `org-entities-user '("diamond" "\\Diamond" t "&diamond;" "[diamond]" nil "⋄"))
+;; (add-to-list 'org-entities-user '("langle" "\\langle" t "&langle;" "[left angle]" nil ""))
+;; (add-to-list 'org-entities-user '("rangle" "\\rangle" t "&rangle;" "[right angle]" nil ""))
 
 ;; \mathbb{R}		\mathbf{R}		\mathcal{R}		\mathfrak{R}
 ;; \mathbb{Z}		\mathbf{Z}		\mathcal{Z}		\mathfrak{Z}
@@ -284,37 +408,154 @@
 
 ;; TODO: add customizations for \mathcal{}'s
 
-;; COMMENT: enable latex source code highlighting
-(setq org-export-latex-listings t) ;; NOTE: enable listings features
+;; COMMENT: ...
+(define-skeleton insert-org-latex-package
+  "Inserts a LaTeX use-package clause into a document."
+  "Insert package name: "
+  "#+LATEX_HEADER: \\usepackage{" str "}")
 
-;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
-(add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
-(add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
-(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
+;; COMMENT: `org-mode' custom file templates
+(defvar org-template-list (list "beamer" "paper" "assignment") "List of custom template types.")
 
-;;; COMMENT: Insert a custom file template
-(defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
+(defvar org-beamer-themes-list (list "Atnibes"
+				     "Bergen"
+				     "Berkeley"
+				     "Berlin"
+				     "Copenhagen"
+				     "Darmstadt"
+				     "Dresden"
+				     "Frankfurt"
+				     "Goettingen"
+				     "Hannover"
+				     "Ilmenau"
+				     "JuanLesPins"
+				     "Luebeck"
+				     "Madrid"
+				     "Malmoe"
+				     "Marburg"
+				     "Montpellier"
+				     "PaloAlto"
+				     "Pittsburgh"
+				     "Rochester"`
+				     "Singapore"
+				     "Szeged"
+				     "Warsaw"
+				     "boxes"
+				     "default") "List of beamer available themes.")
 
+;; NOTE: inserting a `reading-notes' template is not part of this function
+(defun insert-org-template (&rest junk)
+  "..."
+  (interactive)
+  (let ((type (ido-completing-read "Select template: " org-template-list))
+	(title (read-string "Enter title: "))
+	(options (list "toc:nil" "tasks:nil"))
+	(author "Matthew Ball"))
+    (insert (format "#+LATEX_CLASS: %s\n" type))
+    (when (string= type "beamer")
+      (insert (format "#+LATEX_HEADER: \\usetheme{%s}\n" (ido-completing-read "Select theme: " org-beamer-themes-list))))
+    (mapc '(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
+    (insert "\n")
+    (insert (format "#+TITLE: %s\n" title))
+    (insert (format "#+AUTHOR: %s\n\n" author))
+    (insert (format "* %s\n" title))
+    (insert "* Footnotes\n")))
+
+(defun goto-or-create-reading-notes-file (title &rest junk)
+  "Open the corresponding reading notes file for a document, or create a new file if one doesn't exist."
+  (interactive "sEnter title: ")
+  (let ((file-name (format "~/Documents/Reading/notes/%s.org" (replace-regexp-in-string " " "-" (downcase title))))
+	;;(file (format user-reading-directory "notes/%s.org") (replace-regexp-in-string " " "-" (downcase title)))
+	)
+    (if (file-exists-p file-name)
+	(find-file file-name)
+      (progn
+	(find-file file-name)
+	(let ((author (read-string "Enter author's name: ")))
+	  (insert-org-reading-notes-template title author))))))
+
+(defun insert-org-reading-notes-template (title name &rest junk)
+  "Insert a template for a reading notes file into an `org-mode' document."
+  (interactive "sEnter title: \nsEnter author's name: ")
+  (let ((type "paper")
+	(options (list "toc:nil" "tasks:nil"))
+	(author "Matthew Ball"))
+    (insert (format "#+LATEX_CLASS: %s\n" type))
+    (mapc '(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
+    (insert "\n")
+    (insert (format "#+TITLE: %s by %s: Reading Notes\n" title name))
+    (insert (format "#+AUTHOR: %s\n" author))
+    (insert "\n")
+    ;; (insert "* TODO Paper: \n") ;; TODO: link to PDF file (if it exists)
+    (insert (format "* %s\n" title))
+    (insert "* Footnotes\n")))
+
+;; COMMENT: the following `define-skeleton' entries are old and redundant
 (define-skeleton insert-org-paper
   "Inserts an `org-mode' paper template."
   "Insert paper title: "
-  "#+LATEX_CLASS: paper\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
+  "#+LATEX_CLASS: paper\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
 
 (define-skeleton insert-org-assignment
   "Inserts an `org-mode' assignment template."
   "Insert assignment title: "
-  "#+LATEX_CLASS: assignment\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
+  "#+LATEX_CLASS: assignment\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
 
 (define-skeleton insert-org-beamer
   "Inserts an `org-mode' beamer presentation template."
   "Insert presentation title: "
-  "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
+  "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
 
-(defun org-insert-custom-file ()
+;;; COMMENT: Insert a custom file template
+(defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
+
+(defun org-insert-custom-file (&rest junk)
   "Insert custom `org-mode' file template."
   (interactive)
   (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
     (funcall (intern (concat "insert-org-" custom-file-type)))))
+
+;;; COMMENT: custom footnotes
+;; TODO: get user input from the keyboard
+(defvar org-custom-footnote-types (list "book" "paper" "article" "default") "The list of availables types for footnotes.")
+
+(defun org-custom-insert-footnote-book ()
+  "Insert a book footnote template."
+  ;; - author
+  ;; - title
+  ;; - publisher
+  ;; - year
+  ;; - page number(s)
+  )
+
+(defun org-custom-insert-footnote-paper ()
+  "Insert a paper footnote template."
+  ;; - author
+  ;; - title
+  ;; - journal
+  ;; - volume number
+  ;; - year
+  ;; - page number(s)
+  )
+
+(defun org-custom-insert-footnote-article ()
+  "Insert a article footnote template."
+  )
+
+(defun org-custom-insert-footnote-default ()
+  "Insert a default footnote template."
+  ;; - text
+  )
+
+(defun org-custom-insert-footnote (footnote-name)
+  "Insert a footnote in an `org-mode' document."
+  (interactive "sEnter footname name: ")
+  (save-excursion
+    (let* ((footnote-type (ido-completing-read "Select footnote type: " org-custom-footnote-types))
+	   (footnote-text (funcall (intern (concat "org-custom-insert-footnote-" footnote-type)))))
+      (insert (concat "[fn:" footnote-name "]"))
+      (end-of-buffer)
+      (insert (concat "\n[fn:" footnote-name "] " footnote-text)))))
 
 ;;; COMMENT: this is a set of custom inserts for common clauses in an `org-mode' document
 (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
@@ -367,6 +608,41 @@
   (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
     (funcall (intern (concat "org-insert-latex-math-" clause)))))
 
+;;; COMMENT: latex symbol
+;; TODO: ...
+(defvar org-custom-symbol-types nil "...")
+
+(setq org-custom-symbol-types (list "greek alphabet"
+				    "mathematics"
+				    "logic"
+				    ;; TODO: anything else?
+				    ))
+
+(defun org-custom-insert-symbol ()
+  "..."
+  )
+
+;;; COMMENT: custom `org-mode' combinations
+(define-skeleton org-insert-text-underlined ;; NOTE: C-c u should be `org-insert-text-underlined'
+  "Insert an underline character (_) before (and after) an input string."
+  "Enter a string: "
+  "_" str "_")
+
+(define-skeleton org-insert-text-italicised ;; NOTE: C-c i should be `org-insert-text-italicised'
+  "Insert an italicise character (/) before (and after) an input string."
+  "Enter a string: "
+  "/" str "/")
+
+(define-skeleton org-insert-text-bolded ;; NOTE: C-c b should be `org-insert-text-bolded'
+  "Insert a bold character (*) before (and after) an input string."
+  "Enter a string: "
+  "*" str "*")
+
+(define-skeleton org-insert-text-teletyped ;; NOTE: C-c t should be `org-insert-text-teletyped'
+  "Insert a teletype character (=) before (and after) an input string."
+  "Enter a string: "
+  "=" str "=")
+
 ;;; COMMENT: `org-ref-man'
 ;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
 ;; TODO:
@@ -375,6 +651,94 @@
 (defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
   "Generate an `org-mode' style file link."
   (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
+
+;; SOURCE: `org-bibtex.el'
+;;; Bibtex data
+(defvar org-bibtex-types
+  '((:article
+     (:description . "An article from a journal or magazine")
+     (:required :author :title :journal :year)
+     (:optional :volume :number :pages :month :note))
+    (:book
+     (:description . "A book with an explicit publisher")
+     (:required (:editor :author) :title :publisher :year)
+     (:optional (:volume :number) :series :address :edition :month :note))
+    (:booklet
+     (:description . "A work that is printed and bound, but without a named publisher or sponsoring institution.")
+     (:required :title)
+     (:optional :author :howpublished :address :month :year :note))
+    (:conference
+     (:description . "")
+     (:required :author :title :booktitle :year)
+     (:optional :editor :pages :organization :publisher :address :month :note))
+    (:inbook
+     (:description . "A part of a book, which may be a chapter (or section or whatever) and/or a range of pages.")
+     (:required (:author :editor) :title (:chapter :pages) :publisher :year)
+     (:optional :crossref (:volume :number) :series :type :address :edition :month :note))
+    (:incollection
+     (:description . "A part of a book having its own title.")
+     (:required :author :title :booktitle :publisher :year)
+     (:optional :crossref :editor (:volume :number) :series :type :chapter :pages :address :edition :month :note))
+    (:inproceedings
+     (:description . "An article in a conference proceedings")
+     (:required :author :title :booktitle :year)
+     (:optional :crossref :editor (:volume :number) :series :pages :address :month :organization :publisher :note))
+    (:manual
+     (:description . "Technical documentation.")
+     (:required :title)
+     (:optional :author :organization :address :edition :month :year :note))
+    (:mastersthesis
+     (:description . "A Master’s thesis.")
+     (:required :author :title :school :year)
+     (:optional :type :address :month :note))
+    (:misc
+     (:description . "Use this type when nothing else fits.")
+     (:required)
+     (:optional :author :title :howpublished :month :year :note))
+    (:phdthesis
+     (:description . "A PhD thesis.")
+     (:required :author :title :school :year)
+     (:optional :type :address :month :note))
+    (:proceedings
+     (:description . "The proceedings of a conference.")
+     (:required :title :year)
+     (:optional :editor (:volume :number) :series :address :month :organization :publisher :note))
+    (:techreport
+     (:description . "A report published by a school or other institution.")
+     (:required :author :title :institution :year)
+     (:optional :type :address :month :note))
+    (:unpublished
+     (:description . "A document having an author and title, but not formally published.")
+     (:required :author :title :note)
+     (:optional :month :year)))
+  "Bibtex entry types with required and optional parameters.")
+
+(defvar org-bibtex-fields
+  '((:address      . "Usually the address of the publisher or other type of institution. For major publishing houses, van Leunen recommends omitting the information entirely.  For small publishers, on the other hand, you can help the reader by giving the complete address.")
+    (:annote       . "An annotation. It is not used by the standard bibliography styles, but may be used by others that produce an annotated bibliography.")
+    (:author       . "The name(s) of the author(s), in the format described in the LaTeX book.  Remember, all names are separated with the and keyword, and not commas.")
+    (:booktitle    . "Title of a book, part of which is being cited. See the LaTeX book for how to type titles. For book entries, use the title field instead.")
+    (:chapter      . "A chapter (or section or whatever) number.")
+    (:crossref     . "The database key of the entry being cross referenced.")
+    (:edition      . "The edition of a book for example, 'Second'. This should be an ordinal, and should have the first letter capitalized, as shown here; the standard styles convert to lower case when necessary.")
+    (:editor       . "Name(s) of editor(s), typed as indicated in the LaTeX book. If there is also an author field, then the editor field gives the editor of the book or collection in which the reference appears.")
+    (:howpublished . "How something strange has been published. The first word should be capitalized.")
+    (:institution  . "The sponsoring institution of a technical report.")
+    (:journal      . "A journal name.")
+    (:key          . "Used for alphabetizing, cross-referencing, and creating a label when the author information is missing. This field should not be confused with the key that appears in the \cite command and at the beginning of the database entry.")
+    (:month        . "The month in which the work was published or, for an unpublished work, in which it was written. You should use the standard three-letter abbreviation,")
+    (:note         . "Any additional information that can help the reader. The first word should be capitalized.")
+    (:number       . "Any additional information that can help the reader. The first word should be capitalized.")
+    (:organization . "The organization that sponsors a conference or that publishes a manual.")
+    (:pages        . "One or more page numbers or range of numbers, such as 42-111 or 7,41,73-97 or 43+ (the ‘+’ in this last example indicates pages following that don’t form simple range). BibTEX requires double dashes for page ranges (--).")
+    (:publisher    . "The publisher’s name.")
+    (:school       . "The name of the school where a thesis was written.")
+    (:series       . "The name of a series or set of books. When citing an entire book, the the title field gives its title and an optional series field gives the name of a series or multi-volume set in which the book is published.")
+    (:title        . "The work’s title, typed as explained in the LaTeX book.")
+    (:type         . "The type of a technical report for example, 'Research Note'.")
+    (:volume       . "The volume of a journal or multi-volume book.")
+    (:year         . "The year of publication or, for an unpublished work, the year it was written.  Generally it should consist of four numerals, such as 1984, although the standard styles can handle any year whose last four nonpunctuation characters are numerals, such as '(about 1984)'"))
+  "Bibtex fields with descriptions.")
 
 (defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
   "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
@@ -421,18 +785,32 @@
   "Activate custom `org-mode' bindings."
   ;; TODO: add binding for `org-insert-custom-file' command
   (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; NOTE: M-RET inserts a new heading
-  (define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; NOTE: insert paper template with C-c p
-  (define-key org-mode-map (kbd "C-c b") 'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
+  ;;(define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; NOTE: insert paper template with C-c p
+  ;;(define-key org-mode-map (kbd "C-c b") 'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
   (define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
   (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote)) ;; NOTE: insert a footnote with C-c f
 
 (defun turn-on-custom-org ()
   "Active custom `org-mode' functionality."
-  (org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
+  ;;(org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
   (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
 
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
 ;; TODO: add an org-post-export-hook function (to delete `latex' buffers)
+
+;;; COMMENT: images
+;; SOURCE: `http://orgmode.org/worg/org-configs/org-config-examples.html'
+;;(add-to-list 'iimage-mode-image-regex-alist (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex "\\)\\]")  1))
+
+;; (defun org-toggle-iimage-in-org ()
+;;   "Display images in an `org-mode' buffer."
+;;   (interactive)
+;;   (if (face-underline-p 'org-link)
+;;       (set-face-underline-p 'org-link nil)
+;;       (set-face-underline-p 'org-link t))
+;;   (iimage-mode))
+
+;; TODO: add `org-toggle-iimage-in-org' to an `org-hook' function
 
 (provide 'org-config)

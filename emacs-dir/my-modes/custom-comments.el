@@ -4,11 +4,11 @@
 
 ;; COMMENT:
 ;; Welcome to `custom-comments' - A minor mode extension for GNU Emacs managing the highlighting of custom comments.
-;; This mode is rather simple, but allows the user to quickly examine the structure of their source code (and configuration) files.
+;; This mode is rather simple, but allows the user to quickly examine the structure of their source code files.
 ;; The user just needs to enter what words they would like highlighted into the variables:
-;; - `custom-comment-tag-alist-heading' : for 'heading' related comments.
-;; - `custom-comment-tag-alist-comment' : for 'comment' related comments.
-;; - `custom-comment-tag-alist-warning' : for 'warning' related comments.
+;; - `custom-comment-tag-alist-heading' : for `heading' related comments.
+;; - `custom-comment-tag-alist-comment' : for `comment' related comments.
+;; - `custom-comment-tag-alist-warning' : for `warning' related comments.
 ;; The major modes for which this extension works are available in the variable `custom-comment-tag-mode-hooks'.
 
 ;; An example configuration would be:
@@ -28,8 +28,7 @@
 (defvar custom-comment-tag-alist-heading nil "Available custom comment heading tags.")
 (defvar custom-comment-tag-alist-comment nil "Available custom comment tags.")
 (defvar custom-comment-tag-alist-warning nil "Available custom warning tags.")
-(defvar custom-comment-tag-alist
-  (append custom-comment-tag-alist-comment custom-comment-tag-alist-warning custom-comment-tag-alist-heading) "Available custom tags.")
+(defvar custom-comment-tag-alist nil "Available custom tags.")
 
 (defvar custom-comment-tag-mode-hooks nil "Major modes which enable highlighting of custom comment tags.")
 (defvar custom-comment-suppress-init-message nil "Suppress the printing of the initial activation message.")
@@ -41,17 +40,20 @@
 
 (defvar font-lock-custom-comment-tag-face-warning 'font-lock-custom-comment-tag-face-warning "Face name to use for `custom-comment-tag-alist-warning' tags.")
 
-(defface font-lock-custom-comment-tag-face-heading '((t (:foreground "DeepSkyBlue"))) "Font lock face to highlight custom `custom-comment-tag-alist-heading' tags." :group 'font-lock-faces)
+(defface font-lock-custom-comment-tag-face-heading '((t (:foreground "RoyalBlue"))) "Font lock face to highlight custom `custom-comment-tag-alist-heading' tags." :group 'font-lock-faces)
 
-(defface font-lock-custom-comment-tag-face-comment '((t (:foreground "SpringGreen"))) "Font lock face to highlight custom `custom-comment-tag-alist-comment' tags." :group 'font-lock-faces)
+(defface font-lock-custom-comment-tag-face-comment '((t (:foreground "DarkGreen"))) "Font lock face to highlight custom `custom-comment-tag-alist-comment' tags." :group 'font-lock-faces)
 
-(defface font-lock-custom-comment-tag-face-warning '((t (:foreground "OrangeRed"))) "Font lock face to highlight custom `custom-comment-tag-alist-warning' tags." :group 'font-lock-faces)
+(defface font-lock-custom-comment-tag-face-warning '((t (:foreground "OrangeRed3"))) "Font lock face to highlight custom `custom-comment-tag-alist-warning' tags." :group 'font-lock-faces)
 
 (defun activate-highlight-custom-comment-tags (&rest junk) ;; TODO: clean this up
   "Highlight custom comment tags in designated modes.
 
 The custom comment \"tags\" are defined in the variable `custom-comment-tag-list'.
 The \"designated\" modes are defined in the variable `custom-comment-tag-mode-hooks'."
+  (setq custom-comment-tag-alist
+	(append custom-comment-tag-alist-comment custom-comment-tag-alist-warning custom-comment-tag-alist-heading))
+
   (setq temp-custom-comment-tag-alist-heading (concat "\\<" (regexp-opt custom-comment-tag-alist-heading) ":"))
   (setq temp-custom-comment-tag-alist-comment (concat "\\<" (regexp-opt custom-comment-tag-alist-comment) ":"))
   (setq temp-custom-comment-tag-alist-warning (concat "\\<" (regexp-opt custom-comment-tag-alist-warning) ":"))
@@ -122,7 +124,8 @@ NOTE: This function depends on the multi-occur function `show-custom-structure'.
   (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
 		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
 			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")\n")
-		  (concat (make-string 2 (aref comment-start 0)) " TIME: " (format-time-string "%c") "\n"))))
+		  ;;(concat (make-string 2 (aref comment-start 0)) " TIME: " (format-time-string "%c") "\n")
+		  )))
 
 (defun show-dot-file-structure (&rest junk) ;; FIX: this currently only works for .el extensions (???)
   "Show the outline structure of all configuration files matching the same extension."

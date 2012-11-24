@@ -24,6 +24,8 @@
        (reftex-parse-all))
   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
 
+;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+
 (defun org-mode-custom-latex ()
   "Enable custom settings for org-mode."
   (turn-on-reftex) ;; turn on reftex

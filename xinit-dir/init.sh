@@ -4,7 +4,7 @@
 
 # ERROR: I don't think that actually worked
 # TODO: compile stumpwm!!
-#exec /home/chu/Programming/lisp/common-lisp/stumpwm/stumpwm # DEBUG: testing some thing
+# exec /home/chu/Programming/lisp/common-lisp/stumpwm/stumpwm # DEBUG: testing some thing
 
 exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" # NOTE: launch stumpwm with quicklisp
 

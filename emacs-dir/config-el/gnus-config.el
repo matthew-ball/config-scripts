@@ -40,7 +40,7 @@
 
 ;; TODO: can these be set in `general-config.el' (???)
 (setq custom-mail-dir (expand-file-name user-mail-directory)) ;; NOTE: set directory for mail
-(setq custom-mail-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
+(setq custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
 ;; (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
 ;; (setq custom-news-dir "~/News/") ;; NOTE: set directory for news

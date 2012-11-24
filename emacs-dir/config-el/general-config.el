@@ -22,7 +22,7 @@
 (defvar user-university-directory (concat user-documents-directory "ANU/") "Directory for user's university files.")
 
 (defvar user-org-university-file (concat user-organisation-directory "school.org") "File for user's university organisation.")
-(defvar user-org-notes-file (concat user-organisation-directory "notes.org") "File for user's notes organisation.")
+(defvar user-org-notes-file (concat user-organisation-directory "journal.org") "File for user's notes organisation.")
 (defvar user-org-projects-file (concat user-organisation-directory "projects.org") "File for user's projects organisation.")
 (defvar user-org-archive-file (concat user-organisation-directory "archive.org") "File for user's archive organisation.")
 
@@ -78,6 +78,13 @@
       echo-keystrokes 0.1 ;; NOTE: see what you are typing
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings
 
+
+;;; COMMENT: default major mode
+;; (setq default-major-mode
+;;       (lambda ()
+;; 	(let ((buffer-file-name (or buffer-file-name (buffer-name))))
+;; 	  (set-auto-mode))))
+
 ;;; COMMENT: default auto-mode list
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; NOTE: open .screenrc in `shell-script-mode'
 ;; (add-to-list 'auto-mode-alist '(".mpdconf/" . shell-script-mode)) ;; NOTE: open `.mpdconf/' files in `shell-script-mode'
@@ -130,10 +137,10 @@
 (ido-ubiquitous-mode t)
 
 (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
-      ido-everywhere t ;; NOTE: enable ido everywhere
+      ;;`ido-everywhere t ;; NOTE: enable ido everywhere
       ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
       ido-ignore-extensions t ;; NOTE: ignore extentions
-      ido-ignore-buffers'("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
+      ido-ignore-buffers'("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
 			  "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
       ido-work-directory-list `(,(expand-file-name user-home-directory)
       				,(expand-file-name user-documents-directory)
@@ -144,7 +151,7 @@
       ido-max-work-directory-list 30 ;; NOTE: remember last used directories
       ido-max-work-file-list 50 ;; NOTE: ... and files
       ido-max-prospects 8 ;; NOTE: don't spam the mini buffer
-      ido-show-dot-for-dired t
+      ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
       confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
       )
 
@@ -235,8 +242,13 @@
 	      (mode . common-lisp-mode)
 	      (mode . emacs-lisp-mode)
 	      (mode . inferior-lisp-mode)
+	      (mode . inferior-emacs-lisp-mode)
 	      (mode . repl-mode)
+	      (mode . nxml-mode)
+	      (mode . ada-mode)
+	      (mode . makefile-gmake-mode)
 	      (mode . slime-mode)
+	      (mode . perl-mode)
 	      (mode . inferior-slime-mode)
 	      (mode . fuzzy-completions-mode)
 	      (mode . html-mode)
@@ -247,6 +259,8 @@
 	      (mode . compilation-mode)
 	      (mode . shell-script-mode)
 	      (mode . sh-mode)
+	      (mode . conf-unix-mode)
+	      (mode . conf-space-mode)
 	      (mode . gist-list-mode)
 	      (mode . gist-menu-mode)
 	      (name . "^\\*slime-events\\*$")
@@ -271,18 +285,26 @@
 	      (mode . calendar-mode)
 	      (mode . diary-mode)
 	      (filename . ,(expand-file-name user-organisation-directory))))
-	 ("ERC" ;; NOTE: erc related buffers
-	  (mode . erc-mode))
+	 ("IRC" ;; NOTE: irc related buffers
+	  (or (mode . erc-mode)
+	      (mode . rcirc-mode)))
 	 ("Web Browser" ;; NOTE: w3m related buffers
 	  (mode . w3m-mode))
 	 ("File Manager" ;; NOTE: dired related buffers
 	  (or (mode . dired-mode)
+	      (mode . tar-mode)
 	      (name . "^\\*Dired log\\*$")))
 	 ("Shell" ;; NOTE: shell related buffers
 	  (or (mode . eshell-mode)
 	      (mode . shell-mode)
 	      (mode . term-mode)
-	      (mode . locate-mode)))
+	      (mode . locate-mode)
+	      (name . "^\\*Shell Command Output\\*$")))
+	 ("Games" ;; NOTE: buffers related to games
+	  (or (mode . sudoku-mode)
+	      (mode . solitaire-mode)
+	      (mode . snake-mode)
+	      (mode . doctor-mode)))
 	 ("Mathematics and Science" ;; NOTE: buffers related to mathematics and science
 	  (or (mode . calculator-mode)
 	      (mode . calc-mode)
@@ -290,7 +312,9 @@
 	      (mode . maxima-mode)
 	      (mode . inferior-maxima-mode)))
 	 ("Mail and News" ;; NOTE: mail (and news) related buffers
-	  (or (mode . gnus-group-mode)
+	  (or ;;(newsticker-treeview-mode)
+	      ;;(newsticker-plainview-mode)
+	      (mode . gnus-group-mode)
 	      (mode . gnus-topic-mode)
 	      (mode . gnus-browse-mode)
 	      (mode . gnus-summary-mode)
@@ -309,7 +333,7 @@
 	      (mode . Man-mode)
 	      (mode . woman-mode)
 	      (name . "^\\*WoMan-Log\\*$")
-	      ))
+	      (name . "^\\*Org Processes\\*$")))
 	 ("Process Manager" ;; NOTE: process manager related buffers
 	  (or (mode . proced-mode)
 	      (mode . process-menu-mode)))
@@ -343,6 +367,7 @@
 
 (add-hook 'ibuffer-mode-hook (lambda ()
 			       (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
+			       ;; (ibuffer-switch-format)
 			       (ibuffer-switch-to-saved-filter-groups "default")))
 
 ;;; COMMENT: auto-complete mode
@@ -352,7 +377,7 @@
   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
   (ac-config-default))
 
-(setq ac-auto-start 5 ;; NOTE: start auto-complete after five characters
+(setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
       ac-ignore-case t ;; NOTE: always ignore case
       ac-auto-show-menu t) ;; NOTE: automatically show menu
 
@@ -396,6 +421,10 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
 (fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
 ;; (savehist-mode t) ;; NOTE: keep mini buffer history between session (IMPORTANT: may be deprecated)
+(setq read-buffer-completion-ignore-case t) ;; NOTE: ignore case when reading a buffer name
+
+;;; COMMENT: temporary buffers
+(temp-buffer-resize-mode t) ;; NOTE: auto-fit the *Help* buffer to its contents
 
 ;;; COMMENT: stumpwm mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
@@ -518,7 +547,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;;; COMMENT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
 (autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
-(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
+;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
 (autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
 
@@ -567,7 +596,10 @@ If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffe
     `(defun ,func nil
        ,doc
        (interactive)
-       (terminal-start-or-switch ,program t))))
+       (save-excursion
+	 (save-current-buffer
+	   (split-window-below)
+	   (terminal-start-or-switch ,program t))))))
 
 (defun kill-term (&rest junk)
   "Close an `ansi-shell' session and kill the remaining buffer."

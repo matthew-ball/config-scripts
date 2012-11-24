@@ -176,10 +176,12 @@
 Org is a mode for keeping notes, maintaining TODO lists, and doing project planning with a fast and effective plain text system.
 #+end_quote
 
-- This file provides a configuration for =Org-Mode=:
+- This will be by *far* the largest section in this README file, but unless you are already well-versed in =org-mode= functionality and terminology, it is /very/ strongly recommend you read over it.
+
+- This file provides a configuration for =org-mode=:
   + ...
 
-- The ultimate idea is to write a "literate" configuration script - using GNU Emacs and org-mode.
+- The ultimate idea is to write a "literate" configuration script - using GNU Emacs and =org-mode=.
 
 ** LaTeX Settings :: [[file:config-el/latex-config.el][latex-config.el]]
 - This file provides a configuration for =LaTeX=:

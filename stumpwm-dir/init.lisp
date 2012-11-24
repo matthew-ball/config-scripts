@@ -37,6 +37,7 @@
 
 ;;; COMMENT: default applications
 (defvar *browser* "" "Set the default web browser.") ;; TODO: this should be "x-www-browser"
+;; (defvar *browser* "x-www-browser" "Set the default web browser.") ;; FIX: this doesn't work
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.") ;; NOTE: this line (and the previous) is redundant
 
 ;; (defvar *editor* "emacs" "Set the default editor.") ;; NOTE: older, using the default emacs
@@ -269,6 +270,9 @@
 (defcommand run-system-monitor () () "Run an instance of `*system-monitor*' with property `:title'." (run-terminal-app *system-monitor* *system-monitor*))
 (defcommand run-package-manager () () "Run an instance of `*package-manager*' with property `:title'." (run-terminal-app *package-manager* *package-manager*))
 (defcommand run-audio-player () () "Run an instance of `*audio-player*' with property `:title'." (run-terminal-app *audio-player* *audio-player*))
+
+;; TODO: I need to add a defcommand like `run-screenshot'
+;;(defcommand run-screenshot () () "Capture current desktop with a screenshot." (run-shell-command (format nil "") "import -root -window"))
 
 ;; (defcommand run-irc () () "Run an instance of `*irc-client*' with property `:title'." (run-terminal-app *irc-client* *irc-client*))
 ;; (defcommand run-mail () () "Run an instance of `*mail-client*' with property `:title'." (run-terminal-app (cat "env TERM=xterm-256color " *mail-client*) *mail-client* "-n"))
