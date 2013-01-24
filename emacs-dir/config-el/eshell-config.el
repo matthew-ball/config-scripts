@@ -1,20 +1,18 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/eshell-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:05:26 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;;; COMMENT: eshell
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryEshell'
-(require 'ansi-color)
-(require 'eshell)
-(require 'esh-opt)
-(require 'em-smart)
-(require 'em-cmpl)
-(require 'em-prompt)
-(require 'em-term)
+;; (require 'ansi-color)
+;; (require 'eshell)
+;; (require 'esh-opt)
+;; (require 'em-smart)
+;; (require 'em-cmpl)
+;; (require 'em-prompt)
+;; (require 'em-term)
 
-;; (autoload 'ansi-color "ansi-color" "ANSI colour library for GNU Emacs lisp." t)
-;; (autoload 'eshell "eshell" "GNU Emacs Shell." t)
-;; (autoload 'em-smart "esh-mode" "..." t)
+(autoload 'ansi-color "ansi-color" "ANSI colour library for GNU Emacs lisp." t)
+(autoload 'eshell "eshell" "GNU Emacs Shell." t)
 
 (setenv "PAGER" "cat")
 
@@ -99,18 +97,18 @@ Else, start a new term buffer."
       eshell-review-quick-commands nil ;; enable quick review
       eshell-smart-space-goes-to-end t) ;; save buffer history
 
-(add-to-list 'eshell-visual-commands "ssh")
-(add-to-list 'eshell-visual-commands "tail")
-(add-to-list 'eshell-visual-commands "htop")
+;; (add-to-list 'eshell-visual-commands "ssh")
+;; (add-to-list 'eshell-visual-commands "tail")
+;; (add-to-list 'eshell-visual-commands "htop")
 ;; (add-to-list 'eshell-visual-commands "mutt") ;; NOTE: I don't use mutt anymore
 
-(add-to-list 'eshell-command-completions-alist '("gunzip" "gz\\'"))
-(add-to-list 'eshell-command-completions-alist '("tar" "\\(\\.tar|\\.tgz\\|\\.tar\\.gz\\)\\'"))
+;; (add-to-list 'eshell-command-completions-alist '("gunzip" "gz\\'"))
+;; (add-to-list 'eshell-command-completions-alist '("tar" "\\(\\.tar|\\.tgz\\|\\.tar\\.gz\\)\\'"))
 
-(add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
-(add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply) ;; WARNING: will be very slow
+;; (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
+;; (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply) ;; WARNING: will be very slow
 
-(add-hook 'eshell-mode-hook '(lambda () (define-key eshell-mode-map "\C-a" 'eshell-bol))) ;; for some reason this needs to be a hook
+;; (add-hook 'eshell-mode-hook '(lambda () (define-key eshell-mode-map "\C-a" 'eshell-bol))) ;; for some reason this needs to be a hook
 
 ;;; COMMENT: aliases
 ;; (defalias 'em 'find-file) ;; TODO: this was made redundant ...

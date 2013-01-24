@@ -1,7 +1,5 @@
-# ============================
 # ~/.conf-scripts/.gitignore
-# Matthew Ball (copyleft 2012)
-# ============================
+# Matthew Ball (copyleft 2012, 2013)
 
 # ignore the passwords directory
 passwords/
@@ -29,16 +27,21 @@ emacs-dir/eproject.lst
 emacs-dir/*.elc
 # emacs-dir/popup.elc
 # emacs-dir/fuzzy.elc
+# emacs-dir/org-exp-bibtex.el # IMPORTANT: NEED THIS FILE !!!
 emacs-dir/save-files/
 emacs-dir/url/
 emacs-dir/.emacs.desktop.lock
 emacs-dir/.emms-history
+emacs-dir/emms/history
 emacs-dir/#*
+emacs-dir/erc-extras/*
 # ignore the mutt data
 mutt-dir/
 # ignore stumpwm's debug text
 stumpwm-dir/debug-output.txt
 # ignore ncmpcpp's error.log files
 ncmpcpp-dir/error.log
+# ignore aptitude stuff
+# aptitude-dir/config-old
 # ignore backup files
 *~

@@ -1,7 +1,7 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
-;;; COMMENT: org-mode :: "A GNU Emacs Major Mode for notes, project planning, and authoring."
+;;; COMMENT: org-mode
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
@@ -15,6 +15,10 @@
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
+(require 'org-exp-bibtex) ;; TODO: change to `autoload'
+(require 'org-bbdb) ;; TODO: change to `autoload'
+(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
+;;(require 'org-beamer) ;; TODO: change to `autoload'
 
 (setq org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; NOTE: use RETURN to follow links
@@ -29,6 +33,7 @@
       ;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
       ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
       ;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
+      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
       org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
@@ -66,11 +71,12 @@
 ;; COMMENT: `org-capture' and `org-agenda' commands
 ;; WARNING: don't hard-code the file paths
 ;; NOTE: should probably just add the entire `/organisation/' directory (???)
-(setq org-agenda-files `(,(expand-file-name user-org-notes-file)
+(setq org-agenda-files `(;;,(expand-file-name user-org-notes-file)
 			 ,(expand-file-name user-org-university-file)
-			 ,(expand-file-name user-org-projects-file)
+			 ,(expand-file-name user-org-projects-file) ;; ...
 			 ,(concat (expand-file-name user-organisation-directory) "journal.org") ;; TODO: make this the main file
-			 ;; ,(concat user-organisation-directory "home.org")
+			 ,(concat (expand-file-name user-organisation-directory) "contacts.org")
+			 ,(concat user-organisation-directory "home.org")
 			 ,(concat (expand-file-name user-organisation-directory) "birthday.org")
 			 ,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
 			 ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
@@ -229,21 +235,23 @@
 
 ;;; COMMENT: school organisation
 ;; TODO: integrate with `ido-mode' somehow
+;; WARNING: this is *terrible* - seriously consider a re-write !!!
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
   (let ((course-details ""))
-    (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") " \t%?%^g\n"
+    ;; NOTE: need to create link to course.org file
+    (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") "%?%^g\n"
 				 " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
 				 " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
-				 " LECTURES: \n + %^T : " (read-from-minibuffer "Room Location: ") "\n"))
-    ;; this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
+				 " LECTURES: \n + %^T :: " (read-from-minibuffer "Room Location: ") "\n"))
+    ;; NOTE: this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
     (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y")
-      (setq course-details (concat course-details " + %^T  : " (read-from-minibuffer "Room Location: ") "\n")))
-    ;; this technically lies, t for "tutorial", any other input means "seminar"
+      (setq course-details (concat course-details " + %^T  :: " (read-from-minibuffer "Room Location: ") "\n")))
+    ;; NOTE: this technically lies, t for "tutorial", any other input means "seminar"
     (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t")
 				   "TUTORIAL: "
 				 "SEMINAR: ")
-	    "\n + %^T : " (read-from-minibuffer "Room Location: ") "\n")))
+	    "\n + %^T :: " (read-from-minibuffer "Room Location: ") "\n")))
 
 (defun file-path (&rest junk)
   "Return the path of a file."
@@ -253,6 +261,7 @@
   "Return the path of a directory."
   (car (rassq (get-buffer (car buffer-name-history)) dired-buffers)))
 
+;; TODO: this needs to be looked at again
 (defun course-code (&rest junk)
   "Search for a COURSE-CODE appearing in 'school.org' and if found move the point to that location."
   (interactive)
@@ -454,7 +463,7 @@
     (insert (format "#+LATEX_CLASS: %s\n" type))
     (when (string= type "beamer")
       (insert (format "#+LATEX_HEADER: \\usetheme{%s}\n" (ido-completing-read "Select theme: " org-beamer-themes-list))))
-    (mapc '(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
+    (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
     (insert "\n")
     (insert (format "#+TITLE: %s\n" title))
     (insert (format "#+AUTHOR: %s\n\n" author))
@@ -481,7 +490,7 @@
 	(options (list "toc:nil" "tasks:nil"))
 	(author "Matthew Ball"))
     (insert (format "#+LATEX_CLASS: %s\n" type))
-    (mapc '(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
+    (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
     (insert "\n")
     (insert (format "#+TITLE: %s by %s: Reading Notes\n" title name))
     (insert (format "#+AUTHOR: %s\n" author))
@@ -653,92 +662,6 @@
   (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
 
 ;; SOURCE: `org-bibtex.el'
-;;; Bibtex data
-(defvar org-bibtex-types
-  '((:article
-     (:description . "An article from a journal or magazine")
-     (:required :author :title :journal :year)
-     (:optional :volume :number :pages :month :note))
-    (:book
-     (:description . "A book with an explicit publisher")
-     (:required (:editor :author) :title :publisher :year)
-     (:optional (:volume :number) :series :address :edition :month :note))
-    (:booklet
-     (:description . "A work that is printed and bound, but without a named publisher or sponsoring institution.")
-     (:required :title)
-     (:optional :author :howpublished :address :month :year :note))
-    (:conference
-     (:description . "")
-     (:required :author :title :booktitle :year)
-     (:optional :editor :pages :organization :publisher :address :month :note))
-    (:inbook
-     (:description . "A part of a book, which may be a chapter (or section or whatever) and/or a range of pages.")
-     (:required (:author :editor) :title (:chapter :pages) :publisher :year)
-     (:optional :crossref (:volume :number) :series :type :address :edition :month :note))
-    (:incollection
-     (:description . "A part of a book having its own title.")
-     (:required :author :title :booktitle :publisher :year)
-     (:optional :crossref :editor (:volume :number) :series :type :chapter :pages :address :edition :month :note))
-    (:inproceedings
-     (:description . "An article in a conference proceedings")
-     (:required :author :title :booktitle :year)
-     (:optional :crossref :editor (:volume :number) :series :pages :address :month :organization :publisher :note))
-    (:manual
-     (:description . "Technical documentation.")
-     (:required :title)
-     (:optional :author :organization :address :edition :month :year :note))
-    (:mastersthesis
-     (:description . "A Master’s thesis.")
-     (:required :author :title :school :year)
-     (:optional :type :address :month :note))
-    (:misc
-     (:description . "Use this type when nothing else fits.")
-     (:required)
-     (:optional :author :title :howpublished :month :year :note))
-    (:phdthesis
-     (:description . "A PhD thesis.")
-     (:required :author :title :school :year)
-     (:optional :type :address :month :note))
-    (:proceedings
-     (:description . "The proceedings of a conference.")
-     (:required :title :year)
-     (:optional :editor (:volume :number) :series :address :month :organization :publisher :note))
-    (:techreport
-     (:description . "A report published by a school or other institution.")
-     (:required :author :title :institution :year)
-     (:optional :type :address :month :note))
-    (:unpublished
-     (:description . "A document having an author and title, but not formally published.")
-     (:required :author :title :note)
-     (:optional :month :year)))
-  "Bibtex entry types with required and optional parameters.")
-
-(defvar org-bibtex-fields
-  '((:address      . "Usually the address of the publisher or other type of institution. For major publishing houses, van Leunen recommends omitting the information entirely.  For small publishers, on the other hand, you can help the reader by giving the complete address.")
-    (:annote       . "An annotation. It is not used by the standard bibliography styles, but may be used by others that produce an annotated bibliography.")
-    (:author       . "The name(s) of the author(s), in the format described in the LaTeX book.  Remember, all names are separated with the and keyword, and not commas.")
-    (:booktitle    . "Title of a book, part of which is being cited. See the LaTeX book for how to type titles. For book entries, use the title field instead.")
-    (:chapter      . "A chapter (or section or whatever) number.")
-    (:crossref     . "The database key of the entry being cross referenced.")
-    (:edition      . "The edition of a book for example, 'Second'. This should be an ordinal, and should have the first letter capitalized, as shown here; the standard styles convert to lower case when necessary.")
-    (:editor       . "Name(s) of editor(s), typed as indicated in the LaTeX book. If there is also an author field, then the editor field gives the editor of the book or collection in which the reference appears.")
-    (:howpublished . "How something strange has been published. The first word should be capitalized.")
-    (:institution  . "The sponsoring institution of a technical report.")
-    (:journal      . "A journal name.")
-    (:key          . "Used for alphabetizing, cross-referencing, and creating a label when the author information is missing. This field should not be confused with the key that appears in the \cite command and at the beginning of the database entry.")
-    (:month        . "The month in which the work was published or, for an unpublished work, in which it was written. You should use the standard three-letter abbreviation,")
-    (:note         . "Any additional information that can help the reader. The first word should be capitalized.")
-    (:number       . "Any additional information that can help the reader. The first word should be capitalized.")
-    (:organization . "The organization that sponsors a conference or that publishes a manual.")
-    (:pages        . "One or more page numbers or range of numbers, such as 42-111 or 7,41,73-97 or 43+ (the ‘+’ in this last example indicates pages following that don’t form simple range). BibTEX requires double dashes for page ranges (--).")
-    (:publisher    . "The publisher’s name.")
-    (:school       . "The name of the school where a thesis was written.")
-    (:series       . "The name of a series or set of books. When citing an entire book, the the title field gives its title and an optional series field gives the name of a series or multi-volume set in which the book is published.")
-    (:title        . "The work’s title, typed as explained in the LaTeX book.")
-    (:type         . "The type of a technical report for example, 'Research Note'.")
-    (:volume       . "The volume of a journal or multi-volume book.")
-    (:year         . "The year of publication or, for an unpublished work, the year it was written.  Generally it should consist of four numerals, such as 1984, although the standard styles can handle any year whose last four nonpunctuation characters are numerals, such as '(about 1984)'"))
-  "Bibtex fields with descriptions.")
 
 (defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
   "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
@@ -787,17 +710,20 @@
   (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; NOTE: M-RET inserts a new heading
   ;;(define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; NOTE: insert paper template with C-c p
   ;;(define-key org-mode-map (kbd "C-c b") 'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
+  ;;(define-key org-mode-map (kbd "C-c c") 'org-insert-citation) ;; NOTE: insert a citation clause
   (define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
-  (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote)) ;; NOTE: insert a footnote with C-c f
+  (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote) ;; NOTE: insert a footnote with C-c f
+  )
 
 (defun turn-on-custom-org ()
-  "Active custom `org-mode' functionality."
-  ;;(org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
+  "Activate custom `org-mode' functionality."
+  (org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
+  ;;(org-indent-mode) ;; NOTE: indent with headings
+  ;;(setq org-startup-indented t) ;; NOTE: indent with headings
   (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
 
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
-;; TODO: add an org-post-export-hook function (to delete `latex' buffers)
 
 ;;; COMMENT: images
 ;; SOURCE: `http://orgmode.org/worg/org-configs/org-config-examples.html'
@@ -812,5 +738,16 @@
 ;;   (iimage-mode))
 
 ;; TODO: add `org-toggle-iimage-in-org' to an `org-hook' function
+
+(org-add-link-type "ebib" 'ebib)
+
+;; TODO: add more citation types to ebib
+(org-add-link-type "cite" 'ebib
+		   (lambda (path desc format)
+		     (cond ((eq format 'latex)
+			    (format "\\cite{%s}" path)))))
+
+;;; COMMENT: ...
+;; TODO: investigate `org-link-abbrev-alist'
 
 (provide 'org-config)

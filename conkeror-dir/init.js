@@ -1,6 +1,5 @@
 // FILE: /home/chu/.conf-scripts/conkeror-dir/init.js
 // AUTHOR: Matthew Ball (copyleft 2012)
-// TIME: Wed 16 May 2012 15:06:30 EST
 
 /// COMMENT: variables
 load_paths.unshift("chrome://conkeror-contrib/content/"); // NOTE: load path: allow for 'contrib' stuff
@@ -224,6 +223,7 @@ key_bindings_ignore_capslock = true;
 
 define_key(default_global_keymap, "C-c u", "copy-url"); // copy url with C-c u
 define_key(default_global_keymap, "C-c r", "reload-config"); // reload config with C-c r
+define_key(default_global_keymap, "C-c j", "ns-toggle-temp"); // NOTE: enable javascript
 define_key(default_global_keymap, "C-x f", "find-url"); // find url in current buffer with C-x f
 define_key(default_global_keymap, "C-x M-f", "find-alternate-url"); // modify url with C-x M-f
 define_key(default_global_keymap, "C-x m", "mode-line-mode"); // toggle mode-line with C-x m
@@ -319,7 +319,7 @@ session_auto_save_auto_load = true; // automatically load saved session on start
 // session_auto_save_auto_load = "prompt";
 
 /// COMMENT: history
-session_pref('browser.history_expire_days', 2); // history expires after two days
+session_pref('browser.history_expire_days', 1); // history expires after two days
 
 // NOTE: don't think I will actually need any of the following:
 // ----
@@ -341,8 +341,22 @@ session_pref('browser.history_expire_days', 2); // history expires after two day
 //             "find-url-new-buffer",
 //             $browser_object = browser_object_history_url);
 
+function history_clear () {
+    var history = Cc["@mozilla.org/browser/nav-history-service;1"]
+        .getService(Ci.nsIBrowserHistory);
+    history.removeAllPages();
+}
+
+interactive("history-clear", "Clear the history.", history_clear);
+
 // define_key(content_buffer_normal_keymap, "h", "find-url-from-history-new-buffer");
 // define_key(content_buffer_normal_keymap, "H", "find-url-from-history");
+
+/// COMMENT: adblock plus
+require("adblockplus.js");
+
+/// COMMENT: noscript
+require("noscript");
 
 /// COMMENT: daemon
 // NOTE: apparently the session module does not work correctly with daemon

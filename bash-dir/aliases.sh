@@ -1,6 +1,5 @@
 ## FILE: /home/chu/.conf-scripts/bash-dir/aliases.sh
 ## AUTHOR: Matthew Ball (copyleft 2012)
-## TIME: Wed 16 May 2012 15:07:32 EST
 
 # COMMENT: shortcut aliases
 # alias lsr='ls -R' # NOTE: recursive directory listing

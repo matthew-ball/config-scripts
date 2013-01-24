@@ -1,11 +1,9 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/programming-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:05:14 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;;; COMMENT: flymake
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlyMake'
 (autoload 'flymake-mode "flymake" "On the fly compiling in GNU Emacs." t)
-;;(require 'flymake) ;; TODO: change to an autoload
 ;; TODO: set `flymake-display-err-menu-for-current-line' to key-chord
 ;; TODO: set `flymake-goto-next-error' to key-chord
 ;; (setq flymake-log-level 3)
@@ -101,7 +99,7 @@
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   ;; (longlines-mode) ;; NOTE: enable long lines
   (hl-line-mode) ;; NOTE: turn on line highlight mode
-  (which-function-mode t) ;; NOTE: keep track of active function
+  ;;(which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   )
 
@@ -123,14 +121,15 @@
 ;;; COMMENT: emacs lisp programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLisp'
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
+(require 'eldoc)
 ;;(autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
+
+(eldoc-add-command 'paredit-backward-delete 'paredit-close-round) ;; NOTE: make `eldoc' recognise `paredit' functions
 
 (defun turn-on-byte-compile-file (&rest junk)
   "Automatically byte compile `*.el' files."
   (if (eq major-mode 'emacs-lisp-mode)
       (save-excursion (byte-compile-file buffer-file-name))))
-
-(eldoc-add-command 'paredit-backward-delete 'paredit-close-round) ;; NOTE: make `eldoc' recognise `paredit' functions
 
 (add-hook 'after-save-hook '(lambda ()
 			     ;; (turn-on-byte-compile-file) ;; NOTE: automatically byte compile `*.el' files
@@ -138,10 +137,14 @@
 
 (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
 				   (turn-on-general-programming-mode)
-				   (turn-on-eldoc-mode)
+				   ;;(turn-on-eldoc-mode)
 				   (paredit-mode t)))
 
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+;;(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
+;;; COMMENT: emacs byte-compiled code
+;; SOURCE: `http://www.emacswiki.org/emacs/CompiledFile'
+;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
 
 ;;; COMMENT: common lisp programming
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
@@ -161,7 +164,9 @@
 				      (paredit-mode t)))
 ;;; COMMENT: slime/swank
 ;; IMPORTANT: requires `quicklisp' and (ql:quickload "quicklisp-slime-helper")
-(add-to-list 'load-path "/home/chu/quicklisp/dists/quicklisp/software/slime-20120208-cvs") ;; TODO: this is not ideal
+(defvar quicklisp-directory "~/quicklisp/dists/quicklisp/software/" "The directory path to `quicklisp'.")
+
+(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20120407-cvs"))) ;; TODO: this is not ideal
 
 (require 'slime-autoloads)
 
@@ -169,20 +174,20 @@
 	       slime-tramp
 	       slime-banner
 	       slime-compiler-notes-tree
-	       slime-package-fu
 	       slime-indentation
-	       slime-repl
-	       slime-editing-commands
-	       slime-fancy-inspector
 	       slime-fontifying-fu
-	       slime-fuzzy
 	       slime-mdot-fu
 	       slime-scratch
 	       slime-xref-browser
 	       slime-asdf
+	       ;; slime-package-fu
+	       ;; slime-repl
+	       ;; slime-editing-commands
+	       ;; slime-fancy-inspector
+	       ;; slime-fuzzy
 	       ;; slime-autodoc
 	       ;; slime-indentation-fu
-	       slime-references
+	       ;; slime-references
 	       slime-sbcl-exts))
 
 (setq slime-net-coding-system 'utf-8-unix
@@ -200,6 +205,8 @@
 			      ))
 
 (add-hook 'slime-repl-mode-hook '(lambda () (paredit-mode t)))
+
+;;(define-key slime-repl-mode-map (kbd "<return>") 'slime-repl-return)
 
 ;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
 (defun override-slime-repl-bindings-with-paredit (&rest junk)

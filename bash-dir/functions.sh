@@ -1,6 +1,5 @@
 ## FILE: /home/chu/.conf-scripts/bash-dir/functions.sh
-## AUTHOR: Matthew Ball (copyleft 2012)
-## TIME: Wed 16 May 2012 15:07:25 EST
+## AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 function start_stumpwm {
     startx &

@@ -1,6 +1,5 @@
 ## FILE: /home/chu/.conf-scripts/bash-dir/init.sh
-## AUTHOR: Matthew Ball (copyleft 2012)
-## TIME: Wed 16 May 2012 15:07:02 EST
+## AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 # NOTE: if not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -13,13 +12,15 @@ export LOCALE=UTF-8
 # export TERM=xterm-color # NOTE: export 8 colours in shell session
 # export TERM=xterm-256color # NOTE: export 256 colours in shell session
 
+# NOTE: these exports are used in the "default applications" for stumpwm
 export ALTERNATE_EDITOR="" # NOTE: set the alternate editor as emacs (automatically start an emacs in daemon mode and connect to it if one is not found running)
-export EDITOR='emacsclient -n' # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
+export EDITOR='emacsclient -n -c' # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
 # export VISUAL=emacsclient # NOTE: set the visual edit as emacsclient (IMPORTANT: requiring emacs-server)
 
 # export BROWSER="conkeror" # NOTE: export BROWSER as conkeror
 # export BROWSER="chromium-browser" # NOTE: export BROWSER as chromium
 export BROWSER="x-www-browser" # NOTE: export BROWSER as x-www-browser ... (IMPORTANT: requires debian ???)
+# export TERMINAL="x-terminal-emulator" # NOTE: testing
 export GREP_COLOR="1;33"
 export MOZ_DISABLE_PANGO=1
 

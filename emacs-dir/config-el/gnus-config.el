@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/gnus-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:04:15 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;; TODO:
 ;; if: there is no file at ~/.authinfo
@@ -15,12 +14,12 @@
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
 ;; SOURCE: `http://emacswiki.org/emacs/Gnus'
 ;; (require 'gnus nil 'noerror)
-(autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
-;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)
-
 ;; (require 'nnimap)
 ;; (require 'starttls)
 ;; (require 'smtpmail)
+;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)
+(autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
+(autoload 'smtpmail-send-it "smtpmail" "Send mail with `smtpmail'." t)
 
 ;;; COMMENT: personal settings
 (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
@@ -97,16 +96,13 @@
 
 
 ;;; COMMENT: smtp setup(single account)
-(require 'smtpmail)
-
 (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))) ;; TODO: replace email address
 
-;;; COMMENT: smtp setup (multipl accounts) (ERROR: this doe not work)
-;; (require 'smtpmail)
+;;; COMMENT: smtp setup (multiple accounts) (ERROR: this does not work)
 
 ;; (defvar smtp-accounts ;; available smtp accounts
 ;;   '((ssl "mathew.ball@gmail.com" "smtp.gmail.com" 587 "key" nil)

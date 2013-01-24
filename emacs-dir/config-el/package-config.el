@@ -1,10 +1,11 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/package-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:05:54 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
+
+;; TODO: this needs a complete rehaul
 
 ;;; COMMENT: emacs package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
-(autoload 'package "package" "GNU Emacs lisp package management." t)
+(autoload 'list-package "package" "GNU Emacs lisp package management." t)
 
 ;; NOTE: set download repositories
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")

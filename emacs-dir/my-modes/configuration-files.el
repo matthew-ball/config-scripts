@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/my-modes/configuration-files.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:06:15 EST
 
 ;; COMMENT:
 ;; <insert description of file>
@@ -15,11 +14,9 @@
 ;; (add-config-directory (concat user-emacs-directory "my-modes/") "\.el$") ;; NOTE: add .el files in ~/.conf-scripts/emacs-dir/my-modes/
 ;; (add-config-directory (concat user-scripts-directory "bash-dir/") "\.sh$") ;; NOTE: add .sh files in ~/.conf-scripts/bash-dir/
 
-;; TODO: this is the beginning of a basic project management mode ... this now depends upon the custom variables defined above
 ;; TODO: include `README' files
-;; NOTE: I think maybe this should just be a general `open-directory' mode ... I don't need to worry about using `desktop-mode' (???)
-;; TODO: somehow, make this more general
 
+;; NOTE: an alist is technically (key . value) in this case we could do (title . file) or something
 (defvar config-files-alist '() "Stores a list of the names of the configuration files.")
 
 (defun reset-config-files (&rest junk)

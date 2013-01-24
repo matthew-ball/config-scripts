@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/latex-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:04:54 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;;; COMMENT: latex
 ;; SOURCE: `http://emacswiki.org/emacs/LaTeX'
@@ -18,6 +17,7 @@
        (reftex-parse-all)))
 
 (defun org-mode-reftex-setup ()
+  "Set up `reftex' integration with `org-mode'."
   (load-library "reftex")
   (and (buffer-file-name)
        (file-exists-p (buffer-file-name))
@@ -60,7 +60,10 @@
 (setq reftex-enable-partial-scans t ;; make reftex faster
       reftex-save-parse-info t ;; save the information gathered while reading a file
       reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
-      reftex-default-bibliography '("default.bib" "other-default.bib") ;; default bibliography file
+      reftex-default-bibliography '("default.bib"
+				    "other-default.bib"
+				    "/home/chu/Documents/Papers/papers.bib"
+				    ) ;; default bibliography file(s)
       reftex-cite-prompt-optional-args nil
       reftex-cite-cleanup-optional-args t
       reftex-extra-bindings t ;; enable extra reftex bindings

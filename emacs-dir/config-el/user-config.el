@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/user-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 22:40:57 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;; COMMENT: dired application management
 (setq dired-guess-shell-alist-user
@@ -13,6 +12,7 @@
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/EMMS'
 ;; NOTE: this is really messy, could do with some clean-up
 ;; (require 'emms-autoloads) ;; NOTE: this could work best
+;; (require 'emms-player-simple) ;; NOTE: could be needed
 (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
 (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-player-mplayer "emms-player-mplayer" "MPlayer interface with GNU Emacs multimedia." t)  ;; ERROR: does not work
@@ -39,7 +39,6 @@
 
 ;; (setq emms-player-mpg321-parameters '("-o" "alsa")) ;;NOTE: use alsa with mpg321
 
-;;(require 'emms-player-simple) ;; NOTE: could be needed
 (define-emms-simple-player flash '(file) "\\.flv$" "mplayer" "-fs") ;; NOTE: play `*.flv' files with `mplayer' (opening full-screen)
 
 (add-to-list 'emms-player-list 'emms-player-flash)
@@ -75,8 +74,9 @@
       ;; browse-url-browser-function 'w3m-browse-url ;; NOTE: use `w3m' web browser
       ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
       browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
-      browse-url-generic-program "conkeror" ;; NOTE: default web browser set to `conkeror'
+      ;; browse-url-generic-program "conkeror" ;; NOTE: default web browser set to `conkeror'
       ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to `chromium-browser'
+      browse-url-generic-program (getenv "BROWSER") ;; NOTE: ...
       ;; browse-url-generic-program "firefox" ;; NOTE: default web browser set to `firefox'
       ;; browse-url-generic-program "iceweasel" ;; NOTE: default web browser set to `iceweasel'
       ;; browse-url-generic-program "x-www-browser" ;; NOTE: default web browser set to `x-www-browser'
@@ -84,7 +84,7 @@
 
 ;; TODO: do I want to make a `external-browser-alist' variable which is a listn of available browsers?
 (defun choose-browser (url &rest junk) ;; NOTE: select which browser to use (i.e. internal or external)
-  "Navigate a web browser (either \"emacs-w3m\" or \"conkeror\" to URL.
+  "Navigate a web browser to URL.
 
 Although this is interactive, call this with \\[browse-url]."
   (interactive "sURL: ")
@@ -97,13 +97,9 @@ Although this is interactive, call this with \\[browse-url]."
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
 ;; SOURCE: `http://www.emacswiki.org/emacs/DictionaryDotCom'
 ;; TODO: find a dictionary/thesaurus combination
-;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
+(autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
-;; (require 'thesaurus) ;; TODO: change this to an autoload
-
-;; (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
-
-;; (define-key global-map (kbd "C-x t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: optional key binding (TODO: move to bindings.el)
+(setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
 
 (defun dictionary-word (&rest junk) ;; TODO: i don't like how this one works
   "Dictionary definition of the current word."
@@ -382,6 +378,7 @@ NOTE: if the connection is succesful, the async shell command window should be c
 (require 'configuration-files)
 
 ;; TODO: incorporate "pair values" (i.e. [file,ext]) somehow
+;; NOTE: could make this an alist?
 (setq config-dir-and-ext '((concat user-emacs-directory "config-el/")
 			   (concat user-emacs-directory "my-modes/")
 			   (concat user-scripts-directory "bash-dir/")
@@ -434,5 +431,89 @@ NOTE: if the connection is succesful, the async shell command window should be c
 
 ;; (add-hook 'diary-display-hook 'fancy-diary-display)
 ;; (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+
+;;; COMMENT: the insidious big brother database
+;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
+(require 'bbdb)
+
+(bbdb-initialize 'gnus 'message)
+
+;;(setq bbdb-file "~/.emacs.d/contacts-file.el")
+
+;;; COMMENT: the emacs bibliography manager
+;; SOURCE: `http://ebib.sourceforge.net/'
+(require 'ebib) ;; TODO: change this to an autoload
+;; (autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
+
+;; TODO: investigate @string clauses and abbreviations for common journals
+;; TODO: create `philosophy.bib' `mathematics.bib' `linguistics.bib' `computer-science.bib' etc
+(setq ebib-preload-bib-files (list (format "%su4537508.bib" user-university-directory) ;; NOTE: university courses
+				   (format "%sPapers/papers.bib" user-documents-directory) ;; NOTE: general papers
+				   ;; "/home/chu/Documents/Papers/papers.bib"
+				   ;; "/home/chu/Documents/ANU/u4537508.bib"
+				   ;; "/home/chu/Documents/Papers/philosophy.bib"
+				   ;; "/home/chu/Documents/Papers/mathematics.bib"
+				   ;; "/home/chu/Documents/Papers/linguistics.bib"
+				   ;; "/home/chu/Documents/Papers/computer-science.bib"
+				   )
+      ebib-keywords-list (list "philosophy"
+			       "mathematics"
+			       "logic"
+			       "computer science"
+			       "linguistics"
+			       "miscellaneous")
+      ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
+      ebib-file-search-dirs (list (format "%s" user-home-directory)
+				  (format "%sPapers/" user-documents-directory)) ;; NOTE: directories to search when viewing external files
+      )
+
+(setcdr (assoc "pdf" ebib-file-associations) "evince")
+
+;; Ebib Entry: [[ebib:horwich1996][Horwich (1996)]]
+;; Citation Entry: [[cite:horwich1996][Horwich (1996)]]
+
+;; COMMENT: some personal ebib stuff
+(defun ebib-export-directory (extension directory &rest junk)
+  "Generates a BibTeX entry for all files with file-extension EXTENSION in directory DIRECTORY.
+
+NOTE: This requires that each file in DIRECTORY be named according to \"<title>.EXTENSION\"."
+  (mapc #'(lambda (file)
+            ;; TODO: this needs to have a check whether `file' is already known, and if so, skip
+	    (let ((title (replace-regexp-in-string "-" " " (file-name-nondirectory (file-name-sans-extension file))))
+		  (author "")
+		  (year "")
+		  (tags nil))
+	      (when (and (file-readable-p file) (not (file-directory-p file)))
+		(insert
+		 (format "@article{%s,\n	author = {%s},\n	title  = {%s},\n	year   = {%s},\n	file   = {%s}\n}\n\n"
+			 (file-name-nondirectory (file-name-sans-extension file))
+			 author
+			 title
+			 year
+			 file)))))
+	(directory-files directory t (concat "\." extension "$") t)))
+
+(defun ebib-print-directory ()
+  "Print the BibTeX entries from the TARGET-DIRECTORY variable, according to FILE-EXTENSION."
+  (interactive)
+  (let ((buffer-name "ebib-")
+	(file-extension "pdf")
+	(target-directory "/home/chu/Documents/Papers/PDFs/"))
+    (switch-to-buffer "ebib-directory")
+    (ebib-export-directory file-extension target-directory)))
+
+;; TODO: can we do an `ido-completing-read' over a list of keys?
+(defun org-insert-citation (key name)
+  "Insert a BibTeX citation in an `org-mode' buffer, matching the `org-link' format."
+  (interactive "sEnter key: \nsEnter name: ")
+  (insert (format "[[%s][%s]]" key name)))
+
+;;; COMMENT: deft
+;; SOURCE: `http://jblevins.org/projects/deft/'
+(require 'deft)
+
+(setq deft-extension "org"
+      deft-text-mode 'org-mode
+      deft-directory "/home/chu/Documents/Organisation/.deft/")
 
 (provide 'user-config)

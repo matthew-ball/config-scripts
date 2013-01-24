@@ -1,36 +1,35 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/general-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:04:05 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;;; COMMENT: user variables
-(defvar user-home-directory "~/" "Directory for user's home files.")
+;; NOTE: user directories
+(defvar user-shell (getenv "SHELL") "The user's $SHELL environment variable.")
+(defvar user-browser (getenv "BROWSER") "The user's $BROWSER environment variable.")
+(defvar user-home-directory (getenv "HOME") "The user's $HOME environment variable.")
+(defvar user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts.")
+(defvar user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents.")
+(defvar user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news.")
+(defvar user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail.")
+(defvar user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music.")
+(defvar user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos.")
+(defvar user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files.")
+(defvar user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects.")
+(defvar user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material.")
+(defvar user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material.")
+(defvar user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files.")
+(defvar user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files.")
 
-(defvar user-scripts-directory (concat user-home-directory ".conf-scripts/") "Directory for user's run-time scripts.")
-(defvar user-documents-directory (concat user-home-directory "Documents/") "Directory for user's documents.")
+;; NOTE: user files
+(defvar user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation.")
+(defvar user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation.")
+(defvar user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation.")
+(defvar user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation.")
 
-;; TODO: set up the following ...
-(defvar user-news-directory (concat user-home-directory "News/") "Directory for user's news.")
-(defvar user-mail-directory (concat user-home-directory "Mail/") "Directory for user's mail.")
-
-(defvar user-audio-directory (concat user-home-directory "Music/") "Directory for user's music.")
-(defvar user-video-directory (concat user-home-directory "Videos/") "Directory for user's videos.")
-
-(defvar user-projects-directory (concat user-home-directory "Projects/") "Directory for user's projects.")
-(defvar user-reading-directory (concat user-documents-directory "Reading/") "Directory for user's reading material.")
-(defvar user-writing-directory (concat user-documents-directory "Writing/") "Directory for user's writing material.")
-(defvar user-organisation-directory (concat user-documents-directory "Organisation/") "Directory for user's organisation files.")
-(defvar user-university-directory (concat user-documents-directory "ANU/") "Directory for user's university files.")
-
-(defvar user-org-university-file (concat user-organisation-directory "school.org") "File for user's university organisation.")
-(defvar user-org-notes-file (concat user-organisation-directory "journal.org") "File for user's notes organisation.")
-(defvar user-org-projects-file (concat user-organisation-directory "projects.org") "File for user's projects organisation.")
-(defvar user-org-archive-file (concat user-organisation-directory "archive.org") "File for user's archive organisation.")
-
+;; NOTE: user details
+(setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
 (defvar user-university-id "u4537508" "University ID for the user.")
 (defvar user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user.")
-(defvar user-secondary-email-address (concat user-university-id "@anu.edu.au") "Secondary email address for the user.")
-
-(setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
+(defvar user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user.")
 
 ;;; COMMENT: user functions
 (defun eval-and-replace (&rest junk)
@@ -111,7 +110,7 @@
 (add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; NOTE: open python files in a psuedo-python interpreter
 
 ;;; COMMENT: selection
-(delete-selection-mode 1) ;; replace (delete) selected region
+(delete-selection-mode 1) ;; NOTE: replace (delete) selected region
 
 ;; TODO: these could possibly be moved to `appearance-config.el'
 ;;; COMMENT: visible alarm
@@ -140,8 +139,8 @@
       ;;`ido-everywhere t ;; NOTE: enable ido everywhere
       ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
       ido-ignore-extensions t ;; NOTE: ignore extentions
-      ido-ignore-buffers'("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
-			  "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
+      ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
+			   "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
       ido-work-directory-list `(,(expand-file-name user-home-directory)
       				,(expand-file-name user-documents-directory)
       				,(expand-file-name user-university-directory)
@@ -152,6 +151,7 @@
       ido-max-work-file-list 50 ;; NOTE: ... and files
       ido-max-prospects 8 ;; NOTE: don't spam the mini buffer
       ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
+      ;;ido-use-virtual-buffers t ;; NOTE: enable virtual buffers
       confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
       )
 
@@ -210,13 +210,26 @@
 
 ;;; COMMENT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
+;;(autoload 'smex "smex" "Super-charge `ido-mode'." t)
 (require 'smex)
-(setq smex-save-file (concat user-emacs-directory "smex-items"))
+
+(setq smex-save-file (concat user-emacs-directory "smex-items")
+      smex-key-advice-ignore-menu-bar t)
+
 (smex-initialize) ;; NOTE: super-charge `ido-mode'
 
 ;;; COMMENT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
+;; (autoload 'ibuffer "ibuffer" "Interactive buffers for GNU Emacs." t)
+;; (eval-after-load "ibuffer" '(require 'ibuf-ext))
+
 (require 'ibuffer)
+(require 'ibuf-ext)
+
+;; NOTE: neither of the following works
+(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
+(add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
+
 (setq ibuffer-saved-filter-groups
       `(("default"
 	 ("Configuration" ;; NOTE: run-time configuration related buffers
@@ -228,11 +241,19 @@
 	  (or (filename . ,(expand-file-name user-reading-directory))
 	      (mode . doc-view-mode)))
 	 ("Writing" ;; NOTE: writing related buffers
-	  (filename . ,(expand-file-name user-writing-directory)))
+	  (or (filename . ,(expand-file-name user-writing-directory))
+	      (mode . reftex-toc-mode)
+	      (mode . bibtex-mode)
+	      (mode . ebib-log-mode)
+	      (mode . ebib-index-mode)
+	      (mode . ebib-entry-mode)
+	      (mode . deft-mode)
+	      (name . "^\\*Ebib-edit\\*$")))
 	 ("Projects" ;; NOTE: project related buffers
 	  (filename . ,(expand-file-name user-projects-directory)))
 	 ("Programming" ;; NOTE: programming related buffers
-	  (or (mode . c-mode)
+	  (or (filename . ,(expand-file-name user-programming-directory))
+	      (mode . c-mode)
 	      (mode . c++-mode)
 	      (mode . haskell-mode)
 	      (mode . inferior-haskell-mode)
@@ -243,13 +264,10 @@
 	      (mode . emacs-lisp-mode)
 	      (mode . inferior-lisp-mode)
 	      (mode . inferior-emacs-lisp-mode)
-	      (mode . repl-mode)
 	      (mode . nxml-mode)
 	      (mode . ada-mode)
 	      (mode . makefile-gmake-mode)
-	      (mode . slime-mode)
 	      (mode . perl-mode)
-	      (mode . inferior-slime-mode)
 	      (mode . fuzzy-completions-mode)
 	      (mode . html-mode)
 	      (mode . css-mode)
@@ -263,12 +281,18 @@
 	      (mode . conf-space-mode)
 	      (mode . gist-list-mode)
 	      (mode . gist-menu-mode)
+	      (mode . slime-mode)
+	      (mode . inferior-slime-mode)
+	      (mode . repl-mode)
+	      (mode . sldb-mode)
 	      (name . "^\\*slime-events\\*$")
 	      (name . "^\\*slime-threads\\*$")
 	      (name . "^\\*slime-connections\\*$")
 	      (name . "^\\*slime-repl sbcl\\*$")
 	      (name . "^\\*slime-compilation\\*$")
-	      (name . "^\\*inferior-lisp\\*$")))
+	      (name . "^\\*slime-description\\*$")
+	      (name . "^\\*inferior-lisp\\*$")
+	      (name . "^\\*Compile-Log\\*$")))
 	 ("Version Control" ;; NOTE: version control related buffers
 	  (or (mode . diff-mode)
 	      (mode . magit-status-mode)
@@ -299,6 +323,7 @@
 	      (mode . shell-mode)
 	      (mode . term-mode)
 	      (mode . locate-mode)
+	      (mode . tex-shell-mode)
 	      (name . "^\\*Shell Command Output\\*$")))
 	 ("Games" ;; NOTE: buffers related to games
 	  (or (mode . sudoku-mode)
@@ -322,9 +347,10 @@
 	      (mode . gnus-article-mode)
 	      (mode . gnus-edit-form-mode)
 	      (mode . message-mode)
+	      (mode . bbdb-mode)
 	      (name . "^\\*gnus trace\\*$")
 	      (filename . ".newsrc-dribble$")))
-	 ("Information" ;; NOTE: info related buffers
+	 ("Information" ;; NOTE: help and information related buffers
 	  (or (mode . info-mode)
 	      (mode . Info-mode)
 	      (mode . apropos-mode)
@@ -334,10 +360,10 @@
 	      (mode . woman-mode)
 	      (name . "^\\*WoMan-Log\\*$")
 	      (name . "^\\*Org Processes\\*$")))
-	 ("Process Manager" ;; NOTE: process manager related buffers
+	 ("Process Manager" ;; NOTE: process management related buffers
 	  (or (mode . proced-mode)
 	      (mode . process-menu-mode)))
-	 ("Package Management" ;; NOTE: apt-mode and elpa related buffers
+	 ("Package Management" ;; NOTE: package management related buffers
 	  (or (mode . apt-mode)
 	      (mode . package-menu-mode)
 	      (name . "^\\*Package Info\\*$")))
@@ -348,6 +374,7 @@
 	      (mode . completion-list-mode)
 	      (mode . finder-mode)
 	      (mode . color-theme-mode)
+	      (mode . browse-kill-ring-mode)
 	      (name . "\\*scratch\\*$")
 	      (name . "\\*Messages\\*$")
 	      (name . "\\*Keys\\*$")
@@ -358,12 +385,20 @@
 	      (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
 (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
-      ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by major-mode
-      ibuffer-expert t ;; NOTE: don't ask for confirmation
-      ibuffer-shrink-to-minimum-size t
-      ibuffer-always-show-last-buffer nil
+      ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
       ibuffer-sorting-mode 'recency
-      ibuffer-use-header-line t)
+      ibuffer-expert t ;; NOTE: do not ask for confirmation
+      ;;ibuffer-shrink-to-minimum-size t
+      ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
+      ibuffer-use-header-line t
+      ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
+      ;;ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
+      ibuffer-case-fold-search t ;; NOTE: ignore case when searching
+      ;; TODO: investigate `ibuffer-directory-abbrev-list'
+      ibuffer-old-time 72 ;; NOTE: number of hours before a buffer is considered "old"
+      ibuffer-trunacte-lines t ;; NOTE: do not display continuation lines
+      ibuffer-use-header-line t ;; NOTE: display a line containing current filters
+      )
 
 (add-hook 'ibuffer-mode-hook (lambda ()
 			       (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
@@ -387,12 +422,14 @@
 
 (ac-flyspell-workaround) ;; NOTE: apparently the flyspell-mode process disables auto-completion
 
-(define-globalized-minor-mode real-global-auto-complete-mode ;; NOTE: dirty fix for having AC everywhere
-  auto-complete-mode (lambda ()
-                       (if (not (minibufferp (current-buffer)))
-			   (auto-complete-mode 1))))
+(global-auto-complete-mode t) ;; NOTE: enable `auto-complete' where it makes sense
 
-(real-global-auto-complete-mode t)
+;; (define-globalized-minor-mode real-global-auto-complete-mode ;; NOTE: dirty fix for having AC everywhere
+;;   auto-complete-mode (lambda ()
+;;                        (if (not (minibufferp (current-buffer)))
+;; 			   (auto-complete-mode 1))))
+
+;; (real-global-auto-complete-mode t)
 
 ;;; COMMENT: smart tab
 (defun smart-tab () ;; NOTE: implement a smarter TAB
@@ -428,7 +465,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 ;;; COMMENT: stumpwm mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
-(autoload 'stumpwm-mode "/usr/share/doc/stumpwm/stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
+(autoload 'stumpwm-mode "stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
 
 ;; FIX: this doesn't appear to work with emacs 24...
 ;;; COMMENT: single line copy
@@ -473,7 +510,6 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 ;;; COMMENT: recent files
 ;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
-;; (require 'recentf)
 (autoload 'recentf-mode "recentf" "Recent files." t)
 
 (setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recentf") ;; NOTE: recently saved files
@@ -489,11 +525,10 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (defun restore-desktop-session (&rest junk)
   "Query the user to start the previous saved session or not."
   (interactive)
-  (save-excursion
-    (when (y-or-n-p (format "Restore desktop session?"))
-      (progn
-	(desktop-save-mode 1) ;; NOTE: enable desktop-save-mode also
-	(desktop-read))))) ;; NOTE: read the desktop file
+  ;;(desktop-save-mode 1) ;; NOTE: enable desktop-save-mode also
+  (desktop-read);; NOTE: read the desktop file
+  ;;(message (format "Restoring %s session." desktop-base-file-name))
+  )
 
 (defun save-desktop-session (&rest junk)
   "Saves the current GNU Emacs session."
@@ -504,7 +539,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
 ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
 
-(setq desktop-path `(,(expand-file-name user-emacs-directory))
+(setq desktop-path (list (expand-file-name user-emacs-directory))
       desktop-dirname (expand-file-name user-emacs-directory)
       desktop-base-file-name "emacs-desktop"
       history-length 250)
@@ -571,7 +606,8 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;; TODO: add a prefix argument for `term-line-mode' and `term-char-mode'
 (defun start-new-term (&optional term-mode)
   "Start a new `ansi-term' shell in the directory of current buffer."
-  (ansi-term "/bin/bash")
+  (ansi-term user-shell)
+  ;; (ansi-term "/bin/bash")
   ;; (if (eq term-mode nil)
   ;;     ;; (term-char-mode) ;; NOTE: make it feel like a character terminal
   ;;     (term-line-mode)) ;; NOTE: make it feel like a GNU Emacs session
@@ -583,7 +619,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffer instead of starting a new instance."
   (interactive "sEnter program: ")
-  (let ((bufname (concat "" program "")))
+  (let ((bufname (concat "*" program "*")))
     (when (not (and use-existing
 		    (let ((buf (get-buffer bufname)))
 		      (and buf (buffer-name (switch-to-buffer bufname))))))
@@ -672,10 +708,48 @@ User buffers are those not starting with *."
   (previous-buffer)
   (let ((i 0))
     (while (and (string-match "^*" (buffer-name)) (< i 50))
-      (setq i (1+ i)) (previous-buffer) )))
+      (setq i (1+ i)) (previous-buffer))))
 
-;; TODO: move to `key-bindings-config.el'
-(global-set-key (kbd "C-<prior>") 'previous-user-buffer) ;; NOTE: bind C-<PGUP> to oldest buffer
-(global-set-key (kbd "C-<next>") 'next-user-buffer) ;; NOTE: bind C-<PGDN> to most recently used
+;;; COMMENT: switch to `*scratch*' buffer
+(defun switch-to-scratch (&rest args)
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
+;;; COMMENT: quick open directories and files
+(defvar user-files-alist '() "List of user's files.")
+
+(add-to-list 'user-files-alist `("home" . ,user-home-directory))
+(add-to-list 'user-files-alist `("scripts" . ,user-scripts-directory))
+(add-to-list 'user-files-alist `("documents" . ,user-documents-directory))
+(add-to-list 'user-files-alist `("news" . ,user-news-directory))
+(add-to-list 'user-files-alist `("mail" . ,user-mail-directory))
+(add-to-list 'user-files-alist `("audio" . ,user-audio-directory))
+(add-to-list 'user-files-alist `("video" . ,user-video-directory))
+(add-to-list 'user-files-alist `("programming" . ,user-programming-directory))
+(add-to-list 'user-files-alist `("projects" . ,user-projects-directory))
+(add-to-list 'user-files-alist `("reading" . ,user-reading-directory))
+(add-to-list 'user-files-alist `("writing" . ,user-writing-directory))
+(add-to-list 'user-files-alist `("organisation" . ,user-organisation-directory))
+(add-to-list 'user-files-alist `("university" . ,user-university-directory))
+(add-to-list 'user-files-alist `("org university" . ,user-org-university-file))
+(add-to-list 'user-files-alist `("org notes" . ,user-org-notes-file))
+(add-to-list 'user-files-alist `("org projects" . ,user-org-projects-file))
+(add-to-list 'user-files-alist `("org archive" . ,user-org-archive-file))
+
+(defun quick-open (&rest junk)
+  "Open specific user files.
+
+NOTE: See the variable `user-files-alist' for a list of user files."
+  (interactive)
+  (let ((target (ido-completing-read "Select target: " (mapcar #'(lambda (entry) (car entry)) user-files-alist))))
+    (find-file (cdr (assoc target user-files-alist)))))
+
+;;; COMMENT: encryption
+;; TODO: set up `http://emacswiki.org/emacs/EasyPG'
+
+;;; COMMENT: browse kill ring
+(require 'browse-kill-ring)
+
+(browse-kill-ring-default-keybindings)
 
 (provide 'general-config)

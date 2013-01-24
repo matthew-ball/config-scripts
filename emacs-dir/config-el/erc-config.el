@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/erc-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:04:41 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;;; COMMENT: erc
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
@@ -8,6 +7,7 @@
 (require 'tls)
 (require 'erc) ;; TODO: change this to an autoload
 (require 'erc-highlight-nicknames) ;; TODO: change this to an autoload
+;;(require 'erc-bbdb) ;; TODO: ...
 (autoload 'erc-tls "erc" "IRC client." t) ;; NOTE: this is to use SSL
 ;; (autoload 'doctor-doc "doctor") ;; NOTE: for use with ERC doctor
 ;; (autoload 'make-doctor-variables "doctor") ;; NOTE: for use with ERC doctor
@@ -31,6 +31,8 @@
 ;;(setq erc-log-insert-log-on-open t) ;; NOTE: I *think* this is the goods
 
 (defface erc-prompt-face '((t (:foreground "yellow" :bold t))) "ERC prompt.")
+;;(defface erc-timestamp-face '((t (:foreground "black" :weight bold))) "ERC timestamp.")
+
 (defvar erc-insert-post-hook)
 
 ;; (eval-after-load "erc-fill" '(erc-fill-mode 0)) ;; NOTE: disable ERC fill
@@ -44,6 +46,7 @@
 ;; (eval-after-load "erc-spelling" '(erc-spelling-mode t)) ;; NOTE: enable flyspell in ERC
 (eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fill
 (eval-after-load "erc-goodies" '(erc-scrolltobottom-mode t)) ;; NOTE: enable scroll-to-bottom mode
+;;(eval-after-load "erc-bbdb" '(erc-bbdb-mode t)) ;; NOTE: enable bbdb
 
 (eval-after-load "erc-highlight-nicknames" '(erc-highlight-nicknames-enable))
 (eval-after-load "erc-modules" '(add-to-list 'erc-modules 'highlight-nicknames))
@@ -90,6 +93,8 @@
 (setq ;;erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
       erc-port 7000 ;; NOTE: `erc-tls' port (for ssl)
       erc-nick "chu"
+      erc-nick-uniquifier "_"
+      erc-button-google-url "http://www.google.com/search?q=%s"
       ;; erc-user-full-name user-full-name
       ;; erc-email-userid user-mail-address
       erc-current-nick-highlight-type 'all ;; NOTE: highlight the entire message where current nickname occurs
@@ -120,14 +125,17 @@
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
       erc-autojoin-channels-alist '((".*\\.freenode.net"
 				     "#emacs"
-				     "#org-mode"
+				     ;;"#org-mode"
+				     "#stumpwm"
+				     ;;"#lisp"
 				     ;; "#ubuntu"
 				     "#ubuntu-offtopic"
+				     "#ubuntu-discuss"
 				     ;; "#ubuntuforums"
 				     "#ubuntu-ops"
 				     "#ubuntu-ops-team"
 				     ;; "##club-ubuntu"
-				     "#felines-lair"
+				     ;; "#felines-lair"
 				     ;; "#anucssa"
 				     ;; "#defocus"
 				     ))
@@ -343,6 +351,20 @@
 ;;(erc-user-cmd "NICKSERV")
 
 (defun erc-cmd-NS () (let ((choice (ido-completing-read "Select command: " nickserv-commands-list))) (erc-message "PRIVMSG" (format "NickServ help %s" choice))))
+
+;;; COMMENT: freenode user and channel modes
+;; (defvar freenode-user-modes-list (list "D" "g" "i" "Q" "R" "w" "z"))
+;; (defvar freenode-channel-modes-list (list "b" "C" "c" "e" "f" "F" "g" "i" "I" "j" "k" "l" "L" "m" "n" "p" "P" "q" "Q" "r" "s" "t" "z"))
+
+;; (defun user-mode-command (user-flag)
+;;   "..."
+;;   )
+
+;; (defun channel-mode-command (mode-flag &optional user)
+;;   "..."
+;;   (let ((channel (erc-default-target)))
+;;     (erc-server-send (concat "MODE " channel mode-flag user))
+;;     ))
 
 ;; (defmacro erc-user-message (command message)
 ;;   "Macro to create \"custom\" messages to an IRC user in an `erc-mode' session."

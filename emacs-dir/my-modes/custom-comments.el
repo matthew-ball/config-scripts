@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/my-modes/custom-comments.el
 ;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Wed 16 May 2012 15:03:22 EST
 
 ;; COMMENT:
 ;; Welcome to `custom-comments' - A minor mode extension for GNU Emacs managing the highlighting of custom comments.
@@ -40,11 +39,11 @@
 
 (defvar font-lock-custom-comment-tag-face-warning 'font-lock-custom-comment-tag-face-warning "Face name to use for `custom-comment-tag-alist-warning' tags.")
 
-(defface font-lock-custom-comment-tag-face-heading '((t (:foreground "RoyalBlue"))) "Font lock face to highlight custom `custom-comment-tag-alist-heading' tags." :group 'font-lock-faces)
+(defface font-lock-custom-comment-tag-face-heading '((t (:foreground "RoyalBlue" :weight bold))) "Font lock face to highlight custom `custom-comment-tag-alist-heading' tags." :group 'font-lock-faces)
 
-(defface font-lock-custom-comment-tag-face-comment '((t (:foreground "DarkGreen"))) "Font lock face to highlight custom `custom-comment-tag-alist-comment' tags." :group 'font-lock-faces)
+(defface font-lock-custom-comment-tag-face-comment '((t (:foreground "DarkSeaGreen" :weight bold))) "Font lock face to highlight custom `custom-comment-tag-alist-comment' tags." :group 'font-lock-faces)
 
-(defface font-lock-custom-comment-tag-face-warning '((t (:foreground "OrangeRed3"))) "Font lock face to highlight custom `custom-comment-tag-alist-warning' tags." :group 'font-lock-faces)
+(defface font-lock-custom-comment-tag-face-warning '((t (:foreground "OrangeRed3" :weight bold))) "Font lock face to highlight custom `custom-comment-tag-alist-warning' tags." :group 'font-lock-faces)
 
 (defun activate-highlight-custom-comment-tags (&rest junk) ;; TODO: clean this up
   "Highlight custom comment tags in designated modes.

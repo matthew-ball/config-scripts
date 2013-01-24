@@ -1,11 +1,11 @@
-=This README file is best read using functionality provided by org-mode=
+This README file is best read using functionality provided by =org-mode=.
 
-* The =configuration script= project
+* The ~configuration script~ project
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system.
 
-- An [[file:config-setup.sh][install]] script is provided which includes functionality to save, restore, and update the configuration script project.
+- An [[file:config-setup.sh][install]] script is provided which includes functionality to ~save~, ~restore~, and ~update~ the configuration script project.
 
-- The =configuration script= project is designed for use with the following applications:
+- The ~configuration script~ project is designed for use with the following applications:
   + =BASH= Terminal :: [[file:bash-dir/README][README]]
     - Version: 0.00
   + =StumpWM= Window Manager :: [[file:stumpwm-dir/README][README]]
@@ -14,32 +14,31 @@
     - Version: 24.0.92.1
   + =Conkeror= Web Browser :: [[file:conkeror-dir/README][README]]
     - Version: 0.00
-  + Music Player Daemon
+  + Music Player Daemon :: 
     - Version: 0.00
-  + NCMPCPP Client
+  + NCMPCPP Client :: 
     - Version: 0.00
-  + VLC Player
+  + VLC Player :: 
     - Version: 0.00
-  + NMCLI Network Manager
+  + NMCLI Network Manager ::
     - Version: 0.00
 
 - The configuration represents a possible "desktop" shell for GNU/Linux which works across multiple distributions.
 
-- The system is designed to work across different distributions, there must be two development repositories:
+- The system is designed to work across different distributions. Thus, there should be two development repositories:
   1. /stable/ development builds; and
   2. /unstable/ development builds.
 
 - The setup currently supports:
   + debian :: /stable/ repositories (/unstable/ may work).
   + ubuntu :: /stable/ repositories (/unstable/ may work).
-  + arch :: /stable/ and /unstable/ repositories.
 
 ** Linking Files
 - This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
 
-- The files and directories of the =configuration scripts= project can then be =symlink='d from their source to a destination location.
+- The files and directories of the ~configuration scripts~ project can then be =symlink='d from their source to a destination location.
 
-- WARNING: The linking process needs to be run from the =configuration scripts= project root directory.
+- WARNING: The linking process needs to be run from the ~configuration scripts~ project root directory.
 
 *** List of link files:
 |-----------------------+------------------+--------------------------------------------|
@@ -206,8 +205,7 @@
 
 - Cannot start this *until* the original project is functioning.
 
+* TODO create personal dictionary from ~/home/chu/.aspell.en.pws~
 * Footnotes
-
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
-
 [fn:broken-link] WARNING: Broken link.

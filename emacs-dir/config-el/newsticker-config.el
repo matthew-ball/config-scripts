@@ -1,6 +1,5 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/newsticker-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012)
-;; TIME: Mon 20 Aug 2012 10:40:59 EST
+;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 (setq newsticker-dir "~/News/newsticker"
       newsticker-url-list-defaults nil
