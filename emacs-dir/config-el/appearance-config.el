@@ -7,7 +7,7 @@
 ;; (autoload 'zenburn "zenburn" "The `zenburn' colour theme for GNU Emacs." t)
 
 ;; COMMENT: X server specific
-(when (display-graphic-p) ;; NOTE: if X server, reduce font-size slightly
+(when (display-graphic-p)
   (set-face-attribute 'default nil :height 80)
   (setq frame-title-format "%b"
         icon-title-format "%b"))
@@ -17,8 +17,12 @@
 (defun decorate-frame (frame)
   "Decorate new frame FRAME with `zenburn' colour theme."
   (select-frame frame)
-  (let ((colour-theme-is-global nil))
-    (color-theme-zenburn))) ;; NOTE: apply `zenburn' colour theme.
+  ;; (let ((colour-theme-is-global nil))
+  ;;   (color-theme-zenburn)) ;; NOTE: apply `zenburn' colour theme.
+  (when (display-graphic-p) ;; NOTE: if X server, reduce font-size slightly
+    (set-face-attribute 'default nil :height 80)
+    (setq frame-title-format "%b"
+          icon-title-format "%b")))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 

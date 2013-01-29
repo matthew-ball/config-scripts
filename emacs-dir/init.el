@@ -13,6 +13,7 @@
 
 ;; NOTE: this works, but the directory stuff should probably be moved
 (add-to-list 'load-path "/home/chu/.emacs.d/erc-extras")
+(add-to-list 'load-path "/home/chu/.emacs.d/dictem-1.0.4")
 (add-to-list 'load-path "/home/chu/Programming/lisp/elisp/w3m-el/w3m")
 (add-to-list 'load-path "/home/chu/Programming/lisp/elisp/wireless/wireless")
 (add-to-list 'load-path "/home/chu/Programming/scheme/guile/guile/emacs")

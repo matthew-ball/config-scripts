@@ -80,10 +80,11 @@
 
 (define-key global-map writing-prefix-key writing-map)
 (define-key writing-map (kbd "c") 'count-words) ;; NOTE: count the words in the current buffer
-(define-key writing-map (kbd "d") 'dictionary-word) ;; NOTE: look up `current-word' from `http://dictionary.reference.com/'
+;;(define-key writing-map (kbd "d") 'dictionary-word) ;; NOTE: look up `current-word' from `http://dictionary.reference.com/'
 (define-key writing-map (kbd "t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: ...
 (define-key writing-map (kbd "e") 'ebib) ;; NOTE: run the emacs bibliography manager
-(define-key writing-map (kbd "d") 'deft) ;; NOTE: ...
+(define-key writing-map (kbd "d") 'dictem-run-search) ;; NOTE: dictionary search for word
+(define-key writing-map (kbd "n") 'deft) ;; NOTE: quick note taking with `deft'
 
 ;;(global-set-key (kbd "M-<f6>") 'function)
 ;;(global-set-key (kbd "C-<f6>") 'function)

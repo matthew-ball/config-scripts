@@ -1,6 +1,6 @@
 #!/bin/bash
 # FILE: /home/chu/.conf-scripts/config-setup.sh
-# AUTHOR: Matthew Ball (copyleft 2012)
+# AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 # IMPORTANT: to give this script execute permissions run the command: 'chmod +x config-setup.sh'
 
@@ -13,7 +13,7 @@
 # 6. Restart system.
 
 # COMMENT: general variables
-VERSION_NUMBER=0.05
+VERSION_NUMBER=0.09
 DEST_DIR=".config-scripts"
 GITHUB_SRC="git://github.com/matthew-ball/config-scripts" # NOTE: path to github repository
 SOURCES_DEST="/etc/apt/sources.list"                      # NOTE: path to sources.list file
@@ -50,7 +50,8 @@ BASH_DEST_PR="/home/$USER/.bash_profile"
 
 # COMMENT: user functions
 function welcome-message { # NOTE: print a welcome message to the screen
-    echo -e "Welcome to \e[01;30mconfiguration script\e[00m: \e[00;31m$VERSION_NUMBER\e[00m"
+    echo -e "Welcome to \e[01;32m./conf-setup.sh\e[00m \t\t\t\t\t\t\t\t\t\t\t\t\t (version: \e[00;31m$VERSION_NUMBER\e[00m)"
+    echo -e "---"
 }
 
 function symlink { # NOTE: symlink source file to destination
@@ -90,29 +91,31 @@ function clone-git-project { # COMMENT: clone project directory # WARNING: syste
 }
 
 function quicklisp-configuration { # COMMENT: quicklisp configuration # WARNING: requires `quicklisp' file to run
-    echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34mquicklisp\e[00m"
+    echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34mquicklisp\e[00m system"
     echo -e " + [\e[00;31mdebug\e[00m] execute command \e[00;33mcurl -O $QUICKLISP_SRC\e[00m"
     echo -e " + [\e[00;31mdebug\e[00m] execute command \e[00;33msbcl --load quicklisp.lisp\e[00m"
+    echo -e "  * [\e[00;31mdebug\e[00m] execute command \e[00;33mswank\e[00m"
+    echo -e "  * [\e[00;31mdebug\e[00m] execute command \e[00;33mstumpwm\e[00m"
 }
 
 function check_directory {
     if [ ! -z ${FORCE} ]; then
 	if [ ${FORCE} == "true" ]; then
-	    # if [ -d "$2" ]; then
-	    # 	echo -e " + [\e[00;31mdebug\e[00m] directory \e[00;33m$2\e[00m exists (with \e[01;34mforce\e[00m)"
-	    # fi
-	    # echo -e " + [\e[00;31mdebug\e[00m] creating directory \e[00;33m$2\e[00m (with \e[01;34mforce\e[00m)"
-	    symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
+	    if [ -d "$2" ]; then
+	    	echo -e " + [\e[00;31mdebug\e[00m] directory \e[00;33m$2\e[00m exists (with \e[01;34mforce\e[00m)"
+	    fi
+	    echo -e " + [\e[00;31mdebug\e[00m] creating directory \e[00;33m$2\e[00m (with \e[01;34mforce\e[00m)"
 	    # TODO: check to make sure SOURCE file is available (if not, run `clone-git-project' function)
+	    # symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
 	fi
     else
 	if [ -d "$2" ]; then
 	    echo -e " + [\e[00;31mdebug\e[00m] directory \e[00;33m$2\e[00m exists"
 	    return
 	else
-	    # echo -e " + [\e[00;31mdebug\e[00m] creating directory \e[00;33m$2\e[00m"
-	    symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
+	    echo -e " + [\e[00;31mdebug\e[00m] creating directory \e[00;33m$2\e[00m"
 	    # TODO: check to make sure SOURCE file is available (if not, run `clone-git-project' function)
+	    # symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
 	fi
     fi
 }
@@ -120,50 +123,61 @@ function check_directory {
 function check_file { # NOTE: ...
     if [ ! -z ${FORCE} ]; then
 	if [ ${FORCE} == "true" ]; then
-	    # if [ -e "$2" ]; then
-	    # 	echo -e " + [\e[00;31mdebug\e[00m] file \e[00;33m$2\e[00m exists (with \e[01;34mforce\e[00m)"
-	    # fi
-	    # echo -e " + [\e[00;31mdebug\e[00m] creating file \e[00;33m$2\e[00m (with \e[01;34mforce\e[00m)"
-	    symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
+	    if [ -e "$2" ]; then
+	    	echo -e " + [\e[00;31mdebug\e[00m] file \e[00;33m$2\e[00m exists (with \e[01;34mforce\e[00m)"
+                return
+	    else
+	        echo -e " + [\e[00;31mdebug\e[00m] creating file \e[00;33m$2\e[00m (with \e[01;34mforce\e[00m)"
+            fi
 	    # TODO: check to make sure SOURCE file is available (if not, run `clone-git-project' function)
+	    # symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
 	fi
     else
 	if [ -e "$2" ]; then
 	    echo -e " + [\e[00;31mdebug\e[00m] file \e[00;33m$2\e[00m exists"
 	    return
 	else
-	    # echo -e " + [\e[00;31mdebug\e[00m] creating file \e[00;33m$2\e[00m"
-	    symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
+	    echo -e " + [\e[00;31mdebug\e[00m] creating file \e[00;33m$2\e[00m"
 	    # TODO: check to make sure SOURCE file is available (if not, run `clone-git-project' function)
+	    # symlink $1 $2 # NOTE: $1 is SOURCE, $2 is DESTINATION
 	fi
     fi
 }
 
 function configure-bash {
     #configure bash
-    # echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34mbash\e[00m"
-    check_directory $BASH_SRC_DIR $BASH_DEST_DIR ${FORCE}
-    check_file      $BASH_SRC_RC  $BASH_DEST_RC  ${FORCE}
-    check_file      $BASH_SRC_PR  $BASH_DEST_PR  ${FORCE}
+    echo -e " + [\e[00;31mdebug\e[00m] configuring \e[01;34mbash\e[00m"
+    # check_directory $BASH_SRC_DIR $BASH_DEST_DIR ${FORCE}
+    # check_file      $BASH_SRC_RC  $BASH_DEST_RC  ${FORCE}
+    # check_file      $BASH_SRC_PR  $BASH_DEST_PR  ${FORCE}
 }
 
 function configure-conkeror {
     # configure conkeror
-    # echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34mconkeror\e[00m"
-    check_directory $CONKEROR_SRC_DIR $CONKEROR_DEST_DIR ${FORCE}
+    echo -e " + [\e[00;31mdebug\e[00m] configuring \e[01;34mconkeror\e[00m"
+    # check_directory $CONKEROR_SRC_DIR $CONKEROR_DEST_DIR ${FORCE}
 }
 
 function configure-emacs {
     # configure emacs
-    # echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34memacs\e[00m"
-    check_directory $EMACS_SRC_DIR $EMACS_DEST_DIR ${FORCE}
+    echo -e " + [\e[00;31mdebug\e[00m] configuring \e[01;34memacs\e[00m"
+    # check_directory $EMACS_SRC_DIR $EMACS_DEST_DIR ${FORCE}
 }
 
 function configure-stumpwm {
     # configure stumpwm
-    # echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34mstumpwm\e[00m"
-    check_directory $STUMPWM_SRC_DIR $STUMPWM_DEST_DIR ${FORCE}
-    check_file      $STUMPWM_SRC_RC  $STUMPWM_DEST_RC  ${FORCE}
+    echo -e " + [\e[00;31mdebug\e[00m] configuring \e[01;34mstumpwm\e[00m"
+    # check_directory $STUMPWM_SRC_DIR $STUMPWM_DEST_DIR ${FORCE}
+    # check_file      $STUMPWM_SRC_RC  $STUMPWM_DEST_RC  ${FORCE}
+}
+
+function configure-conf-scripts {
+    # COMMENT: configure conf-scripts
+    echo -e "- [\e[00;31mdebug\e[00m] configuring \e[01;34mconf-scripts\e[00m project"
+    configure-bash     # NOTE: setup bash configuration
+    configure-conkeror # NOTE: set up conkeror configuration
+    configure-emacs    # NOTE: set up emacs configuration
+    configure-stumpwm  # NOTE: set up stumpwm configuration
 }
 
 # COMMENT: start main program
@@ -227,8 +241,5 @@ else
 
     clone-git-project       # NOTE: clone git project
     quicklisp-configuration # NOTE: setup quicklisp configuration
-    configure-bash          # NOTE: setup bash configuration
-    configure-conkeror      # NOTE: set up conkeror configuration
-    configure-emacs         # NOTE: set up emacs configuration
-    configure-stumpwm       # NOTE: set up stumpwm configuration
+    configure-conf-scripts  # NOTE: setup conf-scripts configuration
 fi

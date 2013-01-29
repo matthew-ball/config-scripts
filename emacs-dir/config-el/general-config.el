@@ -248,6 +248,7 @@
 	      (mode . ebib-index-mode)
 	      (mode . ebib-entry-mode)
 	      (mode . deft-mode)
+              (mode . dictem-mode)
 	      (name . "^\\*Ebib-edit\\*$")))
 	 ("Projects" ;; NOTE: project related buffers
 	  (filename . ,(expand-file-name user-projects-directory)))

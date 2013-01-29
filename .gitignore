@@ -16,6 +16,7 @@ emacs-dir/apt-el/*
 emacs-dir/bookmarks
 emacs-dir/newsticker/*
 emacs-dir/elpa/
+emacs-dir/dictem-1.0.4/
 emacs-dir/emacs-desktop
 emacs-dir/eshell/history
 emacs-dir/eshell/lastdir

@@ -101,10 +101,79 @@ Although this is interactive, call this with \\[browse-url]."
 
 (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
 
+;; (require 'dict)
+
+;; (setq dict-always-quote-terms t
+;;       ;; dict-servers ("dict.org"
+;;       ;;               "alt0.dict.org"
+;;       ;;               "alt1.dict.org"
+;;       ;;               "alt2.dict.org")
+;;       ;;dict-key-binding (kbd "C-c d")
+;;       dict-enable-key-bindings t
+;;       dict-show-one-window t)
+
 (defun dictionary-word (&rest junk) ;; TODO: i don't like how this one works
   "Dictionary definition of the current word."
   (interactive)
   (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
+
+;;; COMMENT: dictem
+;; SOURCE: ...
+(require 'dictem)
+(setq dictem-server "dict.org"
+      dictem-port "2628"
+      dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra"))
+
+(dictem-initialize)
+
+;; NOTE: for creating hyperlinks on database names and found matches (click on them with mouse-2)
+(add-hook 'dictem-postprocess-match-hook 'dictem-postprocess-match)
+
+;; NOTE: for highlighting the separator between the definitions found, this also creates hyperlink on database names
+(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-separator)
+
+;; NOTE: for creating hyperlinks in `dictem' buffer that contains definitions
+(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-hyperlinks)
+
+;; NOTE: for creating hyperlinks in dictem buffer that contains information about a database
+(add-hook 'dictem-postprocess-show-info-hook 'dictem-postprocess-definition-hyperlinks)
+
+;; NOTE: "virtual" dictionary
+(setq dictem-user-databases-alist '(("_en-en"  . ("foldoc" "gcide" "wn"))
+                                    ("en-en" . ("dict://dict.org:2628/english")) 
+                                    ("_unidoc" . ("susv3" "man" "info" "howto" "rfc"))))
+
+;; NOTE: ...
+(setq dictem-use-user-databases-only t)
+
+;; NOTE: all functions from dictem-postprocess-each-definition-hook will be run for each definition which in turn will be narrowed
+;; NOTE: current database name is kept in dictem-current-dbname variable
+;; NOTE: the following code demonstrates how to highlight SUSV3 and ROFF definitions
+(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-each-definition)
+
+;; NOTE: function for highlighting definition from the database "susv3"
+(defun dictem-highlight-susv3-definition ()
+  (cond ((string= "susv3" dictem-current-dbname)
+	 (goto-char (point-min))
+	 (while (search-forward-regexp
+		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
+	   (put-text-property
+	    (match-beginning 0) (match-end 0) 'face 'bold)))))
+
+;; NOTE: function to show roff-formatted text from the database "man"
+(require 'woman)
+
+(defun dictem-highlight-man-definition ()
+  (cond ((string= "man" dictem-current-dbname)
+	 (goto-char (point-min))
+	 (while (search-forward-regexp "^  " nil t)
+	   (replace-match ""))
+	 (goto-char (point-min))
+	 (forward-line 2)
+	 (woman-decode-region (point) (point-max)))))
+
+(add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
+(add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
 
 ;;; COMMENT: quick jump
 (defvar quick-jump-list nil "List of sites for quick jump functionality.")

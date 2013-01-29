@@ -20,6 +20,8 @@
 (require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
 ;;(require 'org-beamer) ;; TODO: change to `autoload'
 
+;; WARNING: this is becoming hideous!!!1
+;; TODO: clean this up!
 (setq org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
       org-return-follows-link t ;; NOTE: use RETURN to follow links
       org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
@@ -33,21 +35,27 @@
       ;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
       ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
       ;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
-      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
       org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
       org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
-      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
-      org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
       org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
-      org-refile-allow-creating-parent-nodes 'confirm ;; NOTE: allow refile to create parent tasks with confirmation
       org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
       org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
       org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
       org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
       org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
       org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
+      ;; --- `org-refile' ---
+      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
+      org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
+      org-refile-allow-creating-parent-nodes 'confirm ;; NOTE: allow refile to create parent tasks with confirmation
+      ;; --- `org-export' ---
+      org-export-latex-default-class "paper"
+      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
+      org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
+      org-export-with-todo-keywords nil ;; NOTE: turn off `org-mode' exporting of TODO keywords
+      ;; --- `org-agenda' ---
       ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
       org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
       org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
