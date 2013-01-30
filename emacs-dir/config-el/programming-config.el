@@ -284,4 +284,16 @@
 ;; SOURCE: `http://www.emacswiki.org/BuildTags'
 ;; TODO: add more source links
 
+;;; COMMENT: bnf form
+(define-generic-mode 'bnf-mode
+  '("#") 
+  nil 
+  '(("^<.*?>" . 'font-lock-variable-name-face) 
+    ("<.*?>" . 'font-lock-keyword-face) 
+    ("::=" . 'font-lock-warning-face) 
+    ("\|" . 'font-lock-warning-face))
+  '("\\.bnf\\.pybnf\\'") 
+  nil 
+  "Major mode for BNF highlighting.")
+
 (provide 'programming-config)

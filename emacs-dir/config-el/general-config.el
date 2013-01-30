@@ -218,6 +218,10 @@
 
 (smex-initialize) ;; NOTE: super-charge `ido-mode'
 
+;;; COMMENT: find file at point
+;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
+(require 'ffap)
+
 ;;; COMMENT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
 ;; (autoload 'ibuffer "ibuffer" "Interactive buffers for GNU Emacs." t)

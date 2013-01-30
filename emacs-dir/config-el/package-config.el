@@ -13,17 +13,28 @@
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-;; NOTE: to be honest, I don't know why I have this distinction
-;; FIX: store `core-packages' and `user-packages' lists in an external source:
-;; - a variable in `init.el' and `user-config.el' respectively
-(defvar core-packages nil "Core packages to be installed through ELPA.")
-(defvar user-packages nil "User packages to be installed through ELPA.")
 (defvar list-packages nil "Packages to be installed through ELPA.")
 
-;; FIX: set these values elsewhere (???)
-(setq core-packages (list 'diminish 'color-theme 'smex 'zenburn 'paredit 'ido-ubiquitous)) ;; NOTE: this is updated
-(setq user-packages (list 'emms 'eproject 'fill-column-indicator 'magit 'gh 'gist 'c-eldoc 'haskell-mode)) ;; NOTE: this is updated
-(setq list-packages (append core-packages user-packages)) ;; NOTE: add `core-packages' and `user-packages' together
+(setq list-packages (list 'bbdb
+                          'color-theme
+                          'deft
+                          'diminish
+                          'ebib
+                          'emms
+                          'fill-column-indicator
+                          'gh
+                          'gist
+                          'haskell-mode
+                          'ido-ubiquitous
+                          'logito
+                          'magit
+                          'paredit
+                          'pcache
+                          'smex
+                          'thesaurus
+                          'undo-tree
+                          'wget
+                          'zenburn))
 
 (defun emacs-custom-elpa-package-install (&rest junk)
   "Install all custom configuration packages from ELPA.
@@ -31,17 +42,17 @@
 NOTE: This function only needs to be called the first time GNU Emacs is run under this setup."
   (interactive)
   (dolist (package list-packages)
-    (message "Package %s" (symbol-name package))
-    (unless (or (member package package-activated-list)	(functionp package))
-      (message "Installing %s" (symbol-name package))
-      (package-install package)
-      (message "Package %s installed" (symbol-name package)))))
+    (when (not (package-installed-p package))
+      (message "[ELPA] installing package %s" (symbol-name package))
+      ;; (package-install package)
+      )))
 
 (defun run-initial-setup (&rest junk) ;; FIX: debugging /appears/ to give desired outputs though (???)
   "If the computer is connected to the internet then update package archives and install custom packages.
 
 NOTE: This function only needs to be called the first time GNU Emacs is run under this setup."
   (unless package-archive-contents ;; NOTE: if the package-archive-contents are out of date ...
+    (message "[ELPA] refreshing package database")
     (package-refresh-contents)) ;; NOTE: ... check to make sure package archives are updated ...
   (emacs-custom-elpa-package-install)) ;; NOTE: ... else ... install custom packages
 

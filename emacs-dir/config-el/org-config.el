@@ -3,31 +3,18 @@
 
 ;;; COMMENT: org-mode
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
-;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
-;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
-;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/'
-;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
 ;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
 (autoload 'org-install "org-exp" "Organise tasks with `org-mode'." t)
-(autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
-(autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
-;;(autoload 'org-babel "org-babel" "Interact with programming languages in `org-mode'." t)
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
-(autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
-(autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
-(require 'org-exp-bibtex) ;; TODO: change to `autoload'
 (require 'org-bbdb) ;; TODO: change to `autoload'
-(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
-;;(require 'org-beamer) ;; TODO: change to `autoload'
 
-;; WARNING: this is becoming hideous!!!1
-;; TODO: clean this up!
-(setq org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
-      org-return-follows-link t ;; NOTE: use RETURN to follow links
-      org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
-      org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
+(setq org-return-follows-link t ;; NOTE: use RETURN to follow links
+      org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
+      org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
+      org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
       ;; org-read-date-display-live nil ;; NOTE: disable the live date-display
       ;; org-insert-mode-line-in-empty-file t
+      ;; --- appearance ---
       ;; org-indent-mode t ;; NOTE: enable org indent mode
       ;; org-indent-indentation-per-level 2 ;; NOTE: two indents per level
       ;; org-startup-indented t ;; NOTE: indent text in org documents (WARNING: can crash emacs)
@@ -35,64 +22,56 @@
       ;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
       ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
       ;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
+      org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
+      ;; --- `org-log' ---
+      org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
+      org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
+      ;; --- scheduling ---
       org-deadline-warning-days 7
       org-timeline-show-empty-dates t
-      org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
-      org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
-      org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
-      org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
-      org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
-      org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
       org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
+      org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
+      ;; --- notes ---
       org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
       org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
+      ;; --- `org-archive' ---
+      org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
       ;; --- `org-refile' ---
       org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
       org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
-      org-refile-allow-creating-parent-nodes 'confirm ;; NOTE: allow refile to create parent tasks with confirmation
-      ;; --- `org-export' ---
-      org-export-latex-default-class "paper"
-      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
-      org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
-      org-export-with-todo-keywords nil ;; NOTE: turn off `org-mode' exporting of TODO keywords
-      ;; --- `org-agenda' ---
-      ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+      org-refile-allow-creating-parent-nodes 'confirm) ;; NOTE: allow refile to create parent tasks with confirmation
+
+;;; COMMENT: `org-agenda'
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
+(setq ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
       org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
       org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
-      org-agenda-span 'month ;; NOTE: show a month of agendas
-      ;; org-modules '(org-modules '(org-bbdb ;; ERROR: for some reason, this does not work
-      ;; 				  org-bibtex
-      ;; 				  org-crypt
-      ;; 				  org-docview
-      ;; 				  org-gnus
-      ;; 				  org-info
-      ;; 				  org-jsinfo
-      ;; 				  org-irc
-      ;; 				  org-mew
-      ;; 				  org-mhe
-      ;; 				  org-rmail
-      ;; 				  org-vm
-      ;; 				  org-wl
-      ;; 				  org-w3m))
-      )
+      org-agenda-span 'month) ;; NOTE: show a month of agendas
 
-;; COMMENT: `org-capture' and `org-agenda' commands
-;; WARNING: don't hard-code the file paths
-;; NOTE: should probably just add the entire `/organisation/' directory (???)
-(setq org-agenda-files `(;;,(expand-file-name user-org-notes-file)
-			 ,(expand-file-name user-org-university-file)
-			 ,(expand-file-name user-org-projects-file) ;; ...
-			 ,(concat (expand-file-name user-organisation-directory) "journal.org") ;; TODO: make this the main file
+(setq org-agenda-files `(,(expand-file-name user-org-university-file)
+                         ,(expand-file-name user-org-notes-file) ;; IMPORTANT: this is "journal.org" 
+			 ,(expand-file-name user-org-projects-file)
+			 ,(concat (expand-file-name user-organisation-directory) "home.org")
 			 ,(concat (expand-file-name user-organisation-directory) "contacts.org")
-			 ,(concat user-organisation-directory "home.org")
 			 ,(concat (expand-file-name user-organisation-directory) "birthday.org")
 			 ,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
 			 ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
 			 ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
 			 ))
 
-;; TODO: re-order
-;; TODO: add new tags
+;;; COMMENT: `org-export'
+;; SOURCE: `http://orgmode.org/manual/Exporting.html'
+(setq org-export-latex-default-class "paper"
+      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
+      org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
+      org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
+      org-export-with-todo-keywords nil) ;; NOTE: turn off `org-mode' exporting of TODO keywords
+
+;;; COMMENT: `org-capture'
+;; SOURCE: `http://orgmode.org/manual/Capture.html'
+;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
+(autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
+;; TODO: re-order AND add new tags
 (setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
       '(("ASSIGNMENT"       . ?a)
 	("BOOKMARK"         . ?b)
@@ -281,12 +260,15 @@
 
 ;;; COMMENT: `org-babel'
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
+(autoload 'org-babel-load-file "org-babel" "Interact with programming languages in `org-mode'." t)
+(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
+
 (org-babel-do-load-languages 'org-babel-load-languages
 			     '((emacs-lisp . t)
 			       ;;(common-lisp . t)
 			       (scheme . t)
 			       (haskell . t)
-			       (latex . t) ;; NOTE: this is the entry to activate LaTeX
+			       (latex . t)
 			       (R . nil)
 			       (gnuplot . nil)
 			       (perl . nil)
@@ -296,13 +278,16 @@
 			       (sh . nil)))
 
 (setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
-      org-src-fontify-natively t ;; NOTE: fontify source code
+      org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
       org-src-tab-acts-natively t ;; NOTE: tab works properly
-      org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
       )
 
 ;;; COMMENT: `org-latex-export'
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
+(autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
+(autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
+(require 'org-exp-bibtex) ;; TODO: change to `autoload'
+
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
 
@@ -388,6 +373,8 @@
 
 ;;; COMMENT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
+(autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
+
 (add-to-list 'org-entities-user '("neg"            "\\neg" t "&not;" "[negation]" nil "¬"))
 ;;(add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "↔"))
 (add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "\leftrightarrow"))
@@ -433,6 +420,11 @@
 
 ;; COMMENT: `org-mode' custom file templates
 (defvar org-template-list (list "beamer" "paper" "assignment") "List of custom template types.")
+
+;;; COMMENT: `org-beamer'
+;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html'
+;; SOURCE: `http://orgmode.org/manual/Beamer-class-export.html'
+(require 'org-beamer) ;; TODO: change to `autoload'
 
 (defvar org-beamer-themes-list (list "Atnibes"
 				     "Bergen"
@@ -747,6 +739,8 @@
 
 ;; TODO: add `org-toggle-iimage-in-org' to an `org-hook' function
 
+;;; COMMENT: `org-link'
+;; SOURCE: http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html
 (org-add-link-type "ebib" 'ebib)
 
 ;; TODO: add more citation types to ebib
@@ -755,7 +749,8 @@
 		     (cond ((eq format 'latex)
 			    (format "\\cite{%s}" path)))))
 
-;;; COMMENT: ...
-;; TODO: investigate `org-link-abbrev-alist'
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
+(setq org-link-abbrev-alist
+       '(("google"   . "http://www.google.com/search?q=")))
 
 (provide 'org-config)
