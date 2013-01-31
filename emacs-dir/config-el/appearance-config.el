@@ -4,26 +4,33 @@
 ;;; COMMENT: appearance
 ;; SOURCE: `http://emacswiki.org/emacs/ColorTheme'
 ;; SOURCE: `http://color-theme-select.heroku.com/'
+;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
 (autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
+(autoload 'powerline-default-theme "powerline" "" t)
+
 (eval-after-load "color-theme"
   (progn
-    (setq color-theme-is-global t)
     (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
-    (setq frame-title-format "%b" ;; NOTE: set frame title properties
+    (setq color-theme-is-global t ;; ...
+          frame-title-format "%b" ;; NOTE: set frame title properties
           icon-title-format "%b")))
 
-;; COMMENT: X server specific
+;; COMMENT: X server specific (apply `powerline' mode-line extension)
 (when (display-graphic-p)
-  (color-theme-initialize))
+  (color-theme-initialize)
+  ;; (powerline-default-theme)
+  )
 
 ;; COMMENT: apply colour theme to a GNU Emacs frame (i.e. `emacsclient')
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
 (defun decorate-frame (frame)
-  "Decorate new frame FRAME with `zenburn' colour theme and `powerline'."
+  "Decorate new frame FRAME with `zenburn' colour theme."
   (select-frame frame)
   (when (display-graphic-p)
     (color-theme-initialize)
-    (color-theme-zenburn)))
+    (color-theme-scintilla)
+    ;; (color-theme-zenburn)
+    (powerline-default-theme)))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 
@@ -45,7 +52,8 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/line-num.el'
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file ;; WARNING: this does not like `doc-view-mode'
+;; ;; WARNING: this does not like `doc-view-mode'
+;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file
 
 ;;; COMMENT: ruler mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/RulerMode'
@@ -77,22 +85,18 @@
 ;;; COMMENT: mode line
 ;;(setq mode-line-format nil) ;; NOTE: removes the mode-line
 
-;;; COMMENT: powerline
-;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
-(require 'powerline)
-
-(powerline-default-theme)
-
 ;; SOURCE: `http://www.emacswiki.org/emacs/ModeLineConfiguration'
 (setq line-number-mode 1 ;; NOTE: turn on line numbers in the mode line
       column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
-      ;;size-indication-mode t ;; NOTE: show file size in mode line
+      size-indication-mode -1 ;; NOTE: do not show file size in mode line
       )
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
 ;; (display-time-mode t) ;; NOTE: display time status in the mode line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
+;;(require 'battery
+
 ;; (display-battery-mode t) ;; NOTE: display battery status in the mode line
 
 ;; (setq battery-echo-area-format "Power %L, battery %B (%p%% load, remaining time %t)"
