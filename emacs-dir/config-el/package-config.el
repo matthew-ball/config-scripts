@@ -5,7 +5,8 @@
 
 ;;; COMMENT: emacs package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
-(autoload 'list-package "package" "GNU Emacs lisp package management." t)
+;;(autoload 'package-installed-p "package" "GNU Emacs lisp package management." t)
+(require 'package)
 
 ;; NOTE: set download repositories
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
@@ -15,27 +16,28 @@
 
 (defvar list-packages nil "Packages to be installed through ELPA.")
 
-(setq list-packages (list 'bbdb
-                          'color-theme
-                          'deft
-                          'diminish
-                          'ebib
-                          'emms
-                          'fill-column-indicator
-                          'gh
-                          'gist
-                          'haskell-mode
-                          'ido-ubiquitous
-                          'logito
-                          'magit
-                          'paredit
-                          'pcache
-                          'smex
-                          'thesaurus
-                          'undo-tree
-                          'wget
-                          'zenburn))
+(setq list-packages '(bbdb
+                      color-theme
+		      deft
+		      diminish
+		      ebib
+		      emms
+		      fill-column-indicator
+		      gh
+		      gist
+		      haskell-mode
+		      ido-ubiquitous
+		      logito
+		      magit
+		      paredit
+		      pcache
+		      smex
+		      thesaurus
+		      undo-tree
+		      wget
+		      zenburn))
 
+;; ERROR: somethng funny in this function
 (defun emacs-custom-elpa-package-install (&rest junk)
   "Install all custom configuration packages from ELPA.
 
@@ -44,7 +46,7 @@ NOTE: This function only needs to be called the first time GNU Emacs is run unde
   (dolist (package list-packages)
     (when (not (package-installed-p package))
       (message "[ELPA] installing package %s" (symbol-name package))
-      ;; (package-install package)
+      ;;(package-install package)
       )))
 
 (defun run-initial-setup (&rest junk) ;; FIX: debugging /appears/ to give desired outputs though (???)

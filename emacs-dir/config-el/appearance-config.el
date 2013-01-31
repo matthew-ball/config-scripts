@@ -3,26 +3,27 @@
 
 ;;; COMMENT: appearance
 ;; SOURCE: `http://emacswiki.org/emacs/ColorTheme'
-;; (autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
-;; (autoload 'zenburn "zenburn" "The `zenburn' colour theme for GNU Emacs." t)
+;; SOURCE: `http://color-theme-select.heroku.com/'
+(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
+(eval-after-load "color-theme"
+  (progn
+    (setq color-theme-is-global t)
+    (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
+    (setq frame-title-format "%b" ;; NOTE: set frame title properties
+          icon-title-format "%b")))
 
 ;; COMMENT: X server specific
 (when (display-graphic-p)
-  (set-face-attribute 'default nil :height 80)
-  (setq frame-title-format "%b"
-        icon-title-format "%b"))
+  (color-theme-initialize))
 
 ;; COMMENT: apply colour theme to a GNU Emacs frame (i.e. `emacsclient')
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
 (defun decorate-frame (frame)
-  "Decorate new frame FRAME with `zenburn' colour theme."
+  "Decorate new frame FRAME with `zenburn' colour theme and `powerline'."
   (select-frame frame)
-  ;; (let ((colour-theme-is-global nil))
-  ;;   (color-theme-zenburn)) ;; NOTE: apply `zenburn' colour theme.
-  (when (display-graphic-p) ;; NOTE: if X server, reduce font-size slightly
-    (set-face-attribute 'default nil :height 80)
-    (setq frame-title-format "%b"
-          icon-title-format "%b")))
+  (when (display-graphic-p)
+    (color-theme-initialize)
+    (color-theme-zenburn)))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 
@@ -52,6 +53,18 @@
 
 ;; (add-hook 'find-file-hook (lambda () (ruler-mode 1))) ;; NOTE: turn on ruler-mode if in a file
 
+;;; COMMENT: mode-line directory tracking
+;; SOURCE: `http://www.emacswiki.org/emacs/ModeLineDirtrack'
+;; (defun add-mode-line-dirtrack ()
+;;   "..."
+;;   (add-to-list
+;;    'mode-line-buffer-identification
+;;    '(:propertize (" " default-directory " ") face dired-directory)))
+
+;; NOTE: add the above function to the appropriate mode-hook to enable it for that mode
+;;       i imagine something like (setq-default global-dirtrack-mode t) would allow it to be turned on for all modes
+;; (add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
+
 ;;; COMMENT: indicate empty lines
 ;; (toggle-indicate-empty-lines)
 
@@ -64,10 +77,17 @@
 ;;; COMMENT: mode line
 ;;(setq mode-line-format nil) ;; NOTE: removes the mode-line
 
+;;; COMMENT: powerline
+;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
+(require 'powerline)
+
+(powerline-default-theme)
+
 ;; SOURCE: `http://www.emacswiki.org/emacs/ModeLineConfiguration'
 (setq line-number-mode 1 ;; NOTE: turn on line numbers in the mode line
       column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
-      size-indication-mode t) ;; NOTE: show file size in mode line
+      ;;size-indication-mode t ;; NOTE: show file size in mode line
+      )
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
 ;; (display-time-mode t) ;; NOTE: display time status in the mode line
