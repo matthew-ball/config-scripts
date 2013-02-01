@@ -6,7 +6,7 @@
 ;; SOURCE: `http://color-theme-select.heroku.com/'
 ;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
 (autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
-(autoload 'powerline-default-theme "powerline" "" t)
+(autoload 'powerline-default-theme "powerline" "" t) ;; WARNING: `powerline' doesn't respect ERC colours
 
 (eval-after-load "color-theme"
   (progn
@@ -28,9 +28,11 @@
   (select-frame frame)
   (when (display-graphic-p)
     (color-theme-initialize)
-    (color-theme-scintilla)
+    ;; (color-theme-scintilla)
     ;; (color-theme-zenburn)
-    (powerline-default-theme)))
+    ;; (load-theme 'whiteboard)
+    ;; (powerline-default-theme)
+    ))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 
