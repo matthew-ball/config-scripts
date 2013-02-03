@@ -6,7 +6,7 @@
 ;; SOURCE: `http://color-theme-select.heroku.com/'
 ;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
 (autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
-(autoload 'powerline-default-theme "powerline" "" t) ;; WARNING: `powerline' doesn't respect ERC colours
+;;(autoload 'powerline-default-theme "powerline" "" t) ;; WARNING: `powerline' doesn't respect ERC colours
 
 (eval-after-load "color-theme"
   (progn
@@ -30,7 +30,7 @@
     (color-theme-initialize)
     ;; (color-theme-scintilla)
     ;; (color-theme-zenburn)
-    ;; (load-theme 'whiteboard)
+    (load-theme 'whiteboard)
     ;; (powerline-default-theme)
     ))
 
@@ -54,7 +54,7 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/line-num.el'
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-;; ;; WARNING: this does not like `doc-view-mode'
+;; WARNING: this does not like `doc-view-mode'
 ;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file
 
 ;;; COMMENT: ruler mode
@@ -88,9 +88,9 @@
 ;;(setq mode-line-format nil) ;; NOTE: removes the mode-line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ModeLineConfiguration'
-(setq line-number-mode 1 ;; NOTE: turn on line numbers in the mode line
-      column-number-mode 1 ;; NOTE: turn on column numbers in the mode line
-      size-indication-mode -1 ;; NOTE: do not show file size in mode line
+(setq line-number-mode t ;; NOTE: turn on line numbers in the mode line
+      column-number-mode t ;; NOTE: turn on column numbers in the mode line
+      size-indication-mode nil ;; NOTE: do not show file size in mode line
       )
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
@@ -143,7 +143,7 @@
 
 ;; TODO: create key-bindings to jump around changes.
 
-;;; COMMENT: code folding
+;;; COMMENT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
 (autoload 'hs-minor-mode "hideshow" "Fold code with GNU Emacs." t)
 

@@ -1,15 +1,13 @@
 ;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/package-config.el
 ;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
-;; TODO: this needs a complete rehaul
-
 ;;; COMMENT: emacs package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
 ;;(autoload 'package-installed-p "package" "GNU Emacs lisp package management." t)
 (require 'package)
 
 ;; NOTE: set download repositories
-(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
+(setq package-archives '(;; ("elpa" . "http://tromey.com/elpa/") ;; NOTE: being phased out as of 2012-07-03
 			 ("melpa" . "http://melpa.milkbox.net/packages/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")))
@@ -59,6 +57,7 @@ NOTE: This function only needs to be called the first time GNU Emacs is run unde
   (emacs-custom-elpa-package-install)) ;; NOTE: ... else ... install custom packages
 
 ;;; COMMENT: system package manager
+;; NOTE: the following is *probably* useless
 (autoload 'apt "apt" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
 ;; (autoload 'arch "arch" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
 

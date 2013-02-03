@@ -32,6 +32,8 @@
   (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
 
 ;;; COMMENT: global key-bindings
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html'
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/emacs/Key-Bindings.html'
 ;; ---
 ;; (global-set-key (kbd "<f1>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "M-<f1>") 'function) ;; NOTE: ...

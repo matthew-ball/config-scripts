@@ -77,7 +77,6 @@
       echo-keystrokes 0.1 ;; NOTE: see what you are typing
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings
 
-
 ;;; COMMENT: default major mode
 ;; (setq default-major-mode
 ;;       (lambda ()
@@ -340,7 +339,8 @@
 	      (mode . calc-mode)
 	      (mode . calc-trail-mode)
 	      (mode . maxima-mode)
-	      (mode . inferior-maxima-mode)))
+	      (mode . inferior-maxima-mode)
+              (name . "^\\*ESS\\*$")))
 	 ("Mail and News" ;; NOTE: mail (and news) related buffers
 	  (or ;;(newsticker-treeview-mode)
 	      ;;(newsticker-plainview-mode)

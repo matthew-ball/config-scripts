@@ -579,10 +579,14 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; COMMENT: deft
 ;; SOURCE: `http://jblevins.org/projects/deft/'
-(require 'deft)
+(autoload 'deft "deft" "Note taking with deft." t)
 
 (setq deft-extension "org"
       deft-text-mode 'org-mode
       deft-directory "/home/chu/Documents/Organisation/.deft/")
+
+;;; COMMENT: emacs speaks statistics
+;; SOURCE: `http://ess.r-project.org/'
+;;(autoload 'ess-mode "ess-mode" "Emacs Speaks Statistics." t)
 
 (provide 'user-config)

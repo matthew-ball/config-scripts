@@ -122,6 +122,7 @@ NOTE: This function depends on the multi-occur function `show-custom-structure'.
   (interactive)
   (insert (concat (make-string 2 (aref comment-start 0)) " FILE: " (buffer-file-name) "\n"
 		  (concat (make-string 2 (aref comment-start 0)) " AUTHOR: " (user-full-name)
+                          " [" user-primary-email-address "]"
 			  " (copyleft " (substring (shell-command-to-string "date +\"%Y\"") 0 4) ")\n")
 		  ;;(concat (make-string 2 (aref comment-start 0)) " TIME: " (format-time-string "%c") "\n")
 		  )))

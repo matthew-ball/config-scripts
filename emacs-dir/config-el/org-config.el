@@ -662,7 +662,6 @@
   (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
 
 ;; SOURCE: `org-bibtex.el'
-
 (defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
   "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
   (if (file-exists-p dir-name)
