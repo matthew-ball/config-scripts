@@ -4,9 +4,9 @@
 ;;; COMMENT: org-mode
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
 ;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
-(autoload 'org-install "org-exp" "Organise tasks with `org-mode'." t)
-(autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with `org-mode'." t)
-(require 'org-bbdb) ;; TODO: change to `autoload'
+(autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
+(autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
+(autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
 
 (setq org-return-follows-link t ;; NOTE: use RETURN to follow links
       org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
@@ -41,9 +41,9 @@
       org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
       org-refile-allow-creating-parent-nodes 'confirm) ;; NOTE: allow refile to create parent tasks with confirmation
 
-;;; COMMENT: `org-agenda'
+;;; COMMENT: org-agenda
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
-(setq ;; org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+(setq org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
       org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
       org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
       org-agenda-span 'month) ;; NOTE: show a month of agendas
@@ -58,39 +58,6 @@
 			 ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
 			 ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
 			 ))
-
-;;; COMMENT: `org-export'
-;; SOURCE: `http://orgmode.org/manual/Exporting.html'
-(setq org-export-latex-default-class "paper"
-      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
-      org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
-      org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
-      org-export-with-todo-keywords nil) ;; NOTE: turn off `org-mode' exporting of TODO keywords
-
-;;; COMMENT: `org-capture'
-;; SOURCE: `http://orgmode.org/manual/Capture.html'
-;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
-(autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
-;; TODO: re-order AND add new tags
-(setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
-      '(("ASSIGNMENT"       . ?a)
-	("BOOKMARK"         . ?b)
-	("COMPUTER SCIENCE" . ?c)
-	("GENERAL"          . ?g)
-	("HOLIDAY"          . ?h)
-	;; ("IDEAS"            . ?i)
-	("JOURNAL"          . ?j)
-	("NOTES"            . ?n)
-	("MATHEMATICS"      . ?m)
-	("PROJECT"          . ?p)
-	("PROGRAMMING"      . ?P)
-	("READING"          . ?r)
-	("PHILOSOPHY"       . ?s)
-	("TRAVEL"           . ?t)
-	("WRITING"          . ?T)
-	("UNIVERSITY"       . ?u)
-	("WEBSITE"          . ?w)
-      )) ;; NOTE: tags for `org-set-tags'
 
 ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
 (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
@@ -134,73 +101,63 @@
 	 "READING") ;; NOTE: `READING' tasks
 	))
 
-;;; COMMENT: capture templates
-;; WARNING: do not use 'C' or 'q' characters for binding
-(setq org-capture-templates  ;; NOTE: templates for `org-capture'
-      '(("a" "Assignment"    ;; NOTE: `assignment' capture
-	 plain (file+function (expand-file-name user-org-university-file) course-code)
-	 "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	("A" "Anniversary"   ;; NOTE: `anniversary' capture
-	 entry (file+headline (concat (expand-file-name user-organisation-directory) "birthday.org") "Birthdays")
-	 "** %^{Name} %?%^G\n%^{Birthday}t\n" :empty-lines 1 :immediate-finish 1)
-	("b" "Purchase"      ;; NOTE: `purchase' capture
-	 table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Purchase")
-	 "| %c | %i | %^{Price} |" :immediate-finish 1) ;; NOTE: capture from `Conkeror'
-	("f" "File"          ;; NOTE: `file-bookmark' capture
-	 table-line (file+headline (concat (expand-file-name user-organisation-directory) "bookmarks.org") "File Bookmarks")
-	 "| [[file:%(if (not (buffer-file-name (get-buffer (car buffer-name-history)))) (dir-path) (file-path))][%(car buffer-name-history)]] |" :immediate-finish 1)
-	("g" "General"       ;; NOTE: `general' capture (is a `project')
-	 entry (file+headline (expand-file-name user-org-notes-file) "General")
-	 "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	("j" "Journal"       ;; NOTE: `journal' capture
-	 entry (file+datetree (expand-file-name user-org-notes-file))
-	 "* %?\nEntered on %U\n  %i\n  %a")
-	("k" "Internet"      ;; NOTE: `internet-bookmark' capture
-	 table-line (file+headline (concat (expand-file-name user-organisation-directory) "bookmarks.org") "Internet Bookmarks")
-	 "| %c |" :immediate-finish 1) ;; TODO: this *is* `website' capture, right?
-	("n" "Note"          ;; NOTE: `note' capture
-	 entry (file+headline (expand-file-name user-org-notes-file) "Notes")
-	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	("p" "Paper to Read" ;; NOTE: `paper-read' capture
-	 table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Reading")
-	 "| %^{Title} | %^{Author} | %^{Year} | %^{Journal} |" :immediate-finish 1)
-	;; ("P" "Project"       ;; NOTE: `project' capture (is a `project')
-	;;  entry (file+headline (expand-file-name user-org-projects-file) "Projects")
-	;;  "** TODO %^{Title} %?%^g\n SCHEDULE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	("P" "Project"
-	 plain (file+function (expand-file-name user-org-projects-file) project-capture)
-	 "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)  ;; FIX: update the `Project' capture
-	("r" "Book to Read"  ;; NOTE: `book-read' capture
-	 table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Reading")
-	 "| %^{Title} | %^{Author} | %^{Year} | N/A |" :immediate-finish 1)
-	("t" "Travel"        ;; NOTE: `travel' capture (is a `project') ;; COMMENT: finish
-	 entry (file+headline (expand-file-name user-org-projects-file) "Travel")
-	 "*** TODO %^{Title} %?%^g\n - FROM: %^T\n - UNTIL: %^T\n" :empty-lines 1 :immediate-finish 1)
-	("u" "University"    ;; NOTE: `university' capture
-	 entry (file+headline (expand-file-name user-org-university-file) "University")
+;;; COMMENT: org-export
+;; SOURCE: `http://orgmode.org/manual/Exporting.html'
+(setq org-export-latex-default-class "paper"
+      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
+      org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
+      org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
+      org-export-with-todo-keywords nil) ;; NOTE: turn off `org-mode' exporting of TODO keywords
+
+;;; COMMENT: org-capture
+;; SOURCE: `http://orgmode.org/manual/Capture.html'
+;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
+(autoload 'org-capture "org-capture" "..." t)
+(autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
+
+;; TODO: re-order AND add new tags
+(setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
+      '(("ASSIGNMENT"       . ?a)
+	("BOOKMARK"         . ?b)
+	("COMPUTER SCIENCE" . ?c)
+	("GENERAL"          . ?g)
+	("HOLIDAY"          . ?h)
+        ("LIBRARY"          . ?l)
+	;; ("IDEAS"            . ?i)
+	("JOURNAL"          . ?j)
+	("NOTES"            . ?n)
+	("MATHEMATICS"      . ?m)
+	("PROJECT"          . ?p)
+	("PROGRAMMING"      . ?P)
+	("READING"          . ?r)
+	("PHILOSOPHY"       . ?s)
+	("TRAVEL"           . ?t)
+	("WRITING"          . ?T)
+	("UNIVERSITY"       . ?u)
+	("WEBSITE"          . ?w)))
+
+;;; COMMENT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
+(setq org-capture-templates
+      '(("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
+         "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
+        ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
 	 "%(add-course)" :empty-lines 1 :immediate-finish 1)
-	("w" "Writing"       ;; NOTE: `writing' capture (is a `project') ;; COMMENT: finish
-	 entry (file+headline (concat (expand-file-name user-writing-directory) "writings.org") "Writing")
-	 "** TODO %^{Title} %?%^g" :empty-lines 1 :immediate-finish 1)))
+        ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
+         "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+        ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
+         "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
+        ("J" "Journal" entry (file+datetree (expand-file-name user-org-notes-file))
+         "* %?\n Entered on %U\n  %i\n  %a")
+        ("N" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
+	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+        ("P" "Projects" plain (file+function (expand-file-name user-org-projects-file) project-capture)
+         "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)
+        ("R" "Reading" entry (file+headline (expand-file-name user-org-projects-file) "Reading"))
+        ("W" "Writing" entry (file+headline (expand-file-name user-org-projects-file) "Writing"))
+        ;; TODO: need to write `reading-capture' and `writing-capture' functions
+        ))
 
-;; COMMENT: older capture ideas
-;; ("T" "test"
-;;  plain (file+function (expand-file-name user-org-projects-file) project-capture)
-;;  "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1) ;; NOTE: No more.
-;; ("w" "Website"    ;; NOTE: `website' capture
-;;  table-line (file+headline (concat (expand-file-name user-reading-directory) "readings.org") "Websites")
-;;  "| [[%^{Link}][%^{Title}]] |" :immediate-finish 1) ;; NOTE: this is redundant
-
-;;; COMMENT: project capture
-;; NOTE: this is probably not the best way of doing this
-(defvar project-options-alist nil "List of available project types.")
-
-(add-to-list 'project-options-alist "Travel")
-;;(add-to-list 'project-options-alist "Ideas")
-(add-to-list 'project-options-alist "Programming")
-(add-to-list 'project-options-alist "Writing")
-(add-to-list 'project-options-alist "General")
-
+;;; COMMENT: custom capture functions
 (defun search-for-heading (file heading prefix &rest junk)
   "Search for an `org-heading' HEADING in an FILE."
   (switch-to-buffer file)
@@ -211,6 +168,32 @@
       (end-of-line)
       ;;(insert "\n")
       )))
+
+;;; COMMENT: reading capture
+(defvar reading-material-types (list "Paper" "Book" "Web-site") "List of reading material.")
+
+(defun reading-capture (&rest junk)
+  "Capture a reading task, through one of its variants."
+  (let ((reading-type (ido-completing-read "Material Type: " reading-material-types))
+  	;;(project-str "")
+	)
+    (search-for-heading "projects.org" reading-type "** ")))
+
+;;; COMMENT: writing capture
+(defvar writing-types (list "Paper" "Book") "List of writing material.")
+
+(defun writing-capture (&rest junk)
+  "...")
+
+;;; COMMENT: project capture
+;; NOTE: this is probably not the best way of doing this
+(defvar project-options-alist nil "List of available project types.")
+
+(add-to-list 'project-options-alist "Travel")
+;;(add-to-list 'project-options-alist "Ideas")
+(add-to-list 'project-options-alist "Programming")
+(add-to-list 'project-options-alist "Writing")
+(add-to-list 'project-options-alist "General")
 
 ;; TODO: write some way of "counting" the stars (something like `depth')
 (defun project-capture (&rest junk)
@@ -258,10 +241,10 @@
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
-;;; COMMENT: `org-babel'
+;;; COMMENT: org-babel
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (autoload 'org-babel-load-file "org-babel" "Interact with programming languages in `org-mode'." t)
-(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
+;;(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
 
 (org-babel-do-load-languages 'org-babel-load-languages
 			     '((emacs-lisp . t)
@@ -282,11 +265,11 @@
       org-src-tab-acts-natively t ;; NOTE: tab works properly
       )
 
-;;; COMMENT: `org-latex-export'
+;;; COMMENT: org-latex-export
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
-(require 'org-exp-bibtex) ;; TODO: change to `autoload'
+(require 'org-exp-bibtex) ;; TODO: change to an autoload
 
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
@@ -421,10 +404,10 @@
 ;; COMMENT: `org-mode' custom file templates
 (defvar org-template-list (list "beamer" "paper" "assignment") "List of custom template types.")
 
-;;; COMMENT: `org-beamer'
+;;; COMMENT: org-beamer
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html'
 ;; SOURCE: `http://orgmode.org/manual/Beamer-class-export.html'
-(require 'org-beamer) ;; TODO: change to `autoload'
+(autoload 'org-beamer "org-beamer" "Presentations with org-beamer." t)
 
 (defvar org-beamer-themes-list (list "Atnibes"
 				     "Bergen"

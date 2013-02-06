@@ -17,7 +17,7 @@
 
 ;; COMMENT: X server specific (apply `powerline' mode-line extension)
 (when (display-graphic-p)
-  (color-theme-initialize)
+  ;; (color-theme-initialize)
   ;; (powerline-default-theme)
   )
 
@@ -27,7 +27,7 @@
   "Decorate new frame FRAME with `zenburn' colour theme."
   (select-frame frame)
   (when (display-graphic-p)
-    (color-theme-initialize)
+    ;; (color-theme-initialize)
     ;; (color-theme-scintilla)
     ;; (color-theme-zenburn)
     (load-theme 'whiteboard)
@@ -90,8 +90,7 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/ModeLineConfiguration'
 (setq line-number-mode t ;; NOTE: turn on line numbers in the mode line
       column-number-mode t ;; NOTE: turn on column numbers in the mode line
-      size-indication-mode nil ;; NOTE: do not show file size in mode line
-      )
+      size-indication-mode nil) ;; NOTE: do not show file size in mode line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
 ;; (display-time-mode t) ;; NOTE: display time status in the mode line
@@ -179,7 +178,7 @@
 ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
 ;; (add-hook 'shell-script-mode    'hs-minor-mode)
 ;; (add-hook 'haskell-mode-hook    'hs-minor-mode)
-(add-hook 'latex-mode-hook 'hs-minor-mode)
+(eval-after-load "hideshow" '(add-hook 'latex-mode-hook 'hs-minor-mode))
 
 (defun display-code-line-counts (ov)
   (when (eq 'code (overlay-get ov 'hs))
@@ -192,7 +191,7 @@
 
 ;;; COMMENT: diminish
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
-(require 'diminish) ;; NOTE: turn off the textual mode indicator in the mode line
+(autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
 
 (eval-after-load "flyspell" '(diminish 'flyspell-mode ""))
 (eval-after-load "flymake" '(diminish 'flymake-mode ""))

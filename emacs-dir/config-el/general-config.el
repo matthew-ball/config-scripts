@@ -3,33 +3,34 @@
 
 ;;; COMMENT: user variables
 ;; NOTE: user directories
-(defvar user-shell (getenv "SHELL") "The user's $SHELL environment variable.")
-(defvar user-browser (getenv "BROWSER") "The user's $BROWSER environment variable.")
-(defvar user-home-directory (getenv "HOME") "The user's $HOME environment variable.")
-(defvar user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts.")
-(defvar user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents.")
-(defvar user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news.")
-(defvar user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail.")
-(defvar user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music.")
-(defvar user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos.")
-(defvar user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files.")
-(defvar user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects.")
-(defvar user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material.")
-(defvar user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material.")
-(defvar user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files.")
-(defvar user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files.")
+(defcustom user-shell (getenv "SHELL") "The user's $SHELL environment variable.")
+(defcustom user-browser (getenv "BROWSER") "The user's $BROWSER environment variable.")
+(defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable.")
+(defcustom user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts.")
+(defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents.")
+(defcustom user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news.")
+(defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail.")
+(defcustom user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music.")
+(defcustom user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos.")
+(defcustom user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files.")
+(defcustom user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects.")
+(defcustom user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material.")
+(defcustom user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material.")
+(defcustom user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files.")
+(defcustom user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files.")
 
 ;; NOTE: user files
-(defvar user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation.")
-(defvar user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation.")
-(defvar user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation.")
-(defvar user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation.")
+(defcustom user-org-contacts-file (format "%s/contacts.org" user-organisation-directory) "File for user's contacts.")
+(defcustom user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation.")
+(defcustom user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation.")
+(defcustom user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation.")
+(defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation.")
 
 ;; NOTE: user details
 (setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
-(defvar user-university-id "u4537508" "University ID for the user.")
-(defvar user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user.")
-(defvar user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user.")
+(defcustom user-university-id "u4537508" "University ID for the user.")
+(defcustom user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user.")
+(defcustom user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user.")
 
 ;;; COMMENT: user functions
 (defun eval-and-replace (&rest junk)
@@ -43,18 +44,18 @@
            (insert (current-kill 0)))))
 
 ;; TODO: this works, but as I no longer have my whole dot emacs file in a single location, it serves no purpose
-(defun switch-to-dot-emacs (&rest junk)
-  "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
-  (interactive)
-  ;; (config files)
-  (if (equal (buffer-name) "init.el")
-      (eval-buffer) ;; evaluate the current buffer
-    (find-file (concat (expand-file-name user-emacs-directory) "init.el")))) ;; switch to the init.el file
+;; (defun switch-to-dot-emacs (&rest junk)
+;;   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
+;;   (interactive)
+;;   ;; (config files)
+;;   (if (equal (buffer-name) "init.el")
+;;       (eval-buffer) ;; evaluate the current buffer
+;;     (find-file (concat (expand-file-name user-emacs-directory) "init.el")))) ;; switch to the init.el file
 
 ;;; COMMENT: initial minibuffer message
-(defun display-startup-echo-area-message (&rest junk)
-  "Clear the message buffer initially."
-  (message ""))
+;; (defun display-startup-echo-area-message (&rest junk)
+;;   "Clear the message buffer initially."
+;;   (message ""))
 
 ;;; COMMENT: default variable values
 (setq inhibit-startup-message t ;; NOTE: turn off startup message
@@ -65,7 +66,7 @@
       completion-ignore-case t ;; NOTE: ignore case in auto-completing text
       read-file-name-completion-ignore-case t ;; NOTE: ignore cases in filenames
       auto-compression-mode 1 ;; NOTE: automatically parse an archive
-      message-log-max 2000 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
+      message-log-max 200 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
       show-trailing-whitespace 1 ;; NOTE: show trailing whitespace
       scroll-margin 0 ;; NOTE: use smooth scrolling
       scroll-conservatively 100000 ;; NOTE: ... the defaults
@@ -120,7 +121,8 @@
 
 ;;; COMMENT: uniquify (unique buffer names)
 ;; SOURCE: `http://emacswiki.org/emacs/uniquify'
-(require 'uniquify)
+(require 'uniquify) ;; TODO: change this to an autoload
+
 (setq uniquify-buffer-name-style 'reverse
       uniquify-separator "/"
       uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified
@@ -128,8 +130,8 @@
 
 ;;; COMMENT: ido mode
 ;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
-(require 'ido)
-(require 'ido-ubiquitous)
+(require 'ido) ;; TODO: change this to an autoload
+(require 'ido-ubiquitous) ;; TODO: change this to an autoload
 
 (ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
 (ido-ubiquitous-mode t)
@@ -209,25 +211,21 @@
 
 ;;; COMMENT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
-;;(autoload 'smex "smex" "Super-charge `ido-mode'." t)
-(require 'smex)
+(autoload 'smex "smex" "Super-charge ido-mode." t)
 
 (setq smex-save-file (concat user-emacs-directory "smex-items")
       smex-key-advice-ignore-menu-bar t)
 
-(smex-initialize) ;; NOTE: super-charge `ido-mode'
+(eval-after-load "smex" '(smex-initialize)) ;; NOTE: super-charge `ido-mode'
 
 ;;; COMMENT: find file at point
 ;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
-(require 'ffap)
+(autoload 'find-file-at-point "ffap" "" t)
 
 ;;; COMMENT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
-;; (autoload 'ibuffer "ibuffer" "Interactive buffers for GNU Emacs." t)
-;; (eval-after-load "ibuffer" '(require 'ibuf-ext))
-
-(require 'ibuffer)
-(require 'ibuf-ext)
+(require 'ibuffer) ;; TODO: change this to an autoload
+(require 'ibuf-ext) ;; TODO: change this to an autoload
 
 ;; NOTE: neither of the following works
 (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
@@ -458,6 +456,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 ;;; COMMENT: enable/disable functions
 (put 'overwrite-mode 'disabled t) ;; NOTE: disable `overwrite-mode'
+(put 'dired-find-alternate-file 'disabled nil) ;; NOTE: enable re-use of dired buffers
 
 ;;; COMMENT: mini-buffer
 (file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
@@ -493,6 +492,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;;; COMMENT: tramp
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
 (autoload 'tramp "Remote file manipulation with Tramp." t)
+
 (setq tramp-default-method "ssh") ;; NOTE: use ssh for tramp
 
 ;;; COMMENT: version control
@@ -521,7 +521,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
       recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
       recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
-(eval-after-load "recentf" (recentf-mode t))
+(eval-after-load "recentf" '(recentf-mode t))
 
 ;;; COMMENT: desktop save mode
 ;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
@@ -591,7 +591,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
 (autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
 
-(add-hook 'text-mode-hook 'turn-on-flyspell) ;; NOTE: turn on automatic spell check if in a `text-mode'
+(eval-after-load "flyspell" '(add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
 ;;; COMMENT: ispell
 (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
@@ -680,18 +680,17 @@ If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffe
 (defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode
   (set (make-local-variable 'transient-mark-mode) t))
 
-(ad-activate 'term-line-mode)
-
 (defadvice term-char-mode (after term-char-mode-fixes ()) ;; NOTE: disable transient mark modes in term-char-mode
   (set (make-local-variable 'transient-mark-mode) nil))
 
-(ad-activate 'term-char-mode)
-
-;;; COMMENT: ansi colour support
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+;;; COMMENT: transient-mark-mode interaction and ansi colour support
+(eval-after-load "shell" '(progn
+                            (ad-activate 'term-line-mode)
+                            (ad-activate 'term-char-mode)
+                            (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)))
 
 ;;; COMMENT: help mode
-(require 'help-mode)
+;; (require 'help-mode)
 ;; (load-library "help-mode")
 
 ;;; COMMENT: smart buffer switching
@@ -753,8 +752,8 @@ NOTE: See the variable `user-files-alist' for a list of user files."
 ;; TODO: set up `http://emacswiki.org/emacs/EasyPG'
 
 ;;; COMMENT: browse kill ring
-(require 'browse-kill-ring)
+(autoload 'browse-kill-ring "browse-kill-ring" "..." t)
 
-(browse-kill-ring-default-keybindings)
+(eval-after-load "browse-kill-ring" '(browse-kill-ring-default-keybindings))
 
 (provide 'general-config)

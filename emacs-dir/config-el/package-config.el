@@ -58,29 +58,29 @@ NOTE: This function only needs to be called the first time GNU Emacs is run unde
 
 ;;; COMMENT: system package manager
 ;; NOTE: the following is *probably* useless
-(autoload 'apt "apt" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
-;; (autoload 'arch "arch" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
+;;(autoload 'apt "apt" "Debian (Ubuntu) package management major mode for GNU Emacs." t) ;; TODO: clean this up
+;;(autoload 'arch "arch" "Arch package management major mode for GNU Emacs." t) ;; NOTE: create file (???)
 
-(defun check-dist-name (name &rest junk)
-  "Return `true' if distribution name matches NAME string, `false' otherwise.
+;; (defun check-dist-name (name &rest junk)
+;;   "Return `true' if distribution name matches NAME string, `false' otherwise.
 
-NOTE: distribution name is 16 characters into the output of 'lsb_release -i'."
-  (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16)))
-    (string= (read dist-name) name)))
+;; NOTE: distribution name is 16 characters into the output of 'lsb_release -i'."
+;;   (let ((dist-name (substring (shell-command-to-string "/usr/bin/lsb_release -i") 16)))
+;;     (string= (read dist-name) name)))
 
-(defun run-package-manager (&rest junk)
-  "Run the system package manager inside GNU Emacs.
+;; (defun run-package-manager (&rest junk)
+;;   "Run the system package manager inside GNU Emacs.
 
-If a Debian or ubuntu system, run `apt'.
-If an arch system, run `pacman'.
-Otherwise, use no system."
-  (interactive)
-  (cond ((or (check-dist-name "Debian") (check-dist-name "Ubuntu")) (apt)) ;; NOTE: start apt-mode (debian/ubuntu)
-	((checkdist-name "Arch") (pacman)) ;; NOTE: start pacman-mode (arch)
-	(t (message "no system"))))
+;; If a Debian or ubuntu system, run `apt'.
+;; If an arch system, run `pacman'.
+;; Otherwise, use no system."
+;;   (interactive)
+;;   (cond ((or (check-dist-name "Debian") (check-dist-name "Ubuntu")) (apt)) ;; NOTE: start apt-mode (debian/ubuntu)
+;; 	((checkdist-name "Arch") (pacman)) ;; NOTE: start pacman-mode (arch)
+;; 	(t (message "no system"))))
 
-(defun pacman (&rest junk) ;; TODO: find emacs mode for pacman (arch linux)
-  "dummy pacman message"
-  (message "pacman"))
+;; (defun pacman (&rest junk) ;; TODO: find emacs mode for pacman (arch linux)
+;;   "dummy pacman message"
+;;   (message "pacman"))
 
 (provide 'package-config)

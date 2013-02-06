@@ -13,18 +13,18 @@
 ;; NOTE: this is really messy, could do with some clean-up
 ;; (require 'emms-autoloads) ;; NOTE: this could work best
 ;; (require 'emms-player-simple) ;; NOTE: could be needed
-(autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
-(autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
+;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
+;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
 ;; (autoload 'emms-player-mplayer "emms-player-mplayer" "MPlayer interface with GNU Emacs multimedia." t)  ;; ERROR: does not work
 ;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between `EMMS' and `MPD'." t)
 
 ;; (emms-standard) ;; NOTE: runs just the `emms-standard' configuration
 ;; (emms-devel) ;; DEBUG: apparently not what I want
-(emms-all) ;; NOTE: runs `emms-standard' and adds stable `emms' features
-(emms-default-players)
+;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable `emms' features
+;; (emms-default-players)
 
 ;; TODO: set with variable
-(setq emms-source-file-default-directory "~/Music/") ;; NOTE: when asked for `emms-play-directory' always start from this
+;; (setq emms-source-file-default-directory "~/Music/") ;; NOTE: when asked for `emms-play-directory' always start from this
 
 ;; (setq emms-player-mpd-server-name "localhost")
 ;; (setq emms-player-mpd-server-port "7700")
@@ -34,14 +34,14 @@
 
 ;; (emms-player-mpd-connect) ;; NOTE: connect `emms' to `mpd'
 
-(setq emms-show-format "NP: %s") ;; NOTE: starts to play a track with "NP: "
-(add-hook 'emms-player-started-hook 'emms-show) ;; NOTE: show the current track with `emms'
+;; (setq emms-show-format "NP: %s") ;; NOTE: starts to play a track with "NP: "
+;; (add-hook 'emms-player-started-hook 'emms-show) ;; NOTE: show the current track with `emms'
 
 ;; (setq emms-player-mpg321-parameters '("-o" "alsa")) ;;NOTE: use alsa with mpg321
 
-(define-emms-simple-player flash '(file) "\\.flv$" "mplayer" "-fs") ;; NOTE: play `*.flv' files with `mplayer' (opening full-screen)
+;; (define-emms-simple-player flash '(file) "\\.flv$" "mplayer" "-fs") ;; NOTE: play `*.flv' files with `mplayer' (opening full-screen)
 
-(add-to-list 'emms-player-list 'emms-player-flash)
+;; (add-to-list 'emms-player-list 'emms-player-flash)
 
 ;; COMMENT: `emms' with `mplayer'
 ;; NOTE: I don't think I need this
@@ -70,17 +70,8 @@
 
 ;;; COMMENT: default browser
 (setq browse-url-new-window-flag t
-      ;; NOTE: I could ask if they wanted w3m or externel browser?
-      ;; browse-url-browser-function 'w3m-browse-url ;; NOTE: use `w3m' web browser
-      ;; browse-url-browser-function 'browse-url-generic ;; NOTE: use generic web browser
       browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
-      ;; browse-url-generic-program "conkeror" ;; NOTE: default web browser set to `conkeror'
-      ;; browse-url-generic-program "chromium-browser" ;; NOTE: default web browser set to `chromium-browser'
-      browse-url-generic-program (getenv "BROWSER") ;; NOTE: ...
-      ;; browse-url-generic-program "firefox" ;; NOTE: default web browser set to `firefox'
-      ;; browse-url-generic-program "iceweasel" ;; NOTE: default web browser set to `iceweasel'
-      ;; browse-url-generic-program "x-www-browser" ;; NOTE: default web browser set to `x-www-browser'
-      )
+      browse-url-generic-program (getenv "BROWSER")) ;; NOTE: use the system's $BROWSER environment variable
 
 ;; TODO: do I want to make a `external-browser-alist' variable which is a listn of available browsers?
 (defun choose-browser (url &rest junk) ;; NOTE: select which browser to use (i.e. internal or external)
@@ -92,39 +83,22 @@ Although this is interactive, call this with \\[browse-url]."
       (w3m-browse-url url t)
     (browse-url-generic url)))
 
-;;; COMMENT: dictionary and thesaurus
-;; SOURCE: `http://emacswiki.org/emacs/dict.el'
+;;; COMMENT: thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
-;; SOURCE: `http://www.emacswiki.org/emacs/DictionaryDotCom'
-;; TODO: find a dictionary/thesaurus combination
 (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
 (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
 
-;; (require 'dict)
-
-;; (setq dict-always-quote-terms t
-;;       ;; dict-servers ("dict.org"
-;;       ;;               "alt0.dict.org"
-;;       ;;               "alt1.dict.org"
-;;       ;;               "alt2.dict.org")
-;;       ;;dict-key-binding (kbd "C-c d")
-;;       dict-enable-key-bindings t
-;;       dict-show-one-window t)
-
-(defun dictionary-word (&rest junk) ;; TODO: i don't like how this one works
-  "Dictionary definition of the current word."
-  (interactive)
-  (w3m-goto-url (format "http://dictionary.reference.com/browse/%s" (read-string "Search word: " (current-word)))))
-
 ;;; COMMENT: dictem
 ;; SOURCE: ...
-(require 'dictem)
+;;(require 'dictem)
+(autoload 'dictem-run-search "dictem" "" t)
+
 (setq dictem-server "dict.org"
       dictem-port "2628"
       dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra"))
 
-(dictem-initialize)
+(eval-after-load "dictem" '(dictem-initialize))
 
 ;; NOTE: for creating hyperlinks on database names and found matches (click on them with mouse-2)
 (add-hook 'dictem-postprocess-match-hook 'dictem-postprocess-match)
@@ -200,8 +174,7 @@ Although this is interactive, call this with \\[browse-url]."
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMTabs'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMHintsAndTips'
 ;; TODO: move w3m configuration into a new file ... (???)
-(require 'w3m-load) ;; TEST: this still needs to be tested
-
+;; (require 'w3m-load) ;; TEST: this still needs to be tested
 ;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 ;; (autoload 'w3m-search "w3m-search" "Search with a WWW browser." t)
 ;; (autoload 'w3m-goto-url-new-session "w3m" "Go to a URL in a new w3m buffer." t)
@@ -209,40 +182,40 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;; (w3m-lnum-mode 1) ;; NOTE: apparently an extension to w3m
 
-;; COMMENT: interface
-(setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
-      w3m-home-page "www.emacswiki.org"
-      ;; w3m-default-display-inline-images t ;; NOTE: display images by default
-      w3m-use-toolbar nil
-      w3m-coding-system 'utf-8
-      w3m-file-coding-system 'utf-8
-      w3m-file-name-coding-system 'utf-8
-      w3m-input-coding-system 'utf-8
-      w3m-output-coding-system 'utf-8
-      w3m-terminal-coding-system 'utf-8)
+;; COMMENT: w3m interface
+;; (setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
+;;       w3m-home-page "www.emacswiki.org"
+;;       ;; w3m-default-display-inline-images t ;; NOTE: display images by default
+;;       w3m-use-toolbar nil
+;;       w3m-coding-system 'utf-8
+;;       w3m-file-coding-system 'utf-8
+;;       w3m-file-name-coding-system 'utf-8
+;;       w3m-input-coding-system 'utf-8
+;;       w3m-output-coding-system 'utf-8
+;;       w3m-terminal-coding-system 'utf-8)
 
-;; COMMENT: cookies
-(require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
+;; COMMENT: w3m cookies
+;; (require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
 
-(setq w3m-use-cookies t ;; NOTE: use cookies in w3m
-      w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
-      w3m-cookie-accept-bad-cookies t
-      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com" "http://plato.stanford.edu"))
+;; (setq w3m-use-cookies t ;; NOTE: use cookies in w3m
+;;       w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+;;       w3m-cookie-accept-bad-cookies t
+;;       w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com" "http://plato.stanford.edu"))
 
 ;; COMMENT: w3m sessions
-(setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
-(setq w3m-use-tab t) ;; NOTE: C-c C-t creates new tab with line below
+;; (setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
+;; (setq w3m-use-tab t) ;; NOTE: C-c C-t creates new tab with line below
 
 ;; COMMENT: w3m control and external browser support
-(defun open-blank-w3m (&rest junk) ;; NOTE: this is redundant - \\[w3m] just opens a blank w3m buffer now
-  "Open a blank w3m buffer."
-  (interactive)
-  (w3m-goto-url-new-session "about:"))
+;; (defun open-blank-w3m (&rest junk) ;; NOTE: this is redundant - \\[w3m] just opens a blank w3m buffer now
+;;   "Open a blank w3m buffer."
+;;   (interactive)
+;;   (w3m-goto-url-new-session "about:"))
 
-(defun w3m-new-tab () ;; TODO: need to rename buffer
-  "Open a new tab in w3m."
-  (interactive)
-  (w3m-copy-buffer nil "*w3m*" nil t))
+;; (defun w3m-new-tab () ;; TODO: need to rename buffer
+;;   "Open a new tab in w3m."
+;;   (interactive)
+;;   (w3m-copy-buffer nil "*w3m*" nil t))
 
 ;; TODO: write a `w3m-download-with-wget' function
 ;; NOTE: this requires the `emacs-wget' package from ELPA
@@ -255,107 +228,107 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;; COMMENT: `w3m', `youtube-dl' and `mplayer'
 ;; NOTE: this doesn't work just yet
-(defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
+;; (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
 
-(setq youtube-videos-directory "~/Videos/youtube/")
+;; (setq youtube-videos-directory "~/Videos/youtube/")
 
-(defun w3m-youtube-video ()
-  "..."
-  (interactive)
-  (let* ((video (w3m-print-current-url))
-	 (output (format "%s/%s.mp4" youtube-videos-directory video)))
-    (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" output video)
-    (emms-play-file output)))
+;; (defun w3m-youtube-video ()
+;;   "..."
+;;   (interactive)
+;;   (let* ((video (w3m-print-current-url))
+;; 	 (output (format "%s/%s.mp4" youtube-videos-directory video)))
+;;     (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" output video)
+;;     (emms-play-file output)))
 
-;; TODO: ...
-(defun view-youtube-video (&rest junk)
-  "Download and play a YouTube video."
-  )
+;; ;; TODO: ...
+;; (defun view-youtube-video (&rest junk)
+;;   "Download and play a YouTube video."
+;;   )
 
-(defun w3m-youtube-view ()
-  "View a YouTube link with youtube-dl and mplayer."
-  (interactive)
-  (let ((url (or (w3m-anchor) (w3m-image))))
-    (string-match "[^v]*v.\\([^&]*\\)" url)
-    (let* ((vid (match-string 1 url))
-           (out (format "%s/%s.mp4" youtube-videos-directory vid)))
-      (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" out url)
-      (emms-play-file "out")
-      ;;(start-process "mplayer" nil "mplayer" "-quiet" out)
-      )))
+;; (defun w3m-youtube-view ()
+;;   "View a YouTube link with youtube-dl and mplayer."
+;;   (interactive)
+;;   (let ((url (or (w3m-anchor) (w3m-image))))
+;;     (string-match "[^v]*v.\\([^&]*\\)" url)
+;;     (let* ((vid (match-string 1 url))
+;;            (out (format "%s/%s.mp4" youtube-videos-directory vid)))
+;;       (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" out url)
+;;       (emms-play-file "out")
+;;       ;;(start-process "mplayer" nil "mplayer" "-quiet" out)
+;;       )))
 
-;; NOTE: this is redundant as I no longer primarily use chromium as my browser
-(defun open-url-under-point-chromium (&rest junk)
-  "If there is a valid URL under point, open that URL in chromium web-browser. Otherwise, open the URL of the current page in chromium web-browser.
+;; ;; NOTE: this is redundant as I no longer primarily use chromium as my browser
+;; (defun open-url-under-point-chromium (&rest junk)
+;;   "If there is a valid URL under point, open that URL in chromium web-browser. Otherwise, open the URL of the current page in chromium web-browser.
 
-NOTE: This function requires w3m to be running."
-  (interactive)
-  (let ((temp-url (w3m-print-this-url)))
-    (if (not (eq temp-url nil))
-	(browse-url-chromium temp-url)
-      (browse-url-chromium (w3m-print-current-url)))))
+;; NOTE: This function requires w3m to be running."
+;;   (interactive)
+;;   (let ((temp-url (w3m-print-this-url)))
+;;     (if (not (eq temp-url nil))
+;; 	(browse-url-chromium temp-url)
+;;       (browse-url-chromium (w3m-print-current-url)))))
 
-;; COMMENT: w3m and save desktop mode
-(defun w3m-register-desktop-save ()
-  "Set `desktop-save-buffer' to a function returning the current URL."
-  (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
+;; ;; COMMENT: w3m and save desktop mode
+;; (defun w3m-register-desktop-save ()
+;;   "Set `desktop-save-buffer' to a function returning the current URL."
+;;   (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
 
-(defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
-  "Restore a `w3m' buffer on `save-desktop' load."
-  (when (eq 'w3m-mode desktop-buffer-major-mode)
-    (let ((url d-b-misc))
-      (when url
-        (require 'w3m)
-        (if (string-match "^file" url)
-            (w3m-find-file (substring url 7))
-          (w3m-goto-url-new-session url))
-        (current-buffer)))))
+;; (defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
+;;   "Restore a `w3m' buffer on `save-desktop' load."
+;;   (when (eq 'w3m-mode desktop-buffer-major-mode)
+;;     (let ((url d-b-misc))
+;;       (when url
+;;         (require 'w3m)
+;;         (if (string-match "^file" url)
+;;             (w3m-find-file (substring url 7))
+;;           (w3m-goto-url-new-session url))
+;;         (current-buffer)))))
 
-(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+;; (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
-;; COMMENT: w3m mode hooks
-(add-hook 'w3m-display-hook ;; NOTE: remove trailing whitespace in w3m buffer
-	  (lambda (url)
-	    (let ((buffer-read-only nil))
-	      (delete-trailing-whitespace))))
+;; ;; COMMENT: w3m mode hooks
+;; (add-hook 'w3m-display-hook ;; NOTE: remove trailing whitespace in w3m buffer
+;; 	  (lambda (url)
+;; 	    (let ((buffer-read-only nil))
+;; 	      (delete-trailing-whitespace))))
 
-(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: ...
+;; (add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: ...
 
-;; COMMENT: w3m key-bindings
-;; (define-key w3m-mode-map (kbd "C-c n") '(lambda () (interactive) (open-blank-w3m))) ;; ERROR: this does not work
-;; (define-key w3m-mode-map (kbd "M") '(lambda () (interactive) (open-url-under-point-chromium))) ;; ERROR: this does not work
+;; ;; COMMENT: w3m key-bindings
+;; ;; (define-key w3m-mode-map (kbd "C-c n") '(lambda () (interactive) (open-blank-w3m))) ;; ERROR: this does not work
+;; ;; (define-key w3m-mode-map (kbd "M") '(lambda () (interactive) (open-url-under-point-chromium))) ;; ERROR: this does not work
 
-;; COMMENT: this is meant to disable `ido-mode' in w3m buffers ... it does not work
-;; (put 'w3m 'ido 'ignore) 
+;; ;; COMMENT: this is meant to disable `ido-mode' in w3m buffers ... it does not work
+;; ;; (put 'w3m 'ido 'ignore) 
 
-;; (defadvice ido-read-buffer (around ido-read-buffer-possibly-ignore activate)
-;;   "Check to see if use wanted to avoid using ido."
-;;   (if (eq (get this-command 'ido) 'ignore)
-;;       (let ((read-buffer-function nil))
-;;         (run-hook-with-args 'ido-before-fallback-functions 'read-buffer)
-;;         (setq ad-return-value (apply 'read-buffer (ad-get-args 0))))
-;;     ad-do-it))
+;; ;; (defadvice ido-read-buffer (around ido-read-buffer-possibly-ignore activate)
+;; ;;   "Check to see if use wanted to avoid using ido."
+;; ;;   (if (eq (get this-command 'ido) 'ignore)
+;; ;;       (let ((read-buffer-function nil))
+;; ;;         (run-hook-with-args 'ido-before-fallback-functions 'read-buffer)
+;; ;;         (setq ad-return-value (apply 'read-buffer (ad-get-args 0))))
+;; ;;     ad-do-it))
 
-;; COMMENT: adding a new search engine
-;; NOTE: Find the entry point of the search engine you want to add, for example: (where foobar is the term you want to search for)
-;;  http://my.searchengine.com/?query=foobar
-;; NOTE: Then add info to your ~/.emacs-w3m file:
-;;  (eval-after-load "w3m-search" '(add-to-list 'w3m-search-engine-alist '("My engine" "http://my.searchengine.com/?query=%s" nil)))
+;; ;; COMMENT: adding a new search engine
+;; ;; NOTE: Find the entry point of the search engine you want to add, for example: (where foobar is the term you want to search for)
+;; ;;  http://my.searchengine.com/?query=foobar
+;; ;; NOTE: Then add info to your ~/.emacs-w3m file:
+;; ;;  (eval-after-load "w3m-search" '(add-to-list 'w3m-search-engine-alist '("My engine" "http://my.searchengine.com/?query=%s" nil)))
 
-;; COMMENT: w3m search
-;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
-(eval-after-load "w3m-search"
-  '(setq w3m-search-engine-alist
-	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
-	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
-	   ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
+;; ;; COMMENT: w3m search
+;; ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
+;; (eval-after-load "w3m-search"
+;;   '(setq w3m-search-engine-alist
+;; 	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+;; 	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
+;; 	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
+;; 	   ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
-;; COMMENT: open web site in w3m
-(defun browse-facebook (&rest junk)
-  "Browse `http://m.facebook.com' with `w3m'."
-  (interactive)
-  (w3m-browse-url "http://m.facebook.com"))
+;; ;; COMMENT: open web site in w3m
+;; (defun browse-facebook (&rest junk)
+;;   "Browse `http://m.facebook.com' with `w3m'."
+;;   (interactive)
+;;   (w3m-browse-url "http://m.facebook.com"))
 
 ;;; COMMENT: gist
 ;; SOURCE: `https://github.com/defunkt/gist.el'
@@ -492,51 +465,55 @@ NOTE: if the connection is succesful, the async shell command window should be c
 (defun insert-gpl-license (&rest junk)
   "...")
 
-;;; COMMENT: diary mode
-;; SOURCE: http://www.emacswiki.org/emacs/DiaryMode
+;;; COMMENT: diary and calendar mode
+;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
+;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
+;; (autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
+
 ;; (setq view-diary-entries-initially t
 ;;       mark-diary-entries-in-calendar t
+;;       diary-file "/home/chu/Documents/Organisation/diary"
 ;;       number-of-diary-entries 7)
 
-;; (add-hook 'diary-display-hook 'fancy-diary-display)
-;; (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+;; (eval-after-load "calendar"
+;;   (add-hook 'diary-display-hook 'fancy-diary-display)
+;;   (add-hook 'today-visible-calendar-hook 'calendar-mark-today))
 
 ;;; COMMENT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-(require 'bbdb)
+(autoload 'bbdb "bbdb" "" t)
 
-(bbdb-initialize 'gnus 'message)
+(eval-after-load "bbdb" '(bbdb-initialize 'gnus 'message))
 
 ;;(setq bbdb-file "~/.emacs.d/contacts-file.el")
 
 ;;; COMMENT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
-(require 'ebib) ;; TODO: change this to an autoload
-;; (autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
+(autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
 
 ;; TODO: investigate @string clauses and abbreviations for common journals
 ;; TODO: create `philosophy.bib' `mathematics.bib' `linguistics.bib' `computer-science.bib' etc
 (setq ebib-preload-bib-files (list (format "%su4537508.bib" user-university-directory) ;; NOTE: university courses
-				   (format "%sPapers/papers.bib" user-documents-directory) ;; NOTE: general papers
-				   ;; "/home/chu/Documents/Papers/papers.bib"
-				   ;; "/home/chu/Documents/ANU/u4537508.bib"
-				   ;; "/home/chu/Documents/Papers/philosophy.bib"
-				   ;; "/home/chu/Documents/Papers/mathematics.bib"
-				   ;; "/home/chu/Documents/Papers/linguistics.bib"
-				   ;; "/home/chu/Documents/Papers/computer-science.bib"
-				   )
+                                   (format "%sPapers/papers.bib" user-documents-directory) ;; NOTE: general papers
+                                   ;; "/home/chu/Documents/Papers/papers.bib"
+                                   ;; "/home/chu/Documents/ANU/u4537508.bib"
+                                   ;; "/home/chu/Documents/Papers/philosophy.bib"
+                                   ;; "/home/chu/Documents/Papers/mathematics.bib"
+                                   ;; "/home/chu/Documents/Papers/linguistics.bib"
+                                   ;; "/home/chu/Documents/Papers/computer-science.bib"
+                                   )
       ebib-keywords-list (list "philosophy"
-			       "mathematics"
-			       "logic"
-			       "computer science"
-			       "linguistics"
-			       "miscellaneous")
+                               "mathematics"
+                               "logic"
+                               "computer science"
+                               "linguistics"
+                               "miscellaneous")
       ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
       ebib-file-search-dirs (list (format "%s" user-home-directory)
-				  (format "%sPapers/" user-documents-directory)) ;; NOTE: directories to search when viewing external files
+                                  (format "%sPapers/" user-documents-directory)) ;; NOTE: directories to search when viewing external files
       )
 
-(setcdr (assoc "pdf" ebib-file-associations) "evince")
+(eval-after-load "ebib" '(setcdr (assoc "pdf" ebib-file-associations) "evince"))
 
 ;; Ebib Entry: [[ebib:horwich1996][Horwich (1996)]]
 ;; Citation Entry: [[cite:horwich1996][Horwich (1996)]]
@@ -567,7 +544,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   (interactive)
   (let ((buffer-name "ebib-")
 	(file-extension "pdf")
-	(target-directory "/home/chu/Documents/Papers/PDFs/"))
+	(target-directory (format "%sPapers/PDFs/" user-documents-directory)))
     (switch-to-buffer "ebib-directory")
     (ebib-export-directory file-extension target-directory)))
 
@@ -583,7 +560,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 (setq deft-extension "org"
       deft-text-mode 'org-mode
-      deft-directory "/home/chu/Documents/Organisation/.deft/")
+      deft-directory (format "%s.deft/" user-organisation-directory))
 
 ;;; COMMENT: emacs speaks statistics
 ;; SOURCE: `http://ess.r-project.org/'

@@ -5,10 +5,8 @@
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
 ;;(require 'dired)
 (require 'dired-x) ;; FIX: change this to an autoload
-;; (autoload 'dired-jump "dired-x" "Jump to dired buffer corresponding to current buffer." 'interactive)
+;;(autoload 'dired-jump "dired-x" "Jump to dired buffer corresponding to current buffer." 'interactive)
 ;; (autoload 'dired-jump-other-window "dired-x" "Like \\[dired-jump] (`dired-jump') but in other window." 'interactive)
-
-(put 'dired-find-alternate-file 'disabled nil) ;; NOTE: enable re-use of dired buffers
 
 ;; (setq dired-listing-switches "-al") ;; NOTE: default listing switches
 

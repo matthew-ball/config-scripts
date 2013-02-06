@@ -4,11 +4,14 @@
 ;;; COMMENT: erc
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcSSL'
-(require 'tls)
-(require 'erc) ;; TODO: change this to an autoload
-(require 'erc-highlight-nicknames) ;; TODO: change this to an autoload
+(autoload 'erc-tls "erc" "" t) ;; NOTE: this is to use SSL
+(eval-after-load "erc" '(progn
+                         (require 'tls)
+                         (require 'erc-highlight-nicknames)))
+
+;;(require 'erc-highlight-nicknames) ;; TODO: change this to an autoload
 ;;(require 'erc-bbdb) ;; TODO: ...
-(autoload 'erc-tls "erc" "IRC client." t) ;; NOTE: this is to use SSL
+;; ---
 ;; (autoload 'doctor-doc "doctor") ;; NOTE: for use with ERC doctor
 ;; (autoload 'make-doctor-variables "doctor") ;; NOTE: for use with ERC doctor
 ;; (autoload 'erc-select "erc" "The GNU Emacs IRC client." t)
@@ -51,8 +54,7 @@
 (eval-after-load "erc-highlight-nicknames" '(erc-highlight-nicknames-enable))
 (eval-after-load "erc-modules" '(add-to-list 'erc-modules 'highlight-nicknames))
 (eval-after-load "erc-modules" '(erc-update-modules))
-
-(eval-after-load 'erc-track
+(eval-after-load "erc-track"
   '(progn
      (defun erc-bar-move-back (n)
        "Moves back n message lines. Ignores wrapping, and server messages."
@@ -141,7 +143,7 @@
 				     ))
       erc-join-buffer 'bury)
 
-(setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
+(eval-after-load "erc" '(setq erc-modules (delq 'fill erc-modules))) ;; NOTE: disable `erc-fill-mode'
 
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
 (add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))
@@ -427,9 +429,10 @@
   "Open the `woman' page for PROGRAM."
   (woman program))
 
-(add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
-(add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
-(add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN)
+(eval-after-load "erc-goodies" '(progn
+                                  (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
+                                  (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
+                                  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN)))
 
 ;; COMMENT: when connecting ask me for a password
 (defun erc-tls-connect-server (server &rest junk)
@@ -506,6 +509,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
     (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
 
 ;;; COMMENT: `erc' key-bindings
-(define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel)
+(eval-after-load "erc" '(define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel))
 
 (provide 'erc-config)
