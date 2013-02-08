@@ -2,35 +2,46 @@
 ;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 ;;; COMMENT: user variables
+(defgroup user-variables nil
+  "User variables.")
+
 ;; NOTE: user directories
-(defcustom user-shell (getenv "SHELL") "The user's $SHELL environment variable.")
-(defcustom user-browser (getenv "BROWSER") "The user's $BROWSER environment variable.")
-(defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable.")
-(defcustom user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts.")
-(defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents.")
-(defcustom user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news.")
-(defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail.")
-(defcustom user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music.")
-(defcustom user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos.")
-(defcustom user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files.")
-(defcustom user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects.")
-(defcustom user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material.")
-(defcustom user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material.")
-(defcustom user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files.")
-(defcustom user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files.")
+(defgroup user-directories nil
+  "User directories."
+  :group 'user-variables)
+
+(defcustom user-shell (getenv "SHELL") "The user's $SHELL environment variable." :group 'user-directories :type 'string)
+(defcustom user-browser (getenv "BROWSER") "The user's $BROWSER environment variable." :group 'user-directories :type 'string)
+(defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable." :group 'user-directories :type 'string)
+(defcustom user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
+(defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents." :group 'user-directories :type 'string)
+(defcustom user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news." :group 'user-directories :type 'string)
+(defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
+(defcustom user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music." :group 'user-directories :type 'string)
+(defcustom user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos." :group 'user-directories :type 'string)
+(defcustom user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files." :group 'user-directories :type 'string)
+(defcustom user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects." :group 'user-directories :type 'string)
+(defcustom user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material." :group 'user-directories :type 'string)
+(defcustom user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material." :group 'user-directories :type 'string)
+(defcustom user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files." :group 'user-directories :type 'string)
+(defcustom user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files." :group 'user-directories :type 'string)
 
 ;; NOTE: user files
-(defcustom user-org-contacts-file (format "%s/contacts.org" user-organisation-directory) "File for user's contacts.")
-(defcustom user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation.")
-(defcustom user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation.")
-(defcustom user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation.")
-(defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation.")
+(defgroup user-files nil
+  "User files."
+  :group 'user-variables)
+
+(defcustom user-org-contacts-file (format "%s/contacts.org" user-organisation-directory) "File for user's contacts." :group 'user-files :type 'string)
+(defcustom user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation." :group 'user-files :type 'string)
+(defcustom user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
+(defcustom user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation." :group 'user-files :type 'string)
+(defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
 
 ;; NOTE: user details
 (setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
-(defcustom user-university-id "u4537508" "University ID for the user.")
-(defcustom user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user.")
-(defcustom user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user.")
+(defcustom user-university-id "u4537508" "University ID for the user." :group 'user-variables :type 'string)
+(defcustom user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user." :group 'user-variables :type 'string)
+(defcustom user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user." :group 'user-variables :type 'string)
 
 ;;; COMMENT: user functions
 (defun eval-and-replace (&rest junk)
@@ -137,7 +148,7 @@
 (ido-ubiquitous-mode t)
 
 (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
-      ;;`ido-everywhere t ;; NOTE: enable ido everywhere
+      ;;ido-everywhere t ;; NOTE: enable ido everywhere
       ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
       ido-ignore-extensions t ;; NOTE: ignore extentions
       ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
@@ -159,7 +170,8 @@
 (defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
   "Find a recent file using `ido-mode'."
   (interactive)
-  (require 'recentf)
+  (unless (featurep 'recentf)
+    (require 'recentf))
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file (find-file file))))
 
@@ -225,13 +237,14 @@
 
 ;;; COMMENT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
-(require 'ibuffer) ;; TODO: change this to an autoload
-(require 'ibuf-ext) ;; TODO: change this to an autoload
+(autoload 'ibuffer "ibuffer" "..." t)
 
-;; NOTE: neither of the following works
-(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0\\*$")
-(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
-(add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
+(eval-after-load "ibuffer" '(require 'ibuf-ext))
+(eval-after-load "ibuf-ext"
+ '(progn
+    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0\\*$")
+    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
+    (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")))
 
 (setq ibuffer-saved-filter-groups
       `(("default"
@@ -412,7 +425,7 @@
 
 ;;; COMMENT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(when (require 'auto-complete-config nil 'noerror) ;; TODO: change this to an auto-load
+(when (require 'auto-complete-config nil 'noerror) ;; TODO: change this to an autoload
   (add-to-list 'ac-dictionary-directories (concat (expand-file-name user-emacs-directory) "ac-dict"))
   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
   (ac-config-default))
@@ -517,7 +530,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 
 ;;; COMMENT: recent files
 ;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
-(autoload 'recentf-mode "recentf" "Recent files." t)
+(require 'recentf) ;; TODO: change to an autoload
 
 (setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recentf") ;; NOTE: recently saved files
       recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
@@ -691,11 +704,7 @@ If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffe
                             (ad-activate 'term-char-mode)
                             (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)))
 
-;;; COMMENT: help mode
-;; (require 'help-mode)
-;; (load-library "help-mode")
-
-;;; COMMENT: smart buffer switching
+;; COMMENT: smart buffer switching
 (defun next-user-buffer ()
   "Switch to the next user buffer in cyclic order.
 
@@ -756,6 +765,6 @@ NOTE: See the variable `user-files-alist' for a list of user files."
 ;;; COMMENT: browse kill ring
 (autoload 'browse-kill-ring "browse-kill-ring" "..." t)
 
-(eval-after-load "browse-kill-ring" '(browse-kill-ring-default-keybindings))
+(browse-kill-ring-default-keybindings)
 
 (provide 'general-config)
