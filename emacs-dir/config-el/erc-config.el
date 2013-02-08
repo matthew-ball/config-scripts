@@ -7,53 +7,53 @@
 (autoload 'erc-tls "erc" "" t) ;; NOTE: this is to use SSL
 (eval-after-load "erc" '(progn
                          (require 'tls)
-                         (require 'erc-highlight-nicknames)))
+                         (require 'erc-highlight-nicknames)
+                         (require 'erc-stamp)
+                         (require 'erc-join)
+                         (require 'erc-spelling)
+                         (require 'erc-netsplit)
+                         (require 'erc-ring)
+                         (require 'erc-track)
+                         (require 'erc-match)
+                         (require 'erc-fill)
+                         (require 'erc-pcomplete)
+                         (require 'erc-button)
+                         ;; (require 'erc-select)
+                         (require 'erc-track)))
 
-;;(require 'erc-highlight-nicknames) ;; TODO: change this to an autoload
-;;(require 'erc-bbdb) ;; TODO: ...
-;; ---
 ;; (autoload 'doctor-doc "doctor") ;; NOTE: for use with ERC doctor
 ;; (autoload 'make-doctor-variables "doctor") ;; NOTE: for use with ERC doctor
-;; (autoload 'erc-select "erc" "The GNU Emacs IRC client." t)
-;; (autoload 'erc-ring "erc" "ERC mode for recalling previous messages (i.e. stores them in a ring)." t)
-;; (autoload 'erc-match "erc" "ERC mode for checking whether messages match certain patterns." t)
-;; (autoload 'erc-fill "erc" "ERC mode for automatically filling messages." t) ;; NOTE: this is essential
-;; (autoload 'erc-join "erc" "ERC mode for automatically joining channels." t) ;; NOTE: this is essential
-;; (autoload 'erc-track "erc" "ERC mode for tracking activity in channels." t) ;; NOTE: this is essential
-;; (autoload 'erc-spelling "erc" "ERC mode for interaction with flyspell (aspell)." t) ;; NOTE: this is essential
 ;; (autoload 'erc-scrolltobottom-mode "erc-goodies" "Scroll ERC buffer to the end.") ;; NOTE: this is essential
-;; (autoload 'erc-netsplit "erc" "ERC mode for handling netsplits (i.e. rejoin)." t) ;; NOTE: this is *not* essential
-;; (autoload 'erc-pcomplete "erc" "ERC mode for completing the nickname before point." t) ;; NOTE: this is *not* essential
 (autoload 'wtf-is "wtf" "ERC command for describing acronyms." t)
-;; (autoload 'erc-highlight-nicknames-enable "erc-highlight-nicknames" "ERC mode for highlighting nicknames." t) ;; NOTE: this is essential
 
-;; COMMENT: `erc-logging'
+;; COMMENT: erc-logging
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
 ;;(setq erc-log-channels-directory "~/.erc/logs/")
 ;;(setq erc-save-buffer-on-part t) ;; NOTE: save log file automatically when parting or quitting a channel
 ;;(setq erc-log-insert-log-on-open t) ;; NOTE: I *think* this is the goods
 
-(defface erc-prompt-face '((t (:foreground "yellow" :bold t))) "ERC prompt.")
+;;; COMMENT: erc faces
+(defface erc-prompt-face '((t (:foreground "black" :bold t))) "ERC prompt.")
 ;;(defface erc-timestamp-face '((t (:foreground "black" :weight bold))) "ERC timestamp.")
 
 (defvar erc-insert-post-hook)
 
-;; (eval-after-load "erc-fill" '(erc-fill-mode 0)) ;; NOTE: disable ERC fill
-;; (eval-after-load "erc-ring" '(erc-ring-mode t))
-;; (eval-after-load "erc-button" '(erc-button-mode t))
-;; (eval-after-load "erc-join" '(erc-autojoin-mode t)) ;; NOTE: enable auto-joining mode
-(eval-after-load "erc-track" '(erc-track-mode t))
-;; (eval-after-load "erc-match" '(erc-match-mode t))
-;; (eval-after-load "erc-netsplit" '(erc-netsplit-mode t))
-;; (eval-after-load "erc-timestamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
-;; (eval-after-load "erc-spelling" '(erc-spelling-mode t)) ;; NOTE: enable flyspell in ERC
-(eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fill
-(eval-after-load "erc-goodies" '(erc-scrolltobottom-mode t)) ;; NOTE: enable scroll-to-bottom mode
-;;(eval-after-load "erc-bbdb" '(erc-bbdb-mode t)) ;; NOTE: enable bbdb
+;; (eval-after-load "erc-bbdb" '(erc-bbdb-mode t)) ;; NOTE: enable bbdb
 
+(eval-after-load "erc-button" '(erc-button-mode t))
+(eval-after-load "erc-match" '(erc-match-mode t))
+(eval-after-load "erc-ring" '(erc-ring-mode t))
+(eval-after-load "erc-netsplit" '(erc-netsplit-mode t))
+(eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fil
+(eval-after-load "erc-stamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
+(eval-after-load "erc-join" '(erc-autojoin-mode t)) ;; NOTE: enable auto-joining mode
+(eval-after-load "erc-spelling" '(erc-spelling-mode t)) ;; NOTE: enable flyspell in ERC
+(eval-after-load "erc-goodies" '(erc-scrolltobottom-mode t)) ;; NOTE: enable scroll-to-bottom mode
 (eval-after-load "erc-highlight-nicknames" '(erc-highlight-nicknames-enable))
-(eval-after-load "erc-modules" '(add-to-list 'erc-modules 'highlight-nicknames))
-(eval-after-load "erc-modules" '(erc-update-modules))
+(eval-after-load "erc-modules"
+  '(progn 
+     (add-to-list 'erc-modules 'highlight-nicknames)
+     (erc-update-modules)))
 (eval-after-load "erc-track"
   '(progn
      (defun erc-bar-move-back (n)
@@ -111,7 +111,7 @@
       erc-kill-buffer-on-part t ;; NOTE: kill buffers for channels after /part
       erc-kill-queries-on-quit t ;; NOTE: kill buffers for queries after quitting the server
       erc-kill-server-buffer-on-quit t ;; NOTE: kill buffers for server messages after quitting the server
-      erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style color commands in IRC chats
+      erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
       erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE") ;; NOTE: do not track these messages
       ;; erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
       erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
@@ -152,12 +152,12 @@
 (remove-hook 'erc-text-matched-hook 'erc-hide-fools)
 
 (setq erc-keywords '() ;; NOTE: highlight specific keywords
+      erc-current-nick-highlight-type 'nick ;; NOTE: ...
       erc-pal-highlight-type 'all ;; NOTE: nicknames in a message
       erc-fool-highlight-type 'all ;; NOTE: highlight entire message
       erc-pals '("twb" "kcj" "dax" "LjL" "moocow" "AtomicSpark" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
       erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
-      erc-dangerous-hosts '("*!*@bb-nu-85-11-238-40.ornskoldsvik.com") ;; NOTE: mark any dangerous hosts
-      )
+      erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
 
 (setq erc-remove-parsed-property nil)
 

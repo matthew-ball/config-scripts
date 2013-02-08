@@ -159,6 +159,7 @@
 (defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
   "Find a recent file using `ido-mode'."
   (interactive)
+  (require 'recentf)
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file (find-file file))))
 
@@ -228,6 +229,7 @@
 (require 'ibuf-ext) ;; TODO: change this to an autoload
 
 ;; NOTE: neither of the following works
+(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0\\*$")
 (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
 (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
 
@@ -410,7 +412,7 @@
 
 ;;; COMMENT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(when (require 'auto-complete-config nil 'noerror)
+(when (require 'auto-complete-config nil 'noerror) ;; TODO: change this to an auto-load
   (add-to-list 'ac-dictionary-directories (concat (expand-file-name user-emacs-directory) "ac-dict"))
   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
   (ac-config-default))

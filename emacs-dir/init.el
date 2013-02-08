@@ -14,7 +14,7 @@
 ;; NOTE: this works, but the directory stuff should probably be moved into a single location
 ;;(add-to-list 'load-path "/home/chu/.emacs.d/erc-extras") ;; TODO: move to "../elisp/erc-extras-el/"
 (add-to-list 'load-path "/home/chu/.emacs.d/dictem-1.0.4") ;; TODO: move to "../elisp/dictem-el/"
-;;(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/w3m-el/w3m")
+(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/w3m-el/w3m")
 ;;(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/wireless/wireless") ;; TODO: move to "../elisp/wireless-el/"
 ;;(add-to-list 'load-path "/home/chu/Programming/scheme/guile/guile/emacs") ;; TODO: ... this is for `guile-emacs' I imagine
 (add-to-list 'load-path (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/contrib")) ;; TODO: this is for `stumpwm'
