@@ -50,6 +50,8 @@
 ;; TODO: this needs to be activated only for selected modes
 ;; EXAMPLE: (add-to-hook 'text-mode-hook '(turn-on-visual-line-mode))
 
+(setq visual-line-fringe-indicators '(left-curly-arrow nil))
+
 ;;; COMMENT: line numbers
 ;; SOURCE: `http://www.emacswiki.org/emacs/line-num.el'
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
