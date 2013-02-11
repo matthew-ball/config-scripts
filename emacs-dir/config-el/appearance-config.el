@@ -44,6 +44,19 @@
 ;;(when (fboundp 'fringe-mode) (fringe-mode -1)) ;; NOTE: turn off the fringe
 (when (fboundp 'fringe-mode) (set-fringe-mode '(1 . 0))) ;; NOTE: set fringe to 1px on left side only
 
+;;; COMMENT: window configuration
+;; SOURCE: `http://www.emacswiki.org/emacs/WinnerMode'
+;; (autoload 'winner-undo "winner" "Window configuration." t)
+
+;;; COMMENT: workgroups for windows
+;; SOURCE: `http://www.emacswiki.org/emacs/WorkgroupsForWindows'
+;; TODO: learn workgroups
+;; (autoload 'workgroups-mode "workgroups" "Workgroups for windows." t)
+
+;; (eval-after-load "workgroups" '(workgroups-mode 1))
+
+;; (setq wg-prefix-key (kbd "C-c w"))
+
 ;;; COMMENT: visual lines
 ;; SOURCE: `http://www.emacswiki.org/emacs/VisualLineMode'
 (global-visual-line-mode t) ;; NOTE: enable visual line mode for all buffers (i.e. globally)
@@ -213,5 +226,6 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
 (eval-after-load "longlines" '(diminish 'longlines-mode ""))
 (eval-after-load "org-indent" '(diminish 'org-indent-mode ""))
+(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
 
 (provide 'appearance-config)
