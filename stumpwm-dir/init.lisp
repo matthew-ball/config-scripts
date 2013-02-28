@@ -1,7 +1,7 @@
 ;; FILE: /home/chu/.conf-scripts/stumpwm-dir/init.lisp
 ;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
-;;; COMMENT: lisp implementation
+;;; COMMENT: common-lisp implementation
 ;; SOURCE: ...
 ;debian=sbcl
 
@@ -22,10 +22,6 @@
 
 ;;; COMMENT: general functions
 ;; SOURCE: ...
-;; (defun pwd (&rest junk) ;; ERROR: this doesn't really do what I had planned
-;;   "Return the present working directory."
-;;   (getenv "PWD"))
-
 (defun cat (&rest strings)
   "Return STRINGS concatenated together, like the Unix command 'cat'. A shortcut for (concatenate 'string foo bar)."
   (apply 'concatenate 'string strings))
@@ -760,8 +756,9 @@
   ;; (run-shell-command "emacs --daemon") ;; NOTE: start emacs server process
   ;; (run-shell-command "lxpanel")
   ;; (run-shell-command "nm-applet")
-  (launch-lxpanel) ;; NOTE: start `lxpanel' instance
-  (launch-nm-applet) ;; NOTE: start `nm-applet' instance
+  ;; ---
+  ;; (launch-lxpanel) ;; NOTE: start `lxpanel' instance
+  ;; (launch-nm-applet) ;; NOTE: start `nm-applet' instance
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
   (run-editor) ;; NOTE: start the editor (should also launch the emacs daemon service)

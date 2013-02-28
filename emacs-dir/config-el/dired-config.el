@@ -10,6 +10,14 @@
 
 ;; (setq dired-listing-switches "-al") ;; NOTE: default listing switches
 
+;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
+(setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso")
+
+;;(setq dired-recursive-copies 'always)
+
+;; NOTE: try suggesting dired targets
+(setq dired-dwim-target t)
+
 (add-hook 'dired-load-hook (lambda ()
 			     (load "dired-x")
 			     ;; NOTE: set `dired-x' variables here

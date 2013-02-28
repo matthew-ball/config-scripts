@@ -137,10 +137,12 @@
 
 (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
 				   (turn-on-general-programming-mode)
-				   ;;(turn-on-eldoc-mode)
+                                   (turn-on-eldoc-mode)
 				   (paredit-mode t)))
 
-;;(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+;;; COMMENT: interactive emacs lisp
+;; SOURCE: 
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
 ;;; COMMENT: emacs byte-compiled code
 ;; SOURCE: `http://www.emacswiki.org/emacs/CompiledFile'
@@ -156,7 +158,7 @@
 
 (add-hook 'lisp-interaction-mode-hook '(lambda ()
 					 (turn-on-general-programming-mode)
-					 ;; (turn-on-eldoc-mode) ;; NOTE: ???
+					 (turn-on-eldoc-mode)
 					 (paredit-mode t)))
 
 (add-hook 'inferior-lisp-mode-hook '(lambda ()

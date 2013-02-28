@@ -241,6 +241,11 @@
     (when (search-forward (concat "** " str "\t") nil nil)
       (forward-line 9))))
 
+(defun insert-lecture-template ()
+  "..."
+  (interactive)
+  (insert (format "** Lecture %d: %s" 1 (format-time-string "%d/%m/%y"))))
+
 ;;; COMMENT: org-babel
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (autoload 'org-babel-load-file "org-babel" "Interact with programming languages in `org-mode'." t)

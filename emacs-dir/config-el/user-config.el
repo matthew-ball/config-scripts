@@ -96,7 +96,46 @@ Although this is interactive, call this with \\[browse-url]."
 
 (setq dictem-server "dict.org"
       dictem-port "2628"
-      dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra"))
+      dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra")
+      ;; dictem-select-database "*"
+      ;; dictem-select-strategy "."
+      )
+
+;; TODO: move to key-bindings!!!
+;; TODO: C-c d should be a `dictem-map' etc
+;; COMMENT: key-bindings
+;; NOTE: SEARCH = MATCH + DEFINE
+;; ask for word, database and search strategy and show definitions found
+(global-set-key "\C-cs" 'dictem-run-search)
+
+;; NOTE: MATCH
+;; ask for word, database and search strategy and show matches found
+(global-set-key "\C-cm" 'dictem-run-match)
+
+;; NOTE: DEFINE
+;; ask for word and database name and show definitions found
+(global-set-key "\C-cd" 'dictem-run-define)
+
+;; NOTE: SHOW SERVER
+;; show information about DICT server
+(global-set-key "\C-c\M-r" 'dictem-run-show-server)
+
+;; NOTE: SHOW INFO
+;; show information about the database
+(global-set-key "\C-c\M-i" 'dictem-run-show-info)
+
+;; NOTE: SHOW DB
+;; show a list of databases provided by DICT server
+(global-set-key "\C-c\M-b" 'dictem-run-show-databases)
+
+;; TODO: ...
+;; (add-hook 'c-mode-common-hook
+;; 	  '(lambda ()
+;; 	     (interactive)
+;; 	     (make-local-variable 'dictem-default-database)
+;; 	     (setq dictem-default-database "man")))
+
+;; the code above sets default database to "man" in C buffers
 
 (eval-after-load "dictem" '(dictem-initialize))
 
@@ -174,7 +213,7 @@ Although this is interactive, call this with \\[browse-url]."
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMTabs'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMHintsAndTips'
 ;; TODO: move w3m configuration into a new file ... (???)
-;; (require 'w3m-load) ;; TEST: this still needs to be tested
+(require 'w3m-load) ;; TEST: this still needs to be tested
 ;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 ;; (autoload 'w3m-search "w3m-search" "Search with a WWW browser." t)
 ;; (autoload 'w3m-goto-url-new-session "w3m" "Go to a URL in a new w3m buffer." t)
@@ -183,28 +222,28 @@ Although this is interactive, call this with \\[browse-url]."
 ;; (w3m-lnum-mode 1) ;; NOTE: apparently an extension to w3m
 
 ;; COMMENT: w3m interface
-;; (setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
-;;       w3m-home-page "www.emacswiki.org"
-;;       ;; w3m-default-display-inline-images t ;; NOTE: display images by default
-;;       w3m-use-toolbar nil
-;;       w3m-coding-system 'utf-8
-;;       w3m-file-coding-system 'utf-8
-;;       w3m-file-name-coding-system 'utf-8
-;;       w3m-input-coding-system 'utf-8
-;;       w3m-output-coding-system 'utf-8
-;;       w3m-terminal-coding-system 'utf-8)
+(setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
+      ;; w3m-home-page "www.emacswiki.org"
+      ;; w3m-default-display-inline-images t ;; NOTE: display images by default
+      w3m-use-toolbar nil
+      w3m-coding-system 'utf-8
+      w3m-file-coding-system 'utf-8
+      w3m-file-name-coding-system 'utf-8
+      w3m-input-coding-system 'utf-8
+      w3m-output-coding-system 'utf-8
+      w3m-terminal-coding-system 'utf-8)
 
 ;; COMMENT: w3m cookies
-;; (require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
+(require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
 
-;; (setq w3m-use-cookies t ;; NOTE: use cookies in w3m
-;;       w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
-;;       w3m-cookie-accept-bad-cookies t
-;;       w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com" "http://plato.stanford.edu"))
+(setq w3m-use-cookies t ;; NOTE: use cookies in w3m
+      w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+      w3m-cookie-accept-bad-cookies t
+      w3m-cookie-accept-domains '("www.emacswiki.org" "www.google.com" "www.wikipedia.org" "www.github.com" "http://plato.stanford.edu"))
 
 ;; COMMENT: w3m sessions
-;; (setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
-;; (setq w3m-use-tab t) ;; NOTE: C-c C-t creates new tab with line below
+(setq w3m-make-new-session t) ;; NOTE: open a new tab by typing RET on a url string
+(setq w3m-use-tab t) ;; NOTE: C-c C-t creates new tab with line below
 
 ;; COMMENT: w3m control and external browser support
 ;; (defun open-blank-w3m (&rest junk) ;; NOTE: this is redundant - \\[w3m] just opens a blank w3m buffer now
@@ -287,10 +326,10 @@ Although this is interactive, call this with \\[browse-url]."
 ;; (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
 ;; ;; COMMENT: w3m mode hooks
-;; (add-hook 'w3m-display-hook ;; NOTE: remove trailing whitespace in w3m buffer
-;; 	  (lambda (url)
-;; 	    (let ((buffer-read-only nil))
-;; 	      (delete-trailing-whitespace))))
+(add-hook 'w3m-display-hook ;; NOTE: remove trailing whitespace in w3m buffer
+	  (lambda (url)
+	    (let ((buffer-read-only nil))
+	      (delete-trailing-whitespace))))
 
 ;; (add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: ...
 
@@ -481,9 +520,9 @@ NOTE: if the connection is succesful, the async shell command window should be c
 
 ;;; COMMENT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-(autoload 'bbdb "bbdb" "" t)
+;; (autoload 'bbdb "bbdb" "" t)
 
-(eval-after-load "bbdb" '(bbdb-initialize 'gnus 'message))
+;; (eval-after-load "bbdb" '(bbdb-initialize 'gnus 'message))
 
 ;;(setq bbdb-file "~/.emacs.d/contacts-file.el")
 

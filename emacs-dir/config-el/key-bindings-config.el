@@ -65,10 +65,12 @@
 (define-key programming-map (kbd "c") 'compile)
 (define-key programming-map (kbd "n") 'next-error)
 (define-key programming-map (kbd "p") 'previous-error)
-(define-key programming-map (kbd "g") 'gdb)
+(define-key programming-map (kbd "d") 'gdb)
 (define-key programming-map (kbd "m") 'magit-status) ;; NOTE: view the `git-status' of the current file
-(define-key programming-map (kbd "s") 'ido-goto-symbol) ;; NOTE: go to a symbol in the current buffer
+(define-key programming-map (kbd "g") 'ido-goto-symbol) ;; NOTE: go to a symbol in the current buffer
 (define-key programming-map (kbd "e") 'eval-and-replace) ;; NOTE: evaluate a lisp expression and replace with the value
+(define-key programming-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
+(define-key programming-map (kbd "s") 'slime) ;; NOTE: start slime session
 
 ;; (global-set-key (kbd "M-<f5>") 'function)
 ;; (global-set-key (kbd "C-<f5>") 'function)
@@ -110,9 +112,7 @@
 (define-key internals-map (kbd "e") 'emms) ;; NOTE: start emacs multimedia system
 (define-key internals-map (kbd "p") 'proced) ;; NOTE: start a process manager session
 (define-key internals-map (kbd "r") 'regexp-builder) ;; NOTE: start regular-expression builder
-(define-key internals-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
 (define-key internals-map (kbd "m") 'imaxima) ;; NOTE: start interactive maxima session
-(define-key internals-map (kbd "s") 'slime) ;; NOTE: start slime session
 
 ;; (global-set-key (kbd "M-<f7>") 'function)
 ;; (global-set-key (kbd "C-<f7>") 'function)

@@ -47,7 +47,7 @@
 (require-package "eshell")
 (require-package "general")
 (require-package "key-bindings")
-;;(require-package "programming")
+(require-package "programming")
 (require-package "org")
 (require-package "latex")
 (require-package "gnus")

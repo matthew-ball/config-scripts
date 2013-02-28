@@ -39,16 +39,16 @@
 (defvar erc-insert-post-hook)
 
 ;; (eval-after-load "erc-bbdb" '(erc-bbdb-mode t)) ;; NOTE: enable bbdb
-
-(eval-after-load "erc-button" '(erc-button-mode t))
-(eval-after-load "erc-match" '(erc-match-mode t))
-(eval-after-load "erc-ring" '(erc-ring-mode t))
-(eval-after-load "erc-netsplit" '(erc-netsplit-mode t))
+(eval-after-load "erc-button" '(erc-button-enable))
+(eval-after-load "erc-match" '(erc-match-enable)) ;; ??
+(eval-after-load "erc-match" '(erc-match-mode t)) ;; ??
+(eval-after-load "erc-ring" '(erc-ring-enable))
+(eval-after-load "erc-netsplit" '(erc-netsplit-enable))
 (eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fil
 (eval-after-load "erc-stamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
-(eval-after-load "erc-join" '(erc-autojoin-mode t)) ;; NOTE: enable auto-joining mode
-(eval-after-load "erc-spelling" '(erc-spelling-mode t)) ;; NOTE: enable flyspell in ERC
-(eval-after-load "erc-goodies" '(erc-scrolltobottom-mode t)) ;; NOTE: enable scroll-to-bottom mode
+(eval-after-load "erc-join" '(erc-autojoin-enable)) ;; NOTE: enable auto-joining mode
+(eval-after-load "erc-spelling" '(erc-spelling-enable)) ;; NOTE: enable flyspell in ERC
+(eval-after-load "erc-goodies" '(erc-scrolltobottom-enable)) ;; NOTE: enable scroll-to-bottom mode
 (eval-after-load "erc-highlight-nicknames" '(erc-highlight-nicknames-enable))
 (eval-after-load "erc-modules"
   '(progn 
@@ -151,6 +151,7 @@
 
 (remove-hook 'erc-text-matched-hook 'erc-hide-fools)
 
+;; TODO: eval-after-load
 (setq erc-keywords '() ;; NOTE: highlight specific keywords
       erc-current-nick-highlight-type 'nick ;; NOTE: ...
       erc-pal-highlight-type 'all ;; NOTE: nicknames in a message

@@ -423,6 +423,10 @@
 			       ;; (ibuffer-switch-format)
 			       (ibuffer-switch-to-saved-filter-groups "default")))
 
+;;; COMMENT: abbreviation expansion
+;; SOURCE:
+(eval-after-load "dabbrev" '(defalias 'dabbrev-expand 'hippie-expand))
+
 ;;; COMMENT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
 (when (require 'auto-complete-config nil 'noerror) ;; TODO: change this to an autoload
