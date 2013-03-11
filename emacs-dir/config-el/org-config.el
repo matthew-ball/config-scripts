@@ -282,12 +282,12 @@
 
 (add-to-list 'org-export-latex-classes
 	     '("paper"
-	       "\\documentclass[12pt,a4paper,oneside]{paper}
-               \\usepackage{amsfonts}
-               \\usepackage{amsthm}
-               \\setcounter{secnumdepth}{0}
-               [NO-DEFAULT-PACKAGES]
-               [EXTRA]"
+               "\\documentclass[12pt,a4paper,oneside]{paper}
+\\usepackage{amsfonts}
+\\usepackage{amsthm}
+\\setcounter{secnumdepth}{0}
+[NO-DEFAULT-PACKAGES]
+[EXTRA]"
 	       ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -297,13 +297,13 @@
 (add-to-list 'org-export-latex-classes
 	     '("book"
 	       "\\documentclass[12pt,a4paper,oneside]{book}
-               \\usepackage{amsfonts}
-               \\usepackage{amsthm}
-               \\usepackage{mathtools}
-               \\usepackage{makeidx}
-               \\usepackage{bussproofs}
-               [NO-DEFAULT-PACKAGES]
-               [EXTRA]"
+\\usepackage{amsfonts}
+\\usepackage{amsthm}
+\\usepackage{mathtools}
+\\usepackage{makeidx}
+\\usepackage{bussproofs}
+[NO-DEFAULT-PACKAGES]
+[EXTRA]"
 	       ("\\part{%s}" . "\\part*{%s}")
 	       ("\\chapter{%s}" . "\\chapter*{%s}")
 	       ("\\section{%s}" . "\\section*{%s}")
@@ -313,17 +313,17 @@
 (add-to-list 'org-export-latex-classes
 	     '("assignment"
 	       "\\documentclass[10pt,a4paper]{article}
-               \\usepackage{amsfonts}
-               \\usepackage{amsthm}
-               \\usepackage[cm]{fullpage}
-               \\usepackage{multicol}
-               \\usepackage{mdwlist}
-               \\usepackage{geometry}
-               \\usepackage{pgf}
-               \\usepackage{tikz}
-               \\usetikzlibrary{positioning,automata,arrows,shapes}
-               [NO-DEFAULT-PACKAGES]
-               [EXTRA]"
+\\usepackage{amsfonts}
+\\usepackage{amsthm}
+\\usepackage[cm]{fullpage}
+\\usepackage{multicol}
+\\usepackage{mdwlist}
+\\usepackage{geometry}
+\\usepackage{pgf}
+\\usepackage{tikz}
+\\usetikzlibrary{positioning,automata,arrows,shapes}
+[NO-DEFAULT-PACKAGES]
+[EXTRA]"
 	       ("\\section{%s}" . "\\section*{%s}")
 	       ("\\subsection{%s}" . "\\subsection*{%s}")
 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -333,9 +333,9 @@
 (add-to-list 'org-export-latex-classes
 	     '("article"
 	       "\\documentclass[12pt,a4paper]{article}
-               \\setcounter{secnumdepth}{0}
-               [NO-DEFAULT-PACKAGES]
-               [EXTRA]"
+\\setcounter{secnumdepth}{0}
+[NO-DEFAULT-PACKAGES]
+[EXTRA]"
 	       ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -345,8 +345,8 @@
 (add-to-list 'org-export-latex-classes
 	     '("beamer"
 	       "\\documentclass[10pt]{beamer}
-               [NO-DEFAULT-PACKAGES]
-               [EXTRA]"
+[NO-DEFAULT-PACKAGES]
+[EXTRA]"
 	       org-beamer-sectioning))
 
 ;; COMMENT: enable latex source code highlighting
@@ -355,6 +355,8 @@
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
 (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
 (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
+(add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
+(add-to-list 'org-export-latex-packages-alist '("" "tipx")) ;; NOTE: support for phonetic alphabet
 ;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
 (add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
 (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
@@ -364,42 +366,92 @@
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
 
-(add-to-list 'org-entities-user '("neg"            "\\neg" t "&not;" "[negation]" nil "¬"))
-;;(add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "↔"))
-(add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "\leftrightarrow"))
-(add-to-list 'org-entities-user '("top"            "\\top" t "&top;" "[top (true)]" nil "⊤"))
-(add-to-list 'org-entities-user '("bot"            "\\bot" t "&bot;" "[bot (false)]" nil "⊥"))
-(add-to-list 'org-entities-user '("therefore"      "\\therefore" t "&therefore;" "[therefore]" nil "∴"))
-(add-to-list 'org-entities-user '("because"        "\\because" t "&because;" "[because]" nil "∵"))
-(add-to-list 'org-entities-user '("derives"        "\\vdash" t "&vdash;" "[derives]" nil "⊢"))
-(add-to-list 'org-entities-user '("notderives"     "\\not\\vdash" t "&notvdash" "[notderives]" nil "⊬"))
-(add-to-list 'org-entities-user '("models"         "\\models" t "&mod;" "[models]" nil "⊨"))
-(add-to-list 'org-entities-user '("notmodels"      "\\not\\models" t "&notmodels" "[notmodels]" nil "⊭"))
-(add-to-list 'org-entities-user '("forces"         "\\Vdash" t "&forces" "[forces]" nil "⊩"))
-(add-to-list 'org-entities-user '("notforces"      "\\not\\Vdash" t "&notforces" "[notforces]" nil "⊮"))
-(add-to-list 'org-entities-user '("boxconditional" "\\boxconditional" t "&boxcond;" "[boxcond]" nil "□→"))
-(add-to-list 'org-entities-user '("box"            "\\Box" t "&box;" "[box]" nil "□"))
-(add-to-list `org-entities-user '("diamond"        "\\Diamond" t "&diamond;" "[diamond]" nil "◇"))
-(add-to-list 'org-entities-user '("cdots"          "\\cdots" t "&cdots;" "[center dots]" nil "⋯"))
-(add-to-list 'org-entities-user '("ldots"          "\\ldots" t "&ldots;" "[line dots]" nil "…"))
-(add-to-list 'org-entities-user '("reals"          "\\mathbb{R}" t "&reals;" "[real numbers]" nil "ℝ"))
-(add-to-list 'org-entities-user '("integers"       "\\mathbb{Z}" t "&integers;" "[integers]" nil "ℤ"))
-(add-to-list 'org-entities-user '("primes"         "\\mathbb{P}" t "&primes;" "[prime numbers]" nil "ℙ"))
-(add-to-list 'org-entities-user '("naturals"       "\\mathbb{N}" t "&naturals;" "[natural numbers]" nil "ℕ"))
-(add-to-list 'org-entities-user '("irrationals"    "\\mathbb{I}" t "&irrationals;" "[irrational numbers]" nil "𝕀"))
-(add-to-list 'org-entities-user '("rationals"      "\\mathbb{Q}" t "&rationals;" "[rational numbers]" nil "ℚ"))
-(add-to-list 'org-entities-user '("complex"        "\\mathbb{C}" t "&complex;" "[complex numbers]" nil "ℂ"))
+;; TODO: the fact these are all automatically put inside a math environment is a bit problematic
+;; (add-to-list 'org-entities-user '("neg"            "\\neg" t "&not;" "[negation]" nil "¬"))
+;; ;;(add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "↔"))
+;; (add-to-list 'org-entities-user '("iff"            "\\iff" t "&iff;" "[if and only if]" nil "\leftrightarrow"))
+;; (add-to-list 'org-entities-user '("top"            "\\top" t "&top;" "[top (true)]" nil "⊤"))
+;; (add-to-list 'org-entities-user '("bot"            "\\bot" t "&bot;" "[bot (false)]" nil "⊥"))
+;; (add-to-list 'org-entities-user '("therefore"      "\\therefore" t "&therefore;" "[therefore]" nil "∴"))
+;; (add-to-list 'org-entities-user '("because"        "\\because" t "&because;" "[because]" nil "∵"))
+;; (add-to-list 'org-entities-user '("derives"        "\\vdash" t "&vdash;" "[derives]" nil "⊢"))
+;; (add-to-list 'org-entities-user '("notderives"     "\\not\\vdash" t "&notvdash" "[notderives]" nil "⊬"))
+;; (add-to-list 'org-entities-user '("models"         "\\models" t "&mod;" "[models]" nil "⊨"))
+;; (add-to-list 'org-entities-user '("notmodels"      "\\not\\models" t "&notmodels" "[notmodels]" nil "⊭"))
+;; (add-to-list 'org-entities-user '("forces"         "\\Vdash" t "&forces" "[forces]" nil "⊩"))
+;; (add-to-list 'org-entities-user '("notforces"      "\\not\\Vdash" t "&notforces" "[notforces]" nil "⊮"))
+;; (add-to-list 'org-entities-user '("boxconditional" "\\boxconditional" t "&boxcond;" "[boxcond]" nil "□→"))
+;; (add-to-list 'org-entities-user '("box"            "\\Box" t "&box;" "[box]" nil "□"))
+;; (add-to-list 'org-entities-user '("diamond"        "\\Diamond" t "&diamond;" "[diamond]" nil "◇"))
+;; (add-to-list 'org-entities-user '("cdots"          "\\cdots" t "&cdots;" "[center dots]" nil "⋯"))
+;; (add-to-list 'org-entities-user '("ldots"          "\\ldots" t "&ldots;" "[line dots]" nil "…"))
+;; (add-to-list 'org-entities-user '("reals"          "\\mathbb{R}" t "&reals;" "[real numbers]" nil "ℝ"))
+;; (add-to-list 'org-entities-user '("integers"       "\\mathbb{Z}" t "&integers;" "[integers]" nil "ℤ"))
+;; (add-to-list 'org-entities-user '("primes"         "\\mathbb{P}" t "&primes;" "[prime numbers]" nil "ℙ"))
+;; (add-to-list 'org-entities-user '("naturals"       "\\mathbb{N}" t "&naturals;" "[natural numbers]" nil "ℕ"))
+;; (add-to-list 'org-entities-user '("irrationals"    "\\mathbb{I}" t "&irrationals;" "[irrational numbers]" nil "𝕀"))
+;; (add-to-list 'org-entities-user '("rationals"      "\\mathbb{Q}" t "&rationals;" "[rational numbers]" nil "ℚ"))
+;; (add-to-list 'org-entities-user '("complex"        "\\mathbb{C}" t "&complex;" "[complex numbers]" nil "ℂ"))
 ;; TODO: ...
 ;; (add-to-list 'org-entities-user '("box" "\\Box" t "&box;" "[box]" nil "□"))
 ;; (add-to-list `org-entities-user '("diamond" "\\Diamond" t "&diamond;" "[diamond]" nil "⋄"))
 ;; (add-to-list 'org-entities-user '("langle" "\\langle" t "&langle;" "[left angle]" nil ""))
 ;; (add-to-list 'org-entities-user '("rangle" "\\rangle" t "&rangle;" "[right angle]" nil ""))
 
+;; COMMENT: logic symbols
+(add-to-list 'org-entities-user '("neg" "\\neg" nil nil nil nil "¬"))
+;;(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "↔"))
+(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "\leftrightarrow"))
+(add-to-list 'org-entities-user '("top" "\\top" nil nil nil nil "⊤"))
+(add-to-list 'org-entities-user '("bot" "\\bot" nil nil nil nil "⊥"))
+(add-to-list 'org-entities-user '("therefore" "\\therefore" nil nil nil nil "∴"))
+(add-to-list 'org-entities-user '("because" "\\because" nil nil nil nil "∵"))
+(add-to-list 'org-entities-user '("derives" "\\vdash" nil nil nil nil "⊢"))
+(add-to-list 'org-entities-user '("notderives" "\\not\\vdash" nil nil nil nil "⊬"))
+(add-to-list 'org-entities-user '("models" "\\models" nil nil nil nil "⊨"))
+(add-to-list 'org-entities-user '("notmodels" "\\not\\models" nil nil nil nil "⊭"))
+(add-to-list 'org-entities-user '("forces" "\\Vdash" nil nil nil nil "⊩"))
+(add-to-list 'org-entities-user '("notforces" "\\not\\Vdash" nil nil nil nil "⊮"))
+(add-to-list 'org-entities-user '("boxconditional" "\\boxconditional" nil nil nil nil "□→"))
+(add-to-list 'org-entities-user '("box" "\\Box" nil nil nil nil "□"))
+(add-to-list 'org-entities-user '("diamond" "\\Diamond" nil nil nil nil "◇"))
+(add-to-list 'org-entities-user '("cdots" "\\cdots" nil nil nil nil "⋯"))
+(add-to-list 'org-entities-user '("ldots" "\\ldots" nil nil nil nil "…"))
+;; COMMENT: mathematics symbols
+(add-to-list 'org-entities-user '("reals" "\\mathbb{R}" nil nil nil nil "ℝ"))
+(add-to-list 'org-entities-user '("integers" "\\mathbb{Z}" nil nil nil nil "ℤ"))
+(add-to-list 'org-entities-user '("primes" "\\mathbb{P}" nil nil nil nil "ℙ"))
+(add-to-list 'org-entities-user '("naturals" "\\mathbb{N}" nil nil nil nil "ℕ"))
+(add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" nil nil nil nil "𝕀"))
+(add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" nil nil nil nil "ℚ"))
+(add-to-list 'org-entities-user '("complex" "\\mathbb{C}" nil nil nil nil "ℂ"))
+;; COMMENT: phonetic symbols
+(add-to-list 'org-entities-user '("eng" "\\textipa{N}" nil nil nil nil "ŋ"))
+(add-to-list 'org-entities-user '("esh" "\\textipa{S}" nil nil nil nil "ʃ"))
+(add-to-list 'org-entities-user '("thy" "\\eth" nil nil nil nil "ð"))
+(add-to-list 'org-entities-user '("thi" "\\theta" nil nil nil nil "θ"))
+(add-to-list 'org-entities-user '("alveolarapproximate" "\\textipa{\*r}" nil nil nil nil "ɹ"))
+(add-to-list 'org-entities-user '("palatalfricative" "\\textipa{C}" nil nil nil nil "ç"))
+(add-to-list 'org-entities-user '("bilabialclick" "\\textbullseye" nil nil nil nil "ʘ"))
+(add-to-list 'org-entities-user '("glottalstop" "" nil nil nil nil "ʔ"))
+(add-to-list 'org-entities-user '("alveolarstop" "" nil nil nil nil "ʒ"))
+(add-to-list 'org-entities-user '("pharyngealfricative" "" nil nil nil nil "ʕ"))
+;;(add-to-list 'org-entities-user '("Eng" "\\textipa{N}" nil nil nil nil "Ŋ"))
+;;(add-to-list 'org-entities-user '("Esh" "\\textipa{S}" nil nil nil nil "Ʃ"))
+
+;; ⟨ʋ⟩ ⟨ɑ⟩ ⟨ɣ⟩ ⟨ɛ⟩ ⟨ɸ⟩ ⟨ʋ⟩ ⟨β⟩ ⟨θ⟩ ⟨χ⟩
+
 ;; \mathbb{R}		\mathbf{R}		\mathcal{R}		\mathfrak{R}
 ;; \mathbb{Z}		\mathbf{Z}		\mathcal{Z}		\mathfrak{Z}
 ;; \mathbb{Q}		\mathbf{Q}		\mathcal{Q}		\mathfrak{Q}
 
 ;; TODO: add customizations for \mathcal{}'s
+
+(defun org-insert-user-entity ()
+  "Insert symbol from `org-entities-user' list."
+  (interactive)
+  (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
+    (insert (format "\\%s" entity))))
 
 ;; COMMENT: ...
 (define-skeleton insert-org-latex-package

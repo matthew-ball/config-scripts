@@ -3,10 +3,8 @@
 
 ;;; COMMENT: dired
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
-;;(require 'dired)
+;; (require 'dired)
 (require 'dired-x) ;; FIX: change this to an autoload
-;;(autoload 'dired-jump "dired-x" "Jump to dired buffer corresponding to current buffer." 'interactive)
-;; (autoload 'dired-jump-other-window "dired-x" "Like \\[dired-jump] (`dired-jump') but in other window." 'interactive)
 
 ;; (setq dired-listing-switches "-al") ;; NOTE: default listing switches
 
@@ -35,6 +33,8 @@
 
 (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$") ;; NOTE: hide un-interesting files in dired
       dired-omit-extensions (append dired-latex-unclean-extensions
+                                    dired-tex-unclean-extensions
+                                    dired-patch-unclean-extensions
 				    dired-bibtex-unclean-extensions
 				    dired-texinfo-unclean-extensions))
 
@@ -45,5 +45,13 @@
   "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
   (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; NOTE: was dired-advertised-find-file
   (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was dired-up-directory
+
+;;; COMMENT: directory details
+;; SOURCE: `http://www.emacswiki.org/emacs/DiredDetails'
+(require 'dired-details+)
+
+(setq dired-details-hidden-string "[...] ")
+
+(dired-details-install)
 
 (provide 'dired-config)

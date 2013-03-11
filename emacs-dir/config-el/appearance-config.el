@@ -30,7 +30,7 @@
     ;; (color-theme-initialize)
     ;; (color-theme-scintilla)
     ;; (color-theme-zenburn)
-    (load-theme 'whiteboard)
+    ;; (load-theme 'whiteboard)
     ;; (powerline-default-theme)
     ))
 
@@ -46,7 +46,9 @@
 
 ;;; COMMENT: window configuration
 ;; SOURCE: `http://www.emacswiki.org/emacs/WinnerMode'
-;; (autoload 'winner-undo "winner" "Window configuration." t)
+(require 'winner)
+
+(winner-mode t)
 
 ;;; COMMENT: workgroups for windows
 ;; SOURCE: `http://www.emacswiki.org/emacs/WorkgroupsForWindows'
@@ -227,5 +229,10 @@
 (eval-after-load "longlines" '(diminish 'longlines-mode ""))
 (eval-after-load "org-indent" '(diminish 'org-indent-mode ""))
 (eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
+
+;;; COMMENT: adaptive text wrap
+(require 'adaptive-wrap)
+
+(add-hook 'org-mode-hook '(lambda () adaptive-wrap-prefix-mode t))
 
 (provide 'appearance-config)

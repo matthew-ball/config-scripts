@@ -188,19 +188,33 @@ Although this is interactive, call this with \\[browse-url]."
 (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
 (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
 
-;;; COMMENT: quick jump
+;;; COMMENT: quick and web jumps
 (defvar quick-jump-list nil "List of sites for quick jump functionality.")
 
-(setq quick-jump-list (list "www.google.com"
-			    "www.emacswiki.org"
-			    "www.wikipedia.org"
-			    "plato.stanford.edu"))
+(setq quick-jump-alist '(("google" . "http://www.google.com/")
+                         ("emacswiki" . "http://www.emacswiki.org/")
+                         ("recent changes" . "http://www.emacswiki.org/emacs/RecentChanges/")
+                         ("wikipedia" . "http://www.wikipedia.org/")
+                         ("stanford philosophy" . "http://plato.stanford.edu/")))
 
 (defun quick-jump (&rest junk)
   "Open a quick-jump URL in `w3m-mode'."
   (interactive)
-  (let ((user-input (ido-completing-read "Select site: " quick-jump-list)))
-    (w3m-goto-url-new-session user-input)))
+  (let ((user-input (ido-completing-read "Select site: " (mapcar #'(lambda (entry) (car entry)) quick-jump-alist))))
+    (w3m-goto-url-new-session (cdr (assoc user-input quick-jump-alist)))))
+
+(defmacro create-web-jump (name url)
+  "Create function NAME which browses to URL."
+  `(defun ,name (search)
+     "Query for SEARCH string."
+     (interactive ,(concat "sSearch " (downcase (symbol-name name)) " for: "))
+     (browse-url (concat ,url "=" (substitute #'\+ #'\Space search)))))
+
+(create-web-jump google "http://www.google.com/search?q")
+(create-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
+;; TODO: make an emacs wiki web-jump
+;; TODO: make a stumpwm wiki web-jump
+;; TODO: make a common-lisp wiki web-jump
 
 ;;; COMMENT: w3m buffers
 (defun w3m-buffer ()
@@ -220,6 +234,23 @@ Although this is interactive, call this with \\[browse-url]."
 ;; (autoload 'w3m-mode-map "w3m" "The mode map for w3m." t) ;; ERROR: this does not work
 
 ;; (w3m-lnum-mode 1) ;; NOTE: apparently an extension to w3m
+
+;; COMMENT: tables
+;; (standard-display-ascii ?\200 [15])
+;; (standard-display-ascii ?\201 [21])
+;; (standard-display-ascii ?\202 [24])
+;; (standard-display-ascii ?\203 [13])
+;; (standard-display-ascii ?\204 [22])
+;; (standard-display-ascii ?\205 [25])
+;; (standard-display-ascii ?\206 [12])
+;; (standard-display-ascii ?\210 [23])
+;; (standard-display-ascii ?\211 [14])
+;; (standard-display-ascii ?\212 [18])
+;; (standard-display-ascii ?\214 [11])
+;; (standard-display-ascii ?\222 [?\'])
+;; (standard-display-ascii ?\223 [?\"])
+;; (standard-display-ascii ?\224 [?\"])
+;; (standard-display-ascii ?\227 " -- ")
 
 ;; COMMENT: w3m interface
 (setq w3m-key-binding 'info ;; NOTE: use sane key-bindings
@@ -264,6 +295,12 @@ Although this is interactive, call this with \\[browse-url]."
 ;;   (let ((url (w3m-anchor)))
 ;;     (if url
 ;;         (wget url loc))))
+
+;; COMMENT: ...
+(setq w3m-form-textarea-edit-mode 'org-mode)
+
+(add-hook 'w3m-form-input-textarea-mode-hook '(lambda nil (setq outline-regexp "=+")))
+
 
 ;; COMMENT: `w3m', `youtube-dl' and `mplayer'
 ;; NOTE: this doesn't work just yet

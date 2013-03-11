@@ -138,6 +138,9 @@
 (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
 				   (turn-on-general-programming-mode)
                                    (turn-on-eldoc-mode)
+                                   ;; NOTE: some key-bindings
+                                   (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
+                                   (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp)
 				   (paredit-mode t)))
 
 ;;; COMMENT: interactive emacs lisp
