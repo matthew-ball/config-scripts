@@ -129,8 +129,9 @@
 (define-key org-map (kbd "b") 'org-iswitchb)
 (define-key org-map (kbd "c") 'org-capture)
 (define-key org-map (kbd "d") 'org-deadline)
-;;(define-key org-map (kbd "g") 'generate) ;; NOTE: what?
 (define-key org-map (kbd "e") 'org-toggle-pretty-entities)
+(define-key org-map (kbd "f") 'org-agenda-file-to-front)
+;;(define-key org-map (kbd "g") 'generate) ;; NOTE: what?
 (define-key org-map (kbd "t") 'org-todo)
 (define-key org-map (kbd "r") 'org-refile)
 (define-key org-map (kbd "s") 'org-schedule)

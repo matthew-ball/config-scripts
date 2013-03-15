@@ -434,7 +434,7 @@
 (add-to-list 'org-entities-user '("palatalfricative" "\\textipa{C}" nil nil nil nil "ç"))
 (add-to-list 'org-entities-user '("bilabialclick" "\\textbullseye" nil nil nil nil "ʘ"))
 (add-to-list 'org-entities-user '("glottalstop" "" nil nil nil nil "ʔ"))
-(add-to-list 'org-entities-user '("alveolarstop" "" nil nil nil nil "ʒ"))
+(add-to-list 'org-entities-user '("alveolarstop" "\\textyogh" nil nil nil nil "ʒ"))
 (add-to-list 'org-entities-user '("pharyngealfricative" "" nil nil nil nil "ʕ"))
 ;;(add-to-list 'org-entities-user '("Eng" "\\textipa{N}" nil nil nil nil "Ŋ"))
 ;;(add-to-list 'org-entities-user '("Esh" "\\textipa{S}" nil nil nil nil "Ʃ"))
@@ -792,5 +792,94 @@
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
 (setq org-link-abbrev-alist
        '(("google"   . "http://www.google.com/search?q=")))
+
+;;; COMMENT: word count
+;; SOURCE: `http://orgmode.org/worg/org-hacks.html'
+;; (defun org-word-count (beg end
+;;                            &optional count-latex-macro-args?
+;;                            count-footnotes?)
+;;   "Report the number of words in the Org mode buffer or selected region.
+;; Ignores:
+;; - comments
+;; - tables
+;; - source code blocks (#+BEGIN_SRC ... #+END_SRC, and inline blocks)
+;; - hyperlinks (but does count words in hyperlink descriptions)
+;; - tags, priorities, and TODO keywords in headers
+;; - sections tagged as 'not for export'.
+
+;; The text of footnote definitions is ignored, unless the optional argument
+;; COUNT-FOOTNOTES? is non-nil.
+
+;; If the optional argument COUNT-LATEX-MACRO-ARGS? is non-nil, the word count
+;; includes LaTeX macro arguments (the material between {curly braces}).
+;; Otherwise, and by default, every LaTeX macro counts as 1 word regardless
+;; of its arguments."
+;;   (interactive "r")
+;;   (unless mark-active
+;;     (setf beg (point-min)
+;;           end (point-max)))
+;;   (let ((wc 0)
+;;         (latex-macro-regexp "\\\\[A-Za-z]+\\(\\[[^]]*\\]\\|\\){\\([^}]*\\)}"))
+;;     (save-excursion
+;;       (goto-char beg)
+;;       (while (< (point) end)
+;;         (cond
+;;          ;; Ignore comments.
+;;          ((or (org-in-commented-line) (org-at-table-p))
+;;           nil)
+;;          ;; Ignore hyperlinks. But if link has a description, count
+;;          ;; the words within the description.
+;;          ((looking-at org-bracket-link-analytic-regexp)
+;;           (when (match-string-no-properties 5)
+;;             (let ((desc (match-string-no-properties 5)))
+;;               (save-match-data
+;;                 (incf wc (length (remove "" (org-split-string
+;;                                              desc "\\W")))))))
+;;           (goto-char (match-end 0)))
+;;          ((looking-at org-any-link-re)
+;;           (goto-char (match-end 0)))
+;;          ;; Ignore source code blocks.
+;;          ((org-in-regexps-block-p "^#\\+BEGIN_SRC\\W" "^#\\+END_SRC\\W")
+;;           nil)
+;;          ;; Ignore inline source blocks, counting them as 1 word.
+;;          ((save-excursion
+;;             (backward-char)
+;;             (looking-at org-babel-inline-src-block-regexp))
+;;           (goto-char (match-end 0))
+;;           (setf wc (+ 2 wc)))
+;;          ;; Count latex macros as 1 word, ignoring their arguments.
+;;          ((save-excursion
+;;             (backward-char)
+;;             (looking-at latex-macro-regexp))
+;;           (goto-char (if count-latex-macro-args?
+;;                          (match-beginning 2)
+;;                        (match-end 0)))
+;;           (setf wc (+ 2 wc)))
+;;          ;; Ignore footnotes.
+;;          ((and (not count-footnotes?)
+;;                (or (org-footnote-at-definition-p)
+;;                    (org-footnote-at-reference-p)))
+;;           nil)
+;;          (t
+;;           (let ((contexts (org-context)))
+;;             (cond
+;;              ;; Ignore tags and TODO keywords, etc.
+;;              ((or (assoc :todo-keyword contexts)
+;;                   (assoc :priority contexts)
+;;                   (assoc :keyword contexts)
+;;                   (assoc :checkbox contexts))
+;;               nil)
+;;              ;; Ignore sections marked with tags that are
+;;              ;; excluded from export.
+;;              ((assoc :tags contexts)
+;;               (if (intersection (org-get-tags-at) org-export-exclude-tags
+;;                                 :test 'equal)
+;;                   (org-forward-same-level 1)
+;;                 nil))
+;;              (t
+;;               (incf wc))))))
+;;         (re-search-forward "\\w+\\W*")))
+;;     (message (format "%d words in %s." wc
+;;                      (if mark-active "region" "buffer")))))
 
 (provide 'org-config)

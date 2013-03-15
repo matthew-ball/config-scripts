@@ -50,7 +50,7 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiredDetails'
 (require 'dired-details+)
 
-(setq dired-details-hidden-string "[...] ")
+(setq dired-details-hidden-string "")
 
 (dired-details-install)
 

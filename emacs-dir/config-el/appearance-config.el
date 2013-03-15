@@ -233,6 +233,6 @@
 ;;; COMMENT: adaptive text wrap
 (require 'adaptive-wrap)
 
-(add-hook 'org-mode-hook '(lambda () adaptive-wrap-prefix-mode t))
+(add-hook 'org-mode-hook (lambda () (adaptive-wrap-prefix-mode t)))
 
 (provide 'appearance-config)
