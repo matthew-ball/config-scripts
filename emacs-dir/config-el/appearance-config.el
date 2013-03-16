@@ -136,7 +136,7 @@
 ;; (which-function-mode t) ;; NOTE: show the current function in the mode line
 
 ;;; COMMENT: column identifiers
-;; (setq fill-column 80) ;; NOTE: column width limit (DEFAULT: 80)
+;; (setq-default fill-column nil) ;; NOTE: column width limit (DEFAULT: 80)
 
 ;;; COMMENT: fill column indicator
 ;; SOURCE: `http://emacswiki.org/emacs/FillColumnIndicator'
