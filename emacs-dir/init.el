@@ -30,11 +30,6 @@
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'
 (eval-when-compile (require 'cl))
 
-;;; COMMENT: customize configuration file
-;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'
-(setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
-(load custom-file 'noerror)
-
 ;;; COMMENT: load configuration files
 (defun require-package (name)
   "Print a loading message and call `require' on package referred to by NAME."
@@ -54,6 +49,11 @@
 (require-package "erc")
 (require-package "user")
 (require-package "appearance")
+
+;;; COMMENT: customize configuration file
+;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'
+(setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
+(load custom-file 'noerror) ;; NOTE: load custom file
 
 ;;; COMMENT: shutdown emacs server
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsAsDaemon'

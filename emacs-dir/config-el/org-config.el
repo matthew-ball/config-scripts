@@ -425,6 +425,8 @@
 (add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" nil nil nil nil "𝕀"))
 (add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" nil nil nil nil "ℚ"))
 (add-to-list 'org-entities-user '("complex" "\\mathbb{C}" nil nil nil nil "ℂ"))
+;; COMMENT: misc
+(add-to-list 'org-entities-user '("mid" "\\mid" t nil nil nil "|"))
 ;; COMMENT: phonetic symbols
 (add-to-list 'org-entities-user '("eng" "\\textipa{N}" nil nil nil nil "ŋ"))
 (add-to-list 'org-entities-user '("esh" "\\textipa{S}" nil nil nil nil "ʃ"))
@@ -780,7 +782,7 @@
 ;; TODO: add `org-toggle-iimage-in-org' to an `org-hook' function
 
 ;;; COMMENT: `org-link'
-;; SOURCE: http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
 (org-add-link-type "ebib" 'ebib)
 
 ;; TODO: add more citation types to ebib
@@ -790,8 +792,7 @@
 			    (format "\\cite{%s}" path)))))
 
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
-(setq org-link-abbrev-alist
-       '(("google"   . "http://www.google.com/search?q=")))
+;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
 
 ;;; COMMENT: word count
 ;; SOURCE: `http://orgmode.org/worg/org-hacks.html'

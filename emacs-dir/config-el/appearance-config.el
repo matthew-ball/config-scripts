@@ -28,10 +28,10 @@
   (select-frame frame)
   (when (display-graphic-p)
     ;; (color-theme-initialize)
-    ;; (color-theme-scintilla)
-    ;; (color-theme-zenburn)
     ;; (load-theme 'whiteboard)
     ;; (powerline-default-theme)
+    ;; (color-theme-zenburn)
+    ;; (require 'anti-zenburn-theme)
     ))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)

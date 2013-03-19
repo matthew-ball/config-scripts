@@ -35,6 +35,35 @@
 		      wget
 		      zenburn))
 
+(defvar custom-packages-alist nil "Packages to be installed through ELPA.")
+
+(setq custom-packages-alist '(("adaptive-wrap" . 0.2)
+			      ("bbdb" . 20130216.1043)
+			      ("color-theme" . 20080305.834)
+			      ("deft" . 20130220.40)
+			      ("diminish" . 20091203.1912)
+			      ("dired-details+" . 20121228.2028)
+			      ("dired-details" . 20130122.14)
+			      ("ebib" . 20130310.1719)
+			      ("emms" . 20121219.1939)
+			      ("ess" . 20130225.1754)
+			      ("gh" . 20130301.1723)
+			      ("gist" . 20130310.1342)
+			      ("gnomenm" . 0.0.3)
+			      ("haskell-mode" . 20130211.2254)
+			      ("ido-ubiquitous" . 20121214.2145)
+			      ("logito" . 20120225.2155)
+			      ("magit" . 20130304.2017)
+			      ("paredit" . 20110508.1256)
+			      ("pcache" . 20120408.1206)
+			      ("powerline" . 20130304.1323)
+			      ("smex" . 20120915.2041)
+			      ("thesaurus" . 20121125.1937)
+			      ("undo-tree" . 20130119.926)
+			      ("wget" . 1.94)
+			      ("workgroups" . 20110724.1825)
+			      ))
+
 ;; ERROR: somethng funny in this function
 (defun emacs-custom-elpa-package-install (&rest junk)
   "Install all custom configuration packages from ELPA.

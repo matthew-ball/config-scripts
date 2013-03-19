@@ -149,6 +149,9 @@
 
 (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
       ;;ido-everywhere t ;; NOTE: enable ido everywhere
+      ido-use-virtual-buffers t ;; NOTE: keep buffers around
+      ;; COMMENT: (THIS IS RIDICULOUSLY AWESOME - this makes C-x (C-)f redundant)
+      ;; TODO: need to work out what the list which records history is - that will make C-x C-f redundant!
       ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
       ido-ignore-extensions t ;; NOTE: ignore extentions
       ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
@@ -159,11 +162,11 @@
       				,(expand-file-name user-organisation-directory))
       ido-case-fold t ;; NOTE: enable case-insensitivity
       ido-enable-last-directory-history t ;; NOTE: enable directory history
-      ido-max-work-directory-list 30 ;; NOTE: remember last used directories
-      ido-max-work-file-list 50 ;; NOTE: ... and files
+      ido-max-work-directory-list 100 ;; NOTE: remember last used directories
+      ido-max-work-file-list 100 ;; NOTE: ... and files
       ido-max-prospects 8 ;; NOTE: don't spam the mini buffer
       ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
-      ;;ido-use-virtual-buffers t ;; NOTE: enable virtual buffers
+      ;; ido-save-directory-list-file (concat user-emacs-directory "ido-directory-list")
       confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
       )
 
@@ -770,5 +773,13 @@ NOTE: See the variable `user-files-alist' for a list of user files."
 (autoload 'browse-kill-ring "browse-kill-ring" "..." t)
 
 (browse-kill-ring-default-keybindings)
+
+;;; COMMENT: auto refresh buffers
+;; SOURCE: `http://www.emacswiki.org/emacs/AutoRevertMode'
+(global-auto-revert-mode 1) ;; NOTE: auto refresh buffers
+
+;; NOTE: auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
 (provide 'general-config)
