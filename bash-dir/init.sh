@@ -143,3 +143,10 @@ fi
 #     : # NOTE: this is executed only when it is a login shell
 #     exec emacs --daemon
 # fi
+
+# NOTE: change to home
+cd $HOME
+
+# NOTE: bash-ido
+# SOURCE: http://gitorious.org/bash-ido
+# . /home/chu/Programming/projects/bash-ido/bash-ido

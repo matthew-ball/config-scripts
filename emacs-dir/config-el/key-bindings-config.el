@@ -1,9 +1,32 @@
-;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/key-bindings-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
+;;; key-bindings-config.el --- Configuration for key-bindings
+
+;; Copyright (C) 2013  Matthew Ball
+
+;; Author: Matthew Ball <mathew.ball@gmail.com>
+;; Keywords: configuration
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; Configuration for key-bindings.
+
+;;; Code:
 
 ;; TODO: considering changing the `Ctrl' key to `CapsLock'
 
-;;; COMMENT: when running GNU Emacs inside a terminal mode
+;;; IMPORTANT: when running GNU Emacs inside a terminal mode
 (defun terminal-mode-init (&rest args)
   "Cleans up how GNU Emacs receives/interprets the CONTROL and META characters when run in a terminal session."
   (interactive)
@@ -28,10 +51,16 @@
   )
 
 ;; ERROR: this does not work
-(unless (window-system)
-  (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
+;; (unless (window-system)
+;;   (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
 
-;;; COMMENT: global key-bindings
+;; NOTE: this would be nice and simple, but wouldn't save much (unless it did an `fboundp' search, or something.
+(defmacro bind-key (key &rest body)
+  `(global-set-key (kbd ,key) ,@body))
+
+(bind-key "C-<SPC>" 'set-mark-command)
+
+;;; IMPORTANT: global key-bindings
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html'
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/emacs/Key-Bindings.html'
 ;; ---
@@ -39,22 +68,22 @@
 ;; (global-set-key (kbd "M-<f1>") 'function) ;; NOTE: ...
 ;; (global-set-key (kbd "C-<f1>") 'function) ;; NOTE: ...
 
-;; COMMENT: emacs session
+;; IMPORTANT: emacs session
 (global-set-key (kbd "<f2>") 'server-shutdown) ;; NOTE: kill the current emacs --daemon session
 (global-set-key (kbd "M-<f2>") 'save-desktop-session) ;; NOTE: save the current GNU Emacs session
 (global-set-key (kbd "C-<f2>") 'restore-desktop-session) ;; NOTE: load the saved GNU Emacs session
 
-;; COMMENT: search string
-(global-set-key (kbd "<f3>") 'show-custom-comment-tag) ;; NOTE: show custom comments
-(global-set-key (kbd "M-<f3>") 'search-string) ;; NOTE: search for a string over buffers
-(global-set-key (kbd "C-<f3>") 'search-string-under-point) ;; NOTE: search string under point
+;; IMPORTANT: search string
+;; (global-set-key (kbd "<f3>") 'show-custom-comment-tag) ;; NOTE: show custom comments
+;; (global-set-key (kbd "M-<f3>") 'search-string) ;; NOTE: search for a string over buffers
+;; (global-set-key (kbd "C-<f3>") 'search-string-under-point) ;; NOTE: search string under point
 
-;; COMMENT: emacs interactive functions (NOTE: these are my most commonly used shortcuts)
+;; IMPORTANT: emacs interactive functions (NOTE: these are my most commonly used shortcuts)
 (global-set-key (kbd "<f4>") 'erc-start-or-switch) ;; NOTE: start an erc session (or switch to the most active buffer)
-(global-set-key (kbd "M-<f4>") 'start-bash) ;; NOTE: switch to a bash shell
+(global-set-key (kbd "M-<f4>") 'eshell) ;; NOTE: switch to a bash shell
 (global-set-key (kbd "C-<f4>") 'gnus) ;; NOTE: start a gnus session (or switch to an existing session)
 
-;; COMMENT: programming specific tasks
+;; IMPORTANT: programming specific tasks
 (defconst programming-prefix-key (kbd "<f5>") "Programming prefix key.")
 (defvar programming-map (lookup-key global-map programming-prefix-key) "Keymap designed for programming.")
 
@@ -75,7 +104,7 @@
 ;; (global-set-key (kbd "M-<f5>") 'function)
 ;; (global-set-key (kbd "C-<f5>") 'function)
 
-;; COMMENT: writing specific tasks
+;; IMPORTANT: writing specific tasks
 (defconst writing-prefix-key (kbd "<f6>") "Writing prefix key.")
 (defvar writing-map (lookup-key global-map writing-prefix-key) "Keymap designed for writing.")
 
@@ -93,7 +122,7 @@
 ;;(global-set-key (kbd "M-<f6>") 'function)
 ;;(global-set-key (kbd "C-<f6>") 'function)
 
-;; COMMENT: emacs internals
+;; IMPORTANT: emacs internals
 ;; TODO: should have `gnus' and `erc' etc but meh
 (defconst internals-prefix-key (kbd "<f7>") "Emacs internals prefix key.")
 (defvar internals-map (lookup-key global-map internals-prefix-key) "Keymap designed for emacs internal functions.")
@@ -117,7 +146,7 @@
 ;; (global-set-key (kbd "M-<f7>") 'function)
 ;; (global-set-key (kbd "C-<f7>") 'function)
 
-;; COMMENT: `org-mode' related
+;; IMPORTANT: `org-mode' related
 (defconst org-prefix-key (kbd "<f8>") "Emacs org-mode prefix key.")
 (defvar org-map (lookup-key global-map org-prefix-key) "Keymap designed for Emacs org-mode functions.")
 
@@ -141,22 +170,22 @@
 ;; (global-set-key (kbd "M-<f8>") 'function)
 ;; (global-set-key (kbd "C-<f8>") 'function)
 
-;; COMMENT:
+;; IMPORTANT:
 ;; (global-set-key (kbd "<f9>") 'function)
 ;; (global-set-key (kbd "M-<f9>") 'function)
 ;; (global-set-key (kbd "C-<f9>") 'function)
 
-;; COMMENT:
+;; IMPORTANT:
 ;; (global-set-key (kbd "<f10>") 'function)
 ;; (global-set-key (kbd "M-<f10>") 'function)
 ;; (global-set-key (kbd "C-<f10>") 'function)
 
-;; COMMENT:
+;; IMPORTANT:
 ;; (global-set-key (kbd "<f11>") 'function)
 ;; (global-set-key (kbd "M-<f11>") 'function)
 ;; (global-set-key (kbd "C-<f11>") 'function)
 
-;; COMMENT:
+;; IMPORTANT:
 ;; (global-set-key (kbd "<f12>") 'function)
 ;; (global-set-key (kbd "M-<f12>") 'function)
 ;; (global-set-key (kbd "C-<f12>") 'function)
@@ -181,8 +210,10 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files) ;; NOTE: shows a list of recently opened files
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file) ;; NOTE: use ido to navigate recentf files
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window) ;; NOTE: open new window
+(global-set-key (kbd "C-x p") 'select-previous-window)
 ;; ---
 (global-set-key (kbd "C-z") 'undo-tree-visualize) ;; NOTE: visualise changes in the `undo-tree'
+(global-set-key (kbd "M-Z") 'undo-tree-redo) ;; NOTE: visualise changes in the `undo-tree'
 ;;(global-set-key (kbd "C-z") 'undo) ;; NOTE: undo some previous change
 ;; ---
 (global-set-key (kbd "C-x a r") 'align-regexp) ;; NOTE: align columns within a region
@@ -210,6 +241,7 @@
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; NOTE: remove binding on C-z (suspend-frame)
 
-;;; COMMENT: mode specific key-bindings
+;;; IMPORTANT: mode specific key-bindings
 
 (provide 'key-bindings-config)
+;;;key-bindings-config.el ends here

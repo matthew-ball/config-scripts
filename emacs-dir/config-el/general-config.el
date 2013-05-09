@@ -1,158 +1,131 @@
-;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/general-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
+;;; general-config.el --- Configuration for general settings
 
-;;; COMMENT: user variables
-(defgroup user-variables nil
-  "User variables.")
+;; Copyright (C) 2013  Matthew Ball
 
-;; NOTE: user directories
-(defgroup user-directories nil
-  "User directories."
-  :group 'user-variables)
+;; Author: Matthew Ball <mathew.ball@gmail.com>
+;; Keywords: configuration
 
-(defcustom user-shell (getenv "SHELL") "The user's $SHELL environment variable." :group 'user-directories :type 'string)
-(defcustom user-browser (getenv "BROWSER") "The user's $BROWSER environment variable." :group 'user-directories :type 'string)
-(defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable." :group 'user-directories :type 'string)
-(defcustom user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
-(defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents." :group 'user-directories :type 'string)
-(defcustom user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news." :group 'user-directories :type 'string)
-(defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
-(defcustom user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music." :group 'user-directories :type 'string)
-(defcustom user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos." :group 'user-directories :type 'string)
-(defcustom user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files." :group 'user-directories :type 'string)
-(defcustom user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects." :group 'user-directories :type 'string)
-(defcustom user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material." :group 'user-directories :type 'string)
-(defcustom user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material." :group 'user-directories :type 'string)
-(defcustom user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files." :group 'user-directories :type 'string)
-(defcustom user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files." :group 'user-directories :type 'string)
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
 
-;; NOTE: user files
-(defgroup user-files nil
-  "User files."
-  :group 'user-variables)
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 
-(defcustom user-org-contacts-file (format "%s/contacts.org" user-organisation-directory) "File for user's contacts." :group 'user-files :type 'string)
-(defcustom user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation." :group 'user-files :type 'string)
-(defcustom user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
-(defcustom user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation." :group 'user-files :type 'string)
-(defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;; NOTE: user details
-(setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
-(defcustom user-university-id "u4537508" "University ID for the user." :group 'user-variables :type 'string)
-(defcustom user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user." :group 'user-variables :type 'string)
-(defcustom user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user." :group 'user-variables :type 'string)
+;;; Commentary:
 
-;;; COMMENT: user functions
-(defun eval-and-replace (&rest junk)
-  "Replace the preceding s-expression with its value."
+;; Configuration for general settings.
+
+;;; Code:
+
+;;; IMPORTANT: package manager
+;; SOURCE: `http://emacswiki.org/emacs/ELPA'
+(require 'package)
+
+(eval-after-load "package" '(package-initialize))
+
+;; NOTE: set download repositories
+(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+			 ("gnu" . "http://elpa.gnu.org/packages/")
+			 ("marmalade" . "http://marmalade-repo.org/packages/")))
+
+(defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
+
+;; IMPORTANT: this needs to be called often (i.e. whenever a new package is installed/removed)
+(defalias 'export-packages '(lambda () "Export `package-alist' variable." (export-custom-packages-alist "/home/chu/.emacs.d/elpa/package-list"))) ;; TODO: clean up the hard-coded path name
+
+(defun export-custom-packages-alist (file &rest junk)
+  "Write the contents of `package-alist' to FILE."
+  (save-excursion
+    (with-temp-file file
+      (insert (format "%S" package-alist)))))
+
+(defun load-custom-package-alist (file)
+  "Load a file of packages into the variable `custom-packages-alist'."
   (interactive)
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
+  (when (file-exists-p file)
+    (message "this will read the file as `custom-packages-alist'."))
+  (custom-packages-install))
 
-;; TODO: this works, but as I no longer have my whole dot emacs file in a single location, it serves no purpose
-;; (defun switch-to-dot-emacs (&rest junk)
-;;   "Switch to init.el file (or evaluate the buffer if the init.el file is present)."
-;;   (interactive)
-;;   ;; (config files)
-;;   (if (equal (buffer-name) "init.el")
-;;       (eval-buffer) ;; evaluate the current buffer
-;;     (find-file (concat (expand-file-name user-emacs-directory) "init.el")))) ;; switch to the init.el file
+(defun custom-packages-install ()
+  "Install all custom configuration packages with `package.el'."
+  (interactive)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (dolist (package custom-packages-alist)
+    (let ((package-name (car package))
+	  (package-version (cdr package)))
+      (unless (package-installed-p (intern package-name))
+        (package-install (intern package-name))))))
 
-;;; COMMENT: initial minibuffer message
-;; (defun display-startup-echo-area-message (&rest junk)
-;;   "Clear the message buffer initially."
-;;   (message ""))
-
-;;; COMMENT: default variable values
+;; IMPORTANT: default variable values
 (setq inhibit-startup-message t ;; NOTE: turn off startup message
       inhibit-startup-echo-area-message t ;; NOTE: turn off startup echo area message
       initial-scratch-message (concat ";; For information about "
-				      (substring (emacs-version) 0 16)
-				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
+      				      (substring (emacs-version) 0 16)
+      				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
       completion-ignore-case t ;; NOTE: ignore case in auto-completing text
       read-file-name-completion-ignore-case t ;; NOTE: ignore cases in filenames
-      auto-compression-mode 1 ;; NOTE: automatically parse an archive
-      message-log-max 200 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
-      show-trailing-whitespace 1 ;; NOTE: show trailing whitespace
-      scroll-margin 0 ;; NOTE: use smooth scrolling
-      scroll-conservatively 100000 ;; NOTE: ... the defaults
-      scroll-up-aggressively 0 ;; NOTE: ... are very
-      scroll-down-aggressively 0 ;; NOTE: ... annoying
+      auto-compression-mode t ;; NOTE: automatically parse an archive
+      message-log-max 1000 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
+      show-trailing-whitespace t ;; NOTE: show trailing whitespace
+      scroll-margin 0 ;; NOTE: use ...
+      scroll-conservatively 10000 ;; NOTE: ... smooth scrolling
       scroll-preserve-screen-position t ;; NOTE: preserve screen position with C-v/M-v
       auto-save-interval 1000 ;; NOTE: change auto-save interval from 300 to 1000 keystrokes
       sentence-end-double-space 'nil ;; NOTE: sentences end with a single space
       echo-keystrokes 0.1 ;; NOTE: see what you are typing
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings
 
-;;; COMMENT: default major mode
-;; (setq default-major-mode
-;;       (lambda ()
-;; 	(let ((buffer-file-name (or buffer-file-name (buffer-name))))
-;; 	  (set-auto-mode))))
+(setq-default scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
+	      scroll-down-aggressively 0) ;; NOTE: local variables for smooth scrolling
 
-;;; COMMENT: default auto-mode list
+;;; IMPORTANT: default auto-mode list
+(add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; NOTE: open `README' files in `org-mode'
+(add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; NOTE: open `NEWS' files in `org-mode'
+;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; NOTE: open `*.org' files in `org-mode'
+;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; NOTE: open `*.hs' files in `haskell-mode'
+;; (add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; NOTE: open `*.cabal' files in `haskell-cabal-mode'
+;; (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; NOTE: open `*.tex' files in `latex-mode'
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; NOTE: open .screenrc in `shell-script-mode'
-;; (add-to-list 'auto-mode-alist '(".mpdconf/" . shell-script-mode)) ;; NOTE: open `.mpdconf/' files in `shell-script-mode'
 ;; (add-to-list 'auto-mode-alist '(".emacs" . emacs-lisp-mode)) ;; NOTE: open .emacs in `emacs-lisp-mode'
 ;; (add-to-list 'auto-mode-alist '(".stumpwmrc$" . stumpwm-mode)) ;; NOTE: open .stumpwmrc in `stumpwm-mode'
 ;; (add-to-list 'auto-mode-alist '(".conkerorrc/" . javascript-mode)) ;; NOTE: open `.conkerorrc/' files in `javascript-mode'
-(add-to-list 'auto-mode-alist '("bashrc" . shell-script-mode)) ;; NOTE: open `.bashrc' file in `shell-script-mode'
-(add-to-list 'auto-mode-alist '("stumpwmrc" . common-lisp-mode)) ;; NOTE: open `.stumpwmrc' file in `common-lisp-mode'
+;; (add-to-list 'auto-mode-alist '("bashrc" . shell-script-mode)) ;; NOTE: open `.bashrc' file in `shell-script-mode'
+;; (add-to-list 'auto-mode-alist '("stumpwmrc" . common-lisp-mode)) ;; NOTE: open `.stumpwmrc' file in `common-lisp-mode'
 ;; (add-to-list 'auto-mode-alist '("stumpwmrc" . stumpwm-mode)) ;; NOTE: open `.stumpwmrc' file in `stumpwm-mode'
-(add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; NOTE: open `README' files in `org-mode'
-(add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; NOTE: open `NEWS' files in `org-mode'
-;; (add-to-list 'auto-mode-alist '("/mutt" . mail-mode)) ;; NOTE: open `mutt'-related buffers in `mail-mode'
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; NOTE: open `*.org' files in `org-mode'
-(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode)) ;; NOTE: open `*.js' files in `javascript-mode'
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; NOTE: open `*.hs' files in `haskell-mode'
-(add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; NOTE: open `*.cabal' files in `haskell-cabal-mode'
-(add-to-list 'auto-mode-alist '("\\.py$" . python-mode)) ;; NOTE: open `*.py' files in `python-mode'
-;; (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode)) ;; NOTE: open `*.cs' files in `c-sharp-mode'
-(add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; NOTE: open `*.tex' files in `latex-mode'
-;; (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word)) ;; NOTE: open `*.doc' documents with `antiword'
-;; (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)) ;; NOTE: open `*.lua' files in `lua-mode'
-;; (add-to-list 'auto-mode-alist '("\\.ot$" . otter-mode)) ;; NOTE: open `*.ot' files in `otter-mode'
-;; (add-to-list 'auto-mode-alist '("\\.in$" . otter-mode)) ;; NOTE: open`*.in' files in `otter-mode'
-(add-to-list 'interpreter-mode-alist '("python" . python-mode)) ;; NOTE: open python files in a psuedo-python interpreter
 
-;;; COMMENT: selection
-(delete-selection-mode 1) ;; NOTE: replace (delete) selected region
-
-;; TODO: these could possibly be moved to `appearance-config.el'
-;;; COMMENT: visible alarm
-;; (setq visible-bell t) ;; NOTE: flash the current frame on error (instead of beep)
-
-;;; COMMENT: error bell
-(setq ring-bell-function 'ignore) ;; NOTE: ignore error bell
-
-;;; COMMENT: uniquify (unique buffer names)
+;;;IMPORTANT: uniquify (unique buffer names)
 ;; SOURCE: `http://emacswiki.org/emacs/uniquify'
-(require 'uniquify) ;; TODO: change this to an autoload
+(require 'uniquify)
 
 (setq uniquify-buffer-name-style 'reverse
       uniquify-separator "/"
       uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified
       uniquify-ignore-buffers-re "^\\*") ;; NOTE: don't muck with special buffers
 
-;;; COMMENT: ido mode
+;;; IMPORTANT: ido mode
 ;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
-(require 'ido) ;; TODO: change this to an autoload
-(require 'ido-ubiquitous) ;; TODO: change this to an autoload
+(require 'ido)
 
 (ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
-(ido-ubiquitous-mode t)
 
 (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
-      ;;ido-everywhere t ;; NOTE: enable ido everywhere
       ido-use-virtual-buffers t ;; NOTE: keep buffers around
-      ;; COMMENT: (THIS IS RIDICULOUSLY AWESOME - this makes C-x (C-)f redundant)
-      ;; TODO: need to work out what the list which records history is - that will make C-x C-f redundant!
       ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
+      ;; ido-everywhere t ;; NOTE: enable ido everywhere
+      ;; ido-use-filename-at-point t
+      ;; ido-use-url-at-point t
+      ;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
+      ;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
+      ;; ido-ignore-directories '("." "..")
+      ;; ido-ignore-files '(".")
       ido-ignore-extensions t ;; NOTE: ignore extentions
       ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
 			   "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
@@ -162,13 +135,11 @@
       				,(expand-file-name user-organisation-directory))
       ido-case-fold t ;; NOTE: enable case-insensitivity
       ido-enable-last-directory-history t ;; NOTE: enable directory history
-      ido-max-work-directory-list 100 ;; NOTE: remember last used directories
-      ido-max-work-file-list 100 ;; NOTE: ... and files
-      ido-max-prospects 8 ;; NOTE: don't spam the mini buffer
+      ido-max-work-directory-list 500 ;; NOTE: remember last used directories
+      ido-max-work-file-list 500 ;; NOTE: ... and files
+      ido-max-prospects 7 ;; NOTE: don't spam the mini buffer
       ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
-      ;; ido-save-directory-list-file (concat user-emacs-directory "ido-directory-list")
-      confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
-      )
+      confirm-nonexistent-file-or-buffer nil) ;; NOTE: the confirmation is rather annoying
 
 (defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
   "Find a recent file using `ido-mode'."
@@ -178,76 +149,28 @@
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file (find-file file))))
 
-(defun ido-goto-symbol (&optional symbol-list)
-  "Refresh `imenu' and jump to a place in the buffer using `ido-mode'."
-  (interactive)
-  (unless (featurep 'imenu)
-    (require 'imenu nil t))
-  (cond
-   ((not symbol-list)
-    (let ((ido-mode ido-mode)
-	  (ido-enable-flex-matching
-	   (if (boundp 'ido-enable-flex-matching)
-	       ido-enable-flex-matching t))
-	  name-and-pos symbol-names position)
-      (unless ido-mode
-	(ido-mode 1)
-	(setq ido-enable-flex-matching t))
-      (while (progn
-	       (imenu--cleanup)
-	       (setq imenu--index-alist nil)
-	       (ido-goto-symbol (imenu--make-index-alist))
-	       (setq selected-symbol (ido-completing-read "Goto symbol: " symbol-names))
-	       (string= (car imenu--rescan-item) selected-symbol)))
-      (unless (and (boundp 'mark-active) mark-active)
-	(push-mark nil t nil))
-      (setq position (cdr (assoc selected-symbol name-and-pos)))
-      (cond
-       ((overlayp position)
-	(goto-char (overlay-start position)))
-       (t
-	(goto-char position)))))
-   ((listp symbol-list)
-    (dolist (symbol symbol-list)
-      (let (name position)
-	(cond
-	 ((and (listp symbol) (imenu--subalist-p symbol))
-	  (ido-goto-symbol symbol))
-	 ((listp symbol)
-	  (setq name (car symbol))
-	  (setq position (cdr symbol)))
-	 ((stringp symbol)
-	  (setq name symbol)
-	  (setq position
-		(get-text-property 1 'org-imenu-marker symbol))))
-	(unless (or (null position) (null name)
-		    (string= (car imenu--rescan-item) name))
-	  (add-to-list 'symbol-names name)
-	  (add-to-list 'name-and-pos (cons name position))))))))
+;;; IMPORTANT: recent files
+;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
+(require 'recentf) ;; TODO: change to an autoload
 
-;;; COMMENT: smex mode
-;; SOURCE: `http://emacswiki.org/emacs/Smex'
-(autoload 'smex "smex" "Super-charge ido-mode." t)
+(setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recent-files") ;; NOTE: recently saved files
+      recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
+      recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
-(setq smex-save-file (concat user-emacs-directory "smex-items")
-      smex-key-advice-ignore-menu-bar t)
+(eval-after-load "recentf" '(recentf-mode t))
 
-(eval-after-load "smex" '(smex-initialize)) ;; NOTE: super-charge `ido-mode'
-
-;;; COMMENT: find file at point
-;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
-(autoload 'find-file-at-point "ffap" "" t)
-
-;;; COMMENT: ibuffer
+;;; IMPORTANT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
 (autoload 'ibuffer "ibuffer" "..." t)
 
+;; TODO: investigate `ibuffer-directory-abbrev-list'
 (eval-after-load "ibuffer" '(require 'ibuf-ext))
 (eval-after-load "ibuf-ext"
  '(progn
-    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0\\*$")
-    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
-    (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")))
+    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0*\\*$")
+    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1*\\*$")
+    (add-to-list 'ibuffer-never-show-predicates " ^\\*Ibuffer\\*$")
+    (add-to-list 'ibuffer-never-show-predicates " ^\\*AgendaCommands\\*$")))
 
 (setq ibuffer-saved-filter-groups
       `(("default"
@@ -390,6 +313,7 @@
 	      (name . "^\\*Package Info\\*$")))
 	 ("Miscellaneous" ;; NOTE: miscellaneous special buffers
 	  (or (mode . occur-mode)
+              (mode . grep-mode)
 	      (mode . customize-mode)
 	      (mode . Custom-mode)
 	      (mode . completion-list-mode)
@@ -398,6 +322,7 @@
 	      (mode . browse-kill-ring-mode)
 	      (name . "\\*scratch\\*$")
 	      (name . "\\*Messages\\*$")
+	      (name . "\\*Backtrace\\*$")
 	      (name . "\\*Keys\\*$")
 	      (name . "\\*Disabled Command\\*$")
 	      (name . "\\*Apropos\\*$")
@@ -406,125 +331,63 @@
 	      (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
 (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
-      ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
+      ;; ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
+      ibuffer-default-sorting-mode 'filename/process ;; NOTE: sort buffers by `buffer-file-name'
       ibuffer-sorting-mode 'recency
       ibuffer-expert t ;; NOTE: do not ask for confirmation
       ;;ibuffer-shrink-to-minimum-size t
-      ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
-      ibuffer-use-header-line t
-      ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
       ;;ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
+      ;;ibuffer-use-other-window t
+      ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
+      ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
       ibuffer-case-fold-search t ;; NOTE: ignore case when searching
-      ;; TODO: investigate `ibuffer-directory-abbrev-list'
       ibuffer-old-time 72 ;; NOTE: number of hours before a buffer is considered "old"
-      ibuffer-trunacte-lines t ;; NOTE: do not display continuation lines
-      ibuffer-use-header-line t ;; NOTE: display a line containing current filters
-      )
+      ibuffer-truncate-lines t ;; NOTE: do not display continuation lines
+      ibuffer-use-header-line t) ;; NOTE: display a line containing current filters
 
 (add-hook 'ibuffer-mode-hook (lambda ()
 			       (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
-			       ;; (ibuffer-switch-format)
 			       (ibuffer-switch-to-saved-filter-groups "default")))
 
-;;; COMMENT: abbreviation expansion
-;; SOURCE:
-(eval-after-load "dabbrev" '(defalias 'dabbrev-expand 'hippie-expand))
+;;; IMPORTANT: find file at point
+;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
+(autoload 'find-file-at-point "ffap" "" t)
 
-;;; COMMENT: auto-complete mode
-;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(when (require 'auto-complete-config nil 'noerror) ;; TODO: change this to an autoload
-  (add-to-list 'ac-dictionary-directories (concat (expand-file-name user-emacs-directory) "ac-dict"))
-  (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
-  (ac-config-default))
-
-(setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-      ac-ignore-case t ;; NOTE: always ignore case
-      ac-auto-show-menu t) ;; NOTE: automatically show menu
-
-(set-face-background 'ac-candidate-face "lightgray")
-(set-face-underline 'ac-candidate-face "darkgray")
-(set-face-background 'ac-selection-face "steelblue")
-
-(ac-flyspell-workaround) ;; NOTE: apparently the flyspell-mode process disables auto-completion
-
-(global-auto-complete-mode t) ;; NOTE: enable `auto-complete' where it makes sense
-
-;; (define-globalized-minor-mode real-global-auto-complete-mode ;; NOTE: dirty fix for having AC everywhere
-;;   auto-complete-mode (lambda ()
-;;                        (if (not (minibufferp (current-buffer)))
-;; 			   (auto-complete-mode 1))))
-
-;; (real-global-auto-complete-mode t)
-
-;;; COMMENT: smart tab
-(defun smart-tab () ;; NOTE: implement a smarter TAB
-  "This smart tab is minibuffer compliant: it acts as usual in the minibuffer.
-
-If mark is active, indents region. Else if point is at the end of a symbol, expands it. Else indents the current line."
-  (interactive)
-  (if (minibufferp)
-      (unless (minibuffer-complete)
-	(auto-complete nil)) ;; NOTE: use `auto-complete'
-	;; (hippie-expand nil)) ;; NOTE: use `hippie-expand'
-	;; (dabbrev-expand nil)) ;; NOTE: use `dabbrev-expand'
-    (if mark-active
-	(indent-region (region-beginning)
-		       (region-end))
-      (if (looking-at "\\_>")
-	  (auto-complete nil) ;; NOTE: use `auto-complete'
-	  ;; (hippie-expand nil)) ;; NOTE: use `hippie-expand'
-	  ;; (dabbrev-expand nil) ;; NOTE: use `dabbrev-expand'
-	(indent-for-tab-command)))))
-
-;;; COMMENT: enable/disable functions
-(put 'overwrite-mode 'disabled t) ;; NOTE: disable `overwrite-mode'
-(put 'dired-find-alternate-file 'disabled nil) ;; NOTE: enable re-use of dired buffers
-
-;;; COMMENT: mini-buffer
-(file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
-(fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
-;; (savehist-mode t) ;; NOTE: keep mini buffer history between session (IMPORTANT: may be deprecated)
-(setq read-buffer-completion-ignore-case t) ;; NOTE: ignore case when reading a buffer name
-
-;;; COMMENT: temporary buffers
-(temp-buffer-resize-mode t) ;; NOTE: auto-fit the *Help* buffer to its contents
-
-;;; COMMENT: stumpwm mode
-;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
-(autoload 'stumpwm-mode "stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
-
-;; FIX: this doesn't appear to work with emacs 24...
-;;; COMMENT: single line copy
-;; (defadvice kill-ring-save (before slick-copy activate compile)
-;;   "When called interactively with no active region, copy a single line instead."
-;;   (interactive
-;;     (if mark-active (list (region-beginning) (region-end))
-;;       (message "Copied line")
-;;       (list (line-beginning-position) (line-beginning-position 2)))))
-
-;; FIX: this doesn't appear to work with emacs 24...
-;;; COMMENT: single line cut
-;; (defadvice kill-region (before slick-cut activate compile)
-;;   "When called interactively with no active region, kill a single line instead."
-;;   (interactive
-;;     (if mark-active (list (region-beginning) (region-end))
-;;       (message "Killed line")
-;;       (list (line-beginning-position) (line-beginning-position 2)))))
-
-;;; COMMENT: tramp
+;;; IMPORTANT: tramp
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
-(autoload 'tramp "Remote file manipulation with Tramp." t)
+(autoload 'tramp "tramp" "Remote file manipulation with Tramp." t)
 
 (setq tramp-default-method "ssh") ;; NOTE: use ssh for tramp
 
-;;; COMMENT: version control
+;;; IMPORTANT: version control
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
 (autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
 
 (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
       magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
 
-;;; COMMENT: backups
+;;; IMPORTANT: enable commands
+;; SOURCE: `http://www.emacswiki.org/emacs/DisabledCommands'
+(setq disabled-command-function nil)
+
+;;; IMPORTANT: mini-buffer
+(file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
+(fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
+(setq read-buffer-completion-ignore-case t) ;; NOTE: ignore case when reading a buffer name
+
+;;; IMPORTANT: selection
+(delete-selection-mode 1) ;; NOTE: replace (delete) selected region
+
+;;; IMPORTANT: save mini-buffer history
+;; SOURCE: `http://emacswiki.org/emacs/SaveHist'
+(savehist-mode t) ;; NOTE: keep mini buffer history between session
+
+(setq savehist-file (concat (expand-file-name user-emacs-directory) "minibuffer-history"))
+
+;;; IMPORTANT: temporary buffers
+(temp-buffer-resize-mode t) ;; NOTE: auto-fit the *Help* buffer to its contents
+
+;;; IMPORTANT: backups
 (setq-default delete-old-versions t) ;; NOTE: delete excess file backups silently
 
 (setq ;; backup-by-copying t ;; NOTE: don't clobber symlinks
@@ -535,17 +398,7 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
       kept-old-versions 2
       version-control t) ;; NOTE: use versioned backups
 
-;;; COMMENT: recent files
-;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
-(require 'recentf) ;; TODO: change to an autoload
-
-(setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recentf") ;; NOTE: recently saved files
-      recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
-      recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
-
-(eval-after-load "recentf" '(recentf-mode t))
-
-;;; COMMENT: desktop save mode
+;;; IMPORTANT: desktop save mode
 ;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
 (autoload 'desktop-save-mode "desktop" "Save session file." t)
 
@@ -569,12 +422,10 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 (setq desktop-path (list (expand-file-name user-emacs-directory))
       desktop-dirname (expand-file-name user-emacs-directory)
       desktop-base-file-name "emacs-desktop"
+      desktop-restore-eager 10
       history-length 250)
 
 (eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
-
-;; ERROR: this (obviously) does not work as expected
-;; (add-hook 'find-file-hook (lambda () (desktop-save-in-desktop-dir))) ;; NOTE: save the desktop everytime a (new) file is opened
 
 (setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
       (append '((extended-command-history . 30)
@@ -606,175 +457,13 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
   (when (not (emacs-process-p ad-return-value))
     (setq ad-return-value nil)))
 
-;;; COMMENT: flyspell
-;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-(autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
-;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
-(autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
+;;; IMPORTANT: browse kill ring
+;; SOURCE: `http://www.emacswiki.org/BrowseKillRing'
+(autoload 'browse-kill-ring "browse-kill-ring" "Browse the `kill-ring'." t)
 
-(eval-after-load "flyspell" '(add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
+(eval-after-load "browse-kill-ring" '(browse-kill-ring-default-keybindings))
 
-;;; COMMENT: ispell
-(setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
-      ispell-parser 'tex
-      ispell-extra-args '("--sug-mode=ultra"))
-
-;;; COMMENT: doc-view
-;; SOURCE: `http://www.emacswiki.org/emacs/DocViewMode'
-(autoload 'doc-view-mode "doc-view" "Read PDFs with GNU Emacs." t)
-
-(setq doc-view-continuous t)
-
-;;; COMMENT: ansi-terminal
-;; SOURCE: `http://www.emacswiki.org/emacs/AnsiTerm'
-(getenv "TERM") ;; NOTE: the terminal used when GNU Emacs was started
-
-;; TODO: add a prefix argument for `term-line-mode' and `term-char-mode'
-(defun start-new-term (&optional term-mode)
-  "Start a new `ansi-term' shell in the directory of current buffer."
-  (ansi-term user-shell)
-  ;; (ansi-term "/bin/bash")
-  ;; (if (eq term-mode nil)
-  ;;     ;; (term-char-mode) ;; NOTE: make it feel like a character terminal
-  ;;     (term-line-mode)) ;; NOTE: make it feel like a GNU Emacs session
-  (message "Starting terminal session."))
-
-;;; COMMENT: `ansi-term' session management
-(defun terminal-start-or-switch (program &optional use-existing)
-  "Run program PROGRAM in a terminal buffer.
-
-If USE-EXISTING is non-nil, and PROGRAM is already running, switch to that buffer instead of starting a new instance."
-  (interactive "sEnter program: ")
-  (let ((bufname (concat "*" program "*")))
-    (when (not (and use-existing
-		    (let ((buf (get-buffer bufname)))
-		      (and buf (buffer-name (switch-to-buffer bufname))))))
-      (ansi-term program program))))
-
-(defmacro start-term-program-shortcut (program)
-  "Macro to launch PROGRAM in TERMINAL."
-  (let ((func (intern (concat "start-" program)))
-	(doc (format "Launch %s in an `ansi-term' session." program)))
-    `(defun ,func nil
-       ,doc
-       (interactive)
-       (save-excursion
-	 (save-current-buffer
-	   (split-window-below)
-	   (terminal-start-or-switch ,program t))))))
-
-(defun kill-term (&rest junk)
-  "Close an `ansi-shell' session and kill the remaining buffer."
-  (interactive)
-  (when (equal major-mode 'term-mode)
-   (progn
-      (term-kill-subjob)
-      (kill-buffer))))
-
-;;; COMMENT: remote terminal hosts
-;; FIX: use the new functions above
-(defun remote-term (new-buffer-name cmd &rest switches) ;; NOTE: use this for remote so I can specify command line arguments
-  "Some documentation."
-  (setq term-ansi-buffer-name (concat "" new-buffer-name ""))
-  (setq term-ansi-buffer-name (generate-new-buffer-name term-ansi-buffer-name))
-  (setq term-ansi-buffer-name (apply 'make-term term-ansi-buffer-name cmd nil switches))
-  (set-buffer term-ansi-buffer-name)
-  (term-mode)
-  (term-char-mode)
-  (term-set-escape-char ?\C-x)
-  (switch-to-buffer term-ansi-buffer-name))
-
-;; TODO: I think I will need to learn `comint-mode' a bit more for this (I think the above fix is ugly)
-(defun open-partch-connection (&rest junk) ;; FIX: does not work
-  "Open an SSH connection to the server `partch.anu.edu.au' with a university login number."
-  (remote-term "partch" "ssh" "u4537508@partch.anu.edu.au"))
-
-;; FIX: make this work
-;;(define-key term-mode-map (kbd "C-c q") 'kill-term) ;; TODO: map (kcd "C-c q") to `kill-term' function
-
-(start-term-program-shortcut "bash") ;; NOTE: create command `start-bash'
-(start-term-program-shortcut "htop") ;; NOTE: create command `start-htop'
-;; (start-term-program-shortcut "mutt") ;; NOTE: create command `start-mutt'
-;; (start-term-program-shortcut "aptitude") ;; NOTE: create command `start-aptitude'
-
-;;; COMMENT: interaction with `transient-mark-mode'
-(defadvice term-line-mode (after term-line-mode-fixes ()) ;; NOTE: enable transient mark modes in term-line-mode
-  (set (make-local-variable 'transient-mark-mode) t))
-
-(defadvice term-char-mode (after term-char-mode-fixes ()) ;; NOTE: disable transient mark modes in term-char-mode
-  (set (make-local-variable 'transient-mark-mode) nil))
-
-;;; COMMENT: transient-mark-mode interaction and ansi colour support
-(eval-after-load "shell" '(progn
-                            (ad-activate 'term-line-mode)
-                            (ad-activate 'term-char-mode)
-                            (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)))
-
-;; COMMENT: smart buffer switching
-(defun next-user-buffer ()
-  "Switch to the next user buffer in cyclic order.
-
-User buffers are those not starting with *."
-  (interactive)
-  (next-buffer)
-  (let ((i 0))
-    (while (and (string-match "^*" (buffer-name)) (< i 50))
-      (setq i (1+ i)) (next-buffer) )))
-
-(defun previous-user-buffer ()
-  "Switch to the previous user buffer in cyclic order.
-
-User buffers are those not starting with *."
-  (interactive)
-  (previous-buffer)
-  (let ((i 0))
-    (while (and (string-match "^*" (buffer-name)) (< i 50))
-      (setq i (1+ i)) (previous-buffer))))
-
-;;; COMMENT: switch to `*scratch*' buffer
-(defun switch-to-scratch (&rest args)
-  (interactive)
-  (switch-to-buffer "*scratch*"))
-
-;;; COMMENT: quick open directories and files
-(defvar user-files-alist '() "List of user's files.")
-
-(add-to-list 'user-files-alist `("home" . ,user-home-directory))
-(add-to-list 'user-files-alist `("scripts" . ,user-scripts-directory))
-(add-to-list 'user-files-alist `("documents" . ,user-documents-directory))
-(add-to-list 'user-files-alist `("news" . ,user-news-directory))
-(add-to-list 'user-files-alist `("mail" . ,user-mail-directory))
-(add-to-list 'user-files-alist `("audio" . ,user-audio-directory))
-(add-to-list 'user-files-alist `("video" . ,user-video-directory))
-(add-to-list 'user-files-alist `("programming" . ,user-programming-directory))
-(add-to-list 'user-files-alist `("projects" . ,user-projects-directory))
-(add-to-list 'user-files-alist `("reading" . ,user-reading-directory))
-(add-to-list 'user-files-alist `("writing" . ,user-writing-directory))
-(add-to-list 'user-files-alist `("organisation" . ,user-organisation-directory))
-(add-to-list 'user-files-alist `("university" . ,user-university-directory))
-(add-to-list 'user-files-alist `("org university" . ,user-org-university-file))
-(add-to-list 'user-files-alist `("org notes" . ,user-org-notes-file))
-(add-to-list 'user-files-alist `("org projects" . ,user-org-projects-file))
-(add-to-list 'user-files-alist `("org archive" . ,user-org-archive-file))
-
-(defun quick-open (&rest junk)
-  "Open specific user files.
-
-NOTE: See the variable `user-files-alist' for a list of user files."
-  (interactive)
-  (let ((target (ido-completing-read "Select target: " (mapcar #'(lambda (entry) (car entry)) user-files-alist))))
-    (find-file (cdr (assoc target user-files-alist)))))
-
-;;; COMMENT: encryption
-;; TODO: set up `http://emacswiki.org/emacs/EasyPG'
-
-;;; COMMENT: browse kill ring
-(autoload 'browse-kill-ring "browse-kill-ring" "..." t)
-
-(browse-kill-ring-default-keybindings)
-
-;;; COMMENT: auto refresh buffers
+;;; IMPORTANT: auto refresh buffers
 ;; SOURCE: `http://www.emacswiki.org/emacs/AutoRevertMode'
 (global-auto-revert-mode 1) ;; NOTE: auto refresh buffers
 
@@ -782,4 +471,144 @@ NOTE: See the variable `user-files-alist' for a list of user files."
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+;;; IMPORTANT: eshell
+;; SOURCE: `http://emacswiki.org/emacs/CategoryEshell'
+(autoload 'eshell "eshell" "GNU Emacs Shell." t)
+
+(eval-after-load "eshell"
+  '(progn
+     (require 'esh-mode)
+     (require 'esh-util)))
+
+;;(setq eshell-modules-list '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix))
+
+(defun eshell/git-branch (&rest junk)
+  "Return the current git branch, if applicable."
+  (let ((branch (shell-command-to-string "git branch")))
+    (string-match "^\\* \\(.*\\)" branch)
+    (match-string 1 branch)))
+
+(defun eshell/clear (&rest junk)
+  "Clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+
+(defun eshell/deb (&rest args)
+  "Interface with a debian apt system."
+  (eshell-eval-using-options
+   "deb" args
+   '((?f "find" t find "list available packages matching a pattern")
+     (?i "installed" t installed "list installed debs matching a pattern")
+     (?l "list-files" t list-files "list files of a package")
+     (?s "show" t show "show an available package")
+     (?v "version" t version "show the version of an installed package")
+     (?w "where" t where "find the package containing the given file")
+     (nil "help" nil nil "show this usage information")
+     :show-usage)
+   (eshell-do-eval
+    (eshell-parse-command
+     (cond
+      (find
+       (format "apt-cache search %s" find))
+      (installed
+       (format "dlocate -l %s | grep '^.i'" installed))
+      (list-files
+       (format "dlocate -L %s | sort" list-files))
+      (show
+       (format "apt-cache show %s" show))
+      (version
+       (format "dlocate -s %s | egrep '^(Package|Status|Version):'" version))
+      (where
+       (format "dlocate %s" where))))
+    t)))
+
+(defmacro with-face (str &rest properties)
+  `(propertize ,str 'face (list ,@properties)))
+
+(defun eshell-prompt ()
+  "Fancy prompt for `eshell'."
+  (concat
+   (with-face user-login-name :foreground "red")
+   "@"
+   (with-face (car (split-string system-name "\\.")) :foreground "green")
+   ":"
+   (with-face (eshell/pwd) :foreground "blue" :weight 'bold)
+   (if (string= (substring (shell-command-to-string "git branch") 0 1) "f")
+       ""
+     (with-face (concat " (" (eshell/git-branch) ")") :foreground "yellow" :weight 'bold))
+   (if (= (user-uid) 0)
+       (with-face "#" :foreground "red")
+     "$")
+   " "))
+
+(setq eshell-prompt-function 'eshell-prompt
+      eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
+      eshell-highlight-prompt nil
+      eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
+      eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion
+      eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\|\\.elc\\)/\\'" ;; NOTE: ignore file prefixes
+      eshell-save-history-on-exit t ;; NOTE: save eshell history on exit
+      eshell-where-to-jump 'begin ;; NOTE: jump to beginning of line
+      eshell-review-quick-commands nil ;; NOTE: enable quick review
+      eshell-smart-space-goes-to-end t) ;; NOTE: save buffer history
+
+(add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
+
+;;; IMPORTANT: directory editor (extensions)
+;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
+(require 'dired-x)
+
+(add-hook 'dired-mode-hook (lambda ()
+			     (turn-on-dired-find-alternate-file)
+			     ;; NOTE: set `dired-x' buffer-local variables here
+			     (dired-omit-mode)))
+
+;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
+(setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
+      ;; ---
+      dired-dwim-target t ;; NOTE: try suggesting dired targets
+      dired-omit-files (concat dired-omit-files "\\|^\\..+$") ;; NOTE: hide un-interesting files in dired
+      dired-omit-extensions (append dired-latex-unclean-extensions
+                                    dired-tex-unclean-extensions
+                                    dired-patch-unclean-extensions
+				    dired-bibtex-unclean-extensions
+				    dired-texinfo-unclean-extensions))
+
+(defun turn-on-dired-find-alternate-file (&rest junk)
+  "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
+  (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
+  (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
+
+;; NOTE: dired application management
+(setq dired-guess-shell-alist-user
+      (list
+       (list "\\.pdf$" "evince")
+       (list "\\.PDF$" "evince")
+       (list "\\.doc$" "openoffice.org")
+       (list "\\.docx$" "openoffice.org")
+       (list "\\.DOC$" "openoffice.org")))
+
+;;; IMPORTANT: general functions
+(defun eval-and-replace ()
+  "Replace the preceding s-expression with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(defun switch-to-scratch (&rest junk)
+  "Switch to scratch buffer."
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
+(defun select-previous-window ()
+  "Switch to the previous window"
+  (interactive)
+  (select-window (previous-window)))
+
 (provide 'general-config)
+;;; general-config.el ends here

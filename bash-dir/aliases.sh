@@ -37,6 +37,9 @@ alias emacs_file='emacsclient -n' # NOTE: open file in the current emacs session
 
 alias jem='cd $(emacsclient -e "(with-current-buffer (window-buffer (frame-selected-window)) (expand-file-name default-directory))" | '"sed -E 's/(^\")|(\"$)//g')" # NOTE: jump to the current emacs directory
 
+# COMMENT: htop specific aliases
+alias utop='htop -u $USER'
+
 # COMMENT: system aliases
 alias temp='acpi -t' # NOTE: show battery status details
 alias screenshot='import -window root' # NOTE: capture screenshot

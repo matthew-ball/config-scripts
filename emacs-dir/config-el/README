@@ -1,6 +1,23 @@
 
 =This README file is best read using functionality provided by org-mode=
 
-* Custom Configuration EmacsLisp Files
+* Custom Configuration Emacs Lisp Files
+The following configuration is provided:
+
+** [[file:~/.conf-scripts/emacs-dir/init.el][Initiation Configuration]]
+*** user variables
+** [[file:general-config.el][General Configuration]]
+The general configuration includes settings for the following GNU Emacs lisp extensions:
+
+*** =package=
+*** =ido=
+*** =uniquify=
+*** =ibuffer=
+
+** [[file:writing-config.el][Writing Configuration]]
+** [[file:user-config.el][User Configuration]]
+** [[file:key-bindings-config.el][Key-Bindings Configuration]]
+** [[file:appearance-config.el][Appearance Configuration]]
+
 * Footnotes
 

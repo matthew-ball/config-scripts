@@ -1,7 +1,265 @@
-;; FILE: /home/chu/.conf-scripts/emacs-dir/config-el/org-config.el
-;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
+;;; writing-config.el --- Configuration for writing-related settings/options
 
-;;; COMMENT: org-mode
+;; Copyright (C) 2013  Matthew Ball
+
+;; Author: Matthew Ball <mathew.ball@gmail.com>
+;; Keywords: configuration
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; Configuration for writing-related settings and options.
+
+;;; Code:
+
+;;; IMPORTANT: text manipulation
+;; TODO: key-bindings for:
+;;       `upcase-word'
+;;       `downcase-word'
+;;       `capitalize-word'
+
+;;; IMPORTANT: insert date and time
+;; SOURCE: `http://www.emacswiki.org/emacs/InsertDate'
+(defun insert-date (format)
+  "Wrapper around `format-time-string'."
+  (interactive "MFormat: ")
+  (insert (format-time-string format)))
+
+(defun insert-standard-date ()
+  "Inserts standard date time string."
+  (interactive)
+  (insert (format-time-string "%c")))
+
+;;; IMPORTANT: deft
+;; SOURCE: `http://jblevins.org/projects/deft/'
+(autoload 'deft "deft" "Note taking with deft." t)
+
+(setq deft-extension "org"
+      deft-text-mode 'org-mode
+      deft-directory (format "%s.deft/" user-organisation-directory))
+
+;;; IMPORTANT: diary and calendar mode
+;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
+;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
+;; (autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
+
+;; (setq view-diary-entries-initially t
+;;       mark-diary-entries-in-calendar t
+;;       diary-file "/home/chu/Documents/Organisation/diary"
+;;       number-of-diary-entries 7)
+
+;; (eval-after-load "calendar"
+;;   (add-hook 'diary-display-hook 'fancy-diary-display)
+;;   (add-hook 'today-visible-calendar-hook 'calendar-mark-today))
+
+;;; IMPORTANT: flyspell
+;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
+(autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
+;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
+(autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
+(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
+
+(eval-after-load "flyspell" '(add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
+
+;;; IMPORTANT: ispell
+(setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
+      ispell-parser 'tex
+      ispell-extra-args '("--sug-mode=ultra"))
+
+;;; IMPORTANT: dictem
+;; SOURCE: ...
+;;(require 'dictem)
+(autoload 'dictem-run-search "dictem" "" t)
+
+(setq dictem-server "dict.org"
+      dictem-port "2628"
+      dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra")
+      ;; dictem-select-database "*"
+      ;; dictem-select-strategy "."
+      )
+
+;; TODO: move to key-bindings!!!
+;; TODO: C-c d should be a `dictem-map' etc
+;; IMPORTANT: key-bindings
+;; NOTE: SEARCH = MATCH + DEFINE
+;; ask for word, database and search strategy and show definitions found
+(global-set-key "\C-cs" 'dictem-run-search)
+
+;; NOTE: MATCH
+;; ask for word, database and search strategy and show matches found
+(global-set-key "\C-cm" 'dictem-run-match)
+
+;; NOTE: DEFINE
+;; ask for word and database name and show definitions found
+(global-set-key "\C-cd" 'dictem-run-define)
+
+;; NOTE: SHOW SERVER
+;; show information about DICT server
+(global-set-key "\C-c\M-r" 'dictem-run-show-server)
+
+;; NOTE: SHOW INFO
+;; show information about the database
+(global-set-key "\C-c\M-i" 'dictem-run-show-info)
+
+;; NOTE: SHOW DB
+;; show a list of databases provided by DICT server
+(global-set-key "\C-c\M-b" 'dictem-run-show-databases)
+
+;; TODO: ...
+;; (add-hook 'c-mode-common-hook
+;; 	  '(lambda ()
+;; 	     (interactive)
+;; 	     (make-local-variable 'dictem-default-database)
+;; 	     (setq dictem-default-database "man")))
+
+;; the code above sets default database to "man" in C buffers
+
+(eval-after-load "dictem" '(dictem-initialize))
+
+;; NOTE: for creating hyperlinks on database names and found matches (click on them with mouse-2)
+(add-hook 'dictem-postprocess-match-hook 'dictem-postprocess-match)
+
+;; NOTE: for highlighting the separator between the definitions found, this also creates hyperlink on database names
+(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-separator)
+
+;; NOTE: for creating hyperlinks in `dictem' buffer that contains definitions
+(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-hyperlinks)
+
+;; NOTE: for creating hyperlinks in dictem buffer that contains information about a database
+(add-hook 'dictem-postprocess-show-info-hook 'dictem-postprocess-definition-hyperlinks)
+
+;; NOTE: "virtual" dictionary
+(setq dictem-user-databases-alist '(("_en-en"  . ("foldoc" "gcide" "wn"))
+                                    ("en-en" . ("dict://dict.org:2628/english")) 
+                                    ("_unidoc" . ("susv3" "man" "info" "howto" "rfc"))))
+
+;; NOTE: ...
+(setq dictem-use-user-databases-only t)
+
+;; NOTE: all functions from dictem-postprocess-each-definition-hook will be run for each definition which in turn will be narrowed
+;; NOTE: current database name is kept in dictem-current-dbname variable
+;; NOTE: the following code demonstrates how to highlight SUSV3 and ROFF definitions
+(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-each-definition)
+
+;; NOTE: function for highlighting definition from the database "susv3"
+(defun dictem-highlight-susv3-definition ()
+  (cond ((string= "susv3" dictem-current-dbname)
+	 (goto-char (point-min))
+	 (while (search-forward-regexp
+		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
+	   (put-text-property
+	    (match-beginning 0) (match-end 0) 'face 'bold)))))
+
+;; NOTE: function to show roff-formatted text from the database "man"
+(require 'woman)
+
+(defun dictem-highlight-man-definition ()
+  (cond ((string= "man" dictem-current-dbname)
+	 (goto-char (point-min))
+	 (while (search-forward-regexp "^  " nil t)
+	   (replace-match ""))
+	 (goto-char (point-min))
+	 (forward-line 2)
+	 (woman-decode-region (point) (point-max)))))
+
+(add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
+(add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
+
+;;; IMPORTANT: thesaurus
+;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
+(autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
+
+(setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
+
+;;; IMPORTANT: languagetool grammar check
+;; SOURCE: `http://www.emacswiki.org/emacs/NaturalLanguageMode'
+;; (require 'langtool) ;; TODO: change this to an autoload
+
+;; (setq langtool-language-tool-jar "/home/chu/Downloads/LanguageTool/LanguageTool.jar") ;; TODO: hardcoded ...
+
+;; TODO: bibtex
+;; TODO: reftex
+
+;;; IMPORTANT: the emacs bibliography manager
+;; SOURCE: `http://ebib.sourceforge.net/'
+(autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
+
+;; TODO: investigate @string clauses and abbreviations for common journals
+;; TODO: create `philosophy.bib' `mathematics.bib' `linguistics.bib' `computer-science.bib' etc
+(setq ebib-preload-bib-files (list (format "%su4537508.bib" user-university-directory) ;; NOTE: university courses
+                                   (format "%sPapers/papers.bib" user-documents-directory) ;; NOTE: general papers
+                                   ;; "/home/chu/Documents/Papers/papers.bib"
+                                   ;; "/home/chu/Documents/ANU/u4537508.bib"
+                                   ;; "/home/chu/Documents/Papers/philosophy.bib"
+                                   ;; "/home/chu/Documents/Papers/mathematics.bib"
+                                   ;; "/home/chu/Documents/Papers/linguistics.bib"
+                                   ;; "/home/chu/Documents/Papers/computer-science.bib"
+                                   )
+      ebib-keywords-list (list "philosophy"
+                               "mathematics"
+                               "logic"
+                               "computer science"
+                               "linguistics"
+                               "miscellaneous")
+      ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
+      ebib-file-search-dirs (list (format "%s" user-home-directory)
+                                  (format "%sPapers/" user-documents-directory)) ;; NOTE: directories to search when viewing external files
+      )
+
+(eval-after-load "ebib" '(setcdr (assoc "pdf" ebib-file-associations) "evince"))
+
+;; Ebib Entry: [[ebib:horwich1996][Horwich (1996)]]
+;; Citation Entry: [[cite:horwich1996][Horwich (1996)]]
+
+;; IMPORTANT: some personal ebib stuff
+(defun ebib-export-directory (extension directory &rest junk)
+  "Generates a BibTeX entry for all files with file-extension EXTENSION in directory DIRECTORY.
+
+NOTE: This requires that each file in DIRECTORY be named according to \"<title>.EXTENSION\"."
+  (mapc #'(lambda (file)
+            ;; TODO: this needs to have a check whether `file' is already known, and if so, skip
+	    (let ((title (replace-regexp-in-string "-" " " (file-name-nondirectory (file-name-sans-extension file))))
+		  (author "")
+		  (year "")
+		  (tags nil))
+	      (when (and (file-readable-p file) (not (file-directory-p file)))
+		(insert
+		 (format "@article{%s,\n	author = {%s},\n	title  = {%s},\n	year   = {%s},\n	file   = {%s}\n}\n\n"
+			 (file-name-nondirectory (file-name-sans-extension file))
+			 author
+			 title
+			 year
+			 file)))))
+	(directory-files directory t (concat "\." extension "$") t)))
+
+(defun ebib-print-directory ()
+  "Print the BibTeX entries from the TARGET-DIRECTORY variable, according to FILE-EXTENSION."
+  (interactive)
+  (let ((buffer-name "ebib-")
+	(file-extension "pdf")
+	(target-directory (format "%sPapers/PDFs/" user-documents-directory)))
+    (switch-to-buffer "ebib-directory")
+    (ebib-export-directory file-extension target-directory)))
+
+;; TODO: can we do an `ido-completing-read' over a list of keys?
+(defun org-insert-citation (key name)
+  "Insert a BibTeX citation in an `org-mode' buffer, matching the `org-link' format."
+  (interactive "sEnter key: \nsEnter name: ")
+  (insert (format "[[%s][%s]]" key name)))
+
+;;; IMPORTANT: org-mode configuration
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
 ;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
 (autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
@@ -31,6 +289,8 @@
       org-timeline-show-empty-dates t
       org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
       org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
+      ;; --- tags ---
+      org-tags-column -80
       ;; --- notes ---
       org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
       org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
@@ -41,9 +301,30 @@
       org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
       org-refile-allow-creating-parent-nodes 'confirm) ;; NOTE: allow refile to create parent tasks with confirmation
 
-;;; COMMENT: org-agenda
+;;; IMPORTANT: org-modules
+;; (setq org-modules '(org-bbdb 
+;;                     org-contacts
+;;                     org-gnus
+;;                     org-drill
+;;                     org-info
+;;                     org-jsinfo
+;;                     org-habit
+;;                     org-irc
+;;                     org-mouse
+;;                     org-annotate-file
+;;                     org-eval
+;;                     org-expiry
+;;                     org-interactive-query
+;;                     org-man
+;;                     org-panel
+;;                     org-screen
+;;                     org-toc))
+
+;;; IMPORTANT: org-agenda
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
 (setq org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+      org-agenda-skip-scheduled-if-done t ;; NOTE: ...
+      org-agenda-skip-deadline-if-done t ;; NOTE: ...
       org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
       org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
       org-agenda-span 'month) ;; NOTE: show a month of agendas
@@ -101,7 +382,7 @@
 	 "READING") ;; NOTE: `READING' tasks
 	))
 
-;;; COMMENT: org-export
+;;; IMPORTANT: org-export
 ;; SOURCE: `http://orgmode.org/manual/Exporting.html'
 (setq org-export-latex-default-class "paper"
       org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
@@ -109,7 +390,7 @@
       org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
       org-export-with-todo-keywords nil) ;; NOTE: turn off `org-mode' exporting of TODO keywords
 
-;;; COMMENT: org-capture
+;;; IMPORTANT: org-capture
 ;; SOURCE: `http://orgmode.org/manual/Capture.html'
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
 (autoload 'org-capture "org-capture" "..." t)
@@ -118,7 +399,7 @@
 ;; TODO: re-order AND add new tags
 (setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
       '(("ASSIGNMENT"       . ?a)
-	("BOOKMARK"         . ?b)
+	;; ("BOOKMARK"         . ?b)
 	("COMPUTER SCIENCE" . ?c)
 	("GENERAL"          . ?g)
 	("HOLIDAY"          . ?h)
@@ -136,7 +417,7 @@
 	("UNIVERSITY"       . ?u)
 	("WEBSITE"          . ?w)))
 
-;;; COMMENT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
+;;; IMPORTANT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
 (setq org-capture-templates
       '(("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
          "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
@@ -157,7 +438,7 @@
         ;; TODO: need to write `reading-capture' and `writing-capture' functions
         ))
 
-;;; COMMENT: custom capture functions
+;;; IMPORTANT: custom capture functions
 (defun search-for-heading (file heading prefix &rest junk)
   "Search for an `org-heading' HEADING in an FILE."
   (switch-to-buffer file)
@@ -169,7 +450,7 @@
       ;;(insert "\n")
       )))
 
-;;; COMMENT: reading capture
+;;; IMPORTANT: reading capture
 (defvar reading-material-types (list "Paper" "Book" "Web-site") "List of reading material.")
 
 (defun reading-capture (&rest junk)
@@ -179,13 +460,13 @@
 	)
     (search-for-heading "projects.org" reading-type "** ")))
 
-;;; COMMENT: writing capture
+;;; IMPORTANT: writing capture
 (defvar writing-types (list "Paper" "Book") "List of writing material.")
 
 (defun writing-capture (&rest junk)
   "...")
 
-;;; COMMENT: project capture
+;;; IMPORTANT: project capture
 ;; NOTE: this is probably not the best way of doing this
 (defvar project-options-alist nil "List of available project types.")
 
@@ -203,9 +484,10 @@
 	)
     (search-for-heading "projects.org" project-type "** ")))
 
-;;; COMMENT: school organisation
+;;; IMPORTANT: school organisation
 ;; TODO: integrate with `ido-mode' somehow
 ;; WARNING: this is *terrible* - seriously consider a re-write !!!
+;; TODO: can do some cool stuff here - consider writing a `org-school.el'
 (defun add-course (&rest junk)
   "Capture a course via org-mode's `org-capture'."
   (let ((course-details ""))
@@ -246,7 +528,7 @@
   (interactive)
   (insert (format "** Lecture %d: %s" 1 (format-time-string "%d/%m/%y"))))
 
-;;; COMMENT: org-babel
+;;; IMPORTANT: org-babel
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (autoload 'org-babel-load-file "org-babel" "Interact with programming languages in `org-mode'." t)
 ;;(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
@@ -271,7 +553,7 @@
       org-src-tab-acts-natively t ;; NOTE: tab works properly
       )
 
-;;; COMMENT: org-latex-export
+;;; IMPORTANT: org-latex-export
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
@@ -349,7 +631,7 @@
 [EXTRA]"
 	       org-beamer-sectioning))
 
-;; COMMENT: enable latex source code highlighting
+;; IMPORTANT: enable latex source code highlighting
 (setq org-export-latex-listings t) ;; NOTE: enable listings features
 
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
@@ -362,7 +644,7 @@
 (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
 (add-to-list 'org-export-latex-packages-alist '("" "hyperref")) ;; NOTE: hyper-references
 
-;;; COMMENT: `org-entities'
+;;; IMPORTANT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
 
@@ -398,7 +680,7 @@
 ;; (add-to-list 'org-entities-user '("langle" "\\langle" t "&langle;" "[left angle]" nil ""))
 ;; (add-to-list 'org-entities-user '("rangle" "\\rangle" t "&rangle;" "[right angle]" nil ""))
 
-;; COMMENT: logic symbols
+;; IMPORTANT: logic symbols
 (add-to-list 'org-entities-user '("neg" "\\neg" nil nil nil nil "¬"))
 ;;(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "↔"))
 (add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "\leftrightarrow"))
@@ -417,7 +699,7 @@
 (add-to-list 'org-entities-user '("diamond" "\\Diamond" nil nil nil nil "◇"))
 (add-to-list 'org-entities-user '("cdots" "\\cdots" nil nil nil nil "⋯"))
 (add-to-list 'org-entities-user '("ldots" "\\ldots" nil nil nil nil "…"))
-;; COMMENT: mathematics symbols
+;; IMPORTANT: mathematics symbols
 (add-to-list 'org-entities-user '("reals" "\\mathbb{R}" nil nil nil nil "ℝ"))
 (add-to-list 'org-entities-user '("integers" "\\mathbb{Z}" nil nil nil nil "ℤ"))
 (add-to-list 'org-entities-user '("primes" "\\mathbb{P}" nil nil nil nil "ℙ"))
@@ -425,14 +707,25 @@
 (add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" nil nil nil nil "𝕀"))
 (add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" nil nil nil nil "ℚ"))
 (add-to-list 'org-entities-user '("complex" "\\mathbb{C}" nil nil nil nil "ℂ"))
-;; COMMENT: misc
+;; IMPORTANT: misc
 (add-to-list 'org-entities-user '("mid" "\\mid" t nil nil nil "|"))
-;; COMMENT: phonetic symbols
+;; IMPORTANT: phonetic symbols
+;; TODO: investigate the \textipa{} environments as possible LaTeX exports (as done with \eng and \esh)
+;; SOURCE: `http://www.phon.ucl.ac.uk/home/wells/ipa-unicode.htm'
+;; SOURCE: `ftp://ftp.tex.ac.uk/ctan/ctan/tex-archive/bibliography/biber/documentation/utf8-macro-map.html'
+;; SOURCE: `http://en.wikibooks.org/wiki/LaTeX/Linguistics#IPA_characters'
 (add-to-list 'org-entities-user '("eng" "\\textipa{N}" nil nil nil nil "ŋ"))
 (add-to-list 'org-entities-user '("esh" "\\textipa{S}" nil nil nil nil "ʃ"))
 (add-to-list 'org-entities-user '("thy" "\\eth" nil nil nil nil "ð"))
 (add-to-list 'org-entities-user '("thi" "\\theta" nil nil nil nil "θ"))
-(add-to-list 'org-entities-user '("alveolarapproximate" "\\textipa{\*r}" nil nil nil nil "ɹ"))
+(add-to-list 'org-entities-user '("darkl" "\\textltilde" nil nil nil nil "ɫ"))
+(add-to-list 'org-entities-user '("schwa" "\\textipa{@}" nil nil nil nil "ə"))
+(add-to-list 'org-entities-user '("dotlessj" "\\textbardotlessj" nil nil nil nil "ɟ"))
+(add-to-list 'org-entities-user '("curvedt" "\\textsubarch{t}" nil nil nil nil "ʈ"))
+(add-to-list 'org-entities-user '("retracteddiacritic" "\\b{n}" nil nil nil nil "n̠"))
+;;(add-to-list 'org-entities-user '("alveolarapproximate" "\\textipa{\*r}" nil nil nil nil "ɹ"))
+(add-to-list 'org-entities-user '("alveolarapproximate" "\\textturnr" nil nil nil nil "ɹ"))
+(add-to-list 'org-entities-user '("fishhook" "\\textfishhookr" nil nil nil nil "ɾ"))
 (add-to-list 'org-entities-user '("palatalfricative" "\\textipa{C}" nil nil nil nil "ç"))
 (add-to-list 'org-entities-user '("bilabialclick" "\\textbullseye" nil nil nil nil "ʘ"))
 (add-to-list 'org-entities-user '("glottalstop" "" nil nil nil nil "ʔ"))
@@ -455,16 +748,16 @@
   (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
     (insert (format "\\%s" entity))))
 
-;; COMMENT: ...
+;; IMPORTANT: ...
 (define-skeleton insert-org-latex-package
   "Inserts a LaTeX use-package clause into a document."
   "Insert package name: "
   "#+LATEX_HEADER: \\usepackage{" str "}")
 
-;; COMMENT: `org-mode' custom file templates
+;; IMPORTANT: `org-mode' custom file templates
 (defvar org-template-list (list "beamer" "paper" "assignment") "List of custom template types.")
 
-;;; COMMENT: org-beamer
+;;; IMPORTANT: org-beamer
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html'
 ;; SOURCE: `http://orgmode.org/manual/Beamer-class-export.html'
 (autoload 'org-beamer "org-beamer" "Presentations with org-beamer." t)
@@ -542,7 +835,7 @@
     (insert (format "* %s\n" title))
     (insert "* Footnotes\n")))
 
-;; COMMENT: the following `define-skeleton' entries are old and redundant
+;; IMPORTANT: the following `define-skeleton' entries are old and redundant
 (define-skeleton insert-org-paper
   "Inserts an `org-mode' paper template."
   "Insert paper title: "
@@ -558,7 +851,7 @@
   "Insert presentation title: "
   "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
 
-;;; COMMENT: Insert a custom file template
+;;; IMPORTANT: Insert a custom file template
 (defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
 
 (defun org-insert-custom-file (&rest junk)
@@ -567,7 +860,7 @@
   (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
     (funcall (intern (concat "insert-org-" custom-file-type)))))
 
-;;; COMMENT: custom footnotes
+;;; IMPORTANT: custom footnotes
 ;; TODO: get user input from the keyboard
 (defvar org-custom-footnote-types (list "book" "paper" "article" "default") "The list of availables types for footnotes.")
 
@@ -609,7 +902,7 @@
       (end-of-buffer)
       (insert (concat "\n[fn:" footnote-name "] " footnote-text)))))
 
-;;; COMMENT: this is a set of custom inserts for common clauses in an `org-mode' document
+;;; IMPORTANT: this is a set of custom inserts for common clauses in an `org-mode' document
 (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
   "Insert a footnote in an `org-mode' document."
   (interactive "sEnter footnote name: \nsEnter text: ")
@@ -618,7 +911,7 @@
     (end-of-buffer)
     (insert (concat "\n[fn:" name "] " text))))
 
-;;; COMMENT: this is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
+;;; IMPORTANT: this is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
 ;; TODO: write functions for the following `alist' variables
 (defvar org-latex-math-operator-alist (list "frac" "sqrt" "times") "List of mathematical operators in LaTeX.")
 
@@ -660,7 +953,7 @@
   (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
     (funcall (intern (concat "org-insert-latex-math-" clause)))))
 
-;;; COMMENT: latex symbol
+;;; IMPORTANT: latex symbol
 ;; TODO: ...
 (defvar org-custom-symbol-types nil "...")
 
@@ -674,28 +967,63 @@
   "..."
   )
 
-;;; COMMENT: custom `org-mode' combinations
-(define-skeleton org-insert-text-underlined ;; NOTE: C-c u should be `org-insert-text-underlined'
-  "Insert an underline character (_) before (and after) an input string."
-  "Enter a string: "
-  "_" str "_")
+;;; IMPORTANT: custom inserts
+(defun surrounded-by-p (char)
+  "Returns t if word is surrounded by given char."
+  (save-excursion
+    (and (forward-word -1)
+         (equal char (char-before))
+         (forward-word 1)
+         (equal char (char-after)))))
 
-(define-skeleton org-insert-text-italicised ;; NOTE: C-c i should be `org-insert-text-italicised'
-  "Insert an italicise character (/) before (and after) an input string."
-  "Enter a string: "
-  "/" str "/")
+(defun surround-word (char &optional force)
+  "Surrounds word with given character.  If force is nil and word is already surrounded by given character remoevs them."
+  (save-excursion
+    (if (not (surrounded-by-p char))
+        (progn
+          (forward-word 1)
+          (insert char)
+          (forward-word -1)
+          (insert char)
+          t)
+      (forward-word 1)
+      (delete-char 1)
+      (forward-word -1)
+      (delete-char -1)
+      nil)))
 
-(define-skeleton org-insert-text-bolded ;; NOTE: C-c b should be `org-insert-text-bolded'
+(defun my-bold-word (&optional force) ;; NOTE: C-c b should be `org-insert-text-bolded'
   "Insert a bold character (*) before (and after) an input string."
-  "Enter a string: "
-  "*" str "*")
+  (interactive "p")
+  (surround-word ?* force))
 
-(define-skeleton org-insert-text-teletyped ;; NOTE: C-c t should be `org-insert-text-teletyped'
+(defun my-italic-word (&optional force) ;; NOTE: C-c i should be `org-insert-text-italicised'
+  "Insert an italicise character (/) before (and after) an input string."
+  (interactive "p")
+  (surround-word ?/ force))
+
+(defun my-underline-word (&optional force) ;; NOTE: C-c u should be `org-insert-text-underlined'
+  "Insert an underline character (_) before (and after) an input string."
+  (interactive "p")
+  (surround-word ?_ force))
+
+(defun my-verbatim-word (&optional force) ;; NOTE: C-c v should be ...
+  "Insert a verbatim character (~) before (and after) an input string."
+  (interactive "p")
+  (surround-word ?~ force))
+
+(defun my-teletyped-word (&optional force) ;; NOTE: C-c t should be ...
   "Insert a teletype character (=) before (and after) an input string."
-  "Enter a string: "
-  "=" str "=")
+  (interactive "p")
+  (surround-word ?= force))
 
-;;; COMMENT: `org-ref-man'
+(define-key org-mode-map (kbd "C-c b") 'my-bold-word)
+(define-key org-mode-map (kbd "C-c i") 'my-italic-word)
+(define-key org-mode-map (kbd "C-c u") 'my-underline-word)
+(define-key org-mode-map (kbd "C-c v") 'my-verbatim-word)
+(define-key org-mode-map (kbd "C-c t") 'my-teletyped-word)
+
+;;; IMPORTANT: `org-ref-man'
 ;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
 ;; TODO:
 ;; - Learn `org-bibtex'.
@@ -721,7 +1049,7 @@
   (interactive)
   (generate-paper-list (file-name-directory (buffer-file-name))))
 
-;;; COMMENT: ...
+;;; IMPORTANT: ...
 (defun get-page-title (url) ;; FIX: does this actually work?
   "Get title of web page, whose url can be found in the current line."
   (interactive "sURL: ")
@@ -745,7 +1073,7 @@
     (insert (format "%s - %s" url web_title_str))
     (message (concat "title is: " web_title_str))))
 
-;;; COMMENT: customisations
+;;; IMPORTANT: customisations
 (defun turn-on-custom-org-bindings ()
   "Activate custom `org-mode' bindings."
   ;; TODO: add binding for `org-insert-custom-file' command
@@ -767,7 +1095,7 @@
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
 
-;;; COMMENT: images
+;;; IMPORTANT: images
 ;; SOURCE: `http://orgmode.org/worg/org-configs/org-config-examples.html'
 ;;(add-to-list 'iimage-mode-image-regex-alist (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex "\\)\\]")  1))
 
@@ -781,7 +1109,7 @@
 
 ;; TODO: add `org-toggle-iimage-in-org' to an `org-hook' function
 
-;;; COMMENT: `org-link'
+;;; IMPORTANT: `org-link'
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
 (org-add-link-type "ebib" 'ebib)
 
@@ -794,7 +1122,7 @@
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
 ;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
 
-;;; COMMENT: word count
+;;; IMPORTANT: word count
 ;; SOURCE: `http://orgmode.org/worg/org-hacks.html'
 ;; (defun org-word-count (beg end
 ;;                            &optional count-latex-macro-args?
@@ -883,4 +1211,181 @@
 ;;     (message (format "%d words in %s." wc
 ;;                      (if mark-active "region" "buffer")))))
 
-(provide 'org-config)
+
+;;; IMPORTANT: latex configuration
+;; SOURCE: `http://emacswiki.org/emacs/LaTeX'
+;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
+(autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
+(autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
+(autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
+(autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
+(autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
+
+(defun org-mode-article-modes ()
+  (reftex-mode t)
+  (and (buffer-file-name)
+       (file-exists-p (buffer-file-name))
+       (reftex-parse-all)))
+
+(defun org-mode-reftex-setup ()
+  "Set up `reftex' integration with `org-mode'."
+  (load-library "reftex")
+  (and (buffer-file-name)
+       (file-exists-p (buffer-file-name))
+       (reftex-parse-all))
+  (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
+
+;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+
+(defun org-mode-custom-latex ()
+  "Enable custom settings for org-mode."
+  (turn-on-reftex) ;; turn on reftex
+  (org-mode-reftex-setup) ;; enable org-mode/reftex integration
+  (lambda () (if (member "REFTEX" org-todo-keywords-1 (org-mode-article-modes)))))
+
+;; (add-hook 'org-mode-hook 'org-mode-custom-latex)
+
+;;; IMPORTANT: reftex formats (for biblatex)
+(setq reftex-cite-format
+      '((?c . "\\cite[]{%l}")
+        (?t . "\\textcite{%l}")
+        (?a . "\\autocite[]{%l}")
+        (?p . "\\parencite{%l}")
+        (?f . "\\footcite[][]{%l}")
+        (?F . "\\fullcite[]{%l}")
+        (?x . "[]{%l}")
+        (?X . "{%l}")))
+
+(setq font-latex-match-reference-keywords
+      '(("cite" "[{")
+        ("cites" "[{}]")
+        ("footcite" "[{")
+        ("footcites" "[{")
+        ("parencite" "[{")
+        ("textcite" "[{")
+        ("fullcite" "[{")
+        ("citetitle" "[{")
+        ("citetitles" "[{")
+        ("headlessfullcite" "[{")))
+
+(setq reftex-enable-partial-scans t ;; make reftex faster
+      reftex-save-parse-info t ;; save the information gathered while reading a file
+      reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
+      reftex-default-bibliography '("default.bib"
+				    "other-default.bib"
+				    "/home/chu/Documents/Papers/papers.bib"
+				    ) ;; default bibliography file(s)
+      reftex-cite-prompt-optional-args nil
+      reftex-cite-cleanup-optional-args t
+      reftex-extra-bindings t ;; enable extra reftex bindings
+      latex-run-command "pdflatex") ;; use `pdflatex' to compile LaTeX documents
+
+(defun latex-bibtex-file (&rest junk)
+  "Produce a bibliography for current LaTeX document."
+  (interactive)
+  (call-process "bibtex" nil 0 nil (file-name-sans-extension (buffer-file-name))) ;; execute asynchronous bibtex process
+  (message (concat "bibtex called on " (buffer-file-name))))
+
+(defun latex-file (&rest junk)
+  "Produce current LaTeX document as PDF."
+  (interactive)
+  (tex-file)
+  (switch-to-buffer (current-buffer)) ;; refocus on main window
+  (delete-other-windows)) ;; delete remaining window
+
+(defun latex-view (&rest junk)
+  "Produce and preview current LaTeX document as PDF."
+  (interactive)
+  (tex-file)
+  (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+    (message pdf-file) ;; print pdf-file in minibuffer
+    (call-process "evince" nil 0 nil pdf-file)) ;; execute asynchronous evince process
+    (switch-to-buffer (current-buffer)) ;; refocus on main window
+    (delete-other-windows)) ;; delete remaining window
+
+(defun latex-smart-underscore ()
+  "Smart \"_\" key: insert \"_{}\". If the underscore key is pressed a second time, \"_{}\" is removed and replaced by the underscore."
+  (interactive)
+  (let ((assign-len (length "_{")))
+    (if (and
+         (>= (point) (+ assign-len (point-min))) ;; check that we can move back
+         (save-excursion
+           (backward-char assign-len)
+           (looking-at "_{}")))
+        (progn ;; if we are currently looking at ess-S-assign, replace it with _
+          (forward-char)
+          (delete-backward-char (+ 1 assign-len))
+          (insert "_"))
+      (delete-horizontal-space)
+      (insert "_{}")
+      (backward-char))))
+
+(defun latex-smart-caret ()
+  "Smart \"^\" key: insert \"^{}\". If the caret key is pressed a second time, \"^{}\" is removed and replaced by the caret."
+  (interactive)
+  (let ((assign-len (length "^{")))
+    (if (and
+         (>= (point) (+ assign-len (point-min))) ;; check that we can move back
+         (save-excursion
+           (backward-char assign-len)
+           (looking-at "\\^{}"))) ;; looking-at reads regexp, so need to escape the caret character
+        (progn ;; if we are currently looking at ess-S-assign, replace it with ^
+          (forward-char)
+          (delete-backward-char (+ 1 assign-len))
+          (insert "^"))
+      (delete-horizontal-space)
+      (insert "^{}")
+      (backward-char))))
+
+(defun latex-smart-period ()
+  "Smart \".\" key: insert \".  \n\". If the period key is pressed a second time, \".  \n\" is removed and replaced by the period."
+  (interactive)
+  (let ((assign-len (length ".  %%\n")))
+    (if (and
+         (>= (point) (+ assign-len (point-min))) ;; check that we can move back
+         (save-excursion
+           (backward-char assign-len)
+           (looking-at "\\.  %%")))
+        (progn ;; if we are currently looking at ess-S-assign, replace it with _
+          (delete-backward-char assign-len)
+          (insert "."))
+      (delete-horizontal-space)
+      (insert ".  %%\n"))))
+
+(defmacro latex-skeleton (code) ;; inserts a custom clause skeleton in a LaTeX document
+  (let ((func (intern (concat "latex-skeleton-" code)))
+	(doc (format "Inserts a %s clause in a LaTeX document." code)))
+    `(define-skeleton ,func ,doc "String: "
+       "\\" ,code  "{" str | "insert text" "}")))
+
+(latex-skeleton "textbf") ;; inserts a bold clause
+(latex-skeleton "footnote") ;; inserts a footnote
+(latex-skeleton "texttt") ;; inserts a tele-type clause
+(latex-skeleton "emph") ;; inserts an emphasis clause
+(latex-skeleton "textsc") ;; inserts a small capitals clause
+
+(defun turn-on-custom-latex-bindings ()
+  "Activate custom LaTeX bindings."
+  (define-key latex-mode-map (kbd "C-c C-v") 'latex-view) ;; enable latex-view
+  (define-key latex-mode-map (kbd "C-c C-f") 'latex-file) ;; enable latex-file
+  (define-key latex-mode-map (kbd "C-c C-b") 'latex-bibtex-file) ;; enable latex-bibtex-file
+  (define-key latex-mode-map (kbd "C-c b") 'latex-skeleton-textbf) ;; bind bold to keyboard
+  (define-key latex-mode-map (kbd "C-c f") 'latex-skeleton-footnote) ;; bind footnote to keyboard
+  (define-key latex-mode-map (kbd "C-c t") 'latex-skeleton-texttt) ;; bind tele-type to keyboard
+  (define-key latex-mode-map (kbd "C-c e") 'latex-skeleton-emph) ;; bind emphasise to keyboard
+  (define-key latex-mode-map (kbd "C-c s") 'latex-skeleton-textsc) ;; bind small-capitals to keyboard
+  (define-key latex-mode-map (kbd "_") 'latex-smart-underscore) ;; bind _ to smart underscore
+  (define-key latex-mode-map (kbd "^") 'latex-smart-caret) ;; bind ^ to smart caret
+  (define-key latex-mode-map (kbd ".") 'latex-smart-period)) ;; bind . to smart period
+
+(defun turn-on-custom-latex ()
+  "Activate custom LaTeX functionality."
+  (turn-on-reftex) ;; enable reftex mode
+  (turn-on-custom-latex-bindings) ;; enable custom latex bindings
+  (setq ispell-parser 'tex))
+
+(add-hook 'latex-mode-hook (lambda () (turn-on-custom-latex)))
+
+
+(provide 'writing-config)
+;;; writing-config.el ends here

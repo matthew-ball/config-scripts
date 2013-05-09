@@ -3,6 +3,12 @@
 
 # ignore the passwords directory
 passwords/
+
+# ignore a bunch of oldish emacs stuff
+emacs-dir/extras-el/cc-old.el
+emacs-dir/extras-el/logic-mode.el
+emacs-dir/extras-el/erc-highlight-nicknames.el
+
 # ignore unnecessary emacs-related files
 emacs-dir/config-el/#*#
 emacs-dir/var/pcache/gh/gh-gist-api/matthew-ball
@@ -22,8 +28,8 @@ emacs-dir/dictem-1.0.4/
 emacs-dir/emacs-desktop
 emacs-dir/eshell/history
 emacs-dir/eshell/lastdir
-emacs-dir/history
-emacs-dir/recentf
+emacs-dir/minibuffer-history
+emacs-dir/recent-files
 emacs-dir/smex-items
 emacs-dir/tramp
 emacs-dir/eproject.lst
@@ -36,6 +42,8 @@ emacs-dir/url/
 emacs-dir/.emacs.desktop.lock
 emacs-dir/.emms-history
 emacs-dir/emms/history
+# ignore w3m related files
+emacs-dir/w3m/*
 emacs-dir/#*
 emacs-dir/erc-extras/*
 # ignore the mutt data
