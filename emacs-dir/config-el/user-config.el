@@ -717,18 +717,18 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-;; (when (require 'auto-complete-config nil 'noerror) ;; TODO: change this to an autoload
-;;   (add-to-list 'ac-dictionary-directories (concat (expand-file-name user-emacs-directory) "ac-dict"))
-;;   (setq ac-comphist-file (concat (expand-file-name user-emacs-directory) "ac-comphist.dat"))
-;;   (ac-config-default))
+(require 'auto-complete)
+
+(global-auto-complete-mode t)
 
 ;; (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
 ;;       ac-ignore-case t ;; NOTE: always ignore case
-;;       ac-auto-show-menu t) ;; NOTE: automatically show menu
+;;       ac-auto-show-menu t ;; NOTE: automatically show menu
+;;       )
 
-;; (set-face-background 'ac-candidate-face "lightgray")
-;; (set-face-underline 'ac-candidate-face "darkgray")
-;; (set-face-background 'ac-selection-face "steelblue")
+(set-face-background 'ac-candidate-face "lightgray")
+(set-face-underline 'ac-candidate-face "darkgray")
+(set-face-background 'ac-selection-face "steelblue")
 
 ;; (ac-flyspell-workaround) ;; NOTE: apparently the flyspell-mode process disables auto-completion
 
