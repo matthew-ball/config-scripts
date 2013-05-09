@@ -127,6 +127,7 @@
       ;; ido-ignore-directories '("." "..")
       ;; ido-ignore-files '(".")
       ido-ignore-extensions t ;; NOTE: ignore extentions
+      ;; TODO: can clean up the following ...
       ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
 			   "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
       ido-work-directory-list `(,(expand-file-name user-home-directory)
@@ -161,16 +162,16 @@
 
 ;;; IMPORTANT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
-(autoload 'ibuffer "ibuffer" "..." t)
+;;(autoload 'ibuffer "ibuffer" "..." t)
+(require 'ibuffer)
+(require 'ibuf-ext)
 
 ;; TODO: investigate `ibuffer-directory-abbrev-list'
-(eval-after-load "ibuffer" '(require 'ibuf-ext))
-(eval-after-load "ibuf-ext"
- '(progn
-    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0*\\*$")
-    (add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1*\\*$")
-    (add-to-list 'ibuffer-never-show-predicates " ^\\*Ibuffer\\*$")
-    (add-to-list 'ibuffer-never-show-predicates " ^\\*AgendaCommands\\*$")))
+
+(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0\\*$")
+(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
+(add-to-list 'ibuffer-never-show-predicates " ^\\*Ibuffer\\*$")
+(add-to-list 'ibuffer-never-show-predicates " ^\\*AgendaCommands\\*$")
 
 (setq ibuffer-saved-filter-groups
       `(("default"

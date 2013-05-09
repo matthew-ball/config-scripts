@@ -6,18 +6,20 @@ The following configuration is provided:
 
 ** [[file:~/.conf-scripts/emacs-dir/init.el][Initiation Configuration]]
 *** user variables
-** [[file:general-config.el][General Configuration]]
+*** load path
+*** configuration
+**** [[file:general-config.el][General Configuration]]
 The general configuration includes settings for the following GNU Emacs lisp extensions:
 
-*** =package=
-*** =ido=
-*** =uniquify=
-*** =ibuffer=
+***** =package=
+***** =ido=
+***** =uniquify=
+***** =ibuffer=
 
-** [[file:writing-config.el][Writing Configuration]]
-** [[file:user-config.el][User Configuration]]
-** [[file:key-bindings-config.el][Key-Bindings Configuration]]
-** [[file:appearance-config.el][Appearance Configuration]]
+**** [[file:writing-config.el][Writing Configuration]]
+**** [[file:user-config.el][User Configuration]]
+**** [[file:key-bindings-config.el][Key-Bindings Configuration]]
+**** [[file:appearance-config.el][Appearance Configuration]]
 
 * Footnotes
 

@@ -28,7 +28,7 @@
 ;; SOURCE: `http://emacswiki.org/emacs/ColorTheme'
 ;; SOURCE: `http://color-theme-select.heroku.com/'
 ;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
-(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
+;;(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
 ;;(autoload 'powerline-default-theme "powerline" "" t) ;; BUG: `powerline' doesn't respect ERC colours
 
 (eval-after-load "color-theme"

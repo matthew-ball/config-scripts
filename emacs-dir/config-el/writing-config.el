@@ -24,12 +24,6 @@
 
 ;;; Code:
 
-;;; IMPORTANT: text manipulation
-;; TODO: key-bindings for:
-;;       `upcase-word'
-;;       `downcase-word'
-;;       `capitalize-word'
-
 ;;; IMPORTANT: insert date and time
 ;; SOURCE: `http://www.emacswiki.org/emacs/InsertDate'
 (defun insert-date (format)
@@ -69,7 +63,7 @@
 (autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
 ;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
+;;(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
 
 (eval-after-load "flyspell" '(add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
@@ -91,31 +85,19 @@
       )
 
 ;; TODO: move to key-bindings!!!
-;; TODO: C-c d should be a `dictem-map' etc
-;; IMPORTANT: key-bindings
-;; NOTE: SEARCH = MATCH + DEFINE
-;; ask for word, database and search strategy and show definitions found
-(global-set-key "\C-cs" 'dictem-run-search)
+(defconst dictem-prefix-key (kbd "C-c d") "Key map for `dictem'.")
+(defvar dictem-map (lookup-key global-map dictem-prefix-key) "...")
 
-;; NOTE: MATCH
-;; ask for word, database and search strategy and show matches found
-(global-set-key "\C-cm" 'dictem-run-match)
+(unless (keymapp dictem-map)
+  (setq dictem-map (make-sparse-keymap)))
 
-;; NOTE: DEFINE
-;; ask for word and database name and show definitions found
-(global-set-key "\C-cd" 'dictem-run-define)
-
-;; NOTE: SHOW SERVER
-;; show information about DICT server
-(global-set-key "\C-c\M-r" 'dictem-run-show-server)
-
-;; NOTE: SHOW INFO
-;; show information about the database
-(global-set-key "\C-c\M-i" 'dictem-run-show-info)
-
-;; NOTE: SHOW DB
-;; show a list of databases provided by DICT server
-(global-set-key "\C-c\M-b" 'dictem-run-show-databases)
+(define-key global-map dictem-prefix-key dictem-map)
+(define-key dictem-map (kbd "s") 'dictem-run-search) ;; NOTE: SEARCH = MATCH + DEFINE : ask for word, database and search strategy and show definitions found
+(define-key dictem-map (kbd "m") 'dictem-run-match) ;; NOTE: MATCH : ask for word, database and search strategy and show matches found
+(define-key dictem-map (kbd "d") 'dictem-run-define);; NOTE: DEFINE : ask for word and database name and show definitions found
+(define-key dictem-map (kbd "C-c M-r") 'dictem-run-show-server) ;; NOTE: SHOW SERVER : show information about DICT server
+(define-key dictem-map (kbd "C-c M-i") 'dictem-run-show-info) ;; NOTE: SHOW INFO : show information about the database
+(define-key dictem-map (kbd "C-c M-b") 'dictem-run-show-databases) ;; NOTE: SHOW DB : show a list of databases provided by DICT server
 
 ;; TODO: ...
 ;; (add-hook 'c-mode-common-hook
@@ -154,28 +136,28 @@
 (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-each-definition)
 
 ;; NOTE: function for highlighting definition from the database "susv3"
-(defun dictem-highlight-susv3-definition ()
-  (cond ((string= "susv3" dictem-current-dbname)
-	 (goto-char (point-min))
-	 (while (search-forward-regexp
-		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
-	   (put-text-property
-	    (match-beginning 0) (match-end 0) 'face 'bold)))))
+;; (defun dictem-highlight-susv3-definition ()
+;;   (cond ((string= "susv3" dictem-current-dbname)
+;; 	 (goto-char (point-min))
+;; 	 (while (search-forward-regexp
+;; 		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
+;; 	   (put-text-property
+;; 	    (match-beginning 0) (match-end 0) 'face 'bold)))))
 
-;; NOTE: function to show roff-formatted text from the database "man"
-(require 'woman)
+;; ;; NOTE: function to show roff-formatted text from the database "man"
+;; (require 'woman)
 
-(defun dictem-highlight-man-definition ()
-  (cond ((string= "man" dictem-current-dbname)
-	 (goto-char (point-min))
-	 (while (search-forward-regexp "^  " nil t)
-	   (replace-match ""))
-	 (goto-char (point-min))
-	 (forward-line 2)
-	 (woman-decode-region (point) (point-max)))))
+;; (defun dictem-highlight-man-definition ()
+;;   (cond ((string= "man" dictem-current-dbname)
+;; 	 (goto-char (point-min))
+;; 	 (while (search-forward-regexp "^  " nil t)
+;; 	   (replace-match ""))
+;; 	 (goto-char (point-min))
+;; 	 (forward-line 2)
+;; 	 (woman-decode-region (point) (point-max)))))
 
-(add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
-(add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
+;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
+;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
 
 ;;; IMPORTANT: thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
@@ -189,8 +171,105 @@
 
 ;; (setq langtool-language-tool-jar "/home/chu/Downloads/LanguageTool/LanguageTool.jar") ;; TODO: hardcoded ...
 
-;; TODO: bibtex
-;; TODO: reftex
+;;; IMPORTANT: bibtex
+;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
+
+;;; IMPORTANT: `org-ref-man'
+;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
+;; TODO:
+;; - Learn `org-bibtex'.
+;; - Integrate `org-ref-man' and `org-bibtex'.
+;; (defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
+;;   "Generate an `org-mode' style file link."
+;;   (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
+
+;; SOURCE: `org-bibtex.el'
+;; (defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
+;;   "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
+;;   (if (file-exists-p dir-name)
+;;       (let (files result)
+;; 	(setq files (directory-files dir-name t (concat "\.pdf$") t))
+;; 	(dolist (file files)
+;; 	  (when (and (file-readable-p file) (not (file-directory-p file)))
+;; 	    (setq result (cons file result))
+;; 	    (generate-paper-entry file)))
+;; 	result)))
+
+;; (defun generate-paper-list-current-buffer (&rest junk)
+;;   "Generate a list of documents from the directory of the current buffer."
+;;   (interactive)
+;;   (generate-paper-list (file-name-directory (buffer-file-name))))
+
+;;; IMPORTANT: reftex
+;; SOURCE:
+(autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
+(autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
+(autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
+(autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
+
+;; (defun latex-bibtex-file (&rest junk)
+;;   "Produce a bibliography for current LaTeX document."
+;;   (interactive)
+;;   (call-process "bibtex" nil 0 nil (file-name-sans-extension (buffer-file-name))) ;; execute asynchronous bibtex process
+;;   (message (concat "bibtex called on " (buffer-file-name))))
+
+;; (defun org-mode-article-modes ()
+;;   (reftex-mode t)
+;;   (and (buffer-file-name)
+;;        (file-exists-p (buffer-file-name))
+;;        (reftex-parse-all)))
+
+;; (defun org-mode-reftex-setup ()
+;;   "Set up `reftex' integration with `org-mode'."
+;;   ;; (unless (fboundp 'reftex-mode)
+;;   ;;   (require 'reftex))
+;;   (and (buffer-file-name) (file-exists-p (buffer-file-name))
+;;        (reftex-parse-all))
+;;   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
+
+;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+
+;; (defun org-mode-custom-latex ()
+;;   "Enable custom settings for org-mode."
+;;   (turn-on-reftex) ;; turn on reftex
+;;   (org-mode-reftex-setup) ;; enable org-mode/reftex integration
+;;   (lambda () (if (member "REFTEX" org-todo-keywords-1 (org-mode-article-modes)))))
+
+;; (add-hook 'org-mode-hook 'org-mode-custom-latex)
+
+;;; IMPORTANT: reftex formats (for biblatex)
+;; (setq reftex-cite-format
+;;       '((?c . "\\cite[]{%l}")
+;;         (?t . "\\textcite{%l}")
+;;         (?a . "\\autocite[]{%l}")
+;;         (?p . "\\parencite{%l}")
+;;         (?f . "\\footcite[][]{%l}")
+;;         (?F . "\\fullcite[]{%l}")
+;;         (?x . "[]{%l}")
+;;         (?X . "{%l}")))
+
+;; (setq font-latex-match-reference-keywords
+;;       '(("cite" "[{")
+;;         ("cites" "[{}]")
+;;         ("footcite" "[{")
+;;         ("footcites" "[{")
+;;         ("parencite" "[{")
+;;         ("textcite" "[{")
+;;         ("fullcite" "[{")
+;;         ("citetitle" "[{")
+;;         ("citetitles" "[{")
+;;         ("headlessfullcite" "[{")))
+
+;; (setq reftex-enable-partial-scans t ;; make reftex faster
+;;       reftex-save-parse-info t ;; save the information gathered while reading a file
+;;       reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
+;;       reftex-default-bibliography '("default.bib"
+;; 				    "other-default.bib"
+;; 				    "/home/chu/Documents/Papers/papers.bib"
+;; 				    ) ;; default bibliography file(s)
+;;       reftex-cite-prompt-optional-args nil
+;;       reftex-cite-cleanup-optional-args t
+;;       reftex-extra-bindings t) ;; enable extra reftex bindings
 
 ;;; IMPORTANT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
@@ -1023,32 +1102,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (define-key org-mode-map (kbd "C-c v") 'my-verbatim-word)
 (define-key org-mode-map (kbd "C-c t") 'my-teletyped-word)
 
-;;; IMPORTANT: `org-ref-man'
-;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
-;; TODO:
-;; - Learn `org-bibtex'.
-;; - Integrate `org-ref-man' and `org-bibtex'.
-(defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
-  "Generate an `org-mode' style file link."
-  (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
-
-;; SOURCE: `org-bibtex.el'
-(defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
-  "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
-  (if (file-exists-p dir-name)
-      (let (files result)
-	(setq files (directory-files dir-name t (concat "\.pdf$") t))
-	(dolist (file files)
-	  (when (and (file-readable-p file) (not (file-directory-p file)))
-	    (setq result (cons file result))
-	    (generate-paper-entry file)))
-	result)))
-
-(defun generate-paper-list-current-buffer (&rest junk)
-  "Generate a list of documents from the directory of the current buffer."
-  (interactive)
-  (generate-paper-list (file-name-directory (buffer-file-name))))
-
 ;;; IMPORTANT: ...
 (defun get-page-title (url) ;; FIX: does this actually work?
   "Get title of web page, whose url can be found in the current line."
@@ -1214,178 +1267,110 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; IMPORTANT: latex configuration
 ;; SOURCE: `http://emacswiki.org/emacs/LaTeX'
-;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
-(autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
-(autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
-(autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
-(autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
-(autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
 
-(defun org-mode-article-modes ()
-  (reftex-mode t)
-  (and (buffer-file-name)
-       (file-exists-p (buffer-file-name))
-       (reftex-parse-all)))
+;; (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
 
-(defun org-mode-reftex-setup ()
-  "Set up `reftex' integration with `org-mode'."
-  (load-library "reftex")
-  (and (buffer-file-name)
-       (file-exists-p (buffer-file-name))
-       (reftex-parse-all))
-  (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
+;; (setq latex-run-command "pdflatex") ;; use `pdflatex' to compile LaTeX documents
 
-;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+;; (defun latex-file (&rest junk)
+;;   "Produce current LaTeX document as PDF."
+;;   (interactive)
+;;   (tex-file)
+;;   (switch-to-buffer (current-buffer)) ;; refocus on main window
+;;   (delete-other-windows)) ;; delete remaining window
 
-(defun org-mode-custom-latex ()
-  "Enable custom settings for org-mode."
-  (turn-on-reftex) ;; turn on reftex
-  (org-mode-reftex-setup) ;; enable org-mode/reftex integration
-  (lambda () (if (member "REFTEX" org-todo-keywords-1 (org-mode-article-modes)))))
+;; (defun latex-view (&rest junk)
+;;   "Produce and preview current LaTeX document as PDF."
+;;   (interactive)
+;;   (tex-file)
+;;   (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+;;     (message pdf-file) ;; print pdf-file in minibuffer
+;;     (call-process "evince" nil 0 nil pdf-file)) ;; execute asynchronous evince process
+;;     (switch-to-buffer (current-buffer)) ;; refocus on main window
+;;     (delete-other-windows)) ;; delete remaining window
 
-;; (add-hook 'org-mode-hook 'org-mode-custom-latex)
+;; (defun latex-smart-underscore ()
+;;   "Smart \"_\" key: insert \"_{}\". If the underscore key is pressed a second time, \"_{}\" is removed and replaced by the underscore."
+;;   (interactive)
+;;   (let ((assign-len (length "_{")))
+;;     (if (and
+;;          (>= (point) (+ assign-len (point-min))) ;; check that we can move back
+;;          (save-excursion
+;;            (backward-char assign-len)
+;;            (looking-at "_{}")))
+;;         (progn ;; if we are currently looking at ess-S-assign, replace it with _
+;;           (forward-char)
+;;           (delete-backward-char (+ 1 assign-len))
+;;           (insert "_"))
+;;       (delete-horizontal-space)
+;;       (insert "_{}")
+;;       (backward-char))))
 
-;;; IMPORTANT: reftex formats (for biblatex)
-(setq reftex-cite-format
-      '((?c . "\\cite[]{%l}")
-        (?t . "\\textcite{%l}")
-        (?a . "\\autocite[]{%l}")
-        (?p . "\\parencite{%l}")
-        (?f . "\\footcite[][]{%l}")
-        (?F . "\\fullcite[]{%l}")
-        (?x . "[]{%l}")
-        (?X . "{%l}")))
+;; (defun latex-smart-caret ()
+;;   "Smart \"^\" key: insert \"^{}\". If the caret key is pressed a second time, \"^{}\" is removed and replaced by the caret."
+;;   (interactive)
+;;   (let ((assign-len (length "^{")))
+;;     (if (and
+;;          (>= (point) (+ assign-len (point-min))) ;; check that we can move back
+;;          (save-excursion
+;;            (backward-char assign-len)
+;;            (looking-at "\\^{}"))) ;; looking-at reads regexp, so need to escape the caret character
+;;         (progn ;; if we are currently looking at ess-S-assign, replace it with ^
+;;           (forward-char)
+;;           (delete-backward-char (+ 1 assign-len))
+;;           (insert "^"))
+;;       (delete-horizontal-space)
+;;       (insert "^{}")
+;;       (backward-char))))
 
-(setq font-latex-match-reference-keywords
-      '(("cite" "[{")
-        ("cites" "[{}]")
-        ("footcite" "[{")
-        ("footcites" "[{")
-        ("parencite" "[{")
-        ("textcite" "[{")
-        ("fullcite" "[{")
-        ("citetitle" "[{")
-        ("citetitles" "[{")
-        ("headlessfullcite" "[{")))
+;; (defun latex-smart-period ()
+;;   "Smart \".\" key: insert \".  \n\". If the period key is pressed a second time, \".  \n\" is removed and replaced by the period."
+;;   (interactive)
+;;   (let ((assign-len (length ".  %%\n")))
+;;     (if (and
+;;          (>= (point) (+ assign-len (point-min))) ;; check that we can move back
+;;          (save-excursion
+;;            (backward-char assign-len)
+;;            (looking-at "\\.  %%")))
+;;         (progn ;; if we are currently looking at ess-S-assign, replace it with _
+;;           (delete-backward-char assign-len)
+;;           (insert "."))
+;;       (delete-horizontal-space)
+;;       (insert ".  %%\n"))))
 
-(setq reftex-enable-partial-scans t ;; make reftex faster
-      reftex-save-parse-info t ;; save the information gathered while reading a file
-      reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
-      reftex-default-bibliography '("default.bib"
-				    "other-default.bib"
-				    "/home/chu/Documents/Papers/papers.bib"
-				    ) ;; default bibliography file(s)
-      reftex-cite-prompt-optional-args nil
-      reftex-cite-cleanup-optional-args t
-      reftex-extra-bindings t ;; enable extra reftex bindings
-      latex-run-command "pdflatex") ;; use `pdflatex' to compile LaTeX documents
+;; (defmacro latex-skeleton (code) ;; inserts a custom clause skeleton in a LaTeX document
+;;   (let ((func (intern (concat "latex-skeleton-" code)))
+;; 	(doc (format "Inserts a %s clause in a LaTeX document." code)))
+;;     `(define-skeleton ,func ,doc "String: "
+;;        "\\" ,code  "{" str | "insert text" "}")))
 
-(defun latex-bibtex-file (&rest junk)
-  "Produce a bibliography for current LaTeX document."
-  (interactive)
-  (call-process "bibtex" nil 0 nil (file-name-sans-extension (buffer-file-name))) ;; execute asynchronous bibtex process
-  (message (concat "bibtex called on " (buffer-file-name))))
+;; (latex-skeleton "textbf") ;; inserts a bold clause
+;; (latex-skeleton "footnote") ;; inserts a footnote
+;; (latex-skeleton "texttt") ;; inserts a tele-type clause
+;; (latex-skeleton "emph") ;; inserts an emphasis clause
+;; (latex-skeleton "textsc") ;; inserts a small capitals clause
 
-(defun latex-file (&rest junk)
-  "Produce current LaTeX document as PDF."
-  (interactive)
-  (tex-file)
-  (switch-to-buffer (current-buffer)) ;; refocus on main window
-  (delete-other-windows)) ;; delete remaining window
+;; (defun turn-on-custom-latex-bindings ()
+;;   "Activate custom LaTeX bindings."
+;;   (define-key latex-mode-map (kbd "C-c C-v") 'latex-view) ;; enable latex-view
+;;   (define-key latex-mode-map (kbd "C-c C-f") 'latex-file) ;; enable latex-file
+;;   (define-key latex-mode-map (kbd "C-c C-b") 'latex-bibtex-file) ;; enable latex-bibtex-file
+;;   (define-key latex-mode-map (kbd "C-c b") 'latex-skeleton-textbf) ;; bind bold to keyboard
+;;   (define-key latex-mode-map (kbd "C-c f") 'latex-skeleton-footnote) ;; bind footnote to keyboard
+;;   (define-key latex-mode-map (kbd "C-c t") 'latex-skeleton-texttt) ;; bind tele-type to keyboard
+;;   (define-key latex-mode-map (kbd "C-c e") 'latex-skeleton-emph) ;; bind emphasise to keyboard
+;;   (define-key latex-mode-map (kbd "C-c s") 'latex-skeleton-textsc) ;; bind small-capitals to keyboard
+;;   (define-key latex-mode-map (kbd "_") 'latex-smart-underscore) ;; bind _ to smart underscore
+;;   (define-key latex-mode-map (kbd "^") 'latex-smart-caret) ;; bind ^ to smart caret
+;;   (define-key latex-mode-map (kbd ".") 'latex-smart-period)) ;; bind . to smart period
 
-(defun latex-view (&rest junk)
-  "Produce and preview current LaTeX document as PDF."
-  (interactive)
-  (tex-file)
-  (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
-    (message pdf-file) ;; print pdf-file in minibuffer
-    (call-process "evince" nil 0 nil pdf-file)) ;; execute asynchronous evince process
-    (switch-to-buffer (current-buffer)) ;; refocus on main window
-    (delete-other-windows)) ;; delete remaining window
+;; (defun turn-on-custom-latex ()
+;;   "Activate custom LaTeX functionality."
+;;   ;;(turn-on-reftex) ;; enable reftex mode
+;;   (turn-on-custom-latex-bindings) ;; enable custom latex bindings
+;;   (setq ispell-parser 'tex))
 
-(defun latex-smart-underscore ()
-  "Smart \"_\" key: insert \"_{}\". If the underscore key is pressed a second time, \"_{}\" is removed and replaced by the underscore."
-  (interactive)
-  (let ((assign-len (length "_{")))
-    (if (and
-         (>= (point) (+ assign-len (point-min))) ;; check that we can move back
-         (save-excursion
-           (backward-char assign-len)
-           (looking-at "_{}")))
-        (progn ;; if we are currently looking at ess-S-assign, replace it with _
-          (forward-char)
-          (delete-backward-char (+ 1 assign-len))
-          (insert "_"))
-      (delete-horizontal-space)
-      (insert "_{}")
-      (backward-char))))
-
-(defun latex-smart-caret ()
-  "Smart \"^\" key: insert \"^{}\". If the caret key is pressed a second time, \"^{}\" is removed and replaced by the caret."
-  (interactive)
-  (let ((assign-len (length "^{")))
-    (if (and
-         (>= (point) (+ assign-len (point-min))) ;; check that we can move back
-         (save-excursion
-           (backward-char assign-len)
-           (looking-at "\\^{}"))) ;; looking-at reads regexp, so need to escape the caret character
-        (progn ;; if we are currently looking at ess-S-assign, replace it with ^
-          (forward-char)
-          (delete-backward-char (+ 1 assign-len))
-          (insert "^"))
-      (delete-horizontal-space)
-      (insert "^{}")
-      (backward-char))))
-
-(defun latex-smart-period ()
-  "Smart \".\" key: insert \".  \n\". If the period key is pressed a second time, \".  \n\" is removed and replaced by the period."
-  (interactive)
-  (let ((assign-len (length ".  %%\n")))
-    (if (and
-         (>= (point) (+ assign-len (point-min))) ;; check that we can move back
-         (save-excursion
-           (backward-char assign-len)
-           (looking-at "\\.  %%")))
-        (progn ;; if we are currently looking at ess-S-assign, replace it with _
-          (delete-backward-char assign-len)
-          (insert "."))
-      (delete-horizontal-space)
-      (insert ".  %%\n"))))
-
-(defmacro latex-skeleton (code) ;; inserts a custom clause skeleton in a LaTeX document
-  (let ((func (intern (concat "latex-skeleton-" code)))
-	(doc (format "Inserts a %s clause in a LaTeX document." code)))
-    `(define-skeleton ,func ,doc "String: "
-       "\\" ,code  "{" str | "insert text" "}")))
-
-(latex-skeleton "textbf") ;; inserts a bold clause
-(latex-skeleton "footnote") ;; inserts a footnote
-(latex-skeleton "texttt") ;; inserts a tele-type clause
-(latex-skeleton "emph") ;; inserts an emphasis clause
-(latex-skeleton "textsc") ;; inserts a small capitals clause
-
-(defun turn-on-custom-latex-bindings ()
-  "Activate custom LaTeX bindings."
-  (define-key latex-mode-map (kbd "C-c C-v") 'latex-view) ;; enable latex-view
-  (define-key latex-mode-map (kbd "C-c C-f") 'latex-file) ;; enable latex-file
-  (define-key latex-mode-map (kbd "C-c C-b") 'latex-bibtex-file) ;; enable latex-bibtex-file
-  (define-key latex-mode-map (kbd "C-c b") 'latex-skeleton-textbf) ;; bind bold to keyboard
-  (define-key latex-mode-map (kbd "C-c f") 'latex-skeleton-footnote) ;; bind footnote to keyboard
-  (define-key latex-mode-map (kbd "C-c t") 'latex-skeleton-texttt) ;; bind tele-type to keyboard
-  (define-key latex-mode-map (kbd "C-c e") 'latex-skeleton-emph) ;; bind emphasise to keyboard
-  (define-key latex-mode-map (kbd "C-c s") 'latex-skeleton-textsc) ;; bind small-capitals to keyboard
-  (define-key latex-mode-map (kbd "_") 'latex-smart-underscore) ;; bind _ to smart underscore
-  (define-key latex-mode-map (kbd "^") 'latex-smart-caret) ;; bind ^ to smart caret
-  (define-key latex-mode-map (kbd ".") 'latex-smart-period)) ;; bind . to smart period
-
-(defun turn-on-custom-latex ()
-  "Activate custom LaTeX functionality."
-  (turn-on-reftex) ;; enable reftex mode
-  (turn-on-custom-latex-bindings) ;; enable custom latex bindings
-  (setq ispell-parser 'tex))
-
-(add-hook 'latex-mode-hook (lambda () (turn-on-custom-latex)))
-
+;; (add-hook 'latex-mode-hook (lambda () (turn-on-custom-latex)))
 
 (provide 'writing-config)
 ;;; writing-config.el ends here

@@ -104,7 +104,7 @@
 ;; (global-set-key (kbd "M-<f5>") 'function)
 ;; (global-set-key (kbd "C-<f5>") 'function)
 
-;; IMPORTANT: writing specific tasks
+;; IMPORTANT: writing specific keys
 (defconst writing-prefix-key (kbd "<f6>") "Writing prefix key.")
 (defvar writing-map (lookup-key global-map writing-prefix-key) "Keymap designed for writing.")
 
@@ -112,12 +112,20 @@
   (setq writing-map (make-sparse-keymap)))
 
 (define-key global-map writing-prefix-key writing-map)
-(define-key writing-map (kbd "c") 'count-words) ;; NOTE: count the words in the current buffer
-;;(define-key writing-map (kbd "d") 'dictionary-word) ;; NOTE: look up `current-word' from `http://dictionary.reference.com/'
-(define-key writing-map (kbd "t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: ...
+;; "apps"
 (define-key writing-map (kbd "e") 'ebib) ;; NOTE: run the emacs bibliography manager
-(define-key writing-map (kbd "d") 'dictem-run-search) ;; NOTE: dictionary search for word
 (define-key writing-map (kbd "n") 'deft) ;; NOTE: quick note taking with `deft'
+;; commands
+(define-key writing-map (kbd "c") 'count-words) ;; NOTE: count the words in the current buffer
+(define-key writing-map (kbd "t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: ...
+(define-key writing-map (kbd "d") 'dictem-run-search) ;; NOTE: dictionary search for word.
+;; text manipulation
+(define-key writing-map (kbd "u") 'upcase-word)
+(define-key writing-map (kbd "l") 'downcase-word)
+(define-key writing-map (kbd "C") 'capitalize-word)
+;; spelling
+(define-key writing-map (kbd "i") 'ispell-word)
+(define-key writing-map (kbd "I") 'ispell-buffer)
 
 ;;(global-set-key (kbd "M-<f6>") 'function)
 ;;(global-set-key (kbd "C-<f6>") 'function)

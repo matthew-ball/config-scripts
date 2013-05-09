@@ -60,7 +60,8 @@
      (require 'erc-log)
      (require 'erc-pcomplete)
      (require 'erc-button)
-     (require 'erc-track)))
+     ;;(require 'erc-track)
+     ))
 
 (defvar erc-insert-post-hook)
 
@@ -79,43 +80,43 @@
 (eval-after-load "erc-match" '(erc-match-mode t)) ;; NOTE: enable ERC match mode
 (eval-after-load "erc-stamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
 
-(eval-after-load "erc-track"
-  '(progn
-     (defun erc-bar-move-back (n)
-       "Moves back n message lines. Ignores wrapping, and server messages."
-       (interactive "nHow many lines ? ")
-       (re-search-backward "^.*<.*>" nil t n))
+;; (eval-after-load "erc-track"
+;;   '(progn
+;;      (defun erc-bar-move-back (n)
+;;        "Moves back n message lines. Ignores wrapping, and server messages."
+;;        (interactive "nHow many lines ? ")
+;;        (re-search-backward "^.*<.*>" nil t n))
 
-     (defun erc-bar-update-overlay ()
-       "Update the overlay for current buffer, based on the content of `erc-modified-channels-alist'. Should be executed on window change."
-       (interactive)
-       (let* ((info (assq (current-buffer) erc-modified-channels-alist))
-              (count (cadr info)))
-         (if (and info (> count erc-bar-threshold))
-             (save-excursion
-               (end-of-buffer)
-               (when (erc-bar-move-back count)
-                 (let ((inhibit-field-text-motion t))
-                   (move-overlay erc-bar-overlay
-                                 (line-beginning-position)
-                                 (line-end-position)
-                                 (current-buffer)))))
-           (delete-overlay erc-bar-overlay))))
+;;      (defun erc-bar-update-overlay ()
+;;        "Update the overlay for current buffer, based on the content of `erc-modified-channels-alist'. Should be executed on window change."
+;;        (interactive)
+;;        (let* ((info (assq (current-buffer) erc-modified-channels-alist))
+;;               (count (cadr info)))
+;;          (if (and info (> count erc-bar-threshold))
+;;              (save-excursion
+;;                (end-of-buffer)
+;;                (when (erc-bar-move-back count)
+;;                  (let ((inhibit-field-text-motion t))
+;;                    (move-overlay erc-bar-overlay
+;;                                  (line-beginning-position)
+;;                                  (line-end-position)
+;;                                  (current-buffer)))))
+;;            (delete-overlay erc-bar-overlay))))
 
-     (defvar erc-bar-threshold 1 "Display bar when there are more than erc-bar-threshold unread messages.")
-     (defvar erc-bar-overlay nil "Overlay used to set bar")
+;;      (defvar erc-bar-threshold 1 "Display bar when there are more than erc-bar-threshold unread messages.")
+;;      (defvar erc-bar-overlay nil "Overlay used to set bar")
 
-     (setq erc-bar-overlay (make-overlay 0 0))
-     (overlay-put erc-bar-overlay 'face '(:underline "black"))
+;;      (setq erc-bar-overlay (make-overlay 0 0))
+;;      (overlay-put erc-bar-overlay 'face '(:underline "black"))
 
-     ;; NOTE: put the hook before erc-modified-channels-update
-     (defadvice erc-track-mode (after erc-bar-setup-hook
-                                      (&rest args) activate)
-       ;; NOTE: remove and add, so we know it's in the first place
-       (remove-hook 'window-configuration-change-hook 'erc-bar-update-overlay)
-       (add-hook 'window-configuration-change-hook 'erc-bar-update-overlay))
+;;      ;; NOTE: put the hook before erc-modified-channels-update
+;;      (defadvice erc-track-mode (after erc-bar-setup-hook
+;;                                       (&rest args) activate)
+;;        ;; NOTE: remove and add, so we know it's in the first place
+;;        (remove-hook 'window-configuration-change-hook 'erc-bar-update-overlay)
+;;        (add-hook 'window-configuration-change-hook 'erc-bar-update-overlay))
 
-     (add-hook 'erc-send-completed-hook (lambda (str) (erc-bar-update-overlay)))))
+;;      (add-hook 'erc-send-completed-hook (lambda (str) (erc-bar-update-overlay)))))
 
 ;; TODO: use variables in here ...
 (setq ;; erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
@@ -294,15 +295,15 @@
 (erc-user-message "MEMOSERV" "Freenode's MemoServ allows a user to send messages to registered users. See: /msg MemoServ help")
 (erc-user-message "CHANSERV" "Freenode's ChanServ gives normal users the ability to maintain control of a channel. See: /msg ChanServ help")
 (erc-user-message "GUIDELINES" "The guidelines for using the Ubuntu channels can be found here: http://wiki.ubuntu.com/IRC/Guidelines")
-(erc-user-message "OHMY" "Please watch your language in this channel, thank you.")
+(erc-user-message "LANGUAGE" "Please watch your language in this channel, thank you.")
 (erc-user-message "EMACS" "GNU Emacs is a powerful lisp environment and text editor. See: http://www.gnu.org/software/emacs/")
 (erc-user-message "STUMPWM" "StumpWM is a tiling window manager for X11 written in common lisp. See: http://www.nongnu.org/stumpwm/")
-(erc-user-message "CONKEROR" "Conkeror is a highly extensible web browser based on Firefox. See: http://conkeror.org/")
+;;(erc-user-message "CONKEROR" "Conkeror is a highly extensible web browser based on Firefox. See: http://conkeror.org/")
 (erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
 
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
 
-;;; IMPORTANT: freenode <*>Serv interaction commands
+;; IMPORTANT: freenode <*>Serv interaction commands
 ;; NOTE: Freenode `NickServ' commands:
 ;; GHOST           Reclaims use of a nickname.
 ;; GROUP           Adds a nickname to your account.
@@ -322,7 +323,7 @@
 
 ;; (defmacro erc-user-cmd (command)
 ;;   "..."
-;;   (let ((func (insert (concat "erc-cmd-SERV-" command)))
+;;   (let ((func (insert (concat "erc-cmd-" command)))
 ;; 	(doc (format "Send the command \"%s\" to a server process in an `erc-mode' buffer." command)))
 ;;     `(defun ,func (&rest junk)
 ;;        ,doc
@@ -330,9 +331,14 @@
 
 ;;(erc-user-cmd "NICKSERV")
 
-(defun erc-cmd-NS () (let ((choice (ido-completing-read "Select command: " nickserv-commands-list))) (erc-message "PRIVMSG" (format "NickServ help %s" choice))))
+(defun erc-cmd-NS ()
+  ""
+  (let ((choice (ido-completing-read "Select command: " nickserv-commands-list)))
+    (erc-message "PRIVMSG"
+                 (format "NickServ help %s"
+                         choice))))
 
-;;; IMPORTANT: freenode user and channel modes
+;; IMPORTANT: freenode user and channel modes
 ;; (defvar freenode-user-modes-list (list "D" "g" "i" "Q" "R" "w" "z"))
 ;; (defvar freenode-channel-modes-list (list "b" "C" "c" "e" "f" "F" "g" "i" "I" "j" "k" "l" "L" "m" "n" "p" "P" "q" "Q" "r" "s" "t" "z"))
 
@@ -345,21 +351,6 @@
 ;;   (let ((channel (erc-default-target)))
 ;;     (erc-server-send (concat "MODE " channel mode-flag user))
 ;;     ))
-
-;; (defmacro erc-user-message (command message)
-;;   "Macro to create \"custom\" messages to an IRC user in an `erc-mode' session."
-;;   (let ((func (intern (concat "erc-cmd-" command)))
-;; 	(doc (format "Send the command \"%s\" in an `erc-mode' buffer." command))
-;; 	(string message))
-;;     `(defun ,func (name &rest junk)
-;;        ,doc
-;;        (erc-send-message (concat name ": " ,string)))))
-
-;; (defun erc-cmd-ACCESS-LIST ()
-;;   "Display the `access-list' for the current channel."
-;;   (erc-message "PRIVMSG"
-;; 	       (format "ChanServ ACCESS %s LIST"
-;; 		       (erc-default-target))))
 
 ;; NOTE: Freenode `MemoServ' commands:
 ;; DEL             Alias for DELETE
@@ -383,20 +374,6 @@
 ;; ...
 (defun erc-cmd-CS (&rest junk)
   )
-
-;;; IMPORTANT: "Custom" `erc-mode' messages
-;; (defun erc-cmd-GUIDELINES (name &rest junk)
-;;   "Send the user a link to the Ubuntu IRC guideliness page."
-;;   (erc-send-message (concat name ": The guidelines for using the Ubuntu channels can be found here: http://wiki.ubuntu.com/IRC/Guidelines")))
-
-;; (defun erc-cmd-OHMY (name &rest junk)
-;;  "Send the user a message asking them to obey a language policy."
-;;  (erc-send-message (concat name ": Please watch your language in this channel, thank you.")))
-
-;; (defun erc-cmd-GNU (name &rest junk)
-;;   "Send the user a link to the GNU/Linux naming issue."
-;;   (erc-send-action (erc-default-target)
-;; 		   (concat "takes " name " aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")))
 
 ;;; IMPORTANT: "Custom" `erc-mode' interactions with outside environment
 (defun erc-cmd-MAN (program &rest args)
