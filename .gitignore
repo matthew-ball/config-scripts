@@ -5,10 +5,10 @@
 passwords/
 
 # ignore a bunch of old config stuff
-# aptitude-dir/
-# conkeror-dir/
-# mpd-dir/
-# ncmpcpp-dir/
+aptitude-dir/
+conkeror-dir/
+mpd-dir/
+ncmpcpp-dir/
 
 # ignore a bunch of oldish emacs stuff
 emacs-dir/extras-el/cc-old.el
