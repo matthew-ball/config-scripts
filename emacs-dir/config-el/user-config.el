@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+;;; IMPORTANT: gnome network-manager
+(require 'gnomenm)
+
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
 (autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
@@ -186,7 +189,7 @@
       erc-save-queries-on-quit t
       erc-log-write-after-send t
       erc-log-write-after-insert t
-      erc-log-insert-log-on-open t
+      ;;erc-log-insert-log-on-open t
       erc-log-file-coding-system 'utf-8)
 
 (eval-after-load "erc" '(setq erc-modules (delq 'fill erc-modules))) ;; NOTE: disable `erc-fill-mode'
@@ -200,7 +203,7 @@
 (setq erc-remove-parsed-property nil)
 
 ;;; IMPORTANT: erc commands
-;; SOURCE: 
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcUname'
 (defun erc-cmd-UNAME (&rest ignore)
   "Display the result of running `uname -a' to the current ERC buffer."
   (let ((uname-output
@@ -209,6 +212,7 @@
     (erc-send-message
      (concat "{uname -a} [" uname-output "]"))))
 
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcUptime'
 (defun erc-cmd-UPTIME (&rest ignore)
   "Display the uptime of the system, as well as some load-related stuff, to the current ERC buffer."
   (let ((uname-output
@@ -224,18 +228,7 @@
     (erc-send-message
      (concat "{Uptime} [" uname-output "]"))))
 
-;; (defun erc-cmd-INFO (&rest ignore)
-;;   "Send current info node."
-;;   (unless (get-buffer "*info*")
-;;     (info))
-;;   (let (output)
-;;     (with-current-buffer "*info*"
-;;       (let* ((file (file-name-nondirectory Info-current-file))
-;; 	     (node Info-current-node))
-;; 	(setq output (format "(info \"(%s)%s\")"
-;; 			     file node))))
-;;     (erc-send-message output)))
-
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcShow'
 (defun erc-cmd-SHOW (&rest form)
   "Evaluate FORM and send the result and the original form as: FORM => (eval FORM)."
   (let ((string
@@ -252,6 +245,7 @@
             (point-min) (1- (point-max))))))
     (erc-send-message string)))
 
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
 (defun erc-cmd-OPME ()
   "Request ChanServ to put me into operator status."
   (erc-message "PRIVMSG"
@@ -259,6 +253,7 @@
 		       (erc-default-target)
 		       (erc-current-nick)) nil))
 
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
 (defun erc-cmd-DEOPME ()
   "Deop myself from current channel."
   (erc-cmd-DEOP
@@ -458,9 +453,24 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	(switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
     (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
 
+(defun custom-erc-switch-buffer (&rest junk)
+  "Switch to an existing `erc-mode' buffer."
+  (interactive)
+  (switch-to-buffer
+   (ido-completing-read
+    "Channel:" 
+    (save-excursion
+      (delq nil (mapcar (lambda (buf)
+                          (when (buffer-live-p buf)
+                            (with-current-buffer buf
+                              (and (eq major-mode 'erc-mode)
+                                   (buffer-name buf)))))
+                        (buffer-list)))))))
 
 ;; NOTE: `erc' key-bindings
-(eval-after-load "erc" '(define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel))
+(eval-after-load "erc" '(progn
+                          (define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel)
+                          (global-set-key (kbd "C-c e") 'custom-erc-switch-buffer)))
 
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
