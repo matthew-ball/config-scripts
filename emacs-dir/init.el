@@ -24,7 +24,6 @@
 
 ;;; Code:
 
-;; TODO: should set `user-variables' here
 ;;; IMPORTANT: user variables
 (defgroup user-variables nil "User variables.")
 
