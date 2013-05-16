@@ -168,10 +168,11 @@
 
 ;; TODO: investigate `ibuffer-directory-abbrev-list'
 
-(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-0\\*$")
-(add-to-list 'ibuffer-never-show-predicates " ^\\*Minibuf-1\\*$")
-(add-to-list 'ibuffer-never-show-predicates " ^\\*Ibuffer\\*$")
-(add-to-list 'ibuffer-never-show-predicates " ^\\*AgendaCommands\\*$")
+(add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
+(add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
+(add-to-list 'ibuffer-never-show-predicates "^ \\*Ibuffer\\*$")
+(add-to-list 'ibuffer-never-show-predicates "^ \\*AgendaCommands\\*$")
+;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
 
 (setq ibuffer-saved-filter-groups
       `(("default"
@@ -203,6 +204,8 @@
 	      (mode . inferior-haskell-mode)
 	      (mode . python-mode)
 	      (mode . inferior-python-mode)
+	      (mode . nrepl-mode)
+	      (name . "^\\*nrepl-error\\*$")
 	      (mode . lisp-mode)
 	      (mode . common-lisp-mode)
 	      (mode . emacs-lisp-mode)
@@ -360,6 +363,16 @@
 
 (setq tramp-default-method "ssh") ;; NOTE: use ssh for tramp
 
+;; SOURCE: `http://wenshanren.org/?p=298'
+(defun edit-current-file-as-root ()
+  "Edit the file that is associated with the current buffer as root"
+  (interactive)
+  (if (buffer-file-name)
+      (progn
+        (setq file (concat "/sudo:root@localhost:" (buffer-file-name)))
+        (find-file file))
+    (message "Current buffer does not have an associated file.")))
+
 ;;; IMPORTANT: version control
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
 (autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
@@ -381,9 +394,19 @@
 
 ;;; IMPORTANT: save mini-buffer history
 ;; SOURCE: `http://emacswiki.org/emacs/SaveHist'
+(require 'savehist)
+
 (savehist-mode t) ;; NOTE: keep mini buffer history between session
 
 (setq savehist-file (concat (expand-file-name user-emacs-directory) "minibuffer-history"))
+
+;;; IMPORTANT: save place
+;; SOURCE: `http://www.emacswiki.org/emacs/SavePlace'
+(require 'saveplace)
+
+(setq-default save-place t)
+
+(setq save-place-file (concat (expand-file-name user-emacs-directory) "save-place"))
 
 ;;; IMPORTANT: temporary buffers
 (temp-buffer-resize-mode t) ;; NOTE: auto-fit the *Help* buffer to its contents
@@ -401,7 +424,8 @@
 
 ;;; IMPORTANT: desktop save mode
 ;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
-(autoload 'desktop-save-mode "desktop" "Save session file." t)
+;;(autoload 'desktop-save-mode "desktop" "Save session file." t)
+(require 'desktop)
 
 (defun restore-desktop-session (&rest junk)
   "Query the user to start the previous saved session or not."
@@ -427,6 +451,10 @@
       history-length 250)
 
 (eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
+
+(setq desktop-buffers-not-to-save "\\(\\.newsrc-dribble\\|\\.bbdb\\)$")
+
+(add-to-list 'desktop-modes-not-to-save 'fundamental-mode)
 
 (setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
       (append '((extended-command-history . 30)

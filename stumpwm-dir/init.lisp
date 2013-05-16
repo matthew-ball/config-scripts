@@ -13,7 +13,7 @@
       *startup-message* nil ;; NOTE: suppress the startup message
       ;; *debug-level* 5 ;; NOTE: turn on stumpwm debugging (WARNING: creates massive text dumps)
       *shell-program* (getenv "SHELL") ;; NOTE: set the default shell
-      *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse (alternatives are: `:click', `:ignore', `:sloppy')
+      *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse (alternatives are: `:click' and `:ignore')
 
 (redirect-all-output (data-dir-file "debug-output" "txt")) ;; NOTE: debug information `~/.stumpwm.d/debug-output.txt'
 
@@ -23,7 +23,9 @@
 ;;; IMPORTANT: general functions
 ;; SOURCE: ...
 (defun cat (&rest strings)
-  "Return STRINGS concatenated together, like the Unix command 'cat'. A shortcut for (concatenate 'string foo bar)."
+  "Return STRINGS concatenated together, like the Unix command 'cat'.
+
+A shortcut for (concatenate 'string foo bar)."
   (apply 'concatenate 'string strings))
 
 (defun hostname (&rest junk)
@@ -32,25 +34,25 @@
 
 ;; TODO: need to look into "apt-cache policy application"
 ;; ..... possibly grep for "Installed: (none)" and return nil
-(defun installed-p (application)
-  "Return `t' if application is installed, return `nil' otherwise.")
+;; (defun installed-p (application)
+;;   "Return `t' if application is installed, return `nil' otherwise.")
 
 ;; IMPORTANT: the following functions are called during initialization
 ;; (defun launch-mpd (&rest junk)
 ;;   "Start music player daemon, `mpd', server."
 ;;   (run-shell-command "mpd"))
 
-(defun launch-nm-applet (&rest junk)
-  "Start the network manager applet, `nm-applet'."
-  (run-shell-command "nm-applet"))
+;; (defun launch-nm-applet (&rest junk)
+;;   "Start the network manager applet, `nm-applet'."
+;;   (run-shell-command "nm-applet"))
 
-(defun launch-lxpanel (&rest junk)
-  "Start an instance of `lxpanel'."
-  (run-shell-command "lxpanel"))
+;; (defun launch-lxpanel (&rest junk)
+;;   "Start an instance of `lxpanel'."
+;;   (run-shell-command "lxpanel"))
 
-(defun launch-emacs-daemon (&rest junk)
-  "Start an instance of `emacs --daemon'."
-  (run-shell-command "emacs --daemon"))
+;; (defun launch-emacs-daemon (&rest junk)
+;;   "Start an instance of `emacs --daemon'."
+;;   (run-shell-command "emacs --daemon"))
 
 ;; TODO: create (setup) the environment
 ;; (defun startup-function (&rest args)
@@ -76,6 +78,7 @@
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.")
 (defvar *editor* (getenv "EDITOR") "Set the default editor.") ;; NOTE: set shell environment editor
 (defvar *file-manager* "pcmanfm" "Set the default file manager.")
+
 (defvar *package-manager* "aptitude" "Set the default package manager.")
 (defvar *system-monitor* "htop" "Set the default system monitor.")
 (defvar *document-viewer* "evince" "Set the default document reader.")
@@ -104,6 +107,8 @@
 ;; (defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
 ;; (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
 
+;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line formar
+
 ;;; IMPORTANT: slime and swank
 ;; SOURCE: ...
 ;; NOTE: requires `quicklisp'
@@ -127,7 +132,7 @@
 
 ;; (run-swank) ;; NOTE: start the swank server
 
-;;; IMPORTANT: monitoring scripts
+;;; IMPORTANT: contribution scripts
 ;; SOURCE: ...
 (set-contrib-dir (cat *user-source-directory* "/contrib"))
 ;;(set-contrib-dir "/home/chu/Programming/lisp/common-lisp/stumpwm/contrib") ;; NOTE: set contrib directory
@@ -154,6 +159,8 @@
 			;; "wifi"
 			;; "window-tags"
 			))
+
+(setf *prefer-sysfs* nil)
 
 ;;; IMPORTANT: window appearance
 ;; SOURCE: ...
@@ -187,28 +194,29 @@
 ;; SOURCE: ...
 (set-frame-outline-width 0)
 
-;; (setf *mode-line-background-color* *background-colour*
-      ;; *mode-line-foreground-color* *foreground-colour*
-      ;; *mode-line-border-color* *border-colour*
-      ;; *mode-line-border-width* 0 ;; NOTE: set thickness of the mode line border
-      ;; *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
-      ;; *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
-      ;; *mode-line-position* :top
-      ;; *mode-line-screen-position* :top
-      ;; *mode-line-frame-position* :top
-      ;; *window-format* "%n%s %20t"
-      ;; *window-info-format* "[%i] - (%t)"
-      ;; *group-format* "%n:%t"
-      ;; *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
-      ;; )
+(setf ;;*mode-line-background-color* *background-colour*
+      ;;*mode-line-foreground-color* *foreground-colour*
+      ;;*mode-line-border-color* *border-colour*
+      *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
+      *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
+      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
+      ;;*mode-line-position* :top
+      ;;*mode-line-screen-position* :top ;; ERROR: ...
+      ;;*mode-line-frame-position* :top ;; ERROR: ...
+      ;;*window-format* "%n%s %20t"
+      ;;*window-info-format* "[%i] - (%t)"
+      ;;*group-format* "%n:%t"
+      *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
+      )
 
 (setf *screen-mode-line-format*
-      (list 
+      (list
+       "[^[^6*%d^]] " ;; NOTE:  display current time and date
        "[^B%n^b] " ;; NOTE: display current group
-       "%B " ;; NOTE: display battery details
+       ;; "[^[^1*%B^]] " ;; NOTE: display battery details
        ;; "%l " ;; NOTE: show network connection details
-       "%W " ;; window list
-       ;; '(:eval (cat "(^B" (run-shell-command "date '+%R, %d %b'|tr -d [:cntrl:] " t) "^b) ")) ;; NOTE: display time
+       ;; "%W " ;; NOTE: window list ("%v " is similar)
+       ;; "[" '(:eval (run-shell-command "acpi -b" t)) "]"
        ;; "["
        ;; "%M" ;; NOTE: display memory usage
        ;; "%C" ;; NOTE: display CPU metre as a bar
@@ -220,7 +228,7 @@
        ;; "]"
        ;; " ^B%g^b" ;; NOTE: display group name
        ;; "^B%W^b" ;; NOTE: display current and available frames
-       ))
+	       ))
 
 ;; (when (not (head-mode-line (current-head))) ;; NOTE: turn on the `mode-line'
 ;;    (toggle-mode-line (current-screen) (current-head)))
@@ -235,6 +243,12 @@
 ;; (defvar *mode-line-format-mpd* "[^B%m^b]" "Display mpd details.")
 
 ;; (defvar *mode-line-format-list* (list 'cpu-memory 'time 'group-frames 'groups-frame 'battery-wireless 'mpd))
+
+;; (defun add-to-mode-line (string)
+;;   "")
+
+;; (defun remove-from-mode-line (string)
+;;   "")
 
 ;; (defun interactive-mode-line (&rest junk)
 ;;   "Interactively add (and remove) entries from the StumpWM mode-line."
@@ -271,10 +285,10 @@
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
 
 (defkeys-root ;; NOTE: define root-map keys
-    ("s-g" "google") ;; NOTE: quick search google
-    ("s-w" "wikipedia") ;; NOTE: quick search wikipedia
-  ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
-  ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
+    ;; ("s-g" "google") ;; NOTE: quick search google
+    ;; ("s-w" "wikipedia") ;; NOTE: quick search wikipedia
+    ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
+    ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
   ("C-w" "run-swank") ;; NOTE: start a swank server
   ("M-b" "show-battery") ;; NOTE: show battery status
   ("M-c" "command-mode") ;; NOTE: active `command-mode'
@@ -284,10 +298,10 @@
   )
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
-    ("s-E" '*emacs-map*)
+    ;; ("s-E" '*emacs-map*)
     ("s-S" '*sudo-map*)
-  ;; ("s-M" '*mpd-map*)
-  ("s-V" '*volume-map*)
+    ;; ("s-M" '*mpd-map*)
+    ("s-V" '*volume-map*)
   ;; ("s-N" '*notifications-map*) ;; TODO: setup
   ("s-:" "eval")
   ;; ("s-a" "run-audio-player") ;; NOTE: open (or switch to an existing instance of) *audio-player*
@@ -304,7 +318,7 @@
   )
 
 (defvar *sudo-map* nil "Super-user specific key-bindings.")
-(defvar *emacs-map* nil "Emacs specific key-bindings.")
+;;(defvar *emacs-map* nil "Emacs specific key-bindings.")
 (defvar *volume-map* nil "Control volume key-bindings.")
 
 (fill-keymap *sudo-map*
@@ -312,16 +326,16 @@
 	     (kbd "s") "shutdown"
              (kbd "h") "hibernate")
 
-(fill-keymap *emacs-map*
-	     (kbd "a") "emacs-agenda"
-	     (kbd "b") "emacs-bookmarks"
-	     (kbd "c") "emacs-capture"
-	     (kbd "d") "emacs-dired"
-	     (kbd "e") "emacs-erc"
-	     (kbd "g") "emacs-gnus"
-	     (kbd "i") "emacs-info"
-	     (kbd "t") "emacs-term"
-	     (kbd "C") "emacs-calendar")
+;; (fill-keymap *emacs-map*
+;; 	     (kbd "a") "emacs-agenda"
+;; 	     (kbd "b") "emacs-bookmarks"
+;; 	     (kbd "c") "emacs-capture"
+;; 	     (kbd "d") "emacs-dired"
+;; 	     (kbd "e") "emacs-erc"
+;; 	     (kbd "g") "emacs-gnus"
+;; 	     (kbd "i") "emacs-info"
+;; 	     (kbd "t") "emacs-term"
+;; 	     (kbd "C") "emacs-calendar")
 
 (fill-keymap *volume-map*
 	     (kbd "u") "volume-up"
@@ -370,11 +384,18 @@
 (define-frame-preference "internet" (0 t t :instance "chromium-browser")) ;; NOTE: this works for `chromium-browser'
 ;;(define-frame-preference "misc" (0 t t :instance "x-terminal-emulator"))
 (define-frame-preference "misc" (0 t t :title "terminal"))
+;;(define-frame-preference "misc" (0 t t :title (eval *terminal*)))
 (define-frame-preference "misc" (0 t t :title "htop"))
 (define-frame-preference "misc" (0 t t :title "aptitude"))
 
 ;;; IMPORTANT: run applications
 ;; SOURCE: ...
+
+;; TODO: clean these up ...
+;;(defprogram-shortcut emacs :command "emacs" :key (kbd "s-e"))
+;;(defprogram-shortcut terminal :command "x-terminal-emulator" :key (kbd "s-t"))
+;;(defporgram-shortcut browser :command "x-browser" :key (kbd "s-b"))
+
 ;; (defcommand exec-in-terminal (cmd) ((:string "Command: ")) (run-shell-command (format nil "~A -e ~A" *terminal* cmd))) ;; TODO: clean this up
 
 (defun run-or-raise-app (command property group) ;; FIX: fix
@@ -399,7 +420,7 @@
 ;; (defcommand run-browser () () "Launch `*browser*'." (run-or-raise *browser* (list :instance "chromium-browser")))
 (defcommand run-browser () () "Launch `*browser*'." (run-or-raise *browser* (list :instance "x-www-browser"))) ;; FIX: ...
 (defcommand run-file-manager () () "Launch `*file-manager'." (run-or-raise *file-manager* (list :instance *file-manager*)))
-(defcommand run-document-viewer () () "Launch `*document-viewer'." (run-or-raise *document-viewer* (list :instance *document-viewer*)))
+;;(defcommand run-document-viewer () () "Launch `*document-viewer'." (run-or-raise *document-viewer* (list :instance *document-viewer*)))
 ;; (defcommand run-referencer () () "Launch `referencer'." (run-app "referencer" (list :instance "referencer")))
 
 ;; NOTE: terminal apps
@@ -419,16 +440,16 @@
 
 ;;; IMPORTANT: group configuration
 ;; SOURCE: ...
-;; (defun screen-window-count ()
-;;   "Return the number of window frames in the current screen."
-;;   (let ((window-count 0))
-;;     (dolist (group (screen-groups (current-screen))) ;; NOTE: count the windows in the screen (all the groups)
-;;       (setq window-count (+ (length (group-windows group)) window-count)))
-;;     window-count))
+(defun screen-window-count ()
+  "Return the number of window frames in the current screen."
+  (let ((window-count 0))
+    (dolist (group (screen-groups (current-screen))) ;; NOTE: count the windows in the screen (all the groups)
+      (setq window-count (+ (length (group-windows group)) window-count)))
+    window-count))
 
-;; (defun group-window-count ()
-;;   "Return the number of window frames in current group."
-;;   (length (group-windows (current-group (current-screen))))) ;; NOTE: count the windows in the current group
+(defun group-window-count ()
+  "Return the number of window frames in current group."
+  (length (group-windows (current-group (current-screen))))) ;; NOTE: count the windows in the current group
 
 (defun empty-group-p ()
   "Return `t' if the current group is empty, return `nil' otherwise."
@@ -436,10 +457,15 @@
     (if (> window-count 0) nil t)))
 
 (defun switch-to-non-empty-group (window)
-  "If the current group is empty (i.e. there are no windows open) then move to `default' group."
+  "If the current group is empty (i.e. there are no windows open) then move to a non-empty group.
+
+ If the screen is empty (all groups are empty) then switch back to the default group."
   (declare (ignore window))
   (when (empty-group-p)
-    (run-commands "gselect 1")))
+    (if (= (screen-window-count) 0)
+        (run-commands "gselect 1")
+        (run-commands "gselect 1") ;; FIX: this is just temporary ... the idea is to switch to a group which is not empty.
+        )))
 
 (add-hook *destroy-window-hook* 'switch-to-non-empty-group)
 
@@ -580,12 +606,12 @@
 
 ;;; IMPORTANT: web jumping
 ;; SOURCE: ...
-(defmacro make-web-jump (name url-prefix)
-  `(defcommand ,name (search) ((:rest ,(concatenate 'string "Search " (string-downcase (symbol-name name)) " for: ")))
-     (run-shell-command (format nil (concatenate 'string *browser* " '~A=~A'") ,url-prefix (substitute #\+ #\Space search)))))
+;; (defmacro make-web-jump (name url-prefix)
+;;   `(defcommand ,name (search) ((:rest ,(concatenate 'string "Search " (string-downcase (symbol-name name)) " for: ")))
+;;      (run-shell-command (format nil (concatenate 'string *browser* " '~A=~A'") ,url-prefix (substitute #\+ #\Space search)))))
 
-(make-web-jump google "http://www.google.com/search?q")
-(make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
+;; (make-web-jump google "http://www.google.com/search?q")
+;; (make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
 ;; TODO: make an emacs wiki web-jump
 ;; TODO: make a stumpwm wiki web-jump
 ;; TODO: make a common lisp wiki web-jump
@@ -677,70 +703,71 @@
   (emacs)
   (window-send-string str))
 
-(defcommand emacs-agenda () ()
-  "View agenda in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "org-agenda")
-  (send-emacs-key-command "RET")
-  (message "Starting agenda."))
+;; EDIT: this is all a bit silly ...
+;; (defcommand emacs-agenda () ()
+;;   "View agenda in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "org-agenda")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting agenda."))
 
-(defcommand emacs-bookmarks () ()
-  "Open bookmarks in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "list-bookmarks")
-  (send-emacs-key-command "RET")
-  (message "Starting bookmarks."))
+;; (defcommand emacs-bookmarks () ()
+;;   "Open bookmarks in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "list-bookmarks")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting bookmarks."))
 
-(defcommand emacs-capture () ()
-  "Capture note in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "org-capture")
-  (send-emacs-key-command "RET")
-  (message "Starting capture."))
+;; (defcommand emacs-capture () ()
+;;   "Capture note in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "org-capture")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting capture."))
 
-(defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIX: fix
-  "Open directory for file management in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "ido-dired")
-  (send-emacs-key-command "RET")
-  (send-emacs-string directory)
-  (send-emacs-key-command "RET")
-  (message "Starting dired."))
+;; (defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIX: fix
+;;   "Open directory for file management in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "ido-dired")
+;;   (send-emacs-key-command "RET")
+;;   (send-emacs-string directory)
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting dired."))
 
-(defcommand emacs-calendar () ()
-  "Open calendar in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "calendar")
-  (send-emacs-key-command "RET")
-  (message "Starting calendar."))
+;; (defcommand emacs-calendar () ()
+;;   "Open calendar in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "calendar")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting calendar."))
 
-(defcommand emacs-erc () ()
-  "Start an IRC connection in Emacs with ERC."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "erc-start-or-switch")
-  (send-emacs-key-command "RET")
-  (message "Starting ERC."))
+;; (defcommand emacs-erc () ()
+;;   "Start an IRC connection in Emacs with ERC."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "erc-start-or-switch")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting ERC."))
 
-(defcommand emacs-gnus () ()
-  "Read mail and RSS feeds in Emacs with GNUS."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "gnus")
-  (send-emacs-key-command "RET")
-  ;; (send-emacs-key-command "C-<f4>")
-  (message "Starting GNUS."))
+;; (defcommand emacs-gnus () ()
+;;   "Read mail and RSS feeds in Emacs with GNUS."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "gnus")
+;;   (send-emacs-key-command "RET")
+;;   ;; (send-emacs-key-command "C-<f4>")
+;;   (message "Starting GNUS."))
 
-(defcommand emacs-info () ()
-  "Open info documentation in Emacs."
-  (send-emacs-key-command "C-h")
-  (send-emacs-key-command "i")
-  (message "Starting info."))
+;; (defcommand emacs-info () ()
+;;   "Open info documentation in Emacs."
+;;   (send-emacs-key-command "C-h")
+;;   (send-emacs-key-command "i")
+;;   (message "Starting info."))
 
-(defcommand emacs-term () ()
-  "Start a new (or switch to an existing) ANSI terminal session in Emacs."
-  (send-emacs-key-command "M-x")
-  (send-emacs-string "switch-term")
-  (send-emacs-key-command "RET")
-  (message "Starting term."))
+;; (defcommand emacs-term () ()
+;;   "Start a new (or switch to an existing) ANSI terminal session in Emacs."
+;;   (send-emacs-key-command "M-x")
+;;   (send-emacs-string "switch-term")
+;;   (send-emacs-key-command "RET")
+;;   (message "Starting term."))
 
 ;;; IMPORTANT: startup applications
 ;; SOURCE: ...

@@ -115,7 +115,7 @@
       battery-load-low 25
       battery-mode-line-format " [%b%p%%]" ;; NOTE: default
       battery-update-interval 60
-      ;;battery-status-function 'battery-linux-sysfs ;; NOTE: default
+      battery-status-function 'battery-linux-sysfs ;; NOTE: default
       ;;battery-status-function 'battery-linux-proc-acpi
       ;;battery-status-function 'battery-linux-proc-apm
       ;;battery-mode-line-limit 60 ;; NOTE: display battery status when battery has less than 60% charge

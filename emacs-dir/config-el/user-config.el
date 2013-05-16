@@ -57,13 +57,13 @@
      (require 'erc-netsplit)
      (require 'erc-ring)
      (require 'erc-goodies)
-     (require 'erc-track)
+     ;; (require 'erc-track)
      (require 'erc-match)
      (require 'erc-fill)
      (require 'erc-log)
      (require 'erc-pcomplete)
-     (require 'erc-button)
-     ;;(require 'erc-track)
+     ;; (require 'erc-button)
+     (require 'erc-notify)
      ))
 
 (defvar erc-insert-post-hook)
@@ -71,17 +71,57 @@
 ;;; IMPORTANT: erc modules
 ;; SOURCE: 
 (eval-after-load "erc-button" '(erc-button-enable))
-;;(eval-after-load "erc-match" '(erc-match-enable))
 (eval-after-load "erc-ring" '(erc-ring-enable))
-(eval-after-load "erc-log" '(erc-log-enable))
 (eval-after-load "erc-netsplit" '(erc-netsplit-enable))
 (eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fil
 (eval-after-load "erc-join" '(erc-autojoin-enable)) ;; NOTE: enable auto-joining mode
 (eval-after-load "erc-spelling" '(erc-spelling-enable)) ;; NOTE: enable flyspell in ERC
 (eval-after-load "erc-goodies" '(erc-scrolltobottom-enable)) ;; NOTE: enable scroll-to-bottom mode
 (eval-after-load "erc-hl-nicks" '(erc-hl-nicks-enable))
-(eval-after-load "erc-match" '(erc-match-mode t)) ;; NOTE: enable ERC match mode
 (eval-after-load "erc-stamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
+
+;; IMPORTANT: erc match
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
+;; ERROR: does this work???
+(eval-after-load "erc-match"
+  '(progn
+     (setq erc-keywords '() ;; NOTE: highlight specific keywords
+         erc-current-nick-highlight-type 'nick ;; NOTE: ...
+         erc-pal-highlight-type 'all ;; NOTE: nicknames in a message
+         erc-fool-highlight-type 'all ;; NOTE: highlight entire message
+         erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx" "syrinx_"
+                    "sabetts"
+                    "kcj" "rww" "dax" "LjL" "ldunn" "moocow" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
+         erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
+         erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
+     (erc-match-mode t)
+     (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
+     ))
+
+;; IMPORTANT: erc notify
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
+(eval-after-load "erc-notify"
+  '(progn
+     (setq erc-notify-list erc-pals)
+     (erc-notify-mode t)))
+
+;; IMPORTANT: erc logging
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
+(eval-after-load "erc-log"
+  '(progn 
+     (setq erc-log-channels-directory "~/.emacs.d/erc/logs/" ;; FIX: hard-coded ...
+           erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
+           erc-save-queries-on-quit t
+           erc-log-write-after-send t
+           erc-log-write-after-insert t
+           ;;erc-log-insert-log-on-open t
+           erc-log-file-coding-system 'utf-8)
+     (erc-log-enable)))
+
+;; IMPORTANT: erc completion
+;; SOURCE: `http://www.emacswiki.org/emacs/ErcCompletion'
+(eval-after-load "erc-pcomplete"
+  '(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1))))  ;; NOTE: nick completion
 
 ;; (eval-after-load "erc-track"
 ;;   '(progn
@@ -127,6 +167,7 @@
       ;; erc-email-userid user-mail-address
       ;; erc-fill-column 90
       ;; erc-echo-notices-in-minibuffer-flag t ;; NOTE: notices in minibuffer
+      erc-format-nick-function 'erc-format-@nick
       erc-port 7000 ;; NOTE: `erc-tls' port (for ssl)
       erc-nick "chu"
       erc-nick-uniquifier "_"
@@ -161,6 +202,7 @@
 				     "#org-mode"
 				     "#stumpwm"
 				     "#lisp"
+                                     "#clojure"
 				     ;; "#ubuntu"
 				     ;; "#ubuntu-discuss"
 				     ;; "#ubuntuforums"
@@ -173,32 +215,10 @@
 				     ))
       erc-join-buffer 'bury)
 
-;; TODO: eval-after-load
-(setq erc-keywords '() ;; NOTE: highlight specific keywords
-      erc-current-nick-highlight-type 'nick ;; NOTE: ...
-      erc-pal-highlight-type 'all ;; NOTE: nicknames in a message
-      erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-      erc-pals '("twb" "kcj" "dax" "LjL" "moocow" "AtomicSpark" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
-      erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
-      erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
-
-;; IMPORTANT: erc logging
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
-(setq erc-log-channels-directory "~/.emacs.d/erc/logs/"
-      erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
-      erc-save-queries-on-quit t
-      erc-log-write-after-send t
-      erc-log-write-after-insert t
-      ;;erc-log-insert-log-on-open t
-      erc-log-file-coding-system 'utf-8)
-
+;;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
 (eval-after-load "erc" '(setq erc-modules (delq 'fill erc-modules))) ;; NOTE: disable `erc-fill-mode'
 
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
-(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))
-;;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0))) ;; NOTE: I think this needs to be quoted
-
-(remove-hook 'erc-text-matched-hook 'erc-hide-fools)
 
 (setq erc-remove-parsed-property nil)
 
@@ -296,6 +316,7 @@
 ;;(erc-user-message "CONKEROR" "Conkeror is a highly extensible web browser based on Firefox. See: http://conkeror.org/")
 (erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
 
+;; SOURCE: `fsbot' in #emacs
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
 
 ;; IMPORTANT: freenode <*>Serv interaction commands
@@ -422,6 +443,8 @@
 	    "#ubuntu-classroom"
 	    "#ubuntu-classroom-chat"
 	    "#freenode"
+            "#bash"
+            "#gnus"
 	    "#hurd"
 	    "#debian"
 	    "#debian-offtopic"
@@ -436,11 +459,13 @@
 	    "#guile"
 	    "#haskell"
 	    "#latex"
+            ;; social channels ...
 	    "#reddit"
 	    "#defocus"
 	    "##club-ubuntu"
 	    "##math"
 	    "##programming"
+            "##linguistics"
 	    "##philosophy"))
 
 (defun custom-erc-join-channel (&rest junk)
@@ -731,6 +756,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 (global-auto-complete-mode t)
 
+;; TODO: probably need to add-hook to org-mode buffers which enables auto-complete-mode
+
 ;; (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
 ;;       ac-ignore-case t ;; NOTE: always ignore case
 ;;       ac-auto-show-menu t ;; NOTE: automatically show menu
@@ -917,46 +944,63 @@ Although this is interactive, call this with \\[browse-url]."
 ;;       ;;(start-process "mplayer" nil "mplayer" "-quiet" out)
 ;;       )))
 
+;; IMPORTANT: w3m session
+;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
+;; (eval-after-load "w3m" '(require 'w3m-session))
+
+;; (setq w3m-session-file "~/.emacs.d/w3m/session")
+
 ;; NOTE: w3m and save desktop mode
-;; (defun w3m-register-desktop-save ()
-;;   "Set `desktop-save-buffer' to a function returning the current URL."
-;;   (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
+(defun w3m-register-desktop-save ()
+  "Set `desktop-save-buffer' to a function returning the current URL."
+  (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
 
-;; (defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
-;;   "Restore a `w3m' buffer on `save-desktop' load."
-;;   (when (eq 'w3m-mode desktop-buffer-major-mode)
-;;     (let ((url d-b-misc))
-;;       (when url
-;;         (require 'w3m)
-;;         (if (string-match "^file" url)
-;;             (w3m-find-file (substring url 7))
-;;           (w3m-goto-url-new-session url))
-;;         (current-buffer)))))
+(defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
+  "Restore a `w3m' buffer on `save-desktop' load."
+  (when (eq 'w3m-mode desktop-buffer-major-mode)
+    (let ((url d-b-misc))
+      (when url
+        (require 'w3m)
+        (if (string-match "^file" url)
+            (w3m-find-file (substring url 7))
+          (w3m-goto-url-new-session url))
+        (current-buffer)))))
 
-;; (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+
+(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
+
+;; TODO: this should do a check to make sure there are w3m buffers alive, and if not, start a new w3m instance
+(defun switch-to-w3m-buffer ()
+  "Switch to an existing w3m buffer."
+  (interactive)
+  (switch-to-buffer
+   (ido-completing-read "w3m session: "
+                        (save-excursion
+                          (delq
+                           nil
+                           (mapcar (lambda (buf)
+                                     (when (buffer-live-p buf)
+                                       (with-current-buffer buf
+                                         (and (eq major-mode 'w3m-mode)
+                                              (buffer-name buf)))))
+                                   (buffer-list)))))))
 
 ;; NOTE: w3m mode hooks
-(add-hook 'w3m-display-hook ;; NOTE: remove trailing whitespace in w3m buffer
-	  (lambda (url)
+(add-hook 'w3m-display-hook
+	  (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
 	    (let ((buffer-read-only nil))
 	      (delete-trailing-whitespace))))
 
-;;(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
-
-;; ;; COMMENT: adding a new search engine
-;; ;; NOTE: Find the entry point of the search engine you want to add, for example: (where foobar is the term you want to search for)
-;; ;;  http://my.searchengine.com/?query=foobar
-;; ;; NOTE: Then add info to your ~/.emacs-w3m file:
-;; ;;  (eval-after-load "w3m-search" '(add-to-list 'w3m-search-engine-alist '("My engine" "http://my.searchengine.com/?query=%s" nil)))
-
-;; COMMENT: w3m search
+;; IMPORTANT: w3m search
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
-;; (eval-after-load "w3m-search"
-;;   '(setq w3m-search-engine-alist
-;; 	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
-;; 	   ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-;; 	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
-;; 	   ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
+(eval-after-load "w3m-search"
+  '(setq w3m-search-engine-alist
+	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+	   ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
+           ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
+	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
+	   ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
 ;;; IMPORTANT: gist
 ;; SOURCE: `https://github.com/defunkt/gist.el'
@@ -969,7 +1013,9 @@ Although this is interactive, call this with \\[browse-url]."
 (custom-comment-create-new-tag "heading" '((t (:foreground "Blue" :weight bold))))
 (custom-comment-create-new-tag "comment" '((t (:foreground "Green" :weight bold))))
 (custom-comment-create-new-tag "warning" '((t (:foreground "Red" :weight bold))))
-(custom-comment-create-new-tag "testing" '((t (:foreground "Yed" :weight bold))))
+(custom-comment-create-new-tag "testing" '((t (:foreground "Yellow" :weight bold))))
+(custom-comment-create-new-tag "misc"    '((t (:foreground "Magenta" :weight bold))))
+;; (custom-comment-create-new-tag "misc" '((t (:foreground "Cyan" :weight bold))))
 
 ;; (add-tag-to-category "heading" "HEADING")
 (add-tag-to-category "heading" "IMPORTANT")
@@ -986,6 +1032,9 @@ Although this is interactive, call this with \\[browse-url]."
 ;; (add-tag-to-category "testing" "TESTING")
 (add-tag-to-category "testing" "DEBUG")
 (add-tag-to-category "testing" "BUG")
+
+;; (add-tag-to-category "misc" "MISC")
+(add-tag-to-category "misc" "EDIT")
 
 ;;(custom-comment-mode t)
 (highlight-custom-comment-tags) ;; TEMP: call this until the mode works ...

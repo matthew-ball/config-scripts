@@ -17,6 +17,7 @@ emacs-dir/extras-el/erc-highlight-nicknames.el
 
 # ignore unnecessary emacs-related files
 emacs-dir/config-el/#*#
+emacs-dir/save-place
 emacs-dir/erc/
 emacs-dir/var/pcache/gh/gh-gist-api/matthew-ball
 emacs-dir/ac-comphist.dat

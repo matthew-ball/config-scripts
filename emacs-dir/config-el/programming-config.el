@@ -145,9 +145,23 @@
 
 (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
 
+;;; IMPORTANT: clojure programming
+(autoload 'clojure-mode "clojure-mode" "Major mode for editing clojure source code files." t)
+(autoload 'nrepl-mode "nrepl" "Major mode for nREPL interactions." t)
+
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+
+(setq nrepl-hide-special-buffers t)
+
+(add-hook 'nrepl-mode-hook 'paredit-mode)
+
+(add-hook 'clojure-mode-hook '(lambda ()
+                                (turn-on-general-programming-mode)
+                                (paredit-mode t)))
+
 ;;; IMPORTANT: scheme programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
-;; (autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files");; TODO: find a `guile-mode' for scheme ...
+;; (autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t);; TODO: find a `guile-mode' for scheme ...
 
 ;; (add-hook 'scheme-mode-hook '(lambda ()
 ;; 			       (turn-on-general-programming-mode)
