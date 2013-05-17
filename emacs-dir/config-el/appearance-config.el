@@ -101,9 +101,9 @@
       size-indication-mode nil) ;; NOTE: do not show file size in mode line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
-(require 'time)
+;; (require 'time)
 
-(display-time-mode t) ;; NOTE: display time status in the mode line
+;; (display-time-mode t) ;; NOTE: display time status in the mode line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
 (require 'battery)

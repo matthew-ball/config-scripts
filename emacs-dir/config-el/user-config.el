@@ -27,12 +27,6 @@
 ;;; IMPORTANT: gnome network-manager
 (require 'gnomenm)
 
-;;; IMPORTANT: undo tree
-;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
-(autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
-
-(global-undo-tree-mode) ;; NOTE: enable undo-tree mode
-
 ;;; IMPORTANT: extension to info
 ;; SOURCE: `http://emacswiki.org/emacs/info+.el'
 (require 'info+)
@@ -41,6 +35,12 @@
 (require 'ido-ubiquitous)
 
 (ido-ubiquitous-mode t)
+
+;;; IMPORTANT: undo tree
+;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
+(autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
+
+(global-undo-tree-mode) ;; NOTE: enable undo-tree mode
 
 ;;; IMPORTANT: emacs relay chat
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
@@ -58,11 +58,11 @@
      (require 'erc-ring)
      (require 'erc-goodies)
      ;; (require 'erc-track)
+     ;; (require 'erc-button)
      (require 'erc-match)
      (require 'erc-fill)
      (require 'erc-log)
      (require 'erc-pcomplete)
-     ;; (require 'erc-button)
      (require 'erc-notify)
      ))
 
@@ -804,54 +804,6 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
 ;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
 (autoload 'stumpwm-mode "stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
 
-;;; IMPORTANT: emacs multimedia system
-;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/EMMS'
-;; NOTE: this is really messy, could do with some clean-up
-;; (require 'emms-autoloads) ;; NOTE: this could work best
-;; (require 'emms-player-simple) ;; NOTE: could be needed
-;; (autoload 'emms-all "emms-setup" "Start a GNU Emacs multimedia system session." t)
-;; (autoload 'emms-default-players "emms-setup" "Start a GNU Emacs multimedia system session." t)
-;; (autoload 'emms-player-mplayer "emms-player-mplayer" "MPlayer interface with GNU Emacs multimedia." t)  ;; ERROR: does not work
-;; (autoload 'emms-player-mpd-connect  "emms-player-mode" "Interface between `EMMS' and `MPD'." t)
-
-;; (emms-standard) ;; NOTE: runs just the `emms-standard' configuration
-;; (emms-devel) ;; DEBUG: apparently not what I want
-;; (emms-all) ;; NOTE: runs `emms-standard' and adds stable `emms' features
-;; (emms-default-players)
-
-;; TODO: set with variable
-;; (setq emms-source-file-default-directory "~/Music/") ;; NOTE: when asked for `emms-play-directory' always start from this
-;; (setq emms-player-mpd-server-name "localhost")
-;; (setq emms-player-mpd-server-port "7700")
-;; (add-to-list 'emms-info-functions 'emms-info-mpd) ;; NOTE: get track information from `mpd'
-;; (add-to-list 'emms-player-list 'emms-player-mpd) ;; NOTE: add `mpd' to the `emms' player list
-;; (emms-player-mpd-connect) ;; NOTE: connect `emms' to `mpd'
-;; (setq emms-show-format "NP: %s") ;; NOTE: starts to play a track with "NP: "
-;; (add-hook 'emms-player-started-hook 'emms-show) ;; NOTE: show the current track with `emms'
-;; (setq emms-player-mpg321-parameters '("-o" "alsa")) ;;NOTE: use alsa with mpg321
-;; (define-emms-simple-player flash '(file) "\\.flv$" "mplayer" "-fs") ;; NOTE: play `*.flv' files with `mplayer' (opening full-screen)
-;; (add-to-list 'emms-player-list 'emms-player-flash)
-
-;; NOTE: `emms' with `mplayer'
-;; NOTE: I don't think I need this
-;; (setq emms-player-mplayer-command-name "mplayer"
-;;       emms-player-mplayer-parameters '("-slave")
-;;       emms-player-mpg321-command-name "mpg123"
-;;       ;; emms-player-list '(emms-player-mplayer
-;;       ;; 			 emms-player-mplayer-playlist
-;;       ;; 			 emms-player-mpg321
-;;       ;; 			 emms-player-ogg123)
-;;       )
-
-;; (push emms-player-mplayer emms-player-list)
-;; (push emms-player-mplayer-playlist emms-player-list)
-
-;; (defun ddliu-emms-player-mplayer-volume-up ()
-;;   "Depends on mplayer’s -slave mode."
-;;   (interactive)
-;;   (process-send-string
-;;    emms-player-simple-process-name "volume 1\n"))
-
 ;;; IMPORTANT: default browser
 (setq browse-url-new-window-flag t
       browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
@@ -1017,24 +969,27 @@ Although this is interactive, call this with \\[browse-url]."
 (custom-comment-create-new-tag "misc"    '((t (:foreground "Magenta" :weight bold))))
 ;; (custom-comment-create-new-tag "misc" '((t (:foreground "Cyan" :weight bold))))
 
-;; (add-tag-to-category "heading" "HEADING")
+(add-tag-to-category "heading" "HEADING")
 (add-tag-to-category "heading" "IMPORTANT")
 (add-tag-to-category "heading" "SOURCE")
 
-;; (add-tag-to-category "comment" "COMMENT")
+(add-tag-to-category "comment" "COMMENT")
 (add-tag-to-category "comment" "NOTE")
 (add-tag-to-category "comment" "TODO")
 
-;; (add-tag-to-category "warning" "WARNING")
+(add-tag-to-category "warning" "WARNING")
 (add-tag-to-category "warning" "ERROR")
 (add-tag-to-category "warning" "FIX")
 
-;; (add-tag-to-category "testing" "TESTING")
+(add-tag-to-category "testing" "TESTING")
 (add-tag-to-category "testing" "DEBUG")
 (add-tag-to-category "testing" "BUG")
 
-;; (add-tag-to-category "misc" "MISC")
+(add-tag-to-category "misc" "MISC")
 (add-tag-to-category "misc" "EDIT")
+(add-tag-to-category "misc" "TEMP")
+(add-tag-to-category "misc" "TEST")
+
 
 ;;(custom-comment-mode t)
 (highlight-custom-comment-tags) ;; TEMP: call this until the mode works ...
@@ -1046,10 +1001,6 @@ Although this is interactive, call this with \\[browse-url]."
 ;; (eval-after-load "bbdb" '(bbdb-initialize 'gnus 'message))
 
 ;;(setq bbdb-file "~/.emacs.d/contacts-file.el")
-
-;;; IMPORTANT: emacs speaks statistics
-;; SOURCE: `http://ess.r-project.org/'
-;;(autoload 'ess-mode "ess-mode" "Emacs Speaks Statistics." t)
 
 (provide 'user-config)
 ;;; user-config.el ends here

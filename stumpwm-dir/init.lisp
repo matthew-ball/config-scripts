@@ -1,12 +1,36 @@
-;; FILE: /home/chu/.conf-scripts/stumpwm-dir/init.lisp
-;; AUTHOR: Matthew Ball (copyleft 2012, 2013)
+;;; init.lisp --- Configuration for StumpWM environment
+
+;; Copyright (C) 2013  Matthew Ball
+
+;; Author: Matthew Ball <mathew.ball@gmail.com>
+;; Keywords: window manager
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;; This is the main point of entry for the StumpWM environment.
+;;; This configuration sets a bunch of variables, and modifies a bunch of the default settings.
+;;; The README file associated with this configuration *should* explain the configuration in-depth, in case this source code is not sufficient.
+
+;;; Code:
 
 ;;; IMPORTANT: common-lisp implementation
 ;; SOURCE: ...
 ;debian=sbcl
 
 ;;; IMPORTANT: initial config
-;; SOURCE: ...
 (in-package :stumpwm) ;; NOTE: declare the package scope
 
 (setf *default-package* :stumpwm ;; NOTE: set default package to be stumpwm
@@ -17,11 +41,9 @@
 
 (redirect-all-output (data-dir-file "debug-output" "txt")) ;; NOTE: debug information `~/.stumpwm.d/debug-output.txt'
 
-;; (set-prefix-key (kbd "C-t")) ;; NOTE: default stumpwm prefix key (control+t)
-(set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z) 
+(set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 
 ;;; IMPORTANT: general functions
-;; SOURCE: ...
 (defun cat (&rest strings)
   "Return STRINGS concatenated together, like the Unix command 'cat'.
 
@@ -37,48 +59,31 @@ A shortcut for (concatenate 'string foo bar)."
 ;; (defun installed-p (application)
 ;;   "Return `t' if application is installed, return `nil' otherwise.")
 
-;; IMPORTANT: the following functions are called during initialization
+;; IMPORTANT: the following functions should be called during initialization
 ;; (defun launch-mpd (&rest junk)
 ;;   "Start music player daemon, `mpd', server."
 ;;   (run-shell-command "mpd"))
 
-;; (defun launch-nm-applet (&rest junk)
-;;   "Start the network manager applet, `nm-applet'."
-;;   (run-shell-command "nm-applet"))
+(defun launch-nm-applet (&rest junk)
+  "Start the network manager applet, `nm-applet'."
+  (run-shell-command "nm-applet"))
 
-;; (defun launch-lxpanel (&rest junk)
-;;   "Start an instance of `lxpanel'."
-;;   (run-shell-command "lxpanel"))
-
-;; (defun launch-emacs-daemon (&rest junk)
-;;   "Start an instance of `emacs --daemon'."
-;;   (run-shell-command "emacs --daemon"))
-
-;; TODO: create (setup) the environment
-;; (defun startup-function (&rest args)
-;;   "Creates the StumpWM environment."
-;;   (launch-emacs-daemon)
-;;   (launch-lxpanel)
-;;   (launch-nm-applet)
-;;   (launch-mpd)
-;;   ;; ---
-;;   (run-editor)
-;;   (run-browser))
+(defun launch-lxpanel (&rest junk)
+  "Start an instance of `lxpanel'."
+  (run-shell-command "lxpanel"))
 
 ;;; IMPORTANT: user variables
-;; SOURCE: ...
-;;(defvar *user-home-directory* (cat "/home/" (getenv "USER")) "User's home directory.")
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (cat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
 (defvar *user-quicklisp-directory* (cat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
 
 ;;; IMPORTANT: default applications
-;; SOURCE: ...
 (defvar *browser* "x-www-browser" "Set the default web browser.")
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.")
 (defvar *editor* (getenv "EDITOR") "Set the default editor.") ;; NOTE: set shell environment editor
-(defvar *file-manager* "pcmanfm" "Set the default file manager.")
 
+;; ERROR: hardcoded
+(defvar *file-manager* "pcmanfm" "Set the default file manager.")
 (defvar *package-manager* "aptitude" "Set the default package manager.")
 (defvar *system-monitor* "htop" "Set the default system monitor.")
 (defvar *document-viewer* "evince" "Set the default document reader.")
@@ -86,34 +91,18 @@ A shortcut for (concatenate 'string foo bar)."
 (defvar *audio-player* "ncmpcpp" "Set the default audio player.")
 (defvar *video-player* "vlc" "Set the default video player.")
 
-;; (defvar *default-applications* (list *browser* *terminal* *editor* *file-manager* *package-manager* *system-monitor* *document-viewer* *audio-player* *video-player*)) ;; TODO: do something with this list
-
-;; (defun print-default-applications (&rest args)
-;;   "Pretty print the list of default applications."
-;;   (print (cat "=====================\n"
-;; 	      "Default Applications:\n"
-;; 	      "=====================\n"))
-;;   (let ((counter 1))
-;;     (mapc
-;;      '(lambda (application) (progn (print "~D: ~A\n" counter application) (setq counter (1+ counter))))
-;;      *default-applications*))
-;;   (print "=====================\n"))
-
 ;;; IMPORTANT: (zenburn-inspired) color theme
-;; SOURCE: ...
+;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line format
 ;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.")
 ;; (defparameter *background-colour* "grey25" "Set the background colour.")
 ;; (defparameter *border-colour* "grey25" "Set the border colour.")
 ;; (defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
 ;; (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
 
-;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line formar
-
 ;;; IMPORTANT: slime and swank
-;; SOURCE: ...
 ;; NOTE: requires `quicklisp'
-(load (cat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: should not be hardcoded
-;;(load "/home/chu/quicklisp/dists/quicklisp/software/slime-20120407-cvs/swank-loader.lisp")
+(load (cat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
+
 (swank-loader:init)
 
 (defvar *swank-p* nil)
@@ -130,19 +119,15 @@ A shortcut for (concatenate 'string foo bar)."
       (setf *swank-p* t)
       (message "Swank server: M-x slime-connect RET RET, then enter (in-package :stumpwm) to begin."))))
 
-;; (run-swank) ;; NOTE: start the swank server
-
 ;;; IMPORTANT: contribution scripts
-;; SOURCE: ...
-(set-contrib-dir (cat *user-source-directory* "/contrib"))
-;;(set-contrib-dir "/home/chu/Programming/lisp/common-lisp/stumpwm/contrib") ;; NOTE: set contrib directory
+(set-contrib-dir (cat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
 
 ;; NOTE: load selected modules
 (mapcar #'load-module '(;; "amixer"
 			;; "app-menu"
 			;; "aumix"
 			;; "battery"
-			"battery-portable"
+			;; "battery-portable"
 			;; "cpu"
 			;; "disk"
 			;; "g15-keysyms"
@@ -160,10 +145,9 @@ A shortcut for (concatenate 'string foo bar)."
 			;; "window-tags"
 			))
 
-(setf *prefer-sysfs* nil)
+;;(setf *prefer-sysfs* nil)
 
 ;;; IMPORTANT: window appearance
-;; SOURCE: ...
 (setf *normal-border-width* 0 ;; NOTE: the width in pixels given to the borders of regular windows
       *maxsize-border-width* 0 ;; NOTE: the width in pixels given to the borders of windows with maxsize or ratio hints
       *transient-border-width* 0 ;; NOTE: the width in pixels given to the borders of transient or pop-up windows
@@ -177,7 +161,6 @@ A shortcut for (concatenate 'string foo bar)."
 (set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
 
 ;;; IMPORTANT: message and input box
-;; SOURCE: ...
 ;; (set-bg-color *background-colour*)
 ;; (set-fg-color *foreground-colour*)
 ;; (set-border-color *border-colour*)
@@ -191,7 +174,6 @@ A shortcut for (concatenate 'string foo bar)."
       *timeout-wait* 5) ;; NOTE: how long a message will appear for (in seconds)
 
 ;;; IMPORTANT: mode line
-;; SOURCE: ...
 (set-frame-outline-width 0)
 
 (setf ;;*mode-line-background-color* *background-colour*
@@ -201,8 +183,6 @@ A shortcut for (concatenate 'string foo bar)."
       *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
       *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
       ;;*mode-line-position* :top
-      ;;*mode-line-screen-position* :top ;; ERROR: ...
-      ;;*mode-line-frame-position* :top ;; ERROR: ...
       ;;*window-format* "%n%s %20t"
       ;;*window-info-format* "[%i] - (%t)"
       ;;*group-format* "%n:%t"
@@ -211,8 +191,8 @@ A shortcut for (concatenate 'string foo bar)."
 
 (setf *screen-mode-line-format*
       (list
-       "[^[^6*%d^]] " ;; NOTE:  display current time and date
-       "[^B%n^b] " ;; NOTE: display current group
+       ;; "[^[^6*%d^]] " ;; NOTE:  display current time and date
+       ;; "[^B%n^b] " ;; NOTE: display current group
        ;; "[^[^1*%B^]] " ;; NOTE: display battery details
        ;; "%l " ;; NOTE: show network connection details
        ;; "%W " ;; NOTE: window list ("%v " is similar)
@@ -228,37 +208,12 @@ A shortcut for (concatenate 'string foo bar)."
        ;; "]"
        ;; " ^B%g^b" ;; NOTE: display group name
        ;; "^B%W^b" ;; NOTE: display current and available frames
-	       ))
+       ))
 
 ;; (when (not (head-mode-line (current-head))) ;; NOTE: turn on the `mode-line'
 ;;    (toggle-mode-line (current-screen) (current-head)))
 
-;; TODO: create an interactive mode-line formatter (???)
-;; TODO: construct it as a list - without evaluating - then, just delq or addq elements as needed
-;; (defvar *mode-line-format-cpu-memory* "[(%c) (%M)]" "Display CPU and memory details.")
-;; (defvar *mode-line-format-time* '(:eval (cat " [(^B" (run-shell-command "date '+%d %b, %R'|tr -d [:cntrl:] " t) "^b)] ")) "Display the time.")
-;; (defvar *mode-line-format-group-frames* "[(^B%w^b)]" "Display current group with frame details.")
-;; (defvar *mode-line-format-groups-frame* "[(^B%g^bA)] [(^B%W^b)] " "Display groups with current frame details.")
-;; (defvar *mode-line-format-battery-wireless* " [(%B) (%I)]" "Display battery and wireless connection details.")
-;; (defvar *mode-line-format-mpd* "[^B%m^b]" "Display mpd details.")
-
-;; (defvar *mode-line-format-list* (list 'cpu-memory 'time 'group-frames 'groups-frame 'battery-wireless 'mpd))
-
-;; (defun add-to-mode-line (string)
-;;   "")
-
-;; (defun remove-from-mode-line (string)
-;;   "")
-
-;; (defun interactive-mode-line (&rest junk)
-;;   "Interactively add (and remove) entries from the StumpWM mode-line."
-;;   (let ((format (cat "*mode-line-format-" (completing-read (current-screen) "Select mode line identifier: " *mode-line-format-list*) "*")))
-;;     (when (not (head-mode-line (current-head))) ;; NOTE: turn on the `mode-line'
-;;       (toggle-mode-line (current-screen) (current-head)))
-;;     (setf *screen-mode-line-format* format)))
-
 ;;; IMPORTANT: key bindings
-;; SOURCE: ...
 (defmacro defkey-top (key cmd)
   `(define-key *top-map* (kbd, key), cmd))
 
@@ -299,17 +254,17 @@ A shortcut for (concatenate 'string foo bar)."
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
     ;; ("s-E" '*emacs-map*)
-    ("s-S" '*sudo-map*)
     ;; ("s-M" '*mpd-map*)
+    ("s-S" '*sudo-map*)
     ("s-V" '*volume-map*)
   ;; ("s-N" '*notifications-map*) ;; TODO: setup
   ("s-:" "eval")
-  ;; ("s-a" "run-audio-player") ;; NOTE: open (or switch to an existing instance of) *audio-player*
   ("s-b" "run-browser") ;; NOTE: open (or switch to an existing instance of) *browser*
   ("s-e" "run-editor") ;; NOTE: open (or switch to an existing instance of) *editor*
   ("s-f" "run-file-manager") ;; NOTE: open (or switch to an existing instance of) *file-manager*
   ("s-h" "run-system-monitor") ;; NOTE: open (or switch to an existing instance of) *system-monitor*
   ("s-s" "run-stumpish") ;; NOTE: open (or switch to an existing instance of) "stumpish"
+  ;; ("s-a" "run-audio-player") ;; NOTE: open (or switch to an existing instance of) *audio-player*
   ;; ("s-i" "run-irc") ;; NOTE: open (or switch to an existing instance of) *irc-client*
   ;; ("s-m" "run-mail") ;; NOTE: open (or switch to an existing instance of) *mail-client*
   ("s-p" "run-package-manager") ;; NOTE: open (or switch to an existing insance of) *package-manager*
@@ -318,7 +273,6 @@ A shortcut for (concatenate 'string foo bar)."
   )
 
 (defvar *sudo-map* nil "Super-user specific key-bindings.")
-;;(defvar *emacs-map* nil "Emacs specific key-bindings.")
 (defvar *volume-map* nil "Control volume key-bindings.")
 
 (fill-keymap *sudo-map*
@@ -326,24 +280,12 @@ A shortcut for (concatenate 'string foo bar)."
 	     (kbd "s") "shutdown"
              (kbd "h") "hibernate")
 
-;; (fill-keymap *emacs-map*
-;; 	     (kbd "a") "emacs-agenda"
-;; 	     (kbd "b") "emacs-bookmarks"
-;; 	     (kbd "c") "emacs-capture"
-;; 	     (kbd "d") "emacs-dired"
-;; 	     (kbd "e") "emacs-erc"
-;; 	     (kbd "g") "emacs-gnus"
-;; 	     (kbd "i") "emacs-info"
-;; 	     (kbd "t") "emacs-term"
-;; 	     (kbd "C") "emacs-calendar")
-
 (fill-keymap *volume-map*
 	     (kbd "u") "volume-up"
 	     (kbd "d") "volume-down"
 	     (kbd "m") "volume-toggle-mute")
 
 ;;; IMPORTANT: groups (virtual desktops) and frame preferences
-;; SOURCE: ...
 (defparameter *groups* '("default" "internet" "misc") "Group (virtual desktop) names.")
 
 (setf (group-name (first (screen-groups (current-screen)))) "default") ;; NOTE: rename 'Default' group 'default'
@@ -356,87 +298,66 @@ A shortcut for (concatenate 'string foo bar)."
 
 (create-groups)
 
-(defmacro frame-preference-rule (group-name prop-type prop-name)
+;;; IMPORTANT: run applications
+(defmacro app-frame-preference (group app &optional key)
+  "..."
   `(progn
-     (case ,prop-type
-       (c (define-frame-preference ,group-name (0 t t :class ,prop-name)))    ;; NOTE: match the window's class
-       (i (define-frame-preference ,group-name (0 t t :instance ,prop-name))) ;; NOTE: match the window's instance or resource-name
-       (r (define-frame-preference ,group-name (0 t t :role ,prop-name)))     ;; NOTE: match the window's @code{WM_WINDOW_ROLE}
-       (t (define-frame-preference ,group-name (0 t t :title ,prop-name)))))) ;; NOTE: match the window's title
+     (define-frame-preference ,group `'(0 t t :instance ,(string-capitalize app)))
+     ;; ---
+     ;; (defprogram-shortcut ,app :command ,app :props ,(string-capitalize app) :key (kbd ,key))
+     ;; ---
+     ;;(run-or-raise ,app `'(:instance ,app))
+     ))
 
-;; FIX: clean these rules up (the property names shouldn't be hardcoded)
-;; instance rules
-;; (frame-preference-rule "default" 'i "emacs")               ;; => *editor*
-;; (frame-preference-rule "default" 'i "pcmanfm")             ;; => *file-manager*
-;; (frame-preference-rule "default" 'i "x-terminal-emulator") ;; => *terminal*
-;; (frame-preference-rule "default" 'i "evince")              ;; => *document-viewer*
-;; (frame-preference-rule "internet" 'r "browser")            ;; => *browser*
-;; (frame-preference-rule "internet" 'i "browser")            ;; => *browser*
-;; title rules
-;; (frame-preference-rule "misc" 't "htop")                   ;; => *system-monitor*
-;; (frame-preference-rule "misc" 't "aptitude")               ;; => *package-manager*
+(defmacro term-app-frame-preference (group app &optional key)
+  "..."
+  `(progn
+     (define-frame-preference ,group `'(0 t t :title ,(string-capitalize app)))
+     ))
 
-;; TEST: These are just temporary but they work
+;; (app-frame-preference "default" *editor* "s-e")
+;; (app-frame-preference "default" *editor*)
+;; (app-frame-preference "default" *file-manager* "s-f")
+;; (app-frame-preference "default" *file-manager*)
+;; (app-frame-preference "internet" *browser* "s-b")
+;; (app-frame-preference "internet" *browser*)
+
+;; TEMP: These are just temporary but they work
 (define-frame-preference "default" (0 t t :instance "emacs"))
 (define-frame-preference "default" (0 t t :instance "pcmanfm"))
 (define-frame-preference "default" (0 t t :title "stumpish"))
-(define-frame-preference "internet" (0 t t :role "browser")) ;; NOTE: this works for `conkeror'
-(define-frame-preference "internet" (0 t t :instance "chromium-browser")) ;; NOTE: this works for `chromium-browser'
-;;(define-frame-preference "misc" (0 t t :instance "x-terminal-emulator"))
+(define-frame-preference "internet" (0 t t :instance "x-www-browser"))
 (define-frame-preference "misc" (0 t t :title "terminal"))
-;;(define-frame-preference "misc" (0 t t :title (eval *terminal*)))
 (define-frame-preference "misc" (0 t t :title "htop"))
 (define-frame-preference "misc" (0 t t :title "aptitude"))
 
-;;; IMPORTANT: run applications
-;; SOURCE: ...
+(defun run-or-raise-app (app)
+  "Run (or raise) an instance of APP with `instance' property."
+  (run-or-raise app `(:instance ,app)))
 
-;; TODO: clean these up ...
-;;(defprogram-shortcut emacs :command "emacs" :key (kbd "s-e"))
-;;(defprogram-shortcut terminal :command "x-terminal-emulator" :key (kbd "s-t"))
-;;(defporgram-shortcut browser :command "x-browser" :key (kbd "s-b"))
+(defun run-or-raise-terminal ()
+  "Run (or raise) an instance of `*terminal*' with `instance' property."
+  (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") `(:instance ,*terminal*)))
 
-;; (defcommand exec-in-terminal (cmd) ((:string "Command: ")) (run-shell-command (format nil "~A -e ~A" *terminal* cmd))) ;; TODO: clean this up
-
-(defun run-or-raise-app (command property group) ;; FIX: fix
-  "Run an instance of COMMAND with property PROPERTY under GROUP."
-  ;; `(define-frame-preference ,group (0 t t ,property))
-  (run-or-raise command property))
-
-;; (run-or-raise-app *editor* (list :instance "emacs") "default")
-;; (run-or-raise-app *browser* (list :role "browser") "internet")
-;; (run-or-raise-terminal-app *system-monitor*)
-
-(defun run-or-raise-terminal-app (cmd)
+(defun run-or-raise-terminal-app (cmd ttl)
   "Run an instance of CMD in `*terminal*'."
-  (let ((ttl cmd))
-    ;; TODO: set `define-frame-preference'
-    (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* ttl cmd) (list :title ttl))))
+  (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
 
-;; TODO: needs to be moved into `run-or-raise-app' function which not only calls the `run-or-raise' but also sets the `define-frame-preference'
-;; TODO: the following has some properties which are hard-coded :(
+;; NOTE: application run commands
 (defcommand run-editor () () "Launch `*editor*'." (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
-;; (defcommand run-browser () () "Launch `*browser*'." (run-or-raise *browser* (list :role "browser")))
-;; (defcommand run-browser () () "Launch `*browser*'." (run-or-raise *browser* (list :instance "chromium-browser")))
-(defcommand run-browser () () "Launch `*browser*'." (run-or-raise *browser* (list :instance "x-www-browser"))) ;; FIX: ...
-(defcommand run-file-manager () () "Launch `*file-manager'." (run-or-raise *file-manager* (list :instance *file-manager*)))
-;;(defcommand run-document-viewer () () "Launch `*document-viewer'." (run-or-raise *document-viewer* (list :instance *document-viewer*)))
-;; (defcommand run-referencer () () "Launch `referencer'." (run-app "referencer" (list :instance "referencer")))
+(defcommand run-browser () () (run-or-raise-app *browser*))
+(defcommand run-file-manager () () (run-or-raise-app *file-manager*))
+(defcommand run-document-viewer () () (run-or-raise-app *document-viewer*))
+(defcommand run-referencer () () (run-or-raise-app "referencer"))
 
 ;; NOTE: terminal apps
-(defcommand run-terminal () () "Launch `*terminal*'." (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :instance *terminal*)))
-(defcommand run-system-monitor () () "Launch `*system-monitor*'." (run-or-raise-terminal-app *system-monitor*))
-(defcommand run-package-manager () () "Launch `*package-manager*'." (run-or-raise-terminal-app *package-manager*))
-(defcommand run-stumpish () () "Launch `stumpish'." (run-or-raise-terminal-app "stumpish"))
-;; (defcommand run-audio-player () () "Launch `*audio-player*'." (run-terminal-app *audio-player* *audio-player*))
-;; (defcommand run-video-player () () "Launch `*video-player*'." (run-app *video-player* `(:instance ,*video-player*)))
-;; (defcommand run-screen () () "Launch `screen'." (run-terminal-app "screen" "screen"))
-;; (defcommand run-irc () () "Launch `*irc-client*'." (run-terminal-app *irc-client* *irc-client*))
-;; (defcommand run-mail () () "Launch `*mail-client*'." (run-terminal-app *mail-client* *mail-client* "-n"))
-
-(defcommand run-screenshot (filename) ((:string "Enter filename: "))
-  "Capture current desktop with a screenshot."
-  (run-shell-command (concat "import -window root \"" filename "\" &")))
+(defcommand run-terminal () () (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :instance *terminal*)))
+(defcommand run-system-monitor () () (run-or-raise-terminal-app *system-monitor* "htop"))
+(defcommand run-package-manager () () (run-or-raise-terminal-app *package-manager* "aptitude"))
+(defcommand run-stumpish () () (run-or-raise-terminal-app "stumpish"))
+;; (defcommand run-audio-player () () (run-terminal-app *audio-player* "ncmpcpp"))
+;; (defcommand run-video-player () () (run-app *video-player* `(:instance ,*video-player*)))
+;; (defcommand run-screen () () (run-terminal-app "screen" "screen"))
 
 ;;; IMPORTANT: group configuration
 ;; SOURCE: ...
@@ -464,8 +385,17 @@ A shortcut for (concatenate 'string foo bar)."
   (when (empty-group-p)
     (if (= (screen-window-count) 0)
         (run-commands "gselect 1")
-        (run-commands "gselect 1") ;; FIX: this is just temporary ... the idea is to switch to a group which is not empty.
-        )))
+        (run-commands "gselect 1") ;; TEMP: just until the below code works ...
+	;; ERROR: this definitely doesn't work
+        ;; (progn
+        ;;   (let ((group-number 1))
+	;;     (dolist (group (screen-groups (current-screen)))
+	;;       ;; NOTE: we'll find a non-empty group
+	;;       (if (= (length (group-windows group)) 0)
+	;; 	  (incf group-number)
+	;; 	  (run-commands (format nil "gselect ~A" group-number)))
+	;;       )))
+	)))
 
 (add-hook *destroy-window-hook* 'switch-to-non-empty-group)
 
@@ -520,15 +450,15 @@ A shortcut for (concatenate 'string foo bar)."
 
 ;; (add-hook *urgent-window-hook* 'raise-urgent-window-hook)
 
-
 ;;; IMPORTANT: user commands
-;; SOURCE: ...
 ;; TODO: add `package-manager' commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
-
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (cat "Hostname: " (hostname))))
+(defcommand run-screenshot (filename) ((:string "Enter filename: "))
+  "Capture current desktop with a screenshot."
+  (run-shell-command (concat "import -window root \"" filename "\" &")))
 
 ;;; IMPORTANT: (auto)mounting storage devices
 ;; SOURCE: ...
@@ -691,96 +621,18 @@ A shortcut for (concatenate 'string foo bar)."
   "Toggle between mute/unmute volume level."
   (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
 
-;;; IMPORTANT: interact with emacs
-;; SOURCE: ...
-(defun send-emacs-key-command (cmd) ;; FIX: fix
-  "Send a key-command to an existing emacs session."
-  (emacs)
-  (send-meta-key (current-screen) (kbd cmd)))
-
-(defun send-emacs-string (str)
-  "Send a string to an extisting emacs session."
-  (emacs)
-  (window-send-string str))
-
-;; EDIT: this is all a bit silly ...
-;; (defcommand emacs-agenda () ()
-;;   "View agenda in Emacs."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "org-agenda")
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting agenda."))
-
-;; (defcommand emacs-bookmarks () ()
-;;   "Open bookmarks in Emacs."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "list-bookmarks")
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting bookmarks."))
-
-;; (defcommand emacs-capture () ()
-;;   "Capture note in Emacs."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "org-capture")
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting capture."))
-
-;; (defcommand emacs-dired (directory) ((:string "Enter a directory: ")) ;; FIX: fix
-;;   "Open directory for file management in Emacs."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "ido-dired")
-;;   (send-emacs-key-command "RET")
-;;   (send-emacs-string directory)
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting dired."))
-
-;; (defcommand emacs-calendar () ()
-;;   "Open calendar in Emacs."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "calendar")
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting calendar."))
-
-;; (defcommand emacs-erc () ()
-;;   "Start an IRC connection in Emacs with ERC."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "erc-start-or-switch")
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting ERC."))
-
-;; (defcommand emacs-gnus () ()
-;;   "Read mail and RSS feeds in Emacs with GNUS."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "gnus")
-;;   (send-emacs-key-command "RET")
-;;   ;; (send-emacs-key-command "C-<f4>")
-;;   (message "Starting GNUS."))
-
-;; (defcommand emacs-info () ()
-;;   "Open info documentation in Emacs."
-;;   (send-emacs-key-command "C-h")
-;;   (send-emacs-key-command "i")
-;;   (message "Starting info."))
-
-;; (defcommand emacs-term () ()
-;;   "Start a new (or switch to an existing) ANSI terminal session in Emacs."
-;;   (send-emacs-key-command "M-x")
-;;   (send-emacs-string "switch-term")
-;;   (send-emacs-key-command "RET")
-;;   (message "Starting term."))
-
 ;;; IMPORTANT: startup applications
 ;; SOURCE: ...
 (when *initializing*
-  ;; (run-shell-command "emacs --daemon") ;; NOTE: start emacs server process
-  ;; (run-shell-command "lxpanel")
-  ;; (run-shell-command "nm-applet")
-  ;; ---
-  ;; (launch-lxpanel) ;; NOTE: start `lxpanel' instance
-  ;; (launch-nm-applet) ;; NOTE: start `nm-applet' instance
+  (launch-lxpanel) ;; NOTE: start `lxpanel' instance
+  (launch-nm-applet) ;; NOTE: start `nm-applet' instance
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
+  ;; ---
   (run-editor) ;; NOTE: start the editor (should also launch the emacs daemon service)
+  ;; (run-swank) ;; NOTE: start the swank server
   ;; (run-browser) ;; NOTE: start the browser
   ;; (run-system-monitor) ;; NOTE: start the system monitor
   )
+
+;;; init.lisp ends here
