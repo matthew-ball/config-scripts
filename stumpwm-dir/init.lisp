@@ -54,6 +54,16 @@ A shortcut for (concatenate 'string foo bar)."
   "Return a string representing the hostname."
   (first (split-string (machine-instance) ".")))
 
+(defun battery-charge ()
+  "Return a string representing the current battery charge."
+  (let ((raw-battery (run-shell-command "acpi | cut -d, -f2" t)))
+    (substitute #\Space #\Newline raw-battery)))
+
+(defun battery-state ()
+  "Return a string representing the current battery state."
+  (let ((raw-battery (run-shell-command "acpi | cut -d: -f2 | cut -d, -f1" t)))
+    (substitute #\Space #\Newline raw-battery)))
+
 ;; TODO: need to look into "apt-cache policy application"
 ;; ..... possibly grep for "Installed: (none)" and return nil
 ;; (defun installed-p (application)
@@ -102,18 +112,19 @@ A shortcut for (concatenate 'string foo bar)."
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
 (load (cat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
+;;(require 'swank) ;; TODO: work out!!
 
 (swank-loader:init)
 
 (defvar *swank-p* nil)
 
 (defcommand run-swank () () ;; NOTE: command to start a swank server
-  "Starts a swank server on port 4006 and notifies the user."
+  "Starts a swank server on port 4005 and notifies the user."
   (setf *top-level-error-action* :break)
   (if *swank-p*
       (message "Swank server already running.")
     (progn
-      (swank:create-server :port 4006
+      (swank:create-server :port 4005
                            :style swank:*communication-style*
                            :dont-close t)
       (setf *swank-p* t)
@@ -194,6 +205,11 @@ A shortcut for (concatenate 'string foo bar)."
        ;; "[^[^6*%d^]] " ;; NOTE:  display current time and date
        ;; "[^B%n^b] " ;; NOTE: display current group
        ;; "[^[^1*%B^]] " ;; NOTE: display battery details
+       ;; "[^[^2*"
+       ;; '(:eval (battery-charge))
+       ;; ":"
+       ;; '(:eval (battery-state))
+       ;; "^]] "
        ;; "%l " ;; NOTE: show network connection details
        ;; "%W " ;; NOTE: window list ("%v " is similar)
        ;; "[" '(:eval (run-shell-command "acpi -b" t)) "]"
@@ -228,48 +244,46 @@ A shortcut for (concatenate 'string foo bar)."
   (let ((ks (mapcar #'(lambda (k) (cons 'defkey-root k)) keys)))
     `(progn ,@ks)))
 
-;; (undefine-key *root-map* (kbd "c"))
-;; (undefine-key *root-map* (kbd "C-c"))
-;; (undefine-key *root-map* (kbd "e"))
-;; (undefine-key *root-map* (kbd "C-e"))
-;; (undefine-key *root-map* (kbd "C-b"))
-;; (undefine-key *root-map* (kbd "C-a"))
+(undefine-key *root-map* (kbd "C-c"))
+(undefine-key *root-map* (kbd "C-e"))
+(undefine-key *root-map* (kbd "C-b"))
+(undefine-key *root-map* (kbd "C-a"))
 ;;(undefine-key *root-map* (kbd "C-m")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-l")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-w")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
 
 (defkeys-root ;; NOTE: define root-map keys
-    ;; ("s-g" "google") ;; NOTE: quick search google
-    ;; ("s-w" "wikipedia") ;; NOTE: quick search wikipedia
-    ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
-    ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
+    ("s-b" "global-select")
+    ("s-q" "safe-quit")
+  ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
+  ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
   ("C-w" "run-swank") ;; NOTE: start a swank server
-  ("M-b" "show-battery") ;; NOTE: show battery status
   ("M-c" "command-mode") ;; NOTE: active `command-mode'
+  ;; ---
+  ("M-b" "show-battery") ;; NOTE: show battery status
   ("M-u" "show-uptime") ;; NOTE: show uptime status
   ("M-h" "show-hostname") ;; NOTE: show hostname
   ("M-i" "show-window-properties") ;; NOTE: show current window's properties
   )
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
-    ;; ("s-E" '*emacs-map*)
-    ;; ("s-M" '*mpd-map*)
     ("s-S" '*sudo-map*)
     ("s-V" '*volume-map*)
-  ;; ("s-N" '*notifications-map*) ;; TODO: setup
+  ;; ("s-M" '*mpd-map*)
   ("s-:" "eval")
+  ;; ---
   ("s-b" "run-browser") ;; NOTE: open (or switch to an existing instance of) *browser*
   ("s-e" "run-editor") ;; NOTE: open (or switch to an existing instance of) *editor*
+  ("s-t" "run-terminal") ;; NOTE: open (or switch to an existing instance of) *terminal*
   ("s-f" "run-file-manager") ;; NOTE: open (or switch to an existing instance of) *file-manager*
   ("s-h" "run-system-monitor") ;; NOTE: open (or switch to an existing instance of) *system-monitor*
   ("s-s" "run-stumpish") ;; NOTE: open (or switch to an existing instance of) "stumpish"
+  ("s-p" "run-package-manager") ;; NOTE: open (or switch to an existing insance of) *package-manager*
   ;; ("s-a" "run-audio-player") ;; NOTE: open (or switch to an existing instance of) *audio-player*
+  ;; ("s-v" "run-video-player") ;; NOTE: open (or switch to an existing instance of) *video-player*
   ;; ("s-i" "run-irc") ;; NOTE: open (or switch to an existing instance of) *irc-client*
   ;; ("s-m" "run-mail") ;; NOTE: open (or switch to an existing instance of) *mail-client*
-  ("s-p" "run-package-manager") ;; NOTE: open (or switch to an existing insance of) *package-manager*
-  ("s-t" "run-terminal") ;; NOTE: open (or switch to an existing instance of) *terminal*
-  ;; ("s-v" "run-video-player") ;; NOTE: open (or switch to an existing instance of) *video-player*
   )
 
 (defvar *sudo-map* nil "Super-user specific key-bindings.")
@@ -288,39 +302,118 @@ A shortcut for (concatenate 'string foo bar)."
 ;;; IMPORTANT: groups (virtual desktops) and frame preferences
 (defparameter *groups* '("default" "internet" "misc") "Group (virtual desktop) names.")
 
-(setf (group-name (first (screen-groups (current-screen)))) "default") ;; NOTE: rename 'Default' group 'default'
+(defun rename-default-group ()
+  "Rename 'Default' group 'default'"
+  (run-commands "gselect 1")
+  (setf (group-name (first (screen-groups (current-screen)))) "default"))
 
-;; NOTE: create new groups
 (defun create-groups (&rest args)
   "Create new groups."
   (dolist (group (cdr *groups*)) ;; NOTE: the `car' of the list is the "default" group
     (gnewbg group)))
 
+;; TODO: the following functions need pnly be called once ...
+(rename-default-group)
 (create-groups)
 
+;; IMPORTANT: group configuration
+(defun screen-window-count () ;; NOTE: count the windows in the screen (all the groups)
+  "Return the number of window frames in the current screen."
+  (let ((window-count 0))
+    (dolist (group (screen-groups (current-screen)))
+      (setq window-count (+ (length (group-windows group)) window-count)))
+    window-count))
+
+(defun group-window-count () ;; NOTE: count the windows in the current group
+  "Return the number of window frames in current group."
+  (length (group-windows (current-group (current-screen)))))
+
+;; TODO: this could be cleaned up ...
+(defun switch-to-non-empty-group (window)
+  "If the current group is empty (i.e. there are no windows open) then move to a non-empty group.
+
+ If the screen is empty (all groups are empty) then switch back to the default group."
+  (declare (ignore window))
+  (when (= (group-window-count) 0)
+    (if (= (screen-window-count) 0)
+        (run-commands "gselect 1")
+        (progn
+          (let ((grp-num 1))
+            (dolist (group (sort-groups (current-screen)))
+              ;; NOTE: we'll find a non-empty group
+              (unless (= (length (group-windows group)) 0)
+                (run-commands (format nil "gselect ~A" grp-num)))
+              (incf grp-num)))))))
+
+(add-hook *destroy-window-hook* 'switch-to-non-empty-group)
+
+;; IMPORTANT: global window select
+;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
+(defun global-window-names ()
+  "Returns a list of the names of all the windows in the current screen."
+  (let ((groups (sort-groups (current-screen)))
+	(windows nil))
+    (dolist (group groups)
+      (dolist (window (group-windows group))
+	;; NOTE: don't include the current window in the list
+	(when (not (eq window (current-window)))
+	  (setq windows (cons (window-name window) windows)))))
+    windows))
+
+(defun window-in-group (query group)
+  "Returns a window matching QUERY in GROUP."
+  (let ((match nil)
+	(end nil)
+	(name nil))
+    (dolist (window (group-windows group))
+      (setq name (window-name window)
+	    end (min (length name) (length query)))
+      ;; NOTE: never match the current window
+      (when (and (string-equal name query :end1 end :end2 end)
+		 (not (eq window (current-window))))
+	(setq match window)
+	(return)))
+    match))
+
+(define-stumpwm-type :global-window-names (input prompt)
+  (unless (< (screen-window-count) 2)
+    (or (argument-pop input)
+        (completing-read (current-screen) prompt (global-window-names) :initial-input (car (global-window-names))))))
+
+(defcommand global-select (query) ((:global-window-names "Select: "))
+  "Like select, but for all groups not just the current one."
+  (let ((window nil))
+    ;; NOTE: check each group to see if it's in
+    (dolist (group (screen-groups (current-screen)))
+      (setq window (window-in-group query group))
+      (when window
+	(switch-to-group group)
+	(frame-raise-window group (window-frame window) window)
+	(return)))))
+
 ;;; IMPORTANT: run applications
-(defmacro app-frame-preference (group app &optional key)
+(defmacro group-frame-preference (group &rest apps)
   "..."
-  `(progn
-     (define-frame-preference ,group `'(0 t t :instance ,(string-capitalize app)))
-     ;; ---
-     ;; (defprogram-shortcut ,app :command ,app :props ,(string-capitalize app) :key (kbd ,key))
-     ;; ---
-     ;;(run-or-raise ,app `'(:instance ,app))
-     ))
+  ;; TODO: this needs to be reimplemented
+  `(define-frame-preference ,group (0 t t :instance ,app))
+  )
 
-(defmacro term-app-frame-preference (group app &optional key)
-  "..."
-  `(progn
-     (define-frame-preference ,group `'(0 t t :title ,(string-capitalize app)))
-     ))
+(defun setup-group-preferences ()
+  ""
+  ;; TODO: should make the groups first ...
 
-;; (app-frame-preference "default" *editor* "s-e")
-;; (app-frame-preference "default" *editor*)
-;; (app-frame-preference "default" *file-manager* "s-f")
-;; (app-frame-preference "default" *file-manager*)
-;; (app-frame-preference "internet" *browser* "s-b")
-;; (app-frame-preference "internet" *browser*)
+  (clear-window-placement-rules) ;; clear rules
+
+  (group-frame-preference "default" *editor* *file-manager*)
+  (group-frame-preference "internet" *browser*)
+  (group-frame-preference "misc" *terminal*))
+
+;;(setup-group-preferences)
+
+;; (defmacro term-app-frame-preference (group app)
+;;   "..."
+;;   `(progn
+;;      (define-frame-preference ,group (0 t t :title ,app))))
 
 ;; TEMP: These are just temporary but they work
 (define-frame-preference "default" (0 t t :instance "emacs"))
@@ -335,114 +428,29 @@ A shortcut for (concatenate 'string foo bar)."
   "Run (or raise) an instance of APP with `instance' property."
   (run-or-raise app `(:instance ,app)))
 
-(defun run-or-raise-terminal ()
-  "Run (or raise) an instance of `*terminal*' with `instance' property."
-  (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") `(:instance ,*terminal*)))
-
 (defun run-or-raise-terminal-app (cmd ttl)
   "Run an instance of CMD in `*terminal*'."
   (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
 
+;; NOTE: ...
+(defcommand run-terminal () () (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :title *terminal*)))
+
 ;; NOTE: application run commands
-(defcommand run-editor () () "Launch `*editor*'." (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
+(defcommand run-editor () () (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
+;; ---
 (defcommand run-browser () () (run-or-raise-app *browser*))
 (defcommand run-file-manager () () (run-or-raise-app *file-manager*))
 (defcommand run-document-viewer () () (run-or-raise-app *document-viewer*))
 (defcommand run-referencer () () (run-or-raise-app "referencer"))
 
 ;; NOTE: terminal apps
-(defcommand run-terminal () () (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :instance *terminal*)))
 (defcommand run-system-monitor () () (run-or-raise-terminal-app *system-monitor* "htop"))
 (defcommand run-package-manager () () (run-or-raise-terminal-app *package-manager* "aptitude"))
 (defcommand run-stumpish () () (run-or-raise-terminal-app "stumpish"))
 ;; (defcommand run-audio-player () () (run-terminal-app *audio-player* "ncmpcpp"))
-;; (defcommand run-video-player () () (run-app *video-player* `(:instance ,*video-player*)))
+;; (defcommand run-video-player () () (run-terminal-app *video-player* "mplayer"))
 ;; (defcommand run-screen () () (run-terminal-app "screen" "screen"))
 
-;;; IMPORTANT: group configuration
-;; SOURCE: ...
-(defun screen-window-count ()
-  "Return the number of window frames in the current screen."
-  (let ((window-count 0))
-    (dolist (group (screen-groups (current-screen))) ;; NOTE: count the windows in the screen (all the groups)
-      (setq window-count (+ (length (group-windows group)) window-count)))
-    window-count))
-
-(defun group-window-count ()
-  "Return the number of window frames in current group."
-  (length (group-windows (current-group (current-screen))))) ;; NOTE: count the windows in the current group
-
-(defun empty-group-p ()
-  "Return `t' if the current group is empty, return `nil' otherwise."
-  (let ((window-count (length (group-windows (current-group (current-screen))))))
-    (if (> window-count 0) nil t)))
-
-(defun switch-to-non-empty-group (window)
-  "If the current group is empty (i.e. there are no windows open) then move to a non-empty group.
-
- If the screen is empty (all groups are empty) then switch back to the default group."
-  (declare (ignore window))
-  (when (empty-group-p)
-    (if (= (screen-window-count) 0)
-        (run-commands "gselect 1")
-        (run-commands "gselect 1") ;; TEMP: just until the below code works ...
-	;; ERROR: this definitely doesn't work
-        ;; (progn
-        ;;   (let ((group-number 1))
-	;;     (dolist (group (screen-groups (current-screen)))
-	;;       ;; NOTE: we'll find a non-empty group
-	;;       (if (= (length (group-windows group)) 0)
-	;; 	  (incf group-number)
-	;; 	  (run-commands (format nil "gselect ~A" group-number)))
-	;;       )))
-	)))
-
-(add-hook *destroy-window-hook* 'switch-to-non-empty-group)
-
-;; TODO: read and modify
-;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
-;; (defun my-global-window-names ()
-;;   "Returns a list of the names of all the windows in the current screen."
-;;   (let ((groups (sort-groups (current-screen)))
-;; 	(windows nil))
-;;     (dolist (group groups)
-;;       (dolist (window (group-windows group))
-;; 	;; Don't include the current window in the list
-;; 	(when (not (eq window (current-window)))
-;; 	  (setq windows (cons (window-name window) windows)))))
-;;     windows))
-
-;; (defun my-window-in-group (query group)
-;;   "Returns a window matching QUERY in GROUP."
-;;   (let ((match nil)
-;; 	(end nil)
-;; 	(name nil))
-;;     (dolist (window (group-windows group))
-;;       (setq name (window-name window)
-;; 	    end (min (length name) (length query)))
-;;       ;; Never match the current window
-;;       (when (and (string-equal name query :end1 end :end2 end)
-;; 		 (not (eq window (current-window))))
-;; 	(setq match window)
-;; 	(return)))
-;;     match))
-
-;; (define-stumpwm-type :my-global-window-names (input prompt)
-;;   (or (argument-pop input)
-;;       (completing-read (current-screen) prompt (my-global-window-names))))
-
-;; (define-stumpwm-command "global-select" ((query :my-global-window-names "Select: "))
-;;   "Like select, but for all groups not just the current one."
-;;   (let ((window nil))
-;;     ;; Check each group to see if it's in
-;;     (dolist (group (screen-groups (current-screen)))
-;;       (setq window (my-window-in-group query group))
-;;       (when window
-;; 	(switch-to-group group)
-;; 	(frame-raise-window group (window-frame window) window)
-;; 	(return)))))
-
-;; NOTE:
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
 ;; (defun raise-urgent-window-hook (target)
 ;;   (gselect (window-group target))
@@ -451,21 +459,29 @@ A shortcut for (concatenate 'string foo bar)."
 ;; (add-hook *urgent-window-hook* 'raise-urgent-window-hook)
 
 ;;; IMPORTANT: user commands
-;; TODO: add `package-manager' commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (cat "Hostname: " (hostname))))
+
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."
   (run-shell-command (concat "import -window root \"" filename "\" &")))
 
+(defcommand safe-quit () ()
+  "Checks if any windows are open before quitting."
+  (let ((win-count 0))
+    (dolist (group (screen-groups (current-screen))) ;; NOTE: count the windows in each group
+      (setq win-count (+ (length (group-windows group)) win-count)))
+    (if (= win-count 0) ;; NOTE: if there are 0 windows then quit, else display the number of open windows
+        (run-commands "quit")
+      (message (format nil "You have ~d ~a open" win-count
+		       (if (= win-count 1) "window" "windows"))))))
+
 ;;; IMPORTANT: (auto)mounting storage devices
-;; SOURCE: ...
 ;; TODO: implement something like: "udisks -mount /dev/sdb1"
 
 ;;; IMPORTANT: super user commands
-;; SOURCE: ...
 (define-stumpwm-type :password (input prompt)
   (let ((history *input-history*)
         (arg (argument-pop input))
@@ -487,7 +503,7 @@ A shortcut for (concatenate 'string foo bar)."
 (defmacro sudo-command (name command &key output)
   (let ((cmd (gensym)))
     `(defcommand ,name (password) ((:password "Password: "))
-       ""
+       "Enable StumpWM to execute commands as a privileged user."
       (let ((,cmd (concat "echo '" password "' | sudo -S " ,command)))
         ,(if output
              `(run-prog-collect-output *shell-program* "-c" ,cmd)
@@ -497,35 +513,13 @@ A shortcut for (concatenate 'string foo bar)."
 (sudo-command shutdown "shutdown -h now")
 (sudo-command hibernate "pm-hibernate")
 
-;;; IMPORTANT: process management
-;; SOURCE: ...
-(defun ps-exists (ps)
-  (let ((f "ps -ef | grep ~S | grep -v -e grep -e stumpish | wc -l"))
-    (< 0 (parse-integer (run-shell-command (format nil f ps) t)))))
-
-(defun start-uniq-command-ps (command &key options (background t))
-  (unless (ps-exists command)
-    (run-shell-command
-     (concat command " " options " " (when background "&")))))
-
-(defun kill-ps-command (command)
-  (format nil "kill -TERM `ps -ef | grep ~S | grep -v grep | awk '{print $2}'`"
-          command))
-
-(defun kill-ps (command)
-  (run-shell-command (kill-ps-command command)))
-
-(defcommand ps-kill (ps) ((:rest "Process to kill: "))
-  (kill-ps ps))
-
 ;;; IMPORTANT: key sequence
-;; SOURCE: ...
 (defun key-press-hook (key key-seq cmd)
   (declare (ignore key))
   (unless (eq *top-map* *resize-map*)
     (let ((*message-window-gravity* :top-right))
       (message "Key sequence: ~A" (print-key-seq (reverse key-seq))))
-    (when (stringp cmd) ;; give them time to read it
+    (when (stringp cmd) ;; NOTE: give them time to read it
       (sleep 0.5))))
 
 (defmacro replace-hook (hook fn)
@@ -534,71 +528,7 @@ A shortcut for (concatenate 'string foo bar)."
 
 (replace-hook *key-press-hook* 'key-press-hook)
 
-;;; IMPORTANT: web jumping
-;; SOURCE: ...
-;; (defmacro make-web-jump (name url-prefix)
-;;   `(defcommand ,name (search) ((:rest ,(concatenate 'string "Search " (string-downcase (symbol-name name)) " for: ")))
-;;      (run-shell-command (format nil (concatenate 'string *browser* " '~A=~A'") ,url-prefix (substitute #\+ #\Space search)))))
-
-;; (make-web-jump google "http://www.google.com/search?q")
-;; (make-web-jump wikipedia "http://en.wikipedia.org/wiki/Special:Search?search")
-;; TODO: make an emacs wiki web-jump
-;; TODO: make a stumpwm wiki web-jump
-;; TODO: make a common lisp wiki web-jump
-
-;;; IMPORTANT: safe quit
-;; SOURCE: ...
-(defcommand safe-quit () () ;; NOTE: redefine the "quit" command (only leave the stumpwm session if there are no windows open)
-  "Checks if any windows are open before quitting."
-  (let ((win-count 0))
-    (dolist (group (screen-groups (current-screen))) ;; count the windows in each group
-      (setq win-count (+ (length (group-windows group)) win-count)))
-    (if (= win-count 0) ;; display the number of open windows or quit
-        (run-commands "quit")
-      (message (format nil "You have ~d ~a open" win-count
-		       (if (= win-count 1) "window" "windows"))))))
-
-;;; IMPORTANT: notifications
-;; SOURCE: ...
-;; (define-key *root-map* (kbd "N") '*notifications-map*)
-
-;; (defun notify (fmt args)
-;;   (let ((*executing-stumpwm-command* nil)
-;;         (*message-window-gravity* :center))
-;;     (message-no-timeout fmt args)))
-;; (export 'notify)
-
-;; (define-stumpwm-command "notify" ((msg :rest "Notify: "))
-;;   (notify "~a" msg))
-
-;;; IMPORTANT: quick menu
-;; SOURCE: ...
-;; TODO: update to reflect defaults
-;; (defparameter *quick-menu*
-;;   '((("internet"
-;;      ("chromium" "chromium-browser"))
-;;     ("editor"
-;;      ("emacs" "emacsclient -n -c"))
-;;     ("sound and video"
-;;      ("video"   "vlc")
-;;      ("mplayer" "mplayer"))
-;;     ("system tools"
-;;      ("file manager" "pcmanfm")
-;;      ("printers"     "system-config-printer")))))
-
-;; (defcommand menu () ()
-;;   "Display quick access menu."
-;;   (labels
-;;       ((pick (options)
-;; 	     (let ((selection (select-from-menu (current-screen) options "")))
-;; 	       (cond ((null selection) (throw 'error "Abort."))
-;; 		     ((stringp (second selection)) (second selection))
-;; 		     (t (pick (cdr selection)))))))
-;;     (let ((choice (pick *quick-menu*)))
-;;       (run-shell-command choice))))
-
 ;;; IMPORTANT: music player daemon
-;; SOURCE: ...
 ;; (setf *mpd-port* 7700
 ;;       *mpd-volume-step* 10
 ;;       ;; *mpd-status-fmt* "" ;; message display by mpd-status
@@ -606,7 +536,6 @@ A shortcut for (concatenate 'string foo bar)."
 ;;       *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; mode-line format for mpd
 
 ;;; IMPORTANT: volume control
-;; SOURCE: ...
 (defcommand volume-up () ()
   "Increase volume level."
   (dotimes (n 10)
@@ -622,7 +551,6 @@ A shortcut for (concatenate 'string foo bar)."
   (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
 
 ;;; IMPORTANT: startup applications
-;; SOURCE: ...
 (when *initializing*
   (launch-lxpanel) ;; NOTE: start `lxpanel' instance
   (launch-nm-applet) ;; NOTE: start `nm-applet' instance

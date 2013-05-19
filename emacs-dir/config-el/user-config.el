@@ -91,7 +91,7 @@
          erc-fool-highlight-type 'all ;; NOTE: highlight entire message
          erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx" "syrinx_"
                     "sabetts"
-                    "kcj" "rww" "dax" "LjL" "ldunn" "moocow" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
+                    "rww" "dax" "LjL" "ldunn" "moocow" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
          erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
          erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
      (erc-match-mode t)
