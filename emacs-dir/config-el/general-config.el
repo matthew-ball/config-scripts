@@ -119,7 +119,7 @@
 (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
       ido-use-virtual-buffers t ;; NOTE: keep buffers around
       ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
-      ;; ido-everywhere t ;; NOTE: enable ido everywhere
+      ido-everywhere t ;; NOTE: enable ido everywhere
       ;; ido-use-filename-at-point t
       ;; ido-use-url-at-point t
       ;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))

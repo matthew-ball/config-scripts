@@ -150,3 +150,8 @@ cd $HOME
 # NOTE: bash-ido
 # SOURCE: http://gitorious.org/bash-ido
 # . /home/chu/Programming/projects/bash-ido/bash-ido
+
+# NOTE: zenburn for bash
+# function EXT_COLOR () { echo -ne "\033[38;5;$1m"; }
+# export LS_COLORS='di=38;5;108:fi=00:*svn-commit.tmp=31:ln=38;5;116:ex=38;5;186'
+# export PS1='`EXT_COLOR 187`\u@\h`EXT_COLOR 174` \w \$\[\033[00m\] > '

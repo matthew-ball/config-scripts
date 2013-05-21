@@ -58,7 +58,7 @@
 (defmacro bind-key (key &rest body)
   `(global-set-key (kbd ,key) ,@body))
 
-(bind-key "C-<SPC>" 'set-mark-command)
+;;(bind-key "C-<SPC>" 'set-mark-command)
 
 ;;; IMPORTANT: global key-bindings
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html'
@@ -99,7 +99,8 @@
 (define-key programming-map (kbd "g") 'ido-goto-symbol) ;; NOTE: go to a symbol in the current buffer
 (define-key programming-map (kbd "e") 'eval-and-replace) ;; NOTE: evaluate a lisp expression and replace with the value
 (define-key programming-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
-(define-key programming-map (kbd "s") 'slime) ;; NOTE: start slime session
+(define-key programming-map (kbd "s") 'slime-connect) ;; NOTE: start slime session
+(define-key programming-map (kbd "S") 'slime-disconnect) ;; NOTE: stop slime session
 
 ;; (global-set-key (kbd "M-<f5>") 'function)
 ;; (global-set-key (kbd "C-<f5>") 'function)

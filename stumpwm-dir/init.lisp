@@ -22,7 +22,6 @@
 
 ;;; This is the main point of entry for the StumpWM environment.
 ;;; This configuration sets a bunch of variables, and modifies a bunch of the default settings.
-;;; The README file associated with this configuration *should* explain the configuration in-depth, in case this source code is not sufficient.
 
 ;;; Code:
 
@@ -39,17 +38,12 @@
       *shell-program* (getenv "SHELL") ;; NOTE: set the default shell
       *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse (alternatives are: `:click' and `:ignore')
 
+;; (setf *data-dir* (expand-file-name "~/.stumpwm.d/"))
 (redirect-all-output (data-dir-file "debug-output" "txt")) ;; NOTE: debug information `~/.stumpwm.d/debug-output.txt'
 
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 
 ;;; IMPORTANT: general functions
-(defun cat (&rest strings)
-  "Return STRINGS concatenated together, like the Unix command 'cat'.
-
-A shortcut for (concatenate 'string foo bar)."
-  (apply 'concatenate 'string strings))
-
 (defun hostname (&rest junk)
   "Return a string representing the hostname."
   (first (split-string (machine-instance) ".")))
@@ -64,30 +58,40 @@ A shortcut for (concatenate 'string foo bar)."
   (let ((raw-battery (run-shell-command "acpi | cut -d: -f2 | cut -d, -f1" t)))
     (substitute #\Space #\Newline raw-battery)))
 
+;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
+(defmacro replace-hook (hook fn)
+  `(remove-hook, hook, fn)
+  `(add-hook, hook, fn))
+
+;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
+;; TODO: use functions `user-homedir-pathname' and `merge-pathnames' to update it.
+(defun expand-file-name (path &optional default-directory)
+  "Expand file-name."
+  (let ((first-char (subseq path 0 1))
+        (home-dir (concat (getenv "HOME") "/"))
+        (dir (if default-directory
+                 (if (string= (subseq (reverse default-directory) 0 1) "/")
+                     default-directory
+                     (concat default-directory "/")))))
+    (cond ((string= first-char "~") (concat home-dir (subseq path 2)))
+          ((string= first-char "/") path)
+          (dir (if (string= (subseq dir 0 1) "/")
+                   (concat dir path)
+                   (expand-file-name (concat dir path))))
+          (t (concat home-dir path)))))
+
 ;; TODO: need to look into "apt-cache policy application"
 ;; ..... possibly grep for "Installed: (none)" and return nil
 ;; (defun installed-p (application)
 ;;   "Return `t' if application is installed, return `nil' otherwise.")
 
-;; IMPORTANT: the following functions should be called during initialization
-;; (defun launch-mpd (&rest junk)
-;;   "Start music player daemon, `mpd', server."
-;;   (run-shell-command "mpd"))
-
-(defun launch-nm-applet (&rest junk)
-  "Start the network manager applet, `nm-applet'."
-  (run-shell-command "nm-applet"))
-
-(defun launch-lxpanel (&rest junk)
-  "Start an instance of `lxpanel'."
-  (run-shell-command "lxpanel"))
-
 ;;; IMPORTANT: user variables
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
-(defvar *user-source-directory* (cat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
-(defvar *user-quicklisp-directory* (cat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
+(defvar *user-source-directory* (concat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
+(defvar *user-quicklisp-directory* (concat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
 
 ;;; IMPORTANT: default applications
+;; NOTE: the following two probably only work on debian
 (defvar *browser* "x-www-browser" "Set the default web browser.")
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.")
 (defvar *editor* (getenv "EDITOR") "Set the default editor.") ;; NOTE: set shell environment editor
@@ -101,6 +105,8 @@ A shortcut for (concatenate 'string foo bar)."
 (defvar *audio-player* "ncmpcpp" "Set the default audio player.")
 (defvar *video-player* "vlc" "Set the default video player.")
 
+;; TODO: can make a list of programs, then have a `completing-read' go over said list to run program (???)
+
 ;;; IMPORTANT: (zenburn-inspired) color theme
 ;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line format
 ;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.")
@@ -111,7 +117,7 @@ A shortcut for (concatenate 'string foo bar)."
 
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
-(load (cat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
+(load (concat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
 ;;(require 'swank) ;; TODO: work out!!
 
 (swank-loader:init)
@@ -131,7 +137,7 @@ A shortcut for (concatenate 'string foo bar)."
       (message "Swank server: M-x slime-connect RET RET, then enter (in-package :stumpwm) to begin."))))
 
 ;;; IMPORTANT: contribution scripts
-(set-contrib-dir (cat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
+(set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
 
 ;; NOTE: load selected modules
 (mapcar #'load-module '(;; "amixer"
@@ -172,21 +178,30 @@ A shortcut for (concatenate 'string foo bar)."
 (set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
 
 ;;; IMPORTANT: message and input box
-;; (set-bg-color *background-colour*)
-;; (set-fg-color *foreground-colour*)
-;; (set-border-color *border-colour*)
+;; NOTE: window border colours
 ;; (set-focus-color *focus-colour*)
 ;; (set-unfocus-color *unfocus-colour*)
 (set-msg-border-width 0)
 
+;; NOTE: input box colours
+;; (set-fg-color *foreground-colour*)
+;; (set-bg-color *background-colour*)
+;; (set-border-color *border-colour*)
+
 (setf *message-window-gravity* :top-right ;; NOTE: set the message-box to the top right
       *input-window-gravity* :top-right ;; NOTE: set the input-box to the top right
       ;;*window-name-source* :title ;; NOTE: windows get their name from their title property
-      *timeout-wait* 5) ;; NOTE: how long a message will appear for (in seconds)
+      )
+
+;; NOTE: message timer
+(setf *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
+      *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
+      )
 
 ;;; IMPORTANT: mode line
 (set-frame-outline-width 0)
 
+;; NOTE: mode line colours
 (setf ;;*mode-line-background-color* *background-colour*
       ;;*mode-line-foreground-color* *foreground-colour*
       ;;*mode-line-border-color* *border-colour*
@@ -248,7 +263,8 @@ A shortcut for (concatenate 'string foo bar)."
 (undefine-key *root-map* (kbd "C-e"))
 (undefine-key *root-map* (kbd "C-b"))
 (undefine-key *root-map* (kbd "C-a"))
-;;(undefine-key *root-map* (kbd "C-m")) ;; ERROR: does not work
+(undefine-key *root-map* (kbd "C-n")) ;; ERROR: does not work
+(undefine-key *root-map* (kbd "C-p")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-l")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-w")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
@@ -298,6 +314,13 @@ A shortcut for (concatenate 'string foo bar)."
 	     (kbd "u") "volume-up"
 	     (kbd "d") "volume-down"
 	     (kbd "m") "volume-toggle-mute")
+
+;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
+;; (defun raise-urgent-window-hook (target)
+;;   (gselect (window-group target))
+;;   (really-raise-window target))
+
+;; (add-hook *urgent-window-hook* 'raise-urgent-window-hook)
 
 ;;; IMPORTANT: groups (virtual desktops) and frame preferences
 (defparameter *groups* '("default" "internet" "misc") "Group (virtual desktop) names.")
@@ -394,9 +417,10 @@ A shortcut for (concatenate 'string foo bar)."
 ;;; IMPORTANT: run applications
 (defmacro group-frame-preference (group &rest apps)
   "..."
-  ;; TODO: this needs to be reimplemented
-  `(define-frame-preference ,group (0 t t :instance ,app))
-  )
+  ;; ERROR: this needs to be fixed!!!
+  `(define-frame-preference ,group
+       (dolist (app ,apps)
+         `'(0 t t :instance ,app))))
 
 (defun setup-group-preferences ()
   ""
@@ -404,13 +428,14 @@ A shortcut for (concatenate 'string foo bar)."
 
   (clear-window-placement-rules) ;; clear rules
 
-  (group-frame-preference "default" *editor* *file-manager*)
+  (group-frame-preference "default" *editor* *file-manager* *document-viewer*)
   (group-frame-preference "internet" *browser*)
-  (group-frame-preference "misc" *terminal*))
+  (group-frame-preference "misc" *terminal* *system-monitor* *package-manager*))
 
+;; BUG: this does not work
 ;;(setup-group-preferences)
 
-;; (defmacro term-app-frame-preference (group app)
+;; (defmacro term-group-frame-preference (group app)
 ;;   "..."
 ;;   `(progn
 ;;      (define-frame-preference ,group (0 t t :title ,app))))
@@ -451,18 +476,11 @@ A shortcut for (concatenate 'string foo bar)."
 ;; (defcommand run-video-player () () (run-terminal-app *video-player* "mplayer"))
 ;; (defcommand run-screen () () (run-terminal-app "screen" "screen"))
 
-;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
-;; (defun raise-urgent-window-hook (target)
-;;   (gselect (window-group target))
-;;   (really-raise-window target))
-
-;; (add-hook *urgent-window-hook* 'raise-urgent-window-hook)
-
 ;;; IMPORTANT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
-(defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (cat "Hostname: " (hostname))))
+(defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (concat "Hostname: " (hostname))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."
@@ -519,12 +537,8 @@ A shortcut for (concatenate 'string foo bar)."
   (unless (eq *top-map* *resize-map*)
     (let ((*message-window-gravity* :top-right))
       (message "Key sequence: ~A" (print-key-seq (reverse key-seq))))
-    (when (stringp cmd) ;; NOTE: give them time to read it
+    (when (stringp cmd) ;; NOTE: give the user time to read it
       (sleep 0.5))))
-
-(defmacro replace-hook (hook fn)
-  `(remove-hook ,hook ,fn)
-  `(add-hook ,hook ,fn))
 
 (replace-hook *key-press-hook* 'key-press-hook)
 
@@ -550,17 +564,76 @@ A shortcut for (concatenate 'string foo bar)."
   "Toggle between mute/unmute volume level."
   (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
 
-;;; IMPORTANT: startup applications
-(when *initializing*
+;;; IMPORTANT: startup applications (should be called during initialization)
+;; (defun launch-mpd (&rest junk)
+;;   "Start music player daemon, `mpd', server."
+;;   (run-shell-command "mpd"))
+
+(defun launch-nm-applet (&rest junk)
+  "Start the network manager applet, `nm-applet'."
+  (run-shell-command "nm-applet"))
+
+(defun launch-lxpanel (&rest junk)
+  "Start an instance of `lxpanel'."
+  (run-shell-command "lxpanel"))
+
+(defun mwsb-start-hook ()
+  "..."
   (launch-lxpanel) ;; NOTE: start `lxpanel' instance
   (launch-nm-applet) ;; NOTE: start `nm-applet' instance
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
   ;; ---
-  (run-editor) ;; NOTE: start the editor (should also launch the emacs daemon service)
-  ;; (run-swank) ;; NOTE: start the swank server
+  (run-swank) ;; NOTE: start the swank server
+  (run-editor) ;; NOTE: start the editor
   ;; (run-browser) ;; NOTE: start the browser
   ;; (run-system-monitor) ;; NOTE: start the system monitor
   )
+
+(replace-hook *start-hook* 'mwsb-start-hook)
+
+(when *initializing*
+;;   (message "^2*Welcome to The ^BStump^b ^BW^bindow ^BM^banager!
+;; Press ^5*~a ?^2* for help." (print-key *escape-key*))
+  )
+
+;; IMPORTANT: hidden (trash) group
+;; SOURCE: `'
+(defvar *trash-group* '() "Group containing the trashed windows")
+
+(defcommand trash-window () ()
+  "Put the current window in the trash group. If it doesn't exist, create it"
+  (unless (or (eq (current-group) *trash-group*)
+              (not (current-window)))
+    (unless *trash-group*
+      (setf *trash-group* (add-group (current-screen) ".trash")))
+    (move-window-to-group (current-window) *trash-group*)))
+
+(defcommand trash-show () ()
+  "Switch to the trash group if it exists, call again to return to the previous group"
+  (if *trash-group*
+      (if (eq (current-group) *trash-group*)
+          (switch-to-group (second (screen-groups (current-screen))))
+          (switch-to-group *trash-group*))
+      (message "The trash is empty!")))
+
+(defun clean-trash (w)
+  "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
+  (let ((current-group (window-group w)))
+    (when *trash-group*
+      (when (and (eq current-group *trash-group*)
+                 (not (group-windows current-group)))
+        (if (eq (current-group) *trash-group*)
+            (let ((to-group (second (screen-groups (current-screen)))))
+              (switch-to-group to-group)
+              (kill-group *trash-group* to-group))
+            (kill-group *trash-group* (current-group)))
+        (setf *trash-group* nil)
+        (message "The trash is empty")))))
+
+(add-hook *destroy-window-hook* #'clean-trash)
+
+;; (define-key *root-map* (kbd "_") 'trash-window)
+;; (define-key *root-map* (kbd "M-SPC") 'trash-show)
 
 ;;; init.lisp ends here
