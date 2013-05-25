@@ -27,14 +27,19 @@
 ;;; IMPORTANT: gnome network-manager
 (require 'gnomenm)
 
+(gnomenm-toggle-enabled)
+
 ;;; IMPORTANT: extension to info
 ;; SOURCE: `http://emacswiki.org/emacs/info+.el'
-(require 'info+)
+(eval-after-load "info"
+  '(require 'info+))
 
 ;;; IMPORTANT: extension to `ido'
-(require 'ido-ubiquitous)
+(eval-after-load "ido"
+  '(progn
+     (require 'ido-ubiquitous)
 
-(ido-ubiquitous-mode t)
+     (ido-ubiquitous-mode t)))
 
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
@@ -59,11 +64,13 @@
      (require 'erc-goodies)
      ;; (require 'erc-track)
      ;; (require 'erc-button)
+     ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
      (require 'erc-match)
      (require 'erc-fill)
      (require 'erc-log)
      (require 'erc-pcomplete)
      (require 'erc-notify)
+     ;; (require 'erc-goodies)
      ))
 
 (defvar erc-insert-post-hook)
@@ -79,6 +86,8 @@
 (eval-after-load "erc-goodies" '(erc-scrolltobottom-enable)) ;; NOTE: enable scroll-to-bottom mode
 (eval-after-load "erc-hl-nicks" '(erc-hl-nicks-enable))
 (eval-after-load "erc-stamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
+
+;;(eval-after-load "erc-capab" '(erc-capab-identify-mode t))
 
 ;; IMPORTANT: erc match
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
@@ -161,6 +170,9 @@
 
 ;;      (add-hook 'erc-send-completed-hook (lambda (str) (erc-bar-update-overlay)))))
 
+(eval-after-load "erc"
+  '(setq erc-lurker-hide-list '("JOIN" "PART" "QUIT"))) ;; NOTE: hide specified message types sent by lurkers
+
 ;; TODO: use variables in here ...
 (setq ;; erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
       ;; erc-user-full-name user-full-name
@@ -198,11 +210,11 @@
 	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
       erc-autojoin-channels-alist '((".*\\.freenode.net"
 				     "#emacs"
-                                     "#gnus"
-				     "#org-mode"
+                                     ;; "#gnus"
+				     ;; "#org-mode"
 				     "#stumpwm"
 				     "#lisp"
-                                     "#clojure"
+                                     ;; "#clojure"
 				     ;; "#ubuntu"
 				     ;; "#ubuntu-discuss"
 				     ;; "#ubuntuforums"
@@ -731,14 +743,17 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: dired extensions
 ;; SOURCE: `http://emacswiki.org/emacs/dired+.el'
-(require 'dired+)
+(eval-after-load "dired"
+  '(require 'dired+))
 
 ;;; IMPORTANT: directory details
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiredDetails'
-(require 'dired-details+)
+(eval-after-load "dired"
+  '(progn
+     (require 'dired-details+)
 
-(setq dired-details-hidden-string "")
-(dired-details-install)
+     (setq dired-details-hidden-string "")
+     (dired-details-install)))
 
 ;;; IMPORTANT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
@@ -849,6 +864,7 @@ Although this is interactive, call this with \\[browse-url]."
       w3m-terminal-coding-system 'utf-8
       w3m-use-cookies t ;; NOTE: use cookies in w3m
       w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+      ;; w3m-bookmark-file
       w3m-cookie-accept-bad-cookies t
       w3m-cookie-accept-domains '("www.emacswiki.org"
                                   "www.google.com"
@@ -989,7 +1005,6 @@ Although this is interactive, call this with \\[browse-url]."
 (add-tag-to-category "misc" "EDIT")
 (add-tag-to-category "misc" "TEMP")
 (add-tag-to-category "misc" "TEST")
-
 
 ;;(custom-comment-mode t)
 (highlight-custom-comment-tags) ;; TEMP: call this until the mode works ...

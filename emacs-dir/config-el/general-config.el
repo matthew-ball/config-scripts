@@ -72,6 +72,7 @@
       				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
       completion-ignore-case t ;; NOTE: ignore case in auto-completing text
       read-file-name-completion-ignore-case t ;; NOTE: ignore cases in filenames
+      ;; enable-recursive-minibuffers t ;; NOTE: ...
       auto-compression-mode t ;; NOTE: automatically parse an archive
       message-log-max 1000 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
       show-trailing-whitespace t ;; NOTE: show trailing whitespace
@@ -162,17 +163,22 @@
 
 ;;; IMPORTANT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
-;;(autoload 'ibuffer "ibuffer" "..." t)
-(require 'ibuffer)
-(require 'ibuf-ext)
+(autoload 'ibuffer "ibuffer" "..." t)
+;;(require 'ibuffer)
+
+(eval-after-load "ibuffer"
+  '(require 'ibuf-ext))
 
 ;; TODO: investigate `ibuffer-directory-abbrev-list'
 
-(add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
-(add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
-(add-to-list 'ibuffer-never-show-predicates "^ \\*Ibuffer\\*$")
-(add-to-list 'ibuffer-never-show-predicates "^ \\*AgendaCommands\\*$")
-;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
+(eval-after-load "ibuf-ext"
+  '(progn
+     (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
+     (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
+     (add-to-list 'ibuffer-never-show-predicates "^ \\*Ibuffer\\*$")
+     (add-to-list 'ibuffer-never-show-predicates "^ \\*AgendaCommands\\*$")
+     ;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
+     ))
 
 (setq ibuffer-saved-filter-groups
       `(("default"

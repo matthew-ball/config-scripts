@@ -78,7 +78,8 @@
 
 ;;; IMPORTANT: common lisp programming
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
-(setq inferior-lisp-program "/usr/bin/sbcl")
+;;(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq inferior-lisp-program "/usr/bin/sbcl --noinform") ;; NOTE: suppress the printing of any banner or other informational message at startup
 
 (add-hook 'lisp-mode-hook '(lambda ()
 			     (turn-on-general-programming-mode)

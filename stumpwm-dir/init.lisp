@@ -105,8 +105,6 @@
 (defvar *audio-player* "ncmpcpp" "Set the default audio player.")
 (defvar *video-player* "vlc" "Set the default video player.")
 
-;; TODO: can make a list of programs, then have a `completing-read' go over said list to run program (???)
-
 ;;; IMPORTANT: (zenburn-inspired) color theme
 ;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line format
 ;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.")
@@ -171,8 +169,8 @@
       *window-border-style* :thin) ;; NOTE: set the window border to thin (alternatives are: `:thick' `:thin' `:tight' `:none')
 
 (set-normal-gravity :top)
-(set-maxsize-gravity :center)
-(set-transient-gravity :center)
+(set-maxsize-gravity :top-right)
+(set-transient-gravity :top-right)
 
 ;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
 (set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
@@ -202,9 +200,9 @@
 (set-frame-outline-width 0)
 
 ;; NOTE: mode line colours
-(setf ;;*mode-line-background-color* *background-colour*
-      ;;*mode-line-foreground-color* *foreground-colour*
-      ;;*mode-line-border-color* *border-colour*
+(setf ;; *mode-line-background-color* *background-colour*
+      ;; *mode-line-foreground-color* *foreground-colour*
+      ;; *mode-line-border-color* *border-colour*
       *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
       *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
       *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
@@ -272,9 +270,11 @@
 (defkeys-root ;; NOTE: define root-map keys
     ("s-b" "global-select")
     ("s-q" "safe-quit")
+  ("s-d" "trash-window")
+  ("s-s" "trash-show")
   ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
   ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
-  ("C-w" "run-swank") ;; NOTE: start a swank server
+  ;; ---
   ("M-c" "command-mode") ;; NOTE: active `command-mode'
   ;; ---
   ("M-b" "show-battery") ;; NOTE: show battery status
@@ -288,6 +288,7 @@
     ("s-V" '*volume-map*)
   ;; ("s-M" '*mpd-map*)
   ("s-:" "eval")
+  ("s-x" "colon")
   ;; ---
   ("s-b" "run-browser") ;; NOTE: open (or switch to an existing instance of) *browser*
   ("s-e" "run-editor") ;; NOTE: open (or switch to an existing instance of) *editor*
@@ -335,10 +336,6 @@
   (dolist (group (cdr *groups*)) ;; NOTE: the `car' of the list is the "default" group
     (gnewbg group)))
 
-;; TODO: the following functions need pnly be called once ...
-(rename-default-group)
-(create-groups)
-
 ;; IMPORTANT: group configuration
 (defun screen-window-count () ;; NOTE: count the windows in the screen (all the groups)
   "Return the number of window frames in the current screen."
@@ -370,6 +367,14 @@
 
 (add-hook *destroy-window-hook* 'switch-to-non-empty-group)
 
+;; NOTE: show the current group name when switching groups
+;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn-history/r3/trunk/.stumpwmrc'
+;; (defun focus-group (new-group old-group)
+;;   (declare (ignore old-group))
+;;   (message "~a" (group-name new-group)))
+
+;; (replace-hook *focus-group-hook* 'focus-group)
+
 ;; IMPORTANT: global window select
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
 (defun global-window-names ()
@@ -399,9 +404,10 @@
     match))
 
 (define-stumpwm-type :global-window-names (input prompt)
-  (unless (< (screen-window-count) 2)
-    (or (argument-pop input)
-        (completing-read (current-screen) prompt (global-window-names) :initial-input (car (global-window-names))))))
+  (if (< (screen-window-count) 2)
+      (switch-to-non-empty-group 'window)
+      (or (argument-pop input)
+          (completing-read (current-screen) prompt (global-window-names))))) ;; NOTE: :initial-input (car (global-window-names))
 
 (defcommand global-select (query) ((:global-window-names "Select: "))
   "Like select, but for all groups not just the current one."
@@ -415,39 +421,68 @@
 	(return)))))
 
 ;;; IMPORTANT: run applications
-(defmacro group-frame-preference (group &rest apps)
+;; TODO: ...
+(defun make-keyword (name)
   "..."
-  ;; ERROR: this needs to be fixed!!!
-  `(define-frame-preference ,group
-       (dolist (app ,apps)
-         `'(0 t t :instance ,app))))
+  (values (intern name "KEYWORD")))
 
-(defun setup-group-preferences ()
+;; TODO: make a list of programs, then have a `completing-read' go over said list to run program (???)
+(defvar *programs-alist* '((*browser* . nil)
+                           (*terminal* . t)
+                           (*editor* . nil)
+                           (*file-manager* . nil)
+                           (*package-manager* . t)
+                           (*system-monitor* . t)))
+
+;; TODO: need `add-program' function
+;; TODO: need `run-program' function
+
+(defun make-program-name (symbol)
+  (let ((sym (symbol-name symbol)))
+    (subseq sym 1 (- (length sym) 1))))
+
+(defun make-program-list ()
   ""
-  ;; TODO: should make the groups first ...
+  (mapcar #'(lambda (entry) (make-program-name (first entry))) *programs-alist*))
 
-  (clear-window-placement-rules) ;; clear rules
+;; TODO: need to also add group window frame preference
+;; (defmacro create-application-run-command (application group)
+;;   (let ((application-name (make-program-name (quote application))))
+;;     `(define-frame-preference ,group `(0 t t :instance ,application))
+;;     `(defcommand (make-keyword (concat "run-" ,application-name)) () ()
+;;        (run-or-raise ,application `(:instance ,application)))))
 
-  (group-frame-preference "default" *editor* *file-manager* *document-viewer*)
-  (group-frame-preference "internet" *browser*)
-  (group-frame-preference "misc" *terminal* *system-monitor* *package-manager*))
+;;(create-application-run-command *browser*) ;; => `run-browser'
+
+;; (defmacro group-frame-preference (group &rest apps)
+;;   "..."
+;;   ;; ERROR: this needs to be fixed!!!
+;;   (dolist (app apps)
+;;     `(define-frame-preference ,group `(0 t t :instance ,app))))
+
+;; (defun setup-group-preferences ()
+;;   ""
+;;   (clear-window-placement-rules) ;; NOTE: clear rules
+
+;;   (group-frame-preference "default" *editor* *file-manager* *document-viewer*)
+;;   (group-frame-preference "internet" *browser*)
+;;   (group-frame-preference "misc" *terminal* *system-monitor* *package-manager*))
 
 ;; BUG: this does not work
 ;;(setup-group-preferences)
 
-;; (defmacro term-group-frame-preference (group app)
-;;   "..."
-;;   `(progn
-;;      (define-frame-preference ,group (0 t t :title ,app))))
+(defmacro group-frame-preference (application group key)
+  (let ((app (eval application)))
+    `(define-frame-preference ,group (0 t t ,key ,app))))
 
-;; TEMP: These are just temporary but they work
-(define-frame-preference "default" (0 t t :instance "emacs"))
-(define-frame-preference "default" (0 t t :instance "pcmanfm"))
-(define-frame-preference "default" (0 t t :title "stumpish"))
-(define-frame-preference "internet" (0 t t :instance "x-www-browser"))
-(define-frame-preference "misc" (0 t t :title "terminal"))
-(define-frame-preference "misc" (0 t t :title "htop"))
-(define-frame-preference "misc" (0 t t :title "aptitude"))
+(group-frame-preference *file-manager* "default" :instance)
+(group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
+(group-frame-preference "stumpish" "default" :title)
+(group-frame-preference *browser* "internet" :instance)
+(group-frame-preference *terminal* "misc" :title)
+(group-frame-preference "htop" "misc" :title)
+(group-frame-preference "utop" "misc" :title)
+(group-frame-preference "aptitude" "misc" :title)
 
 (defun run-or-raise-app (app)
   "Run (or raise) an instance of APP with `instance' property."
@@ -471,10 +506,12 @@
 ;; NOTE: terminal apps
 (defcommand run-system-monitor () () (run-or-raise-terminal-app *system-monitor* "htop"))
 (defcommand run-package-manager () () (run-or-raise-terminal-app *package-manager* "aptitude"))
-(defcommand run-stumpish () () (run-or-raise-terminal-app "stumpish"))
 ;; (defcommand run-audio-player () () (run-terminal-app *audio-player* "ncmpcpp"))
 ;; (defcommand run-video-player () () (run-terminal-app *video-player* "mplayer"))
-;; (defcommand run-screen () () (run-terminal-app "screen" "screen"))
+
+(defcommand run-stumpish () () (run-or-raise-terminal-app "stumpish" "stumpish"))
+(defcommand run-screen () () (run-or-raise-terminal-app "screen -D -R" "screen"))
+(defcommand run-user-monitor () () (run-or-raise-terminal-app (concat *system-monitor* " -u " (getenv "USER")) "utop"))
 
 ;;; IMPORTANT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
@@ -532,15 +569,16 @@
 (sudo-command hibernate "pm-hibernate")
 
 ;;; IMPORTANT: key sequence
-(defun key-press-hook (key key-seq cmd)
-  (declare (ignore key))
-  (unless (eq *top-map* *resize-map*)
-    (let ((*message-window-gravity* :top-right))
-      (message "Key sequence: ~A" (print-key-seq (reverse key-seq))))
-    (when (stringp cmd) ;; NOTE: give the user time to read it
-      (sleep 0.5))))
+;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/FAQ'
+;; (defun key-press-hook (key key-seq cmd)
+;;   (declare (ignore key))
+;;   (unless (eq *top-map* *resize-map*)
+;;     (let ((*message-window-gravity* :top-right))
+;;       (message "Key sequence: ~A" (print-key-seq (reverse key-seq))))
+;;     (when (stringp cmd) ;; NOTE: give the user time to read it
+;;       (sleep 0.5))))
 
-(replace-hook *key-press-hook* 'key-press-hook)
+;; (replace-hook *key-press-hook* 'key-press-hook)
 
 ;;; IMPORTANT: music player daemon
 ;; (setf *mpd-port* 7700
@@ -564,41 +602,8 @@
   "Toggle between mute/unmute volume level."
   (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
 
-;;; IMPORTANT: startup applications (should be called during initialization)
-;; (defun launch-mpd (&rest junk)
-;;   "Start music player daemon, `mpd', server."
-;;   (run-shell-command "mpd"))
-
-(defun launch-nm-applet (&rest junk)
-  "Start the network manager applet, `nm-applet'."
-  (run-shell-command "nm-applet"))
-
-(defun launch-lxpanel (&rest junk)
-  "Start an instance of `lxpanel'."
-  (run-shell-command "lxpanel"))
-
-(defun mwsb-start-hook ()
-  "..."
-  (launch-lxpanel) ;; NOTE: start `lxpanel' instance
-  (launch-nm-applet) ;; NOTE: start `nm-applet' instance
-  ;; (launch-mpd) ;; NOTE: start mpd server
-  ;; (mpd-connect) ;; NOTE: start mpd connection
-  ;; ---
-  (run-swank) ;; NOTE: start the swank server
-  (run-editor) ;; NOTE: start the editor
-  ;; (run-browser) ;; NOTE: start the browser
-  ;; (run-system-monitor) ;; NOTE: start the system monitor
-  )
-
-(replace-hook *start-hook* 'mwsb-start-hook)
-
-(when *initializing*
-;;   (message "^2*Welcome to The ^BStump^b ^BW^bindow ^BM^banager!
-;; Press ^5*~a ?^2* for help." (print-key *escape-key*))
-  )
-
 ;; IMPORTANT: hidden (trash) group
-;; SOURCE: `'
+;; ERROR: this doesn't work completely
 (defvar *trash-group* '() "Group containing the trashed windows")
 
 (defcommand trash-window () ()
@@ -606,16 +611,15 @@
   (unless (or (eq (current-group) *trash-group*)
               (not (current-window)))
     (unless *trash-group*
-      (setf *trash-group* (add-group (current-screen) ".trash")))
+      (setf *trash-group* (gnewbg ".trash")))
     (move-window-to-group (current-window) *trash-group*)))
 
 (defcommand trash-show () ()
   "Switch to the trash group if it exists, call again to return to the previous group"
-  (if *trash-group*
-      (if (eq (current-group) *trash-group*)
-          (switch-to-group (second (screen-groups (current-screen))))
-          (switch-to-group *trash-group*))
-      (message "The trash is empty!")))
+  (when *trash-group*
+    (if (eq (current-group) *trash-group*)
+        (switch-to-group (second (screen-groups (current-screen))))
+        (switch-to-group *trash-group*))))
 
 (defun clean-trash (w)
   "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
@@ -631,9 +635,44 @@
         (setf *trash-group* nil)
         (message "The trash is empty")))))
 
-(add-hook *destroy-window-hook* #'clean-trash)
+(add-hook *destroy-window-hook* 'clean-trash)
 
-;; (define-key *root-map* (kbd "_") 'trash-window)
-;; (define-key *root-map* (kbd "M-SPC") 'trash-show)
+;;; IMPORTANT: startup applications (should be called during initialization)
+;; (defun launch-mpd (&rest junk)
+;;   "Start music player daemon, `mpd', server."
+;;   (run-shell-command "mpd"))
+
+(defun launch-nm-applet (&rest junk)
+  "Start the network manager applet, `nm-applet'."
+  (run-shell-command "nm-applet"))
+
+(defun launch-lxpanel (&rest junk)
+  "Start an instance of `lxpanel'."
+  (run-shell-command "lxpanel"))
+
+(defun mwsb-start-hook ()
+  "Launch initiation process. This function is called the first time StumpWM is launched."
+  ;; ---
+  (launch-lxpanel) ;; NOTE: start `lxpanel' instance
+  (launch-nm-applet) ;; NOTE: start `nm-applet' instance
+  ;; (launch-mpd) ;; NOTE: start mpd server
+  ;; (mpd-connect) ;; NOTE: start mpd connection
+  ;; ---
+  (run-swank) ;; NOTE: start the swank server
+  (run-editor) ;; NOTE: start the editor
+  ;; (run-browser) ;; NOTE: start the browser
+  ;; (run-system-monitor) ;; NOTE: start the system monitor
+  ;; ---
+  ;; TODO: this only needs to be called once
+  (rename-default-group)
+  (create-groups)
+  )
+
+(replace-hook *start-hook* 'mwsb-start-hook)
+
+(when *initializing*
+  ;; (message "^2*Welcome to The ^BStump^b ^BW^bindow ^BM^banager!
+  ;; Press ^5*~a ?^2* for help." (print-key *escape-key*))
+  )
 
 ;;; init.lisp ends here
