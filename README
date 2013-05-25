@@ -12,26 +12,8 @@ This README file is best read using functionality provided by =org-mode=.
     - Version: 0.00
   + =GNU Emacs= Editor :: [[file:emacs-dir/README][README]]
     - Version: 24.0.92.1
-  + =Conkeror= Web Browser :: [[file:conkeror-dir/README][README]]
-    - Version: 0.00
-  + Music Player Daemon :: 
-    - Version: 0.00
-  + NCMPCPP Client :: 
-    - Version: 0.00
-  + VLC Player :: 
-    - Version: 0.00
-  + NMCLI Network Manager ::
-    - Version: 0.00
 
-- The configuration represents a possible "desktop" shell for GNU/Linux which works across multiple distributions.
-
-- The system is designed to work across different distributions. Thus, there should be two development repositories:
-  1. /stable/ development builds; and
-  2. /unstable/ development builds.
-
-- The setup currently supports:
-  + debian :: /stable/ repositories (/unstable/ may work).
-  + ubuntu :: /stable/ repositories (/unstable/ may work).
+- The configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
 ** Linking Files
 - This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
@@ -44,24 +26,17 @@ This README file is best read using functionality provided by =org-mode=.
 |-----------------------+------------------+--------------------------------------------|
 | Source:               | Destination:     | Command:                                   |
 |-----------------------+------------------+--------------------------------------------|
-| aptitude-dir/         | ~/.aptitude/     | ln -s aptitude-dir/ ~/.aptitude            |
 | bash-dir/             | ~/.bash.d/       | ln -s bash-dir/ ~/.bash.d                  |
-| conkeror-dir/         | ~/.conkerorrc/   | ln -s conkeror-dir/ ~/.conkerorrc          |
 | emacs-dir/            | ~/.emacs.d/      | ln -s emacs-dir/ ~/.emacs.d                |
-| ncmpcpp-dir/          | ~/.ncmpcpp/      | ln -s ncmpcpp-dir/ ~/.ncmpcpp              |
 | stumpwm-dir/          | ~/.stumpwm.d/    | ln -s stumpwm-dir/ ~/.stumpwm.d            |
 |-----------------------+------------------+--------------------------------------------|
 | bash-dir/init.sh      | ~/.bashrc        | ln -s bash-dir/init.sh ~/.bashrc           |
-| mpd-dir/mpd.conf      | ~/.mpdconf       | ln -s mpd-dir/mpd.conf ~/.mpdconf          |
 | xinit-dir/init.sh     | ~/.xinitrc       | ln -s xinit-dir/init.sh ~/.xinitrc         |
 | stumpwm-dir/init.lisp | ~/.stumpwmrc     | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc   |
 | bash-dir/profile.sh   | ~/.bash\_profile | ln -s bash-dir/profile.sh ~/.bash\_profile |
 |-----------------------+------------------+--------------------------------------------|
 
 **** Files
-- aptitude-dir
-  + README
-
 - bash-dir
   + README
   + init.sh
@@ -69,20 +44,9 @@ This README file is best read using functionality provided by =org-mode=.
   + aliases.sh
   + functions.sh
 
-- conkeror-dir
-  + README
-  + init.js
-
 - emacs-dir
   + README
   + init.el
-
-- mpd-dir
-  + README
-  + init.conf
-
-- ncmpcpp-dir
-  + README
 
 - stumpwm-dir
   + README
@@ -112,11 +76,11 @@ This README file is best read using functionality provided by =org-mode=.
 ** Initial Configuration
 - The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; it will run on an =arch= install or a =debian= install.
 
-- An install will just install the selected base (i.e. =arch= or =debian=) and then run the [[file:config-setup.sh][config-setup.sh]] script.
+- An install will just run the [[file:config-setup.sh][config-setup.sh]] script.
 
 - The script runs the following operations:
   + Execute =clone= on the /configuration scripts/ project directory from [[http://www.github.com][github]].
-  + Add the [[http://emacs.naquadah.org][emacs-snapshot]] repository to the package manager (NOTE: maybe Debian only?).
+  + (DEBIAN ONLY) Add the [[http://emacs.naquadah.org][emacs-snapshot]] repository to the package manager.
   + Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
   + Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
   + Restart system.

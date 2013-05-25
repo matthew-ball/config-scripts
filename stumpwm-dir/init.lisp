@@ -125,14 +125,12 @@
 (defcommand run-swank () () ;; NOTE: command to start a swank server
   "Starts a swank server on port 4005 and notifies the user."
   (setf *top-level-error-action* :break)
-  (if *swank-p*
-      (message "Swank server already running.")
+  (unless *swank-p*    
     (progn
       (swank:create-server :port 4005
                            :style swank:*communication-style*
                            :dont-close t)
-      (setf *swank-p* t)
-      (message "Swank server: M-x slime-connect RET RET, then enter (in-package :stumpwm) to begin."))))
+      (setf *swank-p* t))))
 
 ;;; IMPORTANT: contribution scripts
 (set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
@@ -426,13 +424,24 @@
   "..."
   (values (intern name "KEYWORD")))
 
-;; TODO: make a list of programs, then have a `completing-read' go over said list to run program (???)
 (defvar *programs-alist* '((*browser* . nil)
                            (*terminal* . t)
                            (*editor* . nil)
                            (*file-manager* . nil)
                            (*package-manager* . t)
                            (*system-monitor* . t)))
+
+(defun programs-list ()
+  ""
+  (mapcar #'(lambda (program-alist) (eval (first program-alist))) *programs-alist*))
+
+(define-stumpwm-type :program-list (input prompt)
+    (or (argument-pop input)
+        (completing-read (current-screen) prompt (programs-list))))
+
+(defcommand run-program (program) ((:program-list "Select: "))
+  "Run a program from the list `*programs*'."
+  (run-or-raise program `(:instance ,program)))
 
 ;; TODO: need `add-program' function
 ;; TODO: need `run-program' function
