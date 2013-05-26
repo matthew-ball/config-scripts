@@ -435,22 +435,7 @@
 
 ;;(create-application-run-command *browser*) ;; => `run-browser'
 
-;; (defmacro group-frame-preference (group &rest apps)
-;;   "..."
-;;   ;; ERROR: this needs to be fixed!!!
-;;   (dolist (app apps)
-;;     `(define-frame-preference ,group `(0 t t :instance ,app))))
-
-;; (defun setup-group-preferences ()
-;;   ""
-;;   (clear-window-placement-rules) ;; NOTE: clear rules
-
-;;   (group-frame-preference "default" *editor* *file-manager* *document-viewer*)
-;;   (group-frame-preference "internet" *browser*)
-;;   (group-frame-preference "misc" *terminal* *system-monitor* *package-manager*))
-
-;; BUG: this does not work
-;;(setup-group-preferences)
+;;(clear-window-placement-rules) ;; NOTE: clear rules
 
 (defmacro group-frame-preference (application group key)
   (let ((app (eval application)))
