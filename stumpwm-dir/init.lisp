@@ -59,11 +59,6 @@
     (substitute #\Space #\Newline raw-battery)))
 
 ;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
-(defmacro replace-hook (hook fn)
-  `(remove-hook, hook, fn)
-  `(add-hook, hook, fn))
-
-;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
 ;; TODO: use functions `user-homedir-pathname' and `merge-pathnames' to update it.
 (defun expand-file-name (path &optional default-directory)
   "Expand file-name."
@@ -80,10 +75,10 @@
                    (expand-file-name (concat dir path))))
           (t (concat home-dir path)))))
 
-;; TODO: need to look into "apt-cache policy application"
-;; ..... possibly grep for "Installed: (none)" and return nil
-;; (defun installed-p (application)
-;;   "Return `t' if application is installed, return `nil' otherwise.")
+;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
+(defmacro replace-hook (hook fn)
+  `(remove-hook, hook, fn)
+  `(add-hook, hook, fn))
 
 ;;; IMPORTANT: user variables
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
@@ -160,43 +155,34 @@
 
 ;;(setf *prefer-sysfs* nil)
 
-;;; IMPORTANT: window appearance
+;;; IMPORTANT: windows, message and input box appearances
 (setf *normal-border-width* 0 ;; NOTE: the width in pixels given to the borders of regular windows
       *maxsize-border-width* 0 ;; NOTE: the width in pixels given to the borders of windows with maxsize or ratio hints
       *transient-border-width* 0 ;; NOTE: the width in pixels given to the borders of transient or pop-up windows
-      *window-border-style* :thin) ;; NOTE: set the window border to thin (alternatives are: `:thick' `:thin' `:tight' `:none')
-
-(set-normal-gravity :top)
-(set-maxsize-gravity :top-right)
-(set-transient-gravity :top-right)
+      *window-border-style* :thin ;; NOTE: set the window border to thin (alternatives are: `:thick' `:thin' `:tight' `:none')
+      *message-window-gravity* :top-right ;; NOTE: set the message-box to the top right
+      *input-window-gravity* :top-right ;; NOTE: set the input-box to the top right
+      ;;*window-name-source* :title ;; NOTE: windows get their name from their title property
+      *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
+      *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
+      )
 
 ;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
 (set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
-
-;;; IMPORTANT: message and input box
+(set-frame-outline-width 0)
+(set-normal-gravity :top)
+(set-maxsize-gravity :top-right)
+(set-transient-gravity :top-right)
 ;; NOTE: window border colours
+(set-msg-border-width 0)
 ;; (set-focus-color *focus-colour*)
 ;; (set-unfocus-color *unfocus-colour*)
-(set-msg-border-width 0)
-
 ;; NOTE: input box colours
 ;; (set-fg-color *foreground-colour*)
 ;; (set-bg-color *background-colour*)
 ;; (set-border-color *border-colour*)
 
-(setf *message-window-gravity* :top-right ;; NOTE: set the message-box to the top right
-      *input-window-gravity* :top-right ;; NOTE: set the input-box to the top right
-      ;;*window-name-source* :title ;; NOTE: windows get their name from their title property
-      )
-
-;; NOTE: message timer
-(setf *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
-      *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
-      )
-
 ;;; IMPORTANT: mode line
-(set-frame-outline-width 0)
-
 ;; NOTE: mode line colours
 (setf ;; *mode-line-background-color* *background-colour*
       ;; *mode-line-foreground-color* *foreground-colour*
@@ -205,9 +191,6 @@
       *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
       *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
       ;;*mode-line-position* :top
-      ;;*window-format* "%n%s %20t"
-      ;;*window-info-format* "[%i] - (%t)"
-      ;;*group-format* "%n:%t"
       *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
       )
 
@@ -592,27 +575,26 @@
 ;;; IMPORTANT: music player daemon
 ;; (setf *mpd-port* 7700
 ;;       *mpd-volume-step* 10
-;;       ;; *mpd-status-fmt* "" ;; message display by mpd-status
-;;       ;; *mpd-current-song-fmt* "" ;; message displayed by mpd-current-song
-;;       *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; mode-line format for mpd
+;;       ;; *mpd-status-fmt* "" ;; NOTE: message display by mpd-status
+;;       ;; *mpd-current-song-fmt* "" ;; NOTE: message displayed by mpd-current-song
+;;       *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; NOTE: mode-line format for mpd
 
 ;;; IMPORTANT: volume control
 (defcommand volume-up () ()
   "Increase volume level."
   (dotimes (n 10)
-    (run-commands "amixer-Master-1+"))) ;; increase master volume +10
+    (run-commands "amixer-Master-1+"))) ;; NOTE: increase master volume +10
 
 (defcommand volume-down () ()
   "Decrease volume level."
   (dotimes (n 10)
-    (run-commands "amixer-Master-1-"))) ;; decrease master volume -10
+    (run-commands "amixer-Master-1-"))) ;; NOTE: decrease master volume -10
 
 (defcommand volume-toggle-mute () ()
   "Toggle between mute/unmute volume level."
-  (run-commands "amixer-Master-toggle")) ;; toggle master between mute/unmute
+  (run-commands "amixer-Master-toggle")) ;; NOTE: toggle master between mute/unmute
 
 ;; IMPORTANT: hidden (trash) group
-;; ERROR: this doesn't work completely
 (defvar *trash-group* '() "Group containing the trashed windows")
 
 (defcommand trash-window () ()
@@ -620,7 +602,7 @@
   (unless (or (eq (current-group) *trash-group*)
               (not (current-window)))
     (unless *trash-group*
-      (setf *trash-group* (gnewbg ".trash")))
+      (setf *trash-group* (gnewbg-float ".trash")))
     (move-window-to-group (current-window) *trash-group*)))
 
 (defcommand trash-show () ()
@@ -641,8 +623,7 @@
               (switch-to-group to-group)
               (kill-group *trash-group* to-group))
             (kill-group *trash-group* (current-group)))
-        (setf *trash-group* nil)
-        (message "The trash is empty")))))
+        (setf *trash-group* nil)))))
 
 (add-hook *destroy-window-hook* 'clean-trash)
 

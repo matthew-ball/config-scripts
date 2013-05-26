@@ -74,7 +74,6 @@
 
 ;;; IMPORTANT: dictem
 ;; SOURCE: ...
-;;(require 'dictem)
 (autoload 'dictem-run-search "dictem" "" t)
 
 (setq dictem-server "dict.org"
@@ -636,7 +635,10 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
-(require 'org-exp-bibtex) ;; TODO: change to an autoload
+
+(eval-after-load "org-bibtex"
+  '(require 'org-exp-bibtex) ;; TODO: change to an autoload
+  )
 
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))

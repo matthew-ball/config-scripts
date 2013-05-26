@@ -454,7 +454,7 @@
       desktop-dirname (expand-file-name user-emacs-directory)
       desktop-base-file-name "emacs-desktop"
       desktop-restore-eager 10
-      history-length 250)
+      history-length 300)
 
 (eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
 

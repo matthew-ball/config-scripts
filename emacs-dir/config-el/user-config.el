@@ -767,31 +767,19 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(require 'auto-complete)
+(autoload 'auto-complete "auto-complete" "..." t)
+;;(require 'auto-complete)
 
-(global-auto-complete-mode t)
-
-;; TODO: probably need to add-hook to org-mode buffers which enables auto-complete-mode
-
-;; (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-;;       ac-ignore-case t ;; NOTE: always ignore case
-;;       ac-auto-show-menu t ;; NOTE: automatically show menu
-;;       )
-
-(set-face-background 'ac-candidate-face "lightgray")
-(set-face-underline 'ac-candidate-face "darkgray")
-(set-face-background 'ac-selection-face "steelblue")
-
-;; (ac-flyspell-workaround) ;; NOTE: apparently the flyspell-mode process disables auto-completion
-
-;; (global-auto-complete-mode t) ;; NOTE: enable `auto-complete' where it makes sense
-
-;; (define-globalized-minor-mode real-global-auto-complete-mode ;; NOTE: dirty fix for having AC everywhere
-;;   auto-complete-mode (lambda ()
-;;                        (if (not (minibufferp (current-buffer)))
-;; 			   (auto-complete-mode 1))))
-
-;; (real-global-auto-complete-mode t)
+(eval-after-load "auto-complete"
+  '(progn
+     (global-auto-complete-mode t)
+     ;; (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
+     ;;       ac-ignore-case t ;; NOTE: always ignore case
+     ;;       ac-auto-show-menu t ;; NOTE: automatically show menu
+     ;;       )
+     (set-face-background 'ac-candidate-face "lightgray")
+     (set-face-underline 'ac-candidate-face "darkgray")
+     (set-face-background 'ac-selection-face "steelblue")))
 
 ;;; IMPORTANT: smart completion
 ;; TODO: this guy probably needs to be generalised a bit more (though, he works for now)
