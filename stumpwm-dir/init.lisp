@@ -576,7 +576,8 @@
   (unless (or (eq (current-group) *trash-group*)
               (not (current-window)))
     (unless *trash-group*
-      (setf *trash-group* (gnewbg-float ".trash")))
+      (setf *trash-group* (gnewbg ".trash")))
+      ;; (setf *trash-group* (gnewbg-float ".trash")))
     (move-window-to-group (current-window) *trash-group*)))
 
 (defcommand trash-show () ()
@@ -617,8 +618,8 @@
 (defun mwsb-start-hook ()
   "Launch initiation process. This function is called the first time StumpWM is launched."
   ;; ---
-  (launch-lxpanel) ;; NOTE: start `lxpanel' instance
-  (launch-nm-applet) ;; NOTE: start `nm-applet' instance
+  ;; (launch-lxpanel) ;; NOTE: start `lxpanel' instance
+  ;; (launch-nm-applet) ;; NOTE: start `nm-applet' instance
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
   ;; ---
