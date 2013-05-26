@@ -345,14 +345,6 @@
 
 (add-hook *destroy-window-hook* 'switch-to-non-empty-group)
 
-;; NOTE: show the current group name when switching groups
-;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn-history/r3/trunk/.stumpwmrc'
-;; (defun focus-group (new-group old-group)
-;;   (declare (ignore old-group))
-;;   (message "~a" (group-name new-group)))
-
-;; (replace-hook *focus-group-hook* 'focus-group)
-
 ;; IMPORTANT: global window select
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
 (defun global-window-names ()
