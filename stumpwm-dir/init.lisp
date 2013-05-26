@@ -242,8 +242,8 @@
 (undefine-key *root-map* (kbd "C-e"))
 (undefine-key *root-map* (kbd "C-b"))
 (undefine-key *root-map* (kbd "C-a"))
-(undefine-key *root-map* (kbd "C-n")) ;; ERROR: does not work
-(undefine-key *root-map* (kbd "C-p")) ;; ERROR: does not work
+;;(undefine-key *root-map* (kbd "C-n")) ;; ERROR: does not work
+;;(undefine-key *root-map* (kbd "C-p")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-l")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-w")) ;; ERROR: does not work
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
@@ -255,9 +255,7 @@
   ("s-s" "trash-show")
   ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
   ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
-  ;; ---
   ("M-c" "command-mode") ;; NOTE: active `command-mode'
-  ;; ---
   ("M-b" "show-battery") ;; NOTE: show battery status
   ("M-u" "show-uptime") ;; NOTE: show uptime status
   ("M-h" "show-hostname") ;; NOTE: show hostname
@@ -270,7 +268,6 @@
   ;; ("s-M" '*mpd-map*)
   ("s-:" "eval")
   ("s-x" "colon")
-  ;; ---
   ("s-b" "run-browser") ;; NOTE: open (or switch to an existing instance of) *browser*
   ("s-e" "run-editor") ;; NOTE: open (or switch to an existing instance of) *editor*
   ("s-t" "run-terminal") ;; NOTE: open (or switch to an existing instance of) *terminal*
