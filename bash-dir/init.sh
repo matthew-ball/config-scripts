@@ -15,7 +15,7 @@ export TERM=xterm-color # NOTE: export 8 colours in shell session
 # NOTE: these exports are used in the "default applications" for stumpwm
 export ALTERNATE_EDITOR="" # NOTE: set the alternate editor as emacs (automatically start an emacs in daemon mode and connect to it if one is not found running)
 export EDITOR='emacsclient -n -c' # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
-# export VISUAL=emacsclient # NOTE: set the visual edit as emacsclient (IMPORTANT: requiring emacs-server)
+export VISUAL=emacsclient # NOTE: set the visual edit as emacsclient (IMPORTANT: requiring emacs-server)
 
 # export BROWSER="conkeror" # NOTE: export BROWSER as conkeror
 # export BROWSER="chromium-browser" # NOTE: export BROWSER as chromium

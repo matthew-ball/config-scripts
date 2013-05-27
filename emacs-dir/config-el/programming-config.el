@@ -113,6 +113,7 @@
 	       slime-scratch
 	       slime-xref-browser
 	       slime-asdf
+               ;; ---
 	       ;; slime-package-fu
 	       ;; slime-repl
 	       ;; slime-editing-commands
@@ -121,15 +122,13 @@
 	       ;; slime-autodoc
 	       ;; slime-indentation-fu
 	       ;; slime-references
-	       slime-sbcl-exts))
+               ;; ---
+	       slime-sbcl-exts
+               ))
 
 (setq slime-net-coding-system 'utf-8-unix
       slime-complete-symbol*-fancy t
       slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-
-;; (defun start-slime-automatically () ;; NOTE: automatically start slime when opening a lisp file
-;;   (unless (slime-connected-p)
-;;     (save-excursion (slime))))
 
 (add-hook 'slime-mode-hook '(lambda ()
 			      ;; (start-slime-automatically)

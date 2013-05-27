@@ -188,16 +188,19 @@
       ;; *mode-line-foreground-color* *foreground-colour*
       ;; *mode-line-border-color* *border-colour*
       *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
-      *mode-line-pad-x* 0 ;; NOTE: set the padding between the mode line text and the sides
+      *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
       *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
       ;;*mode-line-position* :top
       *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
       )
 
+(defvar *mode-line-format* "^[^3*%d^] ^B%n^b" "Mode-line format.")
+
 (setf *screen-mode-line-format*
       (list
-       ;; "[^[^6*%d^]] " ;; NOTE:  display current time and date
-       ;; "[^B%n^b] " ;; NOTE: display current group
+       '(:eval *mode-line-format*)
+       ;; "^[^3*%d^] " ;; NOTE:  display current time and date
+       ;; "^B%n^b " ;; NOTE: display current group
        ;; "[^[^1*%B^]] " ;; NOTE: display battery details
        ;; "[^[^2*"
        ;; '(:eval (battery-charge))
@@ -205,6 +208,7 @@
        ;; '(:eval (battery-state))
        ;; "^]] "
        ;; "%l " ;; NOTE: show network connection details
+       ;; "%w"
        ;; "%W " ;; NOTE: window list ("%v " is similar)
        ;; "[" '(:eval (run-shell-command "acpi -b" t)) "]"
        ;; "["
