@@ -107,11 +107,11 @@
     (funcall 'require (intern config-file))))
 
 (use-config-file "general")
+(use-config-file "user")
+(use-config-file "appearance")
 (use-config-file "writing")
 (use-config-file "programming")
-(use-config-file "user")
 (use-config-file "key-bindings")
-(use-config-file "appearance")
 
 ;;; IMPORTANT: shutdown emacs server
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsAsDaemon'
