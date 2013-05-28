@@ -24,6 +24,10 @@
 
 ;;; Code:
 
+;;; IMPORTANT: visual switch window
+;; SOURCE: `http://tapoueh.org/emacs/switch-window.html'
+(require 'switch-window)
+
 ;;; IMPORTANT: gnome network-manager
 (require 'gnomenm)
 
