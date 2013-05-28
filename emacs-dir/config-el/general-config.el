@@ -374,30 +374,6 @@
         (find-file file))
     (message "Current buffer does not have an associated file.")))
 
-;; TODO: move to `user-config.el'
-;;; IMPORTANT: version control
-;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
-(autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
-
-(eval-after-load "magit"
-  '(progn
-     (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
-	   magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
-
-     ;; NOTE: full screen magit-status
-     (defadvice magit-status (around magit-fullscreen activate)
-       (window-configuration-to-register :magit-fullscreen)
-       ad-do-it
-       (delete-other-windows))
-
-     (defun magit-quit-session ()
-       "Restores the previous window configuration and kills the magit buffer"
-       (interactive)
-       (kill-buffer)
-       (jump-to-register :magit-fullscreen))
-
-     (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)))
-
 ;;; IMPORTANT: enable commands
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisabledCommands'
 (setq disabled-command-function nil)

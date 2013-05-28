@@ -134,8 +134,8 @@
 (mapcar #'load-module '(;; "amixer"
 			;; "app-menu"
 			;; "aumix"
-			;; "battery"
-			;; "battery-portable"
+			"battery"
+			"battery-portable"
 			;; "cpu"
 			;; "disk"
 			;; "g15-keysyms"
@@ -149,7 +149,7 @@
 			"sbclfix"
 			;; "surfraw"
 			;; "undocumented"
-			;; "wifi"
+			"wifi"
 			;; "window-tags"
 			))
 
@@ -194,13 +194,11 @@
       *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
       )
 
-(defvar *mode-line-format* "^[^3*%d^] ^B%n^b" "Mode-line format.")
+(defvar *mode-line-format* "[^B%n^b] ^[^3*%d^] " "Show the group name and date/time in the mode-line.")
 
 (setf *screen-mode-line-format*
       (list
        '(:eval *mode-line-format*)
-       ;; "^[^3*%d^] " ;; NOTE:  display current time and date
-       ;; "^B%n^b " ;; NOTE: display current group
        ;; "[^[^1*%B^]] " ;; NOTE: display battery details
        ;; "[^[^2*"
        ;; '(:eval (battery-charge))

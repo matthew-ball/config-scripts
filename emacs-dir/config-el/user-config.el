@@ -41,6 +41,28 @@
 
      (ido-ubiquitous-mode t)))
 
+;;; IMPORTANT: git integration
+;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
+(autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
+
+(after "magit"
+  (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
+	magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
+
+  ;; NOTE: full screen magit-status
+  (defadvice magit-status (around magit-fullscreen activate)
+    (window-configuration-to-register :magit-fullscreen)
+    ad-do-it
+    (delete-other-windows))
+
+  (defun magit-quit-session ()
+    "Restores the previous window configuration and kills the magit buffer"
+    (interactive)
+    (kill-buffer)
+    (jump-to-register :magit-fullscreen))
+
+  (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
 (autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
