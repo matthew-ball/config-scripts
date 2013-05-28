@@ -31,15 +31,14 @@
 
 ;;; IMPORTANT: extension to info
 ;; SOURCE: `http://emacswiki.org/emacs/info+.el'
-(eval-after-load "info"
-  '(require 'info+))
+(after "info"
+  (require 'info+))
 
 ;;; IMPORTANT: extension to `ido'
-(eval-after-load "ido"
-  '(progn
-     (require 'ido-ubiquitous)
+(after "ido"
+  (require 'ido-ubiquitous)
 
-     (ido-ubiquitous-mode t)))
+  (ido-ubiquitous-mode t))
 
 ;;; IMPORTANT: git integration
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'

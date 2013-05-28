@@ -28,12 +28,13 @@
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
 (require 'package)
 
-(eval-after-load "package" '(package-initialize))
+(after "package"
+  (package-initialize)
 
-;; NOTE: set download repositories
-(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-			 ("gnu" . "http://elpa.gnu.org/packages/")
-			 ("marmalade" . "http://marmalade-repo.org/packages/")))
+  ;; NOTE: set download repositories
+  (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+			   ("gnu" . "http://elpa.gnu.org/packages/")
+			   ("marmalade" . "http://marmalade-repo.org/packages/"))))
 
 (defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
 
@@ -106,42 +107,44 @@
 ;; SOURCE: `http://emacswiki.org/emacs/uniquify'
 (require 'uniquify)
 
-(setq uniquify-buffer-name-style 'reverse
-      uniquify-separator "/"
-      uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified
-      uniquify-ignore-buffers-re "^\\*") ;; NOTE: don't muck with special buffers
+(after "uniquify"
+  (setq uniquify-buffer-name-style 'reverse
+	uniquify-separator "/"
+	uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified
+	uniquify-ignore-buffers-re "^\\*")) ;; NOTE: don't muck with special buffers
 
 ;;; IMPORTANT: ido mode
 ;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
 (require 'ido)
 
-(ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
+(after "ido"
+  (ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
 
-(setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
-      ido-use-virtual-buffers t ;; NOTE: keep buffers around
-      ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
-      ido-everywhere t ;; NOTE: enable ido everywhere
-      ;; ido-use-filename-at-point t
-      ;; ido-use-url-at-point t
-      ;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
-      ;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
-      ;; ido-ignore-directories '("." "..")
-      ;; ido-ignore-files '(".")
-      ido-ignore-extensions t ;; NOTE: ignore extentions
-      ;; TODO: can clean up the following ...
-      ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
-			   "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
-      ido-work-directory-list `(,(expand-file-name user-home-directory)
-      				,(expand-file-name user-documents-directory)
-      				,(expand-file-name user-university-directory)
-      				,(expand-file-name user-organisation-directory))
-      ido-case-fold t ;; NOTE: enable case-insensitivity
-      ido-enable-last-directory-history t ;; NOTE: enable directory history
-      ido-max-work-directory-list 500 ;; NOTE: remember last used directories
-      ido-max-work-file-list 500 ;; NOTE: ... and files
-      ido-max-prospects 7 ;; NOTE: don't spam the mini buffer
-      ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
-      confirm-nonexistent-file-or-buffer nil) ;; NOTE: the confirmation is rather annoying
+  (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
+	ido-use-virtual-buffers t ;; NOTE: keep buffers around
+	ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
+	ido-everywhere t ;; NOTE: enable ido everywhere
+	;; ido-use-filename-at-point t
+	;; ido-use-url-at-point t
+	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
+	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
+	;; ido-ignore-directories '("." "..")
+	;; ido-ignore-files '(".")
+	ido-ignore-extensions t ;; NOTE: ignore extentions
+	;; TODO: can clean up the following ...
+	ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
+			     "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
+	ido-work-directory-list `(,(expand-file-name user-home-directory)
+				  ,(expand-file-name user-documents-directory)
+				  ,(expand-file-name user-university-directory)
+				  ,(expand-file-name user-organisation-directory))
+	ido-case-fold t ;; NOTE: enable case-insensitivity
+	ido-enable-last-directory-history t ;; NOTE: enable directory history
+	ido-max-work-directory-list 500 ;; NOTE: remember last used directories
+	ido-max-work-file-list 500 ;; NOTE: ... and files
+	ido-max-prospects 7 ;; NOTE: don't spam the mini buffer
+	ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
+	confirm-nonexistent-file-or-buffer nil)) ;; NOTE: the confirmation is rather annoying
 
 (defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
   "Find a recent file using `ido-mode'."
@@ -155,204 +158,204 @@
 ;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
 (require 'recentf) ;; TODO: change to an autoload
 
-(setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recent-files") ;; NOTE: recently saved files
-      recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
-      recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
+(after "recentf"
+  (setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recent-files") ;; NOTE: recently saved files
+	recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
+	recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
-(eval-after-load "recentf" '(recentf-mode t))
+  (recentf-mode t))
 
 ;;; IMPORTANT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
 (autoload 'ibuffer "ibuffer" "..." t)
 
 ;; TODO: investigate `ibuffer-directory-abbrev-list'
-(eval-after-load "ibuffer"
-  '(progn
-     (require 'ibuf-ext)
-     (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
-     (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
-     (add-to-list 'ibuffer-never-show-predicates "^ \\*Ibuffer\\*$")
-     (add-to-list 'ibuffer-never-show-predicates "^ \\*AgendaCommands\\*$")
-     ;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
+(after "ibuffer"
+  (require 'ibuf-ext)
+  (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
+  (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
+  (add-to-list 'ibuffer-never-show-predicates "^ \\*Ibuffer\\*$")
+  (add-to-list 'ibuffer-never-show-predicates "^ \\*AgendaCommands\\*$")
+  ;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
 
-     (setq ibuffer-saved-filter-groups
-	   `(("default"
-	      ("Configuration" ;; NOTE: run-time configuration related buffers
-	       (or (filename . ,(expand-file-name user-emacs-directory))
-		   (filename . ,(expand-file-name user-scripts-directory))))
-	      ("University" ;; NOTE: university related buffers
-	       (filename . ,(expand-file-name user-university-directory)))
-	      ("Reading" ;; NOTE: reading (material and notes) related buffers
-	       (or (filename . ,(expand-file-name user-reading-directory))
-		   (mode . doc-view-mode)))
-	      ("Writing" ;; NOTE: writing related buffers
-	       (or (filename . ,(expand-file-name user-writing-directory))
-		   (mode . reftex-toc-mode)
-		   (mode . bibtex-mode)
-		   (mode . ebib-log-mode)
-		   (mode . ebib-index-mode)
-		   (mode . ebib-entry-mode)
-		   (mode . deft-mode)
-		   (mode . dictem-mode)
-		   (name . "^\\*Ebib-edit\\*$")))
-	      ("Projects" ;; NOTE: project related buffers
-	       (filename . ,(expand-file-name user-projects-directory)))
-	      ("Programming" ;; NOTE: programming related buffers
-	       (or (filename . ,(expand-file-name user-programming-directory))
-		   (mode . c-mode)
-		   (mode . c++-mode)
-		   (mode . haskell-mode)
-		   (mode . inferior-haskell-mode)
-		   (mode . python-mode)
-		   (mode . inferior-python-mode)
-		   (mode . nrepl-mode)
-		   (name . "^\\*nrepl-error\\*$")
-		   (mode . lisp-mode)
-		   (mode . common-lisp-mode)
-		   (mode . emacs-lisp-mode)
-		   (mode . inferior-lisp-mode)
-		   (mode . inferior-emacs-lisp-mode)
-		   (mode . nxml-mode)
-		   (mode . ada-mode)
-		   (mode . makefile-gmake-mode)
-		   (mode . perl-mode)
-		   (mode . fuzzy-completions-mode)
-		   (mode . html-mode)
-		   (mode . css-mode)
-		   (mode . javascript-mode)
-		   (mode . scheme-mode)
-		   (mode . inferior-scheme-mode)
-		   (mode . compilation-mode)
-		   (mode . shell-script-mode)
-		   (mode . sh-mode)
-		   (mode . conf-unix-mode)
-		   (mode . conf-space-mode)
-		   (mode . gist-list-mode)
-		   (mode . gist-menu-mode)
-		   (mode . slime-mode)
-		   (mode . inferior-slime-mode)
-		   (mode . repl-mode)
-		   (mode . sldb-mode)
-		   (name . "^\\*slime-events\\*$")
-		   (name . "^\\*slime-threads\\*$")
-		   (name . "^\\*slime-connections\\*$")
-		   (name . "^\\*slime-repl sbcl\\*$")
-		   (name . "^\\*slime-compilation\\*$")
-		   (name . "^\\*slime-description\\*$")
-		   (name . "^\\*inferior-lisp\\*$")
-		   (name . "^\\*Compile-Log\\*$")))
-	      ("Version Control" ;; NOTE: version control related buffers
-	       (or (mode . diff-mode)
-		   (mode . magit-status-mode)
-		   (mode . magit-key-mode)
-		   (mode . magit-log-edit-mode)
-		   (mode . vc-mode)
-		   (mode . vc-dir-mode)
-		   (mode . vc-log-entry-mode)
-		   (name . "^\\*magit-process\\*$")
-		   (name . "^\\*magit-log-edit\\*$")))
-	      ("Organisation" ;; NOTE: org-mode related buffers
-	       (or (mode . org-mode)
-		   (mode . org-agenda-mode)
-		   (mode . calendar-mode)
-		   (mode . diary-mode)
-		   (filename . ,(expand-file-name user-organisation-directory))))
-	      ("IRC" ;; NOTE: irc related buffers
-	       (or (mode . erc-mode)
-		   (mode . rcirc-mode)))
-	      ("Web Browser" ;; NOTE: w3m related buffers
-	       (mode . w3m-mode))
-	      ("File Manager" ;; NOTE: dired related buffers
-	       (or (mode . dired-mode)
-		   (mode . tar-mode)
-		   (name . "^\\*Dired log\\*$")))
-	      ("Shell" ;; NOTE: shell related buffers
-	       (or (mode . eshell-mode)
-		   (mode . shell-mode)
-		   (mode . term-mode)
-		   (mode . locate-mode)
-		   (mode . tex-shell-mode)
-		   (name . "^\\*Shell Command Output\\*$")))
-	      ("Games" ;; NOTE: buffers related to games
-	       (or (mode . sudoku-mode)
-		   (mode . solitaire-mode)
-		   (mode . snake-mode)
-		   (mode . doctor-mode)))
-	      ("Mathematics and Science" ;; NOTE: buffers related to mathematics and science
-	       (or (mode . calculator-mode)
-		   (mode . calc-mode)
-		   (mode . calc-trail-mode)
-		   (mode . maxima-mode)
-		   (mode . inferior-maxima-mode)
-		   (name . "^\\*ESS\\*$")))
-	      ("Mail and News" ;; NOTE: mail (and news) related buffers
-	       (or ;;(newsticker-treeview-mode)
-		;;(newsticker-plainview-mode)
-		(mode . gnus-group-mode)
-		(mode . gnus-topic-mode)
-		(mode . gnus-browse-mode)
-		(mode . gnus-summary-mode)
-		(mode . gnus-server-mode)
-		(mode . gnus-article-mode)
-		(mode . gnus-edit-form-mode)
-		(mode . message-mode)
-		(mode . bbdb-mode)
-		(name . "^\\*gnus trace\\*$")
-		(filename . ".newsrc-dribble$")))
-	      ("Information" ;; NOTE: help and information related buffers
-	       (or (mode . info-mode)
-		   (mode . Info-mode)
-		   (mode . apropos-mode)
-		   (mode . Help-Mode)
-		   (mode . help-mode)
-		   (mode . Man-mode)
-		   (mode . woman-mode)
-		   (name . "^\\*WoMan-Log\\*$")
-		   (name . "^\\*Org Processes\\*$")))
-	      ("Process Manager" ;; NOTE: process management related buffers
-	       (or (mode . proced-mode)
-		   (mode . process-menu-mode)))
-	      ("Package Management" ;; NOTE: package management related buffers
-	       (or (mode . apt-mode)
-		   (mode . package-menu-mode)
-		   (name . "^\\*Package Info\\*$")))
-	      ("Miscellaneous" ;; NOTE: miscellaneous special buffers
-	       (or (mode . occur-mode)
-		   (mode . grep-mode)
-		   (mode . customize-mode)
-		   (mode . Custom-mode)
-		   (mode . completion-list-mode)
-		   (mode . finder-mode)
-		   (mode . color-theme-mode)
-		   (mode . browse-kill-ring-mode)
-		   (name . "\\*scratch\\*$")
-		   (name . "\\*Messages\\*$")
-		   (name . "\\*Backtrace\\*$")
-		   (name . "\\*Keys\\*$")
-		   (name . "\\*Disabled Command\\*$")
-		   (name . "\\*Apropos\\*$")
-		   (name . "\\*tramp/ssh ssh\\*$")
-		   (name . "\\*Help\\*$")
-		   (name . "\\*Org PDF LaTeX Output\\*$"))))))
+  (setq ibuffer-saved-filter-groups
+	`(("default"
+	   ("Configuration" ;; NOTE: run-time configuration related buffers
+	    (or (filename . ,(expand-file-name user-emacs-directory))
+		(filename . ,(expand-file-name user-scripts-directory))))
+	   ("University" ;; NOTE: university related buffers
+	    (filename . ,(expand-file-name user-university-directory)))
+	   ("Reading" ;; NOTE: reading (material and notes) related buffers
+	    (or (filename . ,(expand-file-name user-reading-directory))
+		(mode . doc-view-mode)))
+	   ("Writing" ;; NOTE: writing related buffers
+	    (or (filename . ,(expand-file-name user-writing-directory))
+		(mode . reftex-toc-mode)
+		(mode . bibtex-mode)
+		(mode . ebib-log-mode)
+		(mode . ebib-index-mode)
+		(mode . ebib-entry-mode)
+		(mode . deft-mode)
+		(mode . dictem-mode)
+		(name . "^\\*Ebib-edit\\*$")))
+	   ("Projects" ;; NOTE: project related buffers
+	    (filename . ,(expand-file-name user-projects-directory)))
+	   ("Programming" ;; NOTE: programming related buffers
+	    (or (filename . ,(expand-file-name user-programming-directory))
+		(mode . c-mode)
+		(mode . c++-mode)
+		(mode . haskell-mode)
+		(mode . inferior-haskell-mode)
+		(mode . python-mode)
+		(mode . inferior-python-mode)
+		(mode . nrepl-mode)
+		(name . "^\\*nrepl-error\\*$")
+		(mode . lisp-mode)
+		(mode . common-lisp-mode)
+		(mode . emacs-lisp-mode)
+		(mode . inferior-lisp-mode)
+		(mode . inferior-emacs-lisp-mode)
+		(mode . nxml-mode)
+		(mode . ada-mode)
+		(mode . makefile-gmake-mode)
+		(mode . perl-mode)
+		(mode . fuzzy-completions-mode)
+		(mode . html-mode)
+		(mode . css-mode)
+		(mode . javascript-mode)
+		(mode . scheme-mode)
+		(mode . inferior-scheme-mode)
+		(mode . compilation-mode)
+		(mode . shell-script-mode)
+		(mode . sh-mode)
+		(mode . conf-unix-mode)
+		(mode . conf-space-mode)
+		(mode . gist-list-mode)
+		(mode . gist-menu-mode)
+		(mode . slime-mode)
+		(mode . inferior-slime-mode)
+		(mode . repl-mode)
+		(mode . sldb-mode)
+		(name . "^\\*slime-events\\*$")
+		(name . "^\\*slime-threads\\*$")
+		(name . "^\\*slime-connections\\*$")
+		(name . "^\\*slime-repl sbcl\\*$")
+		(name . "^\\*slime-compilation\\*$")
+		(name . "^\\*slime-description\\*$")
+		(name . "^\\*inferior-lisp\\*$")
+		(name . "^\\*Compile-Log\\*$")))
+	   ("Version Control" ;; NOTE: version control related buffers
+	    (or (mode . diff-mode)
+		(mode . magit-status-mode)
+		(mode . magit-key-mode)
+		(mode . magit-log-edit-mode)
+		(mode . vc-mode)
+		(mode . vc-dir-mode)
+		(mode . vc-log-entry-mode)
+		(name . "^\\*magit-process\\*$")
+		(name . "^\\*magit-log-edit\\*$")))
+	   ("Organisation" ;; NOTE: org-mode related buffers
+	    (or (mode . org-mode)
+		(mode . org-agenda-mode)
+		(mode . calendar-mode)
+		(mode . diary-mode)
+		(filename . ,(expand-file-name user-organisation-directory))))
+	   ("IRC" ;; NOTE: irc related buffers
+	    (or (mode . erc-mode)
+		(mode . rcirc-mode)))
+	   ("Web Browser" ;; NOTE: w3m related buffers
+	    (mode . w3m-mode))
+	   ("File Manager" ;; NOTE: dired related buffers
+	    (or (mode . dired-mode)
+		(mode . tar-mode)
+		(name . "^\\*Dired log\\*$")))
+	   ("Shell" ;; NOTE: shell related buffers
+	    (or (mode . eshell-mode)
+		(mode . shell-mode)
+		(mode . term-mode)
+		(mode . locate-mode)
+		(mode . tex-shell-mode)
+		(name . "^\\*Shell Command Output\\*$")))
+	   ("Games" ;; NOTE: buffers related to games
+	    (or (mode . sudoku-mode)
+		(mode . solitaire-mode)
+		(mode . snake-mode)
+		(mode . doctor-mode)))
+	   ("Mathematics and Science" ;; NOTE: buffers related to mathematics and science
+	    (or (mode . calculator-mode)
+		(mode . calc-mode)
+		(mode . calc-trail-mode)
+		(mode . maxima-mode)
+		(mode . inferior-maxima-mode)
+		(name . "^\\*ESS\\*$")))
+	   ("Mail and News" ;; NOTE: mail (and news) related buffers
+	    (or ;;(newsticker-treeview-mode)
+	     ;;(newsticker-plainview-mode)
+	     (mode . gnus-group-mode)
+	     (mode . gnus-topic-mode)
+	     (mode . gnus-browse-mode)
+	     (mode . gnus-summary-mode)
+	     (mode . gnus-server-mode)
+	     (mode . gnus-article-mode)
+	     (mode . gnus-edit-form-mode)
+	     (mode . message-mode)
+	     (mode . bbdb-mode)
+	     (name . "^\\*gnus trace\\*$")
+	     (filename . ".newsrc-dribble$")))
+	   ("Information" ;; NOTE: help and information related buffers
+	    (or (mode . info-mode)
+		(mode . Info-mode)
+		(mode . apropos-mode)
+		(mode . Help-Mode)
+		(mode . help-mode)
+		(mode . Man-mode)
+		(mode . woman-mode)
+		(name . "^\\*WoMan-Log\\*$")
+		(name . "^\\*Org Processes\\*$")))
+	   ("Process Manager" ;; NOTE: process management related buffers
+	    (or (mode . proced-mode)
+		(mode . process-menu-mode)))
+	   ("Package Management" ;; NOTE: package management related buffers
+	    (or (mode . apt-mode)
+		(mode . package-menu-mode)
+		(name . "^\\*Package Info\\*$")))
+	   ("Miscellaneous" ;; NOTE: miscellaneous special buffers
+	    (or (mode . occur-mode)
+		(mode . grep-mode)
+		(mode . customize-mode)
+		(mode . Custom-mode)
+		(mode . completion-list-mode)
+		(mode . finder-mode)
+		(mode . color-theme-mode)
+		(mode . browse-kill-ring-mode)
+		(name . "\\*scratch\\*$")
+		(name . "\\*Messages\\*$")
+		(name . "\\*Backtrace\\*$")
+		(name . "\\*Keys\\*$")
+		(name . "\\*Disabled Command\\*$")
+		(name . "\\*Apropos\\*$")
+		(name . "\\*tramp/ssh ssh\\*$")
+		(name . "\\*Help\\*$")
+		(name . "\\*Org PDF LaTeX Output\\*$"))))))
 
-     (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
-	   ;; ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
-	   ibuffer-default-sorting-mode 'filename/process ;; NOTE: sort buffers by `buffer-file-name'
-	   ibuffer-sorting-mode 'recency
-	   ibuffer-expert t ;; NOTE: do not ask for confirmation
-	   ;;ibuffer-shrink-to-minimum-size t
-	   ;;ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
-	   ;;ibuffer-use-other-window t
-	   ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
-	   ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
-	   ibuffer-case-fold-search t ;; NOTE: ignore case when searching
-	   ibuffer-old-time 72 ;; NOTE: number of hours before a buffer is considered "old"
-	   ibuffer-truncate-lines t ;; NOTE: do not display continuation lines
-	   ibuffer-use-header-line t) ;; NOTE: display a line containing current filters
+  (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
+	;; ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
+	ibuffer-default-sorting-mode 'filename/process ;; NOTE: sort buffers by `buffer-file-name'
+	ibuffer-sorting-mode 'recency
+	ibuffer-expert t ;; NOTE: do not ask for confirmation
+	;;ibuffer-shrink-to-minimum-size t
+	;;ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
+	;;ibuffer-use-other-window t
+	ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
+	ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
+	ibuffer-case-fold-search t ;; NOTE: ignore case when searching
+	ibuffer-old-time 72 ;; NOTE: number of hours before a buffer is considered "old"
+	ibuffer-truncate-lines t ;; NOTE: do not display continuation lines
+	ibuffer-use-header-line t) ;; NOTE: display a line containing current filters
 
-     (add-hook 'ibuffer-mode-hook (lambda ()
-				    (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
-				    (ibuffer-switch-to-saved-filter-groups "default")))))
+  (add-hook 'ibuffer-mode-hook (lambda ()
+				 (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
+				 (ibuffer-switch-to-saved-filter-groups "default"))))
 
 ;;; IMPORTANT: find file at point
 ;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
@@ -362,17 +365,8 @@
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
 (autoload 'tramp "tramp" "Remote file manipulation with Tramp." t)
 
-(setq tramp-default-method "ssh") ;; NOTE: use ssh for tramp
-
-;; SOURCE: `http://wenshanren.org/?p=298'
-(defun edit-current-file-as-root ()
-  "Edit the file that is associated with the current buffer as root"
-  (interactive)
-  (if (buffer-file-name)
-      (progn
-        (setq file (concat "/sudo:root@localhost:" (buffer-file-name)))
-        (find-file file))
-    (message "Current buffer does not have an associated file.")))
+(after "tramp"
+  (setq tramp-default-method "ssh")) ;; NOTE: use ssh for tramp
 
 ;;; IMPORTANT: enable commands
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisabledCommands'
@@ -589,7 +583,6 @@
 
 ;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
 (setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
-      ;; ---
       dired-dwim-target t ;; NOTE: try suggesting dired targets
       dired-omit-files (concat dired-omit-files "\\|^\\..+$") ;; NOTE: hide un-interesting files in dired
       dired-omit-extensions (append dired-latex-unclean-extensions
@@ -597,11 +590,6 @@
                                     dired-patch-unclean-extensions
 				    dired-bibtex-unclean-extensions
 				    dired-texinfo-unclean-extensions))
-
-(defun turn-on-dired-find-alternate-file (&rest junk)
-  "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
-  (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
-  (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
 
 ;; NOTE: dired application management
 (setq dired-guess-shell-alist-user
@@ -611,6 +599,11 @@
        (list "\\.doc$" "openoffice.org")
        (list "\\.docx$" "openoffice.org")
        (list "\\.DOC$" "openoffice.org")))
+
+(defun turn-on-dired-find-alternate-file (&rest junk)
+  "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
+  (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
+  (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
 
 ;;; IMPORTANT: general functions
 (defun eval-and-replace ()
@@ -632,6 +625,16 @@
   "Switch to the previous window"
   (interactive)
   (select-window (previous-window)))
+
+;; SOURCE: `http://wenshanren.org/?p=298'
+(defun edit-current-file-as-root ()
+  "Edit the file that is associated with the current buffer as root"
+  (interactive)
+  (if (buffer-file-name)
+      (progn
+        (setq file (concat "/sudo:root@localhost:" (buffer-file-name)))
+        (find-file file))
+    (message "Current buffer does not have an associated file.")))
 
 (provide 'general-config)
 ;;; general-config.el ends here
