@@ -93,12 +93,6 @@
   (declare (indent defun))
   `(eval-after-load ,mode '(progn ,@body)))
 
-;; TODO: use this everywhere:
-;; (after 'python-mode
-;;        (message "python has been loaded")
-;;        (local-set-key (kbd "M-n") 'flymake-goto-next-error)
-;;        (local-set-key (kbd "M-p") 'flymake-goto-prev-error))
-
 ;;; IMPORTANT: use configuration files
 (defun use-config-file (name)
   "Print a loading message and call `require' on configuration file referred to by \"NAME-config\"."

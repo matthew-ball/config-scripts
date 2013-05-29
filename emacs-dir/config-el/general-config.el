@@ -157,6 +157,7 @@
 
 ;;; IMPORTANT: recent files
 ;; SOURCE: `http://emacswiki.org/emacs/RecentFiles'
+;; (autoload 'recentf-mode "recentf" "..." t)
 (require 'recentf) ;; TODO: change to an autoload
 
 (after "recentf"
