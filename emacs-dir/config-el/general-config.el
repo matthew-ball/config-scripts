@@ -415,6 +415,34 @@
 ;;(autoload 'desktop-save-mode "desktop" "Save session file." t)
 (require 'desktop)
 
+(after "desktop"
+  ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
+  ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
+  (setq desktop-path (list (expand-file-name user-emacs-directory))
+	desktop-dirname (expand-file-name user-emacs-directory)
+	desktop-base-file-name "emacs-desktop"
+	desktop-restore-eager 10
+	desktop-buffers-not-to-save "\\(\\.newsrc-dribble\\|\\.bbdb\\)$"
+	history-length 300)
+
+  (setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
+	(append '((extended-command-history . 30)
+		  (file-name-history        . 100)
+		  (grep-history             . 30)
+		  (compile-history          . 30)
+		  (minibuffer-history       . 50)
+		  (query-replace-history    . 60)
+		  (read-expression-history  . 60)
+		  (regexp-history           . 60)
+		  (regexp-search-ring       . 20)
+		  (search-ring              . 20)
+		  (shell-command-history    . 50)
+		  tags-file-name
+		  register-alist)))
+
+  (add-to-list 'desktop-globals-to-save 'file-name-history)
+  (add-to-list 'desktop-modes-not-to-save 'fundamental-mode))
+
 (defun restore-desktop-session (&rest junk)
   "Query the user to start the previous saved session or not."
   (interactive)
@@ -428,36 +456,6 @@
   (interactive)
   ;;(desktop-save)
   (desktop-save-in-desktop-dir))
-
-;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
-;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
-
-(setq desktop-path (list (expand-file-name user-emacs-directory))
-      desktop-dirname (expand-file-name user-emacs-directory)
-      desktop-base-file-name "emacs-desktop"
-      desktop-restore-eager 10
-      history-length 300)
-
-(eval-after-load "desktop" '(add-to-list 'desktop-globals-to-save 'file-name-history))
-
-(setq desktop-buffers-not-to-save "\\(\\.newsrc-dribble\\|\\.bbdb\\)$")
-
-(add-to-list 'desktop-modes-not-to-save 'fundamental-mode)
-
-(setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
-      (append '((extended-command-history . 30)
-                (file-name-history        . 100)
-                (grep-history             . 30)
-                (compile-history          . 30)
-                (minibuffer-history       . 50)
-                (query-replace-history    . 60)
-                (read-expression-history  . 60)
-                (regexp-history           . 60)
-                (regexp-search-ring       . 20)
-                (search-ring              . 20)
-                (shell-command-history    . 50)
-                tags-file-name
-                register-alist)))
 
 (defun emacs-process-p (pid) ;; NOTE: over-ride stale lock
   "If PID is the process ID of an emacs process, return t, else nil. Also returns nil if PID is nil."
