@@ -860,7 +860,7 @@ Although this is interactive, call this with \\[browse-url]."
           ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
           ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
           ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
-          ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8)))))
+          ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
 (defun w3m-youtube-video ()
   "..."

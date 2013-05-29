@@ -31,15 +31,19 @@
 ;;(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
 ;;(autoload 'powerline-default-theme "powerline" "" t) ;; BUG: `powerline' doesn't respect ERC colours
 
-(eval-after-load "color-theme"
-  (progn
-    (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
-    (setq color-theme-is-global t ;; ...
-          frame-title-format "%b" ;; NOTE: set frame title properties
-          icon-title-format "%b")))
+(defun load-frame ()
+  ""
+  (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
+  (setq color-theme-is-global t ;; ...
+	frame-title-format "%b" ;; NOTE: set frame title properties
+	icon-title-format "%b"))
+
+(after "color-theme"
+  (load-frame))
 
 ;; IMPORTANT: X server specific (apply `powerline' mode-line extension)
 (when (display-graphic-p)
+  (load-frame)
   ;; (color-theme-initialize)
   ;; (powerline-default-theme)
   )
@@ -157,7 +161,8 @@
 ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
 ;; (add-hook 'shell-script-mode    'hs-minor-mode)
 ;; (add-hook 'haskell-mode-hook    'hs-minor-mode)
-(eval-after-load "hideshow" '(add-hook 'latex-mode-hook 'hs-minor-mode))
+(after "hideshow"
+  (add-hook 'latex-mode-hook 'hs-minor-mode))
 
 (defun display-code-line-counts (ov)
   (when (eq 'code (overlay-get ov 'hs))

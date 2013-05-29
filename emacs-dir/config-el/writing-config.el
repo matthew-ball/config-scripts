@@ -40,9 +40,10 @@
 ;; SOURCE: `http://jblevins.org/projects/deft/'
 (autoload 'deft "deft" "Note taking with deft." t)
 
-(setq deft-extension "org"
-      deft-text-mode 'org-mode
-      deft-directory (format "%s.deft/" user-organisation-directory))
+(after "deft"
+  (setq deft-extension "org"
+	deft-text-mode 'org-mode
+	deft-directory (format "%s.deft/" user-organisation-directory)))
 
 ;;; IMPORTANT: diary and calendar mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
@@ -61,11 +62,12 @@
 ;;; IMPORTANT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
 (autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
-;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
 (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
+;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
 ;;(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
 
-(eval-after-load "flyspell" '(add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
+(after "flyspell"
+  (add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
 ;;; IMPORTANT: ispell
 (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling

@@ -115,7 +115,8 @@
 
 ;;; IMPORTANT: ido mode
 ;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
-(require 'ido)
+(autoload 'ido-switch-buffer "ido" "Interactively do thing." t)
+;;(require 'ido)
 
 (after "ido"
   (ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)

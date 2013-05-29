@@ -49,9 +49,8 @@
 ;; (autoload 'which-func-mode "which-func" "Display the current function name in the mode-line." t)
 
 ;; (eval-after-load "which-func"
-;;   '(progn
-;;   '(add-to-list 'which-func-modes 'emacs-lisp-mode)
-;;   '(add-to-list 'which-func-modes 'lisp-mode)))
+;;   (add-to-list 'which-func-modes 'emacs-lisp-mode)
+;;   (add-to-list 'which-func-modes 'lisp-mode))
 
 ;;; IMPORTANT: paredit
 ;; SOURCE: `http://emacswiki.org/emacs/ParEdit'
@@ -63,9 +62,9 @@
 ;;(require 'eldoc)
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
-(eval-after-load "eldoc"
-  '(eldoc-add-command 'paredit-backward-delete 'paredit-close-round) ;; NOTE: make `eldoc' recognise `paredit' functions
-  )
+(after "eldoc"
+  ;; NOTE: make `eldoc' recognise `paredit' functions
+  (eldoc-add-command 'paredit-backward-delete 'paredit-close-round))
 
 (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
 				   (turn-on-general-programming-mode)
