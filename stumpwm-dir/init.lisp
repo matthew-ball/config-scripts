@@ -117,8 +117,8 @@
 
 (defvar *swank-p* nil)
 
-(defcommand run-swank () () ;; NOTE: command to start a swank server
-  "Starts a swank server on port 4005 and notifies the user."
+(defcommand run-swank () ()
+  "User command to start a swank server on port 4005."
   (setf *top-level-error-action* :break)
   (unless *swank-p*    
     (progn
