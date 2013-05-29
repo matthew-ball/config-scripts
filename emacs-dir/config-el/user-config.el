@@ -77,187 +77,140 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcSSL'
 (autoload 'erc-tls "erc" "" t) ;; NOTE: this is to use SSL
 
-(eval-after-load "erc"
-  '(progn
-     (require 'tls)
-     (require 'erc-hl-nicks)
-     (require 'erc-stamp)
-     (require 'erc-join)
-     (require 'erc-spelling)
-     (require 'erc-netsplit)
-     (require 'erc-ring)
-     (require 'erc-goodies)
-     ;; (require 'erc-track)
-     ;; (require 'erc-button)
-     ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
-     (require 'erc-match)
-     (require 'erc-fill)
-     (require 'erc-log)
-     (require 'erc-pcomplete)
-     (require 'erc-notify)
-     ;; (require 'erc-goodies)
-     ))
+(after "erc"
+  (require 'tls)
+  (require 'erc-hl-nicks)
+  (require 'erc-stamp)
+  (require 'erc-join)
+  (require 'erc-spelling)
+  (require 'erc-netsplit)
+  (require 'erc-ring)
+  (require 'erc-goodies)
+  ;; (require 'erc-track)
+  ;; (require 'erc-button)
+  ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
+  ;; (require 'erc-goodies)
+  (require 'erc-match)
+  (require 'erc-fill)
+  (require 'erc-log)
+  (require 'erc-pcomplete)
+  (require 'erc-notify)
+  
+  (defvar erc-insert-post-hook)
 
-(defvar erc-insert-post-hook)
+  ;; IMPORTANT: erc modules
+  (erc-button-enable)
+  (erc-ring-enable)
+  (erc-netsplit-enable)
+  (erc-fill-disable)
+  (erc-autojoin-enable)
+  (erc-spelling-enable)
+  (erc-scrolltobottom-enable) ;; NOTE: enable scroll-to-bottom mode
+  (erc-hl-nicks-enable)
+  (erc-timestamp-mode t) ;; NOTE: enable ERC timestamp mode
 
-;;; IMPORTANT: erc modules
-;; SOURCE: 
-(eval-after-load "erc-button" '(erc-button-enable))
-(eval-after-load "erc-ring" '(erc-ring-enable))
-(eval-after-load "erc-netsplit" '(erc-netsplit-enable))
-(eval-after-load "erc-fill" '(erc-fill-disable)) ;; NOTE: disable ERC fil
-(eval-after-load "erc-join" '(erc-autojoin-enable)) ;; NOTE: enable auto-joining mode
-(eval-after-load "erc-spelling" '(erc-spelling-enable)) ;; NOTE: enable flyspell in ERC
-(eval-after-load "erc-goodies" '(erc-scrolltobottom-enable)) ;; NOTE: enable scroll-to-bottom mode
-(eval-after-load "erc-hl-nicks" '(erc-hl-nicks-enable))
-(eval-after-load "erc-stamp" '(erc-timestamp-mode t)) ;; NOTE: enable ERC timestamp mode
+  ;;(eval-after-load "erc-capab" '(erc-capab-identify-mode t))
 
-;;(eval-after-load "erc-capab" '(erc-capab-identify-mode t))
+  ;; IMPORTANT: erc match
+  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
+  (setq erc-keywords '() ;; NOTE: highlight specific keywords
+        erc-current-nick-highlight-type 'nick ;; NOTE: ...
+        erc-pal-highlight-type 'all ;; NOTE: nicknames in a message
+        erc-fool-highlight-type 'all ;; NOTE: highlight entire message
+        erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx" "syrinx_"
+                   "sabetts"
+                   "rww" "dax" "LjL" "ldunn" "moocow" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
+        erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
+        erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
+  (erc-match-mode t)
+  (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
-;; IMPORTANT: erc match
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
-;; ERROR: does this work???
-(eval-after-load "erc-match"
-  '(progn
-     (setq erc-keywords '() ;; NOTE: highlight specific keywords
-         erc-current-nick-highlight-type 'nick ;; NOTE: ...
-         erc-pal-highlight-type 'all ;; NOTE: nicknames in a message
-         erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-         erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx" "syrinx_"
-                    "sabetts"
-                    "rww" "dax" "LjL" "ldunn" "moocow" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
-         erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
-         erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
-     (erc-match-mode t)
-     (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
-     ))
+  ;; IMPORTANT: erc notify
+  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
+  (setq erc-notify-list erc-pals)
+  (erc-notify-mode t)
 
-;; IMPORTANT: erc notify
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
-(eval-after-load "erc-notify"
-  '(progn
-     (setq erc-notify-list erc-pals)
-     (erc-notify-mode t)))
+  ;; IMPORTANT: erc logging
+  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
+  (setq erc-log-channels-directory "~/.emacs.d/erc/logs/" ;; FIX: hard-coded ...
+        erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
+        erc-save-queries-on-quit t
+        erc-log-write-after-send t
+        erc-log-write-after-insert t
+        ;;erc-log-insert-log-on-open t
+        erc-log-file-coding-system 'utf-8)
+  (erc-log-enable)
 
-;; IMPORTANT: erc logging
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
-(eval-after-load "erc-log"
-  '(progn 
-     (setq erc-log-channels-directory "~/.emacs.d/erc/logs/" ;; FIX: hard-coded ...
-           erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
-           erc-save-queries-on-quit t
-           erc-log-write-after-send t
-           erc-log-write-after-insert t
-           ;;erc-log-insert-log-on-open t
-           erc-log-file-coding-system 'utf-8)
-     (erc-log-enable)))
+  ;; IMPORTANT: erc completion
+  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcCompletion'
+  (add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))  ;; NOTE: nick completion
 
-;; IMPORTANT: erc completion
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcCompletion'
-(eval-after-load "erc-pcomplete"
-  '(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1))))  ;; NOTE: nick completion
+  ;; TODO: use variables in here ...
+  (setq erc-nick "chu"
+        erc-nick-uniquifier "_"
+        erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
+        ;; erc-user-full-name user-full-name
+        ;; erc-email-userid user-mail-address
+        ;; erc-fill-column 90
+        ;; erc-echo-notices-in-minibuffer-flag t ;; NOTE: notices in minibuffer
+        erc-format-nick-function 'erc-format-@nick
+        erc-port 7000 ;; NOTE: `erc-tls' port (for ssl)
+        erc-current-nick-highlight-type 'all ;; NOTE: highlight the entire message where current nickname occurs
+        erc-button-google-url "http://www.google.com/search?q=%s"
+        erc-fill-prefix nil ;; NOTE: ... prefix column on the left (same size as the `timestamp-format' variable above)
+        erc-fill-mode nil ;; NOTE: again, disable ERC fill (not sure why I have done it in multiple places)
+        erc-timestamp-format "[%H:%M] " ;; NOTE: put timestamps on the left
+        erc-timestamp-right-column 61
+        erc-timestamp-only-if-changed-flag nil ;; NOTE: always show timestamp
+        erc-insert-timestamp-function 'erc-insert-timestamp-left ;; NOTE: insert timestamp in the left column
+        erc-track-showcount t ;; NOTE: show count of unseen messages
+        erc-kill-buffer-on-part t ;; NOTE: kill buffers for channels after /part
+        erc-kill-queries-on-quit t ;; NOTE: kill buffers for queries after quitting the server
+        erc-kill-server-buffer-on-quit t ;; NOTE: kill buffers for server messages after quitting the server
+        erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE") ;; NOTE: do not track these messages
+        ;; erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
+        ;; erc-lurker-hide-list '("JOIN" "PART" "QUIT")
+        erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
+        erc-header-line-format nil ;; NOTE: turn off the topic (header) bar
+        header-line-format nil ;; NOTE: turn off the topic (header) bar
+        erc-input-line-position -1 ;; NOTE: keep input at the last line
+        erc-max-buffer-size 20000 ;; NOTE: truncate buffers (so they don't hog core)
+        erc-truncate-buffer-on-save t
+        erc-prompt ;; NOTE: channel specific prompt ...
+        (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
+                       (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
+                     (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
+        erc-autojoin-channels-alist '((".*\\.freenode.net"
+                                       "#emacs"
+                                       ;; "#gnus"
+                                       ;; "#org-mode"
+                                       "#stumpwm"
+                                       "#lisp"
+                                       ;; "#clojure"
+                                       ;; "#ubuntu"
+                                       ;; "#ubuntu-discuss"
+                                       ;; "#ubuntuforums"
+                                       "#ubuntu-offtopic"
+                                       "#ubuntu-ops"
+                                       "#ubuntu-ops-team"
+                                       ;; "##club-ubuntu"
+                                       ;; "#anucssa"
+                                       ;; "#defocus"
+                                       ))
+        erc-join-buffer 'bury)
 
-;; (eval-after-load "erc-track"
-;;   '(progn
-;;      (defun erc-bar-move-back (n)
-;;        "Moves back n message lines. Ignores wrapping, and server messages."
-;;        (interactive "nHow many lines ? ")
-;;        (re-search-backward "^.*<.*>" nil t n))
+  ;;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
+  (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
 
-;;      (defun erc-bar-update-overlay ()
-;;        "Update the overlay for current buffer, based on the content of `erc-modified-channels-alist'. Should be executed on window change."
-;;        (interactive)
-;;        (let* ((info (assq (current-buffer) erc-modified-channels-alist))
-;;               (count (cadr info)))
-;;          (if (and info (> count erc-bar-threshold))
-;;              (save-excursion
-;;                (end-of-buffer)
-;;                (when (erc-bar-move-back count)
-;;                  (let ((inhibit-field-text-motion t))
-;;                    (move-overlay erc-bar-overlay
-;;                                  (line-beginning-position)
-;;                                  (line-end-position)
-;;                                  (current-buffer)))))
-;;            (delete-overlay erc-bar-overlay))))
+  (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
 
-;;      (defvar erc-bar-threshold 1 "Display bar when there are more than erc-bar-threshold unread messages.")
-;;      (defvar erc-bar-overlay nil "Overlay used to set bar")
+  (setq erc-remove-parsed-property nil))
 
-;;      (setq erc-bar-overlay (make-overlay 0 0))
-;;      (overlay-put erc-bar-overlay 'face '(:underline "black"))
-
-;;      ;; NOTE: put the hook before erc-modified-channels-update
-;;      (defadvice erc-track-mode (after erc-bar-setup-hook
-;;                                       (&rest args) activate)
-;;        ;; NOTE: remove and add, so we know it's in the first place
-;;        (remove-hook 'window-configuration-change-hook 'erc-bar-update-overlay)
-;;        (add-hook 'window-configuration-change-hook 'erc-bar-update-overlay))
-
-;;      (add-hook 'erc-send-completed-hook (lambda (str) (erc-bar-update-overlay)))))
-
-(eval-after-load "erc"
-  '(setq erc-lurker-hide-list '("JOIN" "PART" "QUIT"))) ;; NOTE: hide specified message types sent by lurkers
-
-;; TODO: use variables in here ...
-(setq ;; erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
-      ;; erc-user-full-name user-full-name
-      ;; erc-email-userid user-mail-address
-      ;; erc-fill-column 90
-      ;; erc-echo-notices-in-minibuffer-flag t ;; NOTE: notices in minibuffer
-      erc-format-nick-function 'erc-format-@nick
-      erc-port 7000 ;; NOTE: `erc-tls' port (for ssl)
-      erc-nick "chu"
-      erc-nick-uniquifier "_"
-      erc-current-nick-highlight-type 'all ;; NOTE: highlight the entire message where current nickname occurs
-      erc-button-google-url "http://www.google.com/search?q=%s"
-      erc-fill-prefix nil ;; NOTE: ... prefix column on the left (same size as the `timestamp-format' variable above)
-      erc-fill-mode nil ;; NOTE: again, disable ERC fill (not sure why I have done it in multiple places)
-      erc-timestamp-format "[%H:%M] " ;; NOTE: put timestamps on the left
-      erc-timestamp-right-column 61
-      erc-timestamp-only-if-changed-flag nil ;; NOTE: always show timestamp
-      erc-insert-timestamp-function 'erc-insert-timestamp-left ;; NOTE: insert timestamp in the left column
-      erc-track-showcount t ;; NOTE: show count of unseen messages
-      erc-kill-buffer-on-part t ;; NOTE: kill buffers for channels after /part
-      erc-kill-queries-on-quit t ;; NOTE: kill buffers for queries after quitting the server
-      erc-kill-server-buffer-on-quit t ;; NOTE: kill buffers for server messages after quitting the server
-      erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
-      erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE") ;; NOTE: do not track these messages
-      ;; erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
-      erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
-      erc-header-line-format nil ;; NOTE: turn off the topic (header) bar
-      header-line-format nil ;; NOTE: turn off the topic (header) bar
-      erc-input-line-position -1 ;; NOTE: keep input at the last line
-      erc-max-buffer-size 20000 ;; NOTE: truncate buffers (so they don't hog core)
-      erc-truncate-buffer-on-save t
-      erc-prompt ;; NOTE: channel specific prompt ...
-      (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
-		(erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
-	      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
-      erc-autojoin-channels-alist '((".*\\.freenode.net"
-				     "#emacs"
-                                     ;; "#gnus"
-				     ;; "#org-mode"
-				     "#stumpwm"
-				     "#lisp"
-                                     ;; "#clojure"
-				     ;; "#ubuntu"
-				     ;; "#ubuntu-discuss"
-				     ;; "#ubuntuforums"
-				     "#ubuntu-offtopic"
-				     "#ubuntu-ops"
-				     "#ubuntu-ops-team"
-				     ;; "##club-ubuntu"
-				     ;; "#anucssa"
-				     ;; "#defocus"
-				     ))
-      erc-join-buffer 'bury)
-
-;;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
-(eval-after-load "erc" '(setq erc-modules (delq 'fill erc-modules))) ;; NOTE: disable `erc-fill-mode'
-
-(add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
-
-(setq erc-remove-parsed-property nil)
+(after "erc-goodies"
+  (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
+  (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
+  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN))
 
 ;;; IMPORTANT: erc commands
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcUname'
@@ -437,11 +390,6 @@
   "Open the `woman' page for PROGRAM."
   (woman program))
 
-(eval-after-load "erc-goodies" '(progn
-                                  (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
-                                  (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
-                                  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN)))
-
 ;; IMPORTANT: when connecting ask me for a password
 (defun erc-tls-connect-server (server &rest junk)
   "Ask for a password before connecting to SERVER."
@@ -530,9 +478,9 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
                         (buffer-list)))))))
 
 ;; NOTE: `erc' key-bindings
-(eval-after-load "erc" '(progn
-                          (define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel)
-                          (global-set-key (kbd "C-c e") 'custom-erc-switch-buffer)))
+;; (eval-after-load "erc" '(progn
+;;                           (define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel)
+;;                           (global-set-key (kbd "C-c e") 'custom-erc-switch-buffer)))
 
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
@@ -543,7 +491,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; (require 'smtpmail)
 ;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
-(autoload 'smtpmail-send-it "smtpmail" "Send mail with `smtpmail'." t)
 
 ;; TODO:
 ;; if: there is no file at ~/.authinfo
@@ -554,257 +501,260 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; 1. use that information (i.e. start gnus)
 ;; 2. re-write the file to disk (i.e. something has changed)
 
+(after "gnus"
+  (require 'smtpmail)
+
 ;;; IMPORTANT: encryption
-;; SOURCE: `http://emacswiki.org/emacs/EasyPG'
-;; TODO: configuration encryption
+  ;; SOURCE: `http://emacswiki.org/emacs/EasyPG'
+  ;; TODO: configuration encryption
 
 ;;; IMPORTANT: personal settings
-(setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
-      ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
-      ;; user-full-name "Matthew Ball" ;; NOTE: user full-name
-      mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file'
-      auth-source-save-behavior nil
-      gnus-inhibit-startup-message t
-      gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
-      gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
-      ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; NOTE: change directory where mail aliases are located
-      ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; NOTE: change directory where authentication information is found
-      message-from-style 'angles ;; NOTE: specifies how the "From" header appears
-      read-mail-command 'gnus
-      message-send-mail-function 'smtpmail-send-it ;; NOTE: for gnus (message-mode)
-      send-mail-function 'smtpmail-send-it) ;; NOTE: not for gnus (mail-mode)
+  (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
+        ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
+        ;; user-full-name "Matthew Ball" ;; NOTE: user full-name
+        mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file'
+        auth-source-save-behavior nil
+        gnus-inhibit-startup-message t
+        gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
+        gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
+        ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; NOTE: change directory where mail aliases are located
+        ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; NOTE: change directory where authentication information is found
+        message-from-style 'angles ;; NOTE: specifies how the "From" header appears
+        read-mail-command 'gnus
+        message-send-mail-function 'smtpmail-send-it ;; NOTE: for gnus (message-mode)
+        send-mail-function 'smtpmail-send-it) ;; NOTE: not for gnus (mail-mode)
 
-;; TODO: can these be set in `general-config.el' (???)
-(setq custom-mail-dir (expand-file-name user-mail-directory)) ;; NOTE: set directory for mail
-(setq custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
+  ;; TODO: can these be set in `general-config.el' (???)
+  (setq custom-mail-dir (expand-file-name user-mail-directory)) ;; NOTE: set directory for mail
+  (setq custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
-;; (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
-;; (setq custom-news-dir "~/News/") ;; NOTE: set directory for news
+  ;; (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
+  ;; (setq custom-news-dir "~/News/") ;; NOTE: set directory for news
 
 ;;; IMPORTANT: gnus settings
-(setq gnus-select-method '(nnml "")
-      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
-      gnus-invalid-group-regexp "[:`'\"]\\|^$"
-      gnus-permanently-visible-groups "mail"
-      gnus-thread-hide-subtree t
-      gnus-fetch-old-headers t
-      gnus-thread-ignore-subject t
-      gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
-      gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
-      gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: change email addresses
-			    ("gmail" (address "mathew.ball@gmail.com"))
-			    ("anumail" (address "u4537508@anu.edu.au"))))
+  (setq gnus-select-method '(nnml "")
+        gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
+        gnus-invalid-group-regexp "[:`'\"]\\|^$"
+        gnus-permanently-visible-groups "mail"
+        gnus-thread-hide-subtree t
+        gnus-fetch-old-headers t
+        gnus-thread-ignore-subject t
+        gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
+        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
+        gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: change email addresses
+                              ("gmail" (address "mathew.ball@gmail.com"))
+                              ("anumail" (address "u4537508@anu.edu.au"))))
 
-(setq gnus-check-new-newsgroups nil ;; NOTE: suppress checking for new groups
-      gnus-save-newsrc-file nil ;; NOTE: turn off writing the `.newsrc' file
-      gnus-read-newsrc-file nil ;; NOTE: ignore the `.newsrc' file
-      gnus-interactive-exit nil
-      gnus-save-killed-list nil ;; NOTE: do not save a list of killed groups to startup file
-      )
+  (setq gnus-check-new-newsgroups nil ;; NOTE: suppress checking for new groups
+        gnus-save-newsrc-file nil ;; NOTE: turn off writing the `.newsrc' file
+        gnus-read-newsrc-file nil ;; NOTE: ignore the `.newsrc' file
+        gnus-interactive-exit nil
+        gnus-save-killed-list nil ;; NOTE: do not save a list of killed groups to startup file
+        )
 
-(setq message-kill-buffer-on-exit t) ;; NOTE: kill the mail buffer after sending message
+  (setq message-kill-buffer-on-exit t) ;; NOTE: kill the mail buffer after sending message
 
 ;;; IMPORTANT: visible headers
-(setq gnus-visible-headers
-      (concat "^From:\\|^Subject:\\|^Newsgroups:"
-	      "\\|^Organization:"
-	      "\\|^To:\\|^Cc:\\|^Date:"))
+  (setq gnus-visible-headers
+        (concat "^From:\\|^Subject:\\|^Newsgroups:"
+                "\\|^Organization:"
+                "\\|^To:\\|^Cc:\\|^Date:"))
 
 ;;; IMPORTANT: imap setup
-(setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
-      imap-log t ;; NOTE: log the imap session
-      imap-store-password t ;; NOTE: store the session password
-      gnus-secondary-select-methods
-      '((nnimap "gmail" ;; NOTE: gmail login
-		(nnimap-address "imap.gmail.com") ;; NOTE: being the "gmail" account, this hard-coding is ok?
-		(nnimap-server-port 993)
-		;; (nnimap-authinfo-file "~/.authinfo")
-		(nnimap-authenticator login)
-		(nnimap-expunge-on-close 'never)
-		(nnimap-stream ssl))
-	;; (nnimap "anumail" ;; NOTE: anumail login (ERROR: this does not work)
-	;; 	(nnimap-address "anumail.anu.edu.au")
-	;; 	(nnimap-server-port 993)
-	;; 	;; (nnimap-authinfo-file "~/.authinfo")
-	;; 	;; (nnimap-authenticator login)
-	;; 	;; (nnimap-expunge-on-close 'never)
-	;; 	(nnimap-stream ssl))
-	))
+  (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
+        imap-log t ;; NOTE: log the imap session
+        imap-store-password t ;; NOTE: store the session password
+        gnus-secondary-select-methods
+        '((nnimap "gmail" ;; NOTE: gmail login
+                  (nnimap-address "imap.gmail.com") ;; NOTE: being the "gmail" account, this hard-coding is ok?
+                  (nnimap-server-port 993)
+                  ;; (nnimap-authinfo-file "~/.authinfo")
+                  (nnimap-authenticator login)
+                  (nnimap-expunge-on-close 'never)
+                  (nnimap-stream ssl))
+          ;; (nnimap "anumail" ;; NOTE: anumail login (ERROR: this does not work)
+          ;; 	(nnimap-address "anumail.anu.edu.au")
+          ;; 	(nnimap-server-port 993)
+          ;; 	;; (nnimap-authinfo-file "~/.authinfo")
+          ;; 	;; (nnimap-authenticator login)
+          ;; 	;; (nnimap-expunge-on-close 'never)
+          ;; 	(nnimap-stream ssl))
+          ))
 
 
 ;;; IMPORTANT: smtp setup(single account)
-(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))) ;; TODO: replace email address
+  (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587
+        smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))) ;; TODO: replace email address
 
 ;;; IMPORTANT: smtp setup (multiple accounts) (ERROR: this does not work)
 
-;; (defvar smtp-accounts ;; available smtp accounts
-;;   '((ssl "mathew.ball@gmail.com" "smtp.gmail.com" 587 "key" nil)
-;;     (ssl "u4537508@anu.edu.au.com" "smtphost.anu.edu.au" 465 "key" nil)))
+  ;; (defvar smtp-accounts ;; available smtp accounts
+  ;;   '((ssl "mathew.ball@gmail.com" "smtp.gmail.com" 587 "key" nil)
+  ;;     (ssl "u4537508@anu.edu.au.com" "smtphost.anu.edu.au" 465 "key" nil)))
 
-;; (setq starttls-use-gnutls t
-;;       starttls-gnutls-program "gnutls-cli"
-;;       starttls-extra-arguments '("--insecure"))
+  ;; (setq starttls-use-gnutls t
+  ;;       starttls-gnutls-program "gnutls-cli"
+  ;;       starttls-extra-arguments '("--insecure"))
 
-;; (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))
-;;       smtpmail-default-smtp-server "smtp.gmail.com"
-;;       smtpmail-smtp-server "smtp.gmail.com"
-;;       smtpmail-smtp-service 587
-;;       ;; smtpmail-local-domain "mail.bigpond.com"
-;;       smtpmail-debug-verb t
-;;       smtpmail-debug-info t) ;; to debug
+  ;; (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+  ;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))
+  ;;       smtpmail-default-smtp-server "smtp.gmail.com"
+  ;;       smtpmail-smtp-server "smtp.gmail.com"
+  ;;       smtpmail-smtp-service 587
+  ;;       ;; smtpmail-local-domain "mail.bigpond.com"
+  ;;       smtpmail-debug-verb t
+  ;;       smtpmail-debug-info t) ;; to debug
 
-;; (defun set-smtp-plain (server port)
-;;   "Set related SMTP variables for supplied parameters."
-;;   (setq smtpmail-smtp-server server
-;; 	smtpmail-smtp-service port
-;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
-;; 	smtpmail-starttls-credentials nil)
-;;   (message "Setting SMTP server to `%s:%s'."
-;; 	    server port address))
+  ;; (defun set-smtp-plain (server port)
+  ;;   "Set related SMTP variables for supplied parameters."
+  ;;   (setq smtpmail-smtp-server server
+  ;; 	smtpmail-smtp-service port
+  ;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
+  ;; 	smtpmail-starttls-credentials nil)
+  ;;   (message "Setting SMTP server to `%s:%s'."
+  ;; 	    server port address))
 
-;; (defun set-smtp-ssl (server port key cert)
-;;   "Set related SMTP and SSL variables for supplied parameters."
-;;   (setq starttls-use-gnutls t
-;; 	starttls-gnutls-program "gnutls-cli"
-;; 	starttls-extra-arguments nil
-;; 	smtpmail-smtp-server server
-;; 	smtpmail-smtp-service port
-;; 	smtpmail-starttls-credentials (list (list server port key cert))
-;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
-;; 	)
-;;   (message "Setting SMTP server to `%s:%s' (SSL enabled)."
-;; 	   server port address))
+  ;; (defun set-smtp-ssl (server port key cert)
+  ;;   "Set related SMTP and SSL variables for supplied parameters."
+  ;;   (setq starttls-use-gnutls t
+  ;; 	starttls-gnutls-program "gnutls-cli"
+  ;; 	starttls-extra-arguments nil
+  ;; 	smtpmail-smtp-server server
+  ;; 	smtpmail-smtp-service port
+  ;; 	smtpmail-starttls-credentials (list (list server port key cert))
+  ;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
+  ;; 	)
+  ;;   (message "Setting SMTP server to `%s:%s' (SSL enabled)."
+  ;; 	   server port address))
 
-;; (defun change-smtp ()
-;;   "Change the SMTP server according to the current from line."
-;;   (save-excursion
-;;     (loop with from = (save-restriction
-;; 			(message-narrow-to-headers)
-;; 			(message-fetch-field "from"))
-;; 	  for (acc-type address . auth-spec) in smtp-accounts
-;; 	  when (string-match address from)
-;; 	  do (cond
-;; 	      ((eql acc-type 'plain)
-;; 	       (return (apply 'set-smtp-plain auth-spec)))
-;; 	      ((eql acc-type 'ssl)
-;; 	       (return (apply 'set-smtp-ssl auth-spec)))
-;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
-;; 	  finally (error "Cannot interfere SMTP information."))))
+  ;; (defun change-smtp ()
+  ;;   "Change the SMTP server according to the current from line."
+  ;;   (save-excursion
+  ;;     (loop with from = (save-restriction
+  ;; 			(message-narrow-to-headers)
+  ;; 			(message-fetch-field "from"))
+  ;; 	  for (acc-type address . auth-spec) in smtp-accounts
+  ;; 	  when (string-match address from)
+  ;; 	  do (cond
+  ;; 	      ((eql acc-type 'plain)
+  ;; 	       (return (apply 'set-smtp-plain auth-spec)))
+  ;; 	      ((eql acc-type 'ssl)
+  ;; 	       (return (apply 'set-smtp-ssl auth-spec)))
+  ;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
+  ;; 	  finally (error "Cannot interfere SMTP information."))))
 
 ;;; IMPORTANT: email config
-;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
-;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; NOTE: add tab completion to name in the "To:" field
+  ;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
+  ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; NOTE: add tab completion to name in the "To:" field
 
-;; (remove-hook 'gnus-summary-prepare-exit-hook
-;; 	     'gnus-summary-expire-articles)
+  ;; (remove-hook 'gnus-summary-prepare-exit-hook
+  ;; 	     'gnus-summary-expire-articles)
 
 ;;; IMPORTANT: html display
-(setq mm-text-html-renderer 'w3m)
-(setq mm-inline-text-html-with-images t)
-(setq mm-inline-text-html-with-w3m-keymap nil)
+  (setq mm-text-html-renderer 'w3m)
+  (setq mm-inline-text-html-with-images t)
+  (setq mm-inline-text-html-with-w3m-keymap nil)
 
 ;;; IMPORTANT: mode-line
-;; (setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n") ;; NOTE: set mode-line
+  ;; (setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n") ;; NOTE: set mode-line
 
 ;;; IMPORTANT: rss config
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
+  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
 
-;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
-;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
+  ;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
+  ;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
 
-;; NOTE: display 'text/html' parts in nnrss groups
-;; (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
+  ;; NOTE: display 'text/html' parts in nnrss groups
+  ;; (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
 ;;; IMPORTANT: gnus parameters
-;; (setq gnus-parameters
-;;       '(("mail\\..*"
-;; 	 (gnus-show-threads nil)
-;; 	 (gnus-use-scoring nil)
-;; 	 (gnus-summary-line-format "%U%R%z%I%(%[%d:%ub%-23,23f%]%) %s\n")
-;; 	 (gcc-self . t)
-;; 	 (display . all))
+  ;; (setq gnus-parameters
+  ;;       '(("mail\\..*"
+  ;; 	 (gnus-show-threads nil)
+  ;; 	 (gnus-use-scoring nil)
+  ;; 	 (gnus-summary-line-format "%U%R%z%I%(%[%d:%ub%-23,23f%]%) %s\n")
+  ;; 	 (gcc-self . t)
+  ;; 	 (display . all))
 
-;; 	("^nnimap:\\(foo.bar\\)$"
-;; 	 (to-group . "\\1"))
+  ;; 	("^nnimap:\\(foo.bar\\)$"
+  ;; 	 (to-group . "\\1"))
 
-;; 	("mail\\.me"
-;; 	 (gnus-use-scoring t))
+  ;; 	("mail\\.me"
+  ;; 	 (gnus-use-scoring t))
 
-;; 	("list\\..*"
-;; 	 (total-expire . t)
-;; 	 (broken-reply-to . t))))
+  ;; 	("list\\..*"
+  ;; 	 (total-expire . t)
+  ;; 	 (broken-reply-to . t))))
 
-;; (add-hook 'gnus-summary-mode-hook
-;;           (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
-;; 		  (progn
-;; 		    (make-local-variable 'gnus-show-threads)
-;; 		    (make-local-variable 'gnus-article-sort-functions)
-;; 		    (make-local-variable 'gnus-use-adaptive-scoring)
-;; 		    (make-local-variable 'gnus-use-scoring)
-;; 		    (make-local-variable 'gnus-score-find-score-files-function)
-;; 		    (make-local-variable 'gnus-summary-line-format)
-;; 		    (setq gnus-show-threads nil
-;; 			  gnus-article-sort-functions 'gnus-article-sort-by-date
-;; 			  gnus-use-adaptive-scoring nil
-;; 			  gnus-use-scoring t
-;; 			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
+  ;; (add-hook 'gnus-summary-mode-hook
+  ;;           (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
+  ;; 		  (progn
+  ;; 		    (make-local-variable 'gnus-show-threads)
+  ;; 		    (make-local-variable 'gnus-article-sort-functions)
+  ;; 		    (make-local-variable 'gnus-use-adaptive-scoring)
+  ;; 		    (make-local-variable 'gnus-use-scoring)
+  ;; 		    (make-local-variable 'gnus-score-find-score-files-function)
+  ;; 		    (make-local-variable 'gnus-summary-line-format)
+  ;; 		    (setq gnus-show-threads nil
+  ;; 			  gnus-article-sort-functions 'gnus-article-sort-by-date
+  ;; 			  gnus-use-adaptive-scoring nil
+  ;; 			  gnus-use-scoring t
+  ;; 			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
 
-;; (defun browse-nnrss-url (arg)
-;;   "Browse RSS url."
-;;   (interactive "p")
-;;   (let ((url (assq nnrss-url-field (mail-header-extra (gnus-data-header (assq (gnus-summary-article-number) gnus-newsgroup-data))))))
-;;     (if url
-;; 	(browse-url (cdr url))
-;;       (gnus-summary-scroll-up arg))))
+  ;; (defun browse-nnrss-url (arg)
+  ;;   "Browse RSS url."
+  ;;   (interactive "p")
+  ;;   (let ((url (assq nnrss-url-field (mail-header-extra (gnus-data-header (assq (gnus-summary-article-number) gnus-newsgroup-data))))))
+  ;;     (if url
+  ;; 	(browse-url (cdr url))
+  ;;       (gnus-summary-scroll-up arg))))
 
-;; (add-hook 'gnus-summary-mode-hook (lambda () (define-key gnus-summary-mode-map (kbd "C-<return>") 'browse-nnrss-url)))
+  ;; (add-hook 'gnus-summary-mode-hook (lambda () (define-key gnus-summary-mode-map (kbd "C-<return>") 'browse-nnrss-url)))
 
-;; (add-to-list 'nnmail-extra-headers nnrss-url-field)
+  ;; (add-to-list 'nnmail-extra-headers nnrss-url-field)
+  )
 
 ;;; IMPORTANT: dired extensions
 ;; SOURCE: `http://emacswiki.org/emacs/dired+.el'
-(eval-after-load "dired"
-  '(require 'dired+))
+(after "dired"
+  (require 'dired+))
 
 ;;; IMPORTANT: directory details
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiredDetails'
-(eval-after-load "dired"
-  '(progn
-     (require 'dired-details+)
+(after "dired"
+  (require 'dired-details+)
 
-     (setq dired-details-hidden-string "")
-     (dired-details-install)))
+  (setq dired-details-hidden-string "")
+  (dired-details-install))
 
 ;;; IMPORTANT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
 (require 'smex)
 ;;(autoload 'smex "smex" "Super-charge ido-mode." t)
 
-(setq smex-save-file (concat user-emacs-directory "smex-items")
-      smex-key-advice-ignore-menu-bar t)
+(after "smex"
+  (setq smex-save-file (concat user-emacs-directory "smex-items")
+        smex-key-advice-ignore-menu-bar t)
 
-(eval-after-load "smex" '(smex-initialize)) ;; NOTE: super-charge `ido-mode'
+  (smex-initialize)) ;; NOTE: super-charge `ido-mode'
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
 (autoload 'auto-complete "auto-complete" "..." t)
 ;;(require 'auto-complete)
 
-(eval-after-load "auto-complete"
-  '(progn
-     (global-auto-complete-mode t)
-     ;; (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-     ;;       ac-ignore-case t ;; NOTE: always ignore case
-     ;;       ac-auto-show-menu t ;; NOTE: automatically show menu
-     ;;       )
-     (set-face-background 'ac-candidate-face "lightgray")
-     (set-face-underline 'ac-candidate-face "darkgray")
-     (set-face-background 'ac-selection-face "steelblue")))
+(after "auto-complete"
+  (global-auto-complete-mode t)
+  ;; (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
+  ;;       ac-ignore-case t ;; NOTE: always ignore case
+  ;;       ac-auto-show-menu t ;; NOTE: automatically show menu
+  ;;       )
+  (set-face-background 'ac-candidate-face "lightgray")
+  (set-face-underline 'ac-candidate-face "darkgray")
+  (set-face-background 'ac-selection-face "steelblue"))
 
 ;;; IMPORTANT: smart completion
 ;; TODO: this guy probably needs to be generalised a bit more (though, he works for now)
@@ -827,10 +777,6 @@ If mark is active, indents region. Else if point is at the end of a symbol, expa
       (if (looking-at "\\_>")
           (smart-completion)
 	(indent-for-tab-command)))))
-
-;;; IMPORTANT: stumpwm mode
-;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
-(autoload 'stumpwm-mode "stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
 
 ;;; IMPORTANT: default browser
 (setq browse-url-new-window-flag t
@@ -857,45 +803,70 @@ Although this is interactive, call this with \\[browse-url]."
 ;; (require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
 ;; (require 'w3m-lnum)
 
-(eval-after-load "w3m" '(progn
-                          (require 'w3m-cookie)
-                          (require 'w3m-lnum)))
+(after "w3m"
+  (require 'w3m-cookie)
+  (require 'w3m-lnum)
 
-;; NOTE: w3m interface and cookies
-(w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
+  ;; NOTE: w3m interface and cookies
+  (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
 
-(setq url-automatic-caching t
-      ;; w3m-key-binding 'info
-      w3m-home-page "www.emacswiki.org"
-      ;; w3m-default-display-inline-images t ;; NOTE: display images by default
-      w3m-use-toolbar nil
-      w3m-coding-system 'utf-8
-      w3m-file-coding-system 'utf-8
-      w3m-file-name-coding-system 'utf-8
-      w3m-input-coding-system 'utf-8
-      w3m-output-coding-system 'utf-8
-      w3m-terminal-coding-system 'utf-8
-      w3m-use-cookies t ;; NOTE: use cookies in w3m
-      w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
-      ;; w3m-bookmark-file
-      w3m-cookie-accept-bad-cookies t
-      w3m-cookie-accept-domains '("www.emacswiki.org"
-                                  "www.google.com"
-                                  "www.wikipedia.org"
-                                  "www.github.com"
-                                  "http://plato.stanford.edu"))
+  (setq url-automatic-caching t
+        ;; w3m-key-binding 'info
+        w3m-home-page "www.emacswiki.org"
+        ;; w3m-default-display-inline-images t ;; NOTE: display images by default
+        w3m-use-toolbar nil
+        w3m-coding-system 'utf-8
+        w3m-file-coding-system 'utf-8
+        w3m-file-name-coding-system 'utf-8
+        w3m-input-coding-system 'utf-8
+        w3m-output-coding-system 'utf-8
+        w3m-terminal-coding-system 'utf-8
+        w3m-use-cookies t ;; NOTE: use cookies in w3m
+        w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+        ;; w3m-bookmark-file
+        w3m-cookie-accept-bad-cookies t
+        w3m-cookie-accept-domains '("www.emacswiki.org"
+                                    "www.google.com"
+                                    "www.wikipedia.org"
+                                    "www.github.com"
+                                    "http://plato.stanford.edu"))
 
-;; NOTE: `youtube-dl' and `mplayer'
-;; TODO: this doesn't work just yet
-(defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
+  ;; NOTE: `youtube-dl' and `mplayer'
+  ;; TODO: this doesn't work just yet
+  (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
 
-(setq youtube-videos-directory "~/Videos/youtube/")
+  (setq youtube-videos-directory "~/Videos/youtube/")
+
+  ;; IMPORTANT: w3m session
+  ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
+  ;; (require 'w3m-session)
+
+  ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
+
+  (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+
+  (add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
+
+  ;; NOTE: w3m mode hooks
+  (add-hook 'w3m-display-hook
+            (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
+              (let ((buffer-read-only nil))
+                (delete-trailing-whitespace))))
+
+  ;; IMPORTANT: w3m search
+  ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
+  (setq w3m-search-engine-alist
+        '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+          ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
+          ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
+          ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
+          ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8)))))
 
 (defun w3m-youtube-video ()
   "..."
   (interactive)
   (let* ((video (browse-url-url-at-point))
-	 (output (format "%s/%s.mp4" youtube-videos-directory video)))
+         (output (format "%s/%s.mp4" youtube-videos-directory video)))
     (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" output video)
     (emms-play-file output)))
 
@@ -925,12 +896,6 @@ Although this is interactive, call this with \\[browse-url]."
 ;;       ;;(start-process "mplayer" nil "mplayer" "-quiet" out)
 ;;       )))
 
-;; IMPORTANT: w3m session
-;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
-;; (eval-after-load "w3m" '(require 'w3m-session))
-
-;; (setq w3m-session-file "~/.emacs.d/w3m/session")
-
 ;; NOTE: w3m and save desktop mode
 (defun w3m-register-desktop-save ()
   "Set `desktop-save-buffer' to a function returning the current URL."
@@ -947,10 +912,6 @@ Although this is interactive, call this with \\[browse-url]."
           (w3m-goto-url-new-session url))
         (current-buffer)))))
 
-(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
-
-(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
-
 ;; TODO: this should do a check to make sure there are w3m buffers alive, and if not, start a new w3m instance
 (defun switch-to-w3m-buffer ()
   "Switch to an existing w3m buffer."
@@ -966,22 +927,6 @@ Although this is interactive, call this with \\[browse-url]."
                                          (and (eq major-mode 'w3m-mode)
                                               (buffer-name buf)))))
                                    (buffer-list)))))))
-
-;; NOTE: w3m mode hooks
-(add-hook 'w3m-display-hook
-	  (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
-	    (let ((buffer-read-only nil))
-	      (delete-trailing-whitespace))))
-
-;; IMPORTANT: w3m search
-;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
-(eval-after-load "w3m-search"
-  '(setq w3m-search-engine-alist
-	 '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
-	   ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-           ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
-	   ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
-	   ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
 ;;; IMPORTANT: gist
 ;; SOURCE: `https://github.com/defunkt/gist.el'
@@ -1026,9 +971,10 @@ Although this is interactive, call this with \\[browse-url]."
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
 ;; (autoload 'bbdb "bbdb" "" t)
 
-;; (eval-after-load "bbdb" '(bbdb-initialize 'gnus 'message))
+;; (after "bbdb"
+;;  (bbdb-initialize 'gnus 'message)
 
-;;(setq bbdb-file "~/.emacs.d/contacts-file.el")
+;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
 
 (provide 'user-config)
 ;;; user-config.el ends here

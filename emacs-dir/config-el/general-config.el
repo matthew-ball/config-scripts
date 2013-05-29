@@ -476,7 +476,8 @@
 ;; SOURCE: `http://www.emacswiki.org/BrowseKillRing'
 (autoload 'browse-kill-ring "browse-kill-ring" "Browse the `kill-ring'." t)
 
-(eval-after-load "browse-kill-ring" '(browse-kill-ring-default-keybindings))
+(after "browse-kill-ring"
+  (browse-kill-ring-default-keybindings))
 
 ;;; IMPORTANT: auto refresh buffers
 ;; SOURCE: `http://www.emacswiki.org/emacs/AutoRevertMode'
@@ -490,12 +491,22 @@
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryEshell'
 (autoload 'eshell "eshell" "GNU Emacs Shell." t)
 
-(eval-after-load "eshell"
-  '(progn
-     (require 'esh-mode)
-     (require 'esh-util)))
+(after "eshell"
+  (require 'esh-mode)
+  (require 'esh-util)
 
-;;(setq eshell-modules-list '(eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix))
+  (setq eshell-prompt-function 'eshell-prompt
+	eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
+	eshell-highlight-prompt nil
+	eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
+	eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion
+	eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\|\\.elc\\)/\\'" ;; NOTE: ignore file prefixes
+	eshell-save-history-on-exit t ;; NOTE: save eshell history on exit
+	eshell-where-to-jump 'begin ;; NOTE: jump to beginning of line
+	eshell-review-quick-commands nil ;; NOTE: enable quick review
+	eshell-smart-space-goes-to-end t) ;; NOTE: save buffer history
+
+  (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply))
 
 (defun eshell/git-branch (&rest junk)
   "Return the current git branch, if applicable."
@@ -557,46 +568,34 @@
      "$")
    " "))
 
-(setq eshell-prompt-function 'eshell-prompt
-      eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
-      eshell-highlight-prompt nil
-      eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
-      eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion
-      eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\|\\.elc\\)/\\'" ;; NOTE: ignore file prefixes
-      eshell-save-history-on-exit t ;; NOTE: save eshell history on exit
-      eshell-where-to-jump 'begin ;; NOTE: jump to beginning of line
-      eshell-review-quick-commands nil ;; NOTE: enable quick review
-      eshell-smart-space-goes-to-end t) ;; NOTE: save buffer history
-
-(add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
-
 ;;; IMPORTANT: directory editor (extensions)
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
-(require 'dired-x)
+(autoload 'dired "dired" "File manager in Emacs." t)
 
-(add-hook 'dired-mode-hook (lambda ()
-			     (turn-on-dired-find-alternate-file)
-			     ;; NOTE: set `dired-x' buffer-local variables here
-			     (dired-omit-mode)))
+(after "dired"
+  (require 'dired-x)
 
-;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
-(setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
-      dired-dwim-target t ;; NOTE: try suggesting dired targets
-      dired-omit-files (concat dired-omit-files "\\|^\\..+$") ;; NOTE: hide un-interesting files in dired
-      dired-omit-extensions (append dired-latex-unclean-extensions
-                                    dired-tex-unclean-extensions
-                                    dired-patch-unclean-extensions
-				    dired-bibtex-unclean-extensions
-				    dired-texinfo-unclean-extensions))
+  (add-hook 'dired-mode-hook (lambda ()
+			       (turn-on-dired-find-alternate-file)
+			       ;; NOTE: set `dired-x' buffer-local variables here
+			       (dired-omit-mode)))
 
-;; NOTE: dired application management
-(setq dired-guess-shell-alist-user
-      (list
-       (list "\\.pdf$" "evince")
-       (list "\\.PDF$" "evince")
-       (list "\\.doc$" "openoffice.org")
-       (list "\\.docx$" "openoffice.org")
-       (list "\\.DOC$" "openoffice.org")))
+  ;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
+  (setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
+	dired-dwim-target t ;; NOTE: try suggesting dired targets
+	dired-omit-files (concat dired-omit-files "\\|^\\..+$") ;; NOTE: hide un-interesting files in dired
+	dired-omit-extensions (append dired-latex-unclean-extensions
+				      dired-tex-unclean-extensions
+				      dired-patch-unclean-extensions
+				      dired-bibtex-unclean-extensions
+				      dired-texinfo-unclean-extensions)
+	;; NOTE: dired application management
+	dired-guess-shell-alist-user (list
+				      (list "\\.pdf$" "evince")
+				      (list "\\.PDF$" "evince")
+				      (list "\\.doc$" "openoffice.org")
+				      (list "\\.docx$" "openoffice.org")
+				      (list "\\.DOC$" "openoffice.org"))))
 
 (defun turn-on-dired-find-alternate-file (&rest junk)
   "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."

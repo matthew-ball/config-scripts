@@ -24,6 +24,10 @@
 
 ;;; Code:
 
+;;; IMPORTANT: stumpwm mode
+;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
+(autoload 'stumpwm-mode "stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
+
 ;;; IMPORTANT: general programming
 ;; TODO: make this a `general-programming-mode-hook'
 ;; TODO: this should possibly just be activated in `prog-mode-hook'
