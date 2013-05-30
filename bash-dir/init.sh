@@ -9,8 +9,8 @@ export HISTCONTROL=ignoredups # NOTE: don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
 export LOCALE=UTF-8
 
-export TERM=xterm-color # NOTE: export 8 colours in shell session
-# export TERM=xterm-256color # NOTE: export 256 colours in shell session
+# export TERM=xterm-color # NOTE: export 8 colours in shell session
+export TERM=xterm-256color # NOTE: export 256 colours in shell session
 
 # NOTE: these exports are used in the "default applications" for stumpwm
 export ALTERNATE_EDITOR="" # NOTE: set the alternate editor as emacs (automatically start an emacs in daemon mode and connect to it if one is not found running)
