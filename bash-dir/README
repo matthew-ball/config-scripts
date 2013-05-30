@@ -1,3 +1,4 @@
+
 * The =BASH= configuration
 - The bash configuration is split over the following files:
   + [[file:init.sh][init.sh]] :: The bash init file.

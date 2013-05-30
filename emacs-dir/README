@@ -1,3 +1,4 @@
+
 * The =GNU Emacs= configuration
 - This is an attempt at the full blown "=GNU Emacs= as an Operating System" configuration.
   + Not all of the configuration needs to be used[fn:configuration-note], but it is recommended.

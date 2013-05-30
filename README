@@ -1,3 +1,4 @@
+
 * The ~configuration script~ project
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system.
 
@@ -142,7 +143,7 @@
 
 *** TODO write a script to split the user-primary-email-address into user-address '@' user-provider
 
-* TODO create personal dictionary from ~/home/chu/.aspell.en.pws~
+** TODO create personal dictionary from ~/home/chu/.aspell.en.pws~
 * Footnotes
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
 [fn:broken-link] WARNING: Broken link.
