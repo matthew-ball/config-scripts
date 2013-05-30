@@ -29,9 +29,7 @@
 (require 'switch-window)
 
 ;;; IMPORTANT: gnome network-manager
-(require 'gnomenm)
-
-(gnomenm-toggle-enabled)
+(autoload 'gnomenm-toggle-enabled "gnomenm" "Provides an interface to the Gnome Network Manager." t)
 
 ;;; IMPORTANT: extension to info
 ;; SOURCE: `http://emacswiki.org/emacs/info+.el'
