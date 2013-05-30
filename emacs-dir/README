@@ -4,67 +4,29 @@
 - This is an attempt at the full blown "=GNU Emacs= as an Operating System" configuration.
   + Not all of the configuration needs to be used[fn:configuration-note], but it is recommended.
 
-# NOTE: this is incredibly pointless ...
-- This configuration optionally includes functionality for the following operations:
-  + org :: /description/
-    - Version: 7.8.03
-  + erc :: An IRC client for GNU Emacs.
-    - Version: 5.3
-  + gnus :: A mail and newsreader client for GNU Emacs.
-    - Version: 5.13
-  + dired :: A file system browser for GNU Emacs.
-  + eshell :: A shell emulator for GNU Emacs.
-  + package :: An emacs-lisp package manager.
-  + package-manager :: [[...]] :: A front-end to the system package manager.
-  + ido :: Interactively do things.
-  + ido-ubiquitous :: /description/
-  + smex :: /description/
-  + ibuffer :: /description/
-  + stumpwm :: /description/
-  + tramp :: /description/
-  + magit :: /description/
-  + recentf :: /description/
-  + desktop-save :: /description/
-  + paredit :: /description/
-  + flyspell :: /description/
-  + doc-view :: /description/
-  + uniquify :: /description/
-  + help :: /description/
-  + auto-complete :: /description/
-
-** TODO Source Contributions
-- All GNU Emacs Major and Minor Modes need to be sourced correctly.
-
-- I have started attempting to cite my emacs lisp configuration file - at least from [[http://www.emacswiki.org][emacswiki.org]].
-
-** GNU Emacs Version
-- This configuration is developed (and running) on GNU Emacs 24.1.50.1 (i486-pc-linux-gnu, GTK+ Version 2.20.1)
- of 2012-05-03 on cw-bkp0, modified by Debian.
-
-** Initiation :: [[file:init.el][init.el]]
+** [[file:init.el][Initiation]]
 - This file initialises the configuration:
-  + Adds "~/.emacs.d/" (and "~/.emacs.d/config-el/", "~/.emacs.d/apt-el/", and "~/.emacs.d/my-modes/") to the load-path.
-  + Requires common-lisp package.
-  + Sets custom configuration file.
+  + Defines two customisation groups: [[elisp:(customize-group%20user-variables)][user-variables]] and [[elisp:(customize-group%20'user-directories)][user-directories]].
+    - Each customisation group includes a number of variables.
+  + Sets the user details (name and email address).
+  + Requires common-lisp library.
+  + Define a macro [[file:init.el::(defmacro%20after%20(mode%20&rest%20body)][after]] which loads the body code after its argument file (syntactic sugar over [[help:eval-after-load][eval-after-load]]).
+  + Modifies the load-path.
+  + Modifies the info-path.
+  + Initiate emacs package manager.
+  + Define function [[file:init.el::(defun%20use-config-file%20(name)][use-config-file]] to load in an elisp library.
   + Requires specific configuration files[fn:order-of-evaluation]:
-    - *package-config*
     - *appearance-config*
-    - *dired-config*
-    - *eshell-config*
     - *general-config*
-    - *key-bindings-config*
-    - *programming-config*
-    - *org-config*
-    - *latex-config*
-    - *erc-config*
-    - *gnus-config*
     - *user-config*
+    - *writing-config*
+    - *programming-config*
+    - *key-bindings-config*
   + The [[file:init.el][init.el]] file also provides the user with the command `[[file:init.el::%3B%3B%3B%20COMMENT:%20shutdown%20emacs%20server][server-shutdown]]':
     - This will save any (modified) buffers, save the emacs daemon process, and kill the server.
-- This initiation process is started after the initial user login:
-  - After logic, a call to =emacs --daemon= is launched which creates the GNU Emacs server.
+  + Sets custom configuration file.
 
-** Package Management :: [[file:config-el/package-config.el][package-config.el]]
+*** [[file:config-el/package-config.el][package-config.el]]
 - This file provides a configuration for packages not available by default in =GNU Emacs=.
   + The following files[fn:auto-setup] are installed from the =ELPA= package manager[fn:ELPA]:
     - The following list are the necessary packages; the =core-packages=:
@@ -103,75 +65,26 @@
 
 - This file includes an interface to the system package manager ...
 
-** Appearance Settings :: [[file:config-el/appearance-config.el][appearance-config.el]]
+** [[file:config-el/appearance-config.el][Appearance]]
 - This file provides a configuration for visual appearance:
   + Sets the colour theme to =zenburn= theme[fn:requires-zenburn].
 
-** Dired Settings :: [[file:config-el/dired-config.el][dired-config.el]]
+** General
+*** Dired Settings :: [[file:config-el/dired-config.el][dired-config.el]]
 - This file provides a configuration for =dired=:
   + ...
 
-** General Settings :: [[file:config-el/general-config.el][general-config.el]]
-- This file provides a configuration for general GNU Emacs usage:
-  + /User variables/
-    - user-home-directory :: the file-path to the user's home directory
-    - user-scripts-directory :: the file-path to the user's scripts directory
-    - user-documents-directory :: the file-path to the user's documents directory
-    - user-reading-directory :: the file-path to the user's reading directory
-    - user-writing-directory :: the file-path to the user's writing directory
-    - user-organisation-directory :: the file-path to the user's organisation directory
-    - user-university-directory :: the file-path to the user's university directory
-    - user-org-university-file :: the file-path to the user's university organisation file
-    - user-org-notes-file :: the file-path to the user's notes organisation file
-    - user-org-projects-file :: the file-path to the user's projects organisation file
-    - user-org-archive-file :: the file-path to the user's archive organisation file
-    - user-university-id :: the user's university identification number
-    - user-primary-email-address :: the user's primary email address
-    - user-secondary-email-address :: the user's secondary email address
-  + /User functions/
-    - eval-and-replace :: evaluate an emacs-lisp expression and replace the code with the result
-    - show-dot-file-structure :: show the structure of a dot file
-    - show-bugs-fixes-todos :: show any BUGS/FIXES/TODOS in a file
-    - switch-to-dot-emacs :: switch to the init.el file
-    - display-startup-echo-area-message :: set the initial minibuffer message
-  + /Sets the default value of internal GNU Emacs variables:/
-    - inhibit-startup-message :: turn off the startup message (value: t)
-    - inhibit-startup-echo-area-message :: turn off the startup echo area message (value: t)
-    - initial-scratch-message :: set the initial scratch message (value: string)
-    - completion-ignore-case :: ignore case in auto-completing text (value: t)
-    - read-file-name-completion-ignore-case :: ignore cases in file-names (value: t)
-    - auto-compression-mode :: automatically parse an archive (value: 1)
-    - message-log-max :: maximum number of lines to keep in the message log buffer (value: 2000)
-    - show-trailing-whitespace :: show trailing white-space (value: 1)
-    - scroll-margin :: use smooth scrolling (value: 0)
-    - scroll-conservatively :: ... the defaults (value: 100000)
-    - scroll-up-aggressively :: ... are very (value: 0)
-    - scroll-down-aggressively :: ... annoying (value: 0)
-    - scroll-preserve-screen-position :: preserve screen position with C-v/M-v (value: t)
-    - auto-save-interval :: change auto-save interval (value: 1000)
-    - sentence-end-double-space :: sentences end with a single space (value: 'nil)
-    - echo-keystrokes :: instant feedback for what you are typing (value: 0.1)
-    - suggest-key-bindings :: do not show respective key-bindings (value: nil)
-  + /Sets the default web browser/
-  + /Sets the default auto-mode list/
-  + /Overwrite selected text/
-  + /Activates ido-mode/
-
-** Key Bindings :: [[file:config-el/key-bindings-config.el][key-bindings-config.el]]
-- This file provides a configuration for key bindings:
+** User
+*** ERC Settings :: [[file:config-el/erc-config.el][erc-config.el]]
+- This file provides a configuration for =ERC= (the GNU Emacs IRC Client):
   + ...
 
-** Programming Settings :: [[file:config-el/programming-config.el][programming-config.el]]
-# ===UPDATE===
-- This file provides a configuration for the following programming modes:
-  + =emacs-lisp= Programming
-  + =common-lisp= Programming
-  + =haskell= Programming
-  + =python= Programming
-  + =slime=
-  + =maxima=
+*** GNUS Settings :: [[file:config-el/gnus-config.el][gnus-config.el]]
+- This file provides a configuration for =GNUS= (the GNU Emacs Mail and News Reader):
+  + ...
 
-** Organisation Settings :: [[file:config-el/org-config.el][org-config.el]]
+** Writing
+*** Organisation Settings :: [[file:config-el/org-config.el][org-config.el]]
 #+begin_quote
 Org is a mode for keeping notes, maintaining TODO lists, and doing project planning with a fast and effective plain text system.
 #+end_quote
@@ -183,23 +96,23 @@ Org is a mode for keeping notes, maintaining TODO lists, and doing project plann
 
 - The ultimate idea is to write a "literate" configuration script - using GNU Emacs and =org-mode=.
 
-** LaTeX Settings :: [[file:config-el/latex-config.el][latex-config.el]]
+*** LaTeX Settings :: [[file:config-el/latex-config.el][latex-config.el]]
 - This file provides a configuration for =LaTeX=:
   + ...
 
-** ERC Settings :: [[file:config-el/erc-config.el][erc-config.el]]
-- This file provides a configuration for =ERC= (the GNU Emacs IRC Client):
-  + ...
+** [[file:config-el/programming-config.el][Programming]]
+# ===UPDATE===
+- This file provides a configuration for the following programming modes:
+  + =emacs-lisp= Programming
+  + =common-lisp= Programming
+  + =haskell= Programming
+  + =python= Programming
+  + =slime=
+  + =maxima=
 
-** GNUS Settings :: [[file:config-el/gnus-config.el][gnus-config.el]]
-- This file provides a configuration for =GNUS= (the GNU Emacs Mail and News Reader):
+** [[file:config-el/key-bindings-config.el][Key Bindings]]
+- This file provides a configuration for key bindings:
   + ...
-
-** User Settings :: [[file:config-el/user-config.el][user-config.el]]
-- Included among the user settings are emms settings.
-  + this includes support for music player daemon
-  + this includes, for instance, using MPlayer to play videos.
-  + flash video support for emms has been provided.
 
 * Footnotes
 
