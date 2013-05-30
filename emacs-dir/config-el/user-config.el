@@ -742,7 +742,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
 (autoload 'auto-complete "auto-complete" "..." t)
-;;(require 'auto-complete)
 
 (after "auto-complete"
   (global-auto-complete-mode t)
@@ -797,9 +796,6 @@ Although this is interactive, call this with \\[browse-url]."
 (setq w3m-key-binding 'info) ;; NOTE: this needs to be set before loading
 
 (autoload 'w3m "w3m" "Browse the internet with w3m." t)
-;; (require 'w3m)
-;; (require 'w3m-cookie) ;; NOTE: enable cookies support in w3m
-;; (require 'w3m-lnum)
 
 (after "w3m"
   (require 'w3m-cookie)
