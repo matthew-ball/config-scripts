@@ -199,10 +199,8 @@
 ;;(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
 
 ;;; IMPORTANT: adaptive text wrap
-;;(require 'adaptive-wrap)
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
 
-;; NOTE: add `adaptive-wrap' to all modes which inherit from `text-mode'
 (add-hook 'text-mode-hook (lambda () (adaptive-wrap-prefix-mode t)))
 
 (provide 'appearance-config)
