@@ -61,6 +61,16 @@
 (defcustom user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user." :group 'user-variables :type 'string)
 (defcustom user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user." :group 'user-variables :type 'string)
 
+;;; IMPORTANT: common lisp
+;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'
+(eval-when-compile (require 'cl-lib))
+
+;;; IMPORTANT: after macro
+(defmacro after (mode &rest body)
+  "`eval-after-load' MODE evaluate BODY."
+  (declare (indent defun))
+  `(eval-after-load ,mode '(progn ,@body)))
+
 ;;; IMPORTANT: load path
 ;; SOURCE: `http://emacswiki.org/emacs/LoadPath'
 (add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; NOTE: add `~/.emacs.d/' to `load-path' variable
@@ -78,20 +88,8 @@
 
 ;;; IMPORTANT: info path
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
-(eval-after-load "info"
-  '(add-to-list 'Info-additional-directory-list (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/")))
-
-;; (add-to-list 'Info-additional-directory-list (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/"))
-
-;;; IMPORTANT: common lisp
-;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'
-(eval-when-compile (require 'cl-lib))
-
-;;; IMPORTANT: after macro
-(defmacro after (mode &rest body)
-  "`eval-after-load' MODE evaluate BODY."
-  (declare (indent defun))
-  `(eval-after-load ,mode '(progn ,@body)))
+(after "info"
+  (add-to-list 'Info-additional-directory-list (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/")))
 
 ;;; IMPORTANT: use configuration files
 (defun use-config-file (name)

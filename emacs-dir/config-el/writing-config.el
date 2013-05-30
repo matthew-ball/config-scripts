@@ -78,99 +78,96 @@
 ;; SOURCE: ...
 (autoload 'dictem-run-search "dictem" "" t)
 
-(setq dictem-server "dict.org"
-      dictem-port "2628"
-      dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra")
-      ;; dictem-select-database "*"
-      ;; dictem-select-strategy "."
-      )
+(after "dictem"
+  (setq dictem-server "dict.org"
+	dictem-port "2628"
+	dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra")
+	;; dictem-select-database "*"
+	;; dictem-select-strategy "."
+	)
 
-;; TODO: move to key-bindings!!!
-(defconst dictem-prefix-key (kbd "C-c d") "Key map for `dictem'.")
-(defvar dictem-map (lookup-key global-map dictem-prefix-key) "...")
+  ;; TODO: move to key-bindings!!!
+  (defconst dictem-prefix-key (kbd "C-c d") "Key map for `dictem'.")
+  (defvar dictem-map (lookup-key global-map dictem-prefix-key) "...")
 
-(unless (keymapp dictem-map)
-  (setq dictem-map (make-sparse-keymap)))
+  (unless (keymapp dictem-map)
+    (setq dictem-map (make-sparse-keymap)))
 
-(define-key global-map dictem-prefix-key dictem-map)
-(define-key dictem-map (kbd "s") 'dictem-run-search) ;; NOTE: SEARCH = MATCH + DEFINE : ask for word, database and search strategy and show definitions found
-(define-key dictem-map (kbd "m") 'dictem-run-match) ;; NOTE: MATCH : ask for word, database and search strategy and show matches found
-(define-key dictem-map (kbd "d") 'dictem-run-define);; NOTE: DEFINE : ask for word and database name and show definitions found
-(define-key dictem-map (kbd "C-c M-r") 'dictem-run-show-server) ;; NOTE: SHOW SERVER : show information about DICT server
-(define-key dictem-map (kbd "C-c M-i") 'dictem-run-show-info) ;; NOTE: SHOW INFO : show information about the database
-(define-key dictem-map (kbd "C-c M-b") 'dictem-run-show-databases) ;; NOTE: SHOW DB : show a list of databases provided by DICT server
+  (define-key global-map dictem-prefix-key dictem-map)
+  (define-key dictem-map (kbd "s") 'dictem-run-search) ;; NOTE: SEARCH = MATCH + DEFINE : ask for word, database and search strategy and show definitions found
+  (define-key dictem-map (kbd "m") 'dictem-run-match) ;; NOTE: MATCH : ask for word, database and search strategy and show matches found
+  (define-key dictem-map (kbd "d") 'dictem-run-define);; NOTE: DEFINE : ask for word and database name and show definitions found
+  (define-key dictem-map (kbd "C-c M-r") 'dictem-run-show-server) ;; NOTE: SHOW SERVER : show information about DICT server
+  (define-key dictem-map (kbd "C-c M-i") 'dictem-run-show-info) ;; NOTE: SHOW INFO : show information about the database
+  (define-key dictem-map (kbd "C-c M-b") 'dictem-run-show-databases) ;; NOTE: SHOW DB : show a list of databases provided by DICT server
 
-;; TODO: ...
-;; (add-hook 'c-mode-common-hook
-;; 	  '(lambda ()
-;; 	     (interactive)
-;; 	     (make-local-variable 'dictem-default-database)
-;; 	     (setq dictem-default-database "man")))
+  ;; TODO: ...
+  ;; (add-hook 'c-mode-common-hook
+  ;; 	  '(lambda ()
+  ;; 	     (interactive)
+  ;; 	     (make-local-variable 'dictem-default-database)
+  ;; 	     (setq dictem-default-database "man")))
 
-;; the code above sets default database to "man" in C buffers
+  ;; the code above sets default database to "man" in C buffers
 
-(eval-after-load "dictem" '(dictem-initialize))
+  (dictem-initialize)
 
-;; NOTE: for creating hyperlinks on database names and found matches (click on them with mouse-2)
-(add-hook 'dictem-postprocess-match-hook 'dictem-postprocess-match)
+  ;; NOTE: for creating hyperlinks on database names and found matches (click on them with mouse-2)
+  (add-hook 'dictem-postprocess-match-hook 'dictem-postprocess-match)
 
-;; NOTE: for highlighting the separator between the definitions found, this also creates hyperlink on database names
-(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-separator)
+  ;; NOTE: for highlighting the separator between the definitions found, this also creates hyperlink on database names
+  (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-separator)
 
-;; NOTE: for creating hyperlinks in `dictem' buffer that contains definitions
-(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-hyperlinks)
+  ;; NOTE: for creating hyperlinks in `dictem' buffer that contains definitions
+  (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-hyperlinks)
 
-;; NOTE: for creating hyperlinks in dictem buffer that contains information about a database
-(add-hook 'dictem-postprocess-show-info-hook 'dictem-postprocess-definition-hyperlinks)
+  ;; NOTE: for creating hyperlinks in dictem buffer that contains information about a database
+  (add-hook 'dictem-postprocess-show-info-hook 'dictem-postprocess-definition-hyperlinks)
 
-;; NOTE: "virtual" dictionary
-(setq dictem-user-databases-alist '(("_en-en"  . ("foldoc" "gcide" "wn"))
-                                    ("en-en" . ("dict://dict.org:2628/english")) 
-                                    ("_unidoc" . ("susv3" "man" "info" "howto" "rfc"))))
+  ;; NOTE: "virtual" dictionary
+  (setq dictem-user-databases-alist '(("_en-en"  . ("foldoc" "gcide" "wn"))
+				      ("en-en" . ("dict://dict.org:2628/english")) 
+				      ("_unidoc" . ("susv3" "man" "info" "howto" "rfc"))))
 
-;; NOTE: ...
-(setq dictem-use-user-databases-only t)
+  ;; NOTE: ...
+  (setq dictem-use-user-databases-only t)
 
-;; NOTE: all functions from dictem-postprocess-each-definition-hook will be run for each definition which in turn will be narrowed
-;; NOTE: current database name is kept in dictem-current-dbname variable
-;; NOTE: the following code demonstrates how to highlight SUSV3 and ROFF definitions
-(add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-each-definition)
+  ;; NOTE: all functions from dictem-postprocess-each-definition-hook will be run for each definition which in turn will be narrowed
+  ;; NOTE: current database name is kept in dictem-current-dbname variable
+  ;; NOTE: the following code demonstrates how to highlight SUSV3 and ROFF definitions
+  (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-each-definition)
 
-;; NOTE: function for highlighting definition from the database "susv3"
-;; (defun dictem-highlight-susv3-definition ()
-;;   (cond ((string= "susv3" dictem-current-dbname)
-;; 	 (goto-char (point-min))
-;; 	 (while (search-forward-regexp
-;; 		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
-;; 	   (put-text-property
-;; 	    (match-beginning 0) (match-end 0) 'face 'bold)))))
+  ;; NOTE: function for highlighting definition from the database "susv3"
+  ;; (defun dictem-highlight-susv3-definition ()
+  ;;   (cond ((string= "susv3" dictem-current-dbname)
+  ;; 	 (goto-char (point-min))
+  ;; 	 (while (search-forward-regexp
+  ;; 		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
+  ;; 	   (put-text-property
+  ;; 	    (match-beginning 0) (match-end 0) 'face 'bold)))))
 
-;; ;; NOTE: function to show roff-formatted text from the database "man"
-;; (require 'woman)
+  ;; ;; NOTE: function to show roff-formatted text from the database "man"
+  ;; (require 'woman)
 
-;; (defun dictem-highlight-man-definition ()
-;;   (cond ((string= "man" dictem-current-dbname)
-;; 	 (goto-char (point-min))
-;; 	 (while (search-forward-regexp "^  " nil t)
-;; 	   (replace-match ""))
-;; 	 (goto-char (point-min))
-;; 	 (forward-line 2)
-;; 	 (woman-decode-region (point) (point-max)))))
+  ;; (defun dictem-highlight-man-definition ()
+  ;;   (cond ((string= "man" dictem-current-dbname)
+  ;; 	 (goto-char (point-min))
+  ;; 	 (while (search-forward-regexp "^  " nil t)
+  ;; 	   (replace-match ""))
+  ;; 	 (goto-char (point-min))
+  ;; 	 (forward-line 2)
+  ;; 	 (woman-decode-region (point) (point-max)))))
 
-;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
-;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
+  ;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
+  ;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
+  )
 
 ;;; IMPORTANT: thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
 (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
-(setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6")  ;; NOTE: from registration
-
-;;; IMPORTANT: languagetool grammar check
-;; SOURCE: `http://www.emacswiki.org/emacs/NaturalLanguageMode'
-;; (require 'langtool) ;; TODO: change this to an autoload
-
-;; (setq langtool-language-tool-jar "/home/chu/Downloads/LanguageTool/LanguageTool.jar") ;; TODO: hardcoded ...
+(after "thesaurus"
+  (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6"))  ;; NOTE: from registration
 
 ;;; IMPORTANT: bibtex
 ;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
@@ -276,29 +273,29 @@
 ;; SOURCE: `http://ebib.sourceforge.net/'
 (autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
 
-;; TODO: investigate @string clauses and abbreviations for common journals
-;; TODO: create `philosophy.bib' `mathematics.bib' `linguistics.bib' `computer-science.bib' etc
-(setq ebib-preload-bib-files (list (format "%su4537508.bib" user-university-directory) ;; NOTE: university courses
-                                   (format "%sPapers/papers.bib" user-documents-directory) ;; NOTE: general papers
-                                   ;; "/home/chu/Documents/Papers/papers.bib"
-                                   ;; "/home/chu/Documents/ANU/u4537508.bib"
-                                   ;; "/home/chu/Documents/Papers/philosophy.bib"
-                                   ;; "/home/chu/Documents/Papers/mathematics.bib"
-                                   ;; "/home/chu/Documents/Papers/linguistics.bib"
-                                   ;; "/home/chu/Documents/Papers/computer-science.bib"
-                                   )
-      ebib-keywords-list (list "philosophy"
-                               "mathematics"
-                               "logic"
-                               "computer science"
-                               "linguistics"
-                               "miscellaneous")
-      ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
-      ebib-file-search-dirs (list (format "%s" user-home-directory)
-                                  (format "%sPapers/" user-documents-directory)) ;; NOTE: directories to search when viewing external files
-      )
+(after "ebib"
+  ;; TODO: investigate @string clauses and abbreviations for common journals
+  ;; TODO: create `philosophy.bib' `mathematics.bib' `linguistics.bib' `computer-science.bib' etc
+  (setq ebib-preload-bib-files (list (format "%su4537508.bib" user-university-directory) ;; NOTE: university courses
+				     (format "%sPapers/papers.bib" user-documents-directory) ;; NOTE: general papers
+				     ;; "/home/chu/Documents/Papers/papers.bib"
+				     ;; "/home/chu/Documents/ANU/u4537508.bib"
+				     ;; "/home/chu/Documents/Papers/philosophy.bib"
+				     ;; "/home/chu/Documents/Papers/mathematics.bib"
+				     ;; "/home/chu/Documents/Papers/linguistics.bib"
+				     ;; "/home/chu/Documents/Papers/computer-science.bib"
+				     )
+	ebib-keywords-list (list "philosophy"
+				 "mathematics"
+				 "logic"
+				 "computer science"
+				 "linguistics"
+				 "miscellaneous")
+	ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
+	ebib-file-search-dirs (list (format "%s" user-home-directory)
+				    (format "%sPapers/" user-documents-directory))) ;; NOTE: directories to search when viewing external files
 
-(eval-after-load "ebib" '(setcdr (assoc "pdf" ebib-file-associations) "evince"))
+  (setcdr (assoc "pdf" ebib-file-associations) "evince"))
 
 ;; Ebib Entry: [[ebib:horwich1996][Horwich (1996)]]
 ;; Citation Entry: [[cite:horwich1996][Horwich (1996)]]
@@ -346,121 +343,125 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
 (autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
 
-(setq org-return-follows-link t ;; NOTE: use RETURN to follow links
-      org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
-      org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
-      org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
-      ;; org-read-date-display-live nil ;; NOTE: disable the live date-display
-      ;; org-insert-mode-line-in-empty-file t
-      ;; --- appearance ---
-      ;; org-indent-mode t ;; NOTE: enable org indent mode
-      ;; org-indent-indentation-per-level 2 ;; NOTE: two indents per level
-      ;; org-startup-indented t ;; NOTE: indent text in org documents (WARNING: can crash emacs)
-      ;; org-odd-levels-only t ;; NOTE: use only odd levels for an outline
-      ;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
-      ;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
-      ;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
-      org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
-      ;; --- `org-log' ---
-      org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
-      org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
-      ;; --- scheduling ---
-      org-deadline-warning-days 7
-      org-timeline-show-empty-dates t
-      org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
-      org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
-      ;; --- tags ---
-      org-tags-column -80
-      ;; --- notes ---
-      org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
-      org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
-      ;; --- `org-archive' ---
-      org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
-      ;; --- `org-refile' ---
-      org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
-      org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
-      org-refile-allow-creating-parent-nodes 'confirm) ;; NOTE: allow refile to create parent tasks with confirmation
+(after "org"
+  (setq org-return-follows-link t ;; NOTE: use RETURN to follow links
+	org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
+	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
+	org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
+	;; org-read-date-display-live nil ;; NOTE: disable the live date-display
+	;; org-insert-mode-line-in-empty-file t
+	;; --- appearance ---
+	;; org-indent-mode t ;; NOTE: enable org indent mode
+	;; org-indent-indentation-per-level 2 ;; NOTE: two indents per level
+	;; org-startup-indented t ;; NOTE: indent text in org documents (WARNING: can crash emacs)
+	;; org-odd-levels-only t ;; NOTE: use only odd levels for an outline
+	;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
+	;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
+	;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
+	org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
+	;; --- `org-log' ---
+	org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
+	org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
+	;; --- scheduling ---
+	org-deadline-warning-days 7
+	org-timeline-show-empty-dates t
+	org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
+	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
+	;; --- tags ---
+	org-tags-column -80
+	;; --- notes ---
+	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
+	org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
+	;; --- `org-archive' ---
+	org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
+	;; --- `org-refile' ---
+	org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
+	org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
+	org-refile-allow-creating-parent-nodes 'confirm) ;; NOTE: allow refile to create parent tasks with confirmation
 
-;;; IMPORTANT: org-modules
-;; (setq org-modules '(org-bbdb 
-;;                     org-contacts
-;;                     org-gnus
-;;                     org-drill
-;;                     org-info
-;;                     org-jsinfo
-;;                     org-habit
-;;                     org-irc
-;;                     org-mouse
-;;                     org-annotate-file
-;;                     org-eval
-;;                     org-expiry
-;;                     org-interactive-query
-;;                     org-man
-;;                     org-panel
-;;                     org-screen
-;;                     org-toc))
+  ;; TODO: re-order AND add new tags
+  (setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
+	'(("ASSIGNMENT"       . ?a)
+	  ;; ("BOOKMARK"         . ?b)
+	  ("COMPUTER SCIENCE" . ?c)
+	  ("GENERAL"          . ?g)
+	  ("HOLIDAY"          . ?h)
+	  ("LIBRARY"          . ?l)
+	  ;; ("IDEAS"            . ?i)
+	  ("JOURNAL"          . ?j)
+	  ("NOTES"            . ?n)
+	  ("MATHEMATICS"      . ?m)
+	  ("PROJECT"          . ?p)
+	  ("PROGRAMMING"      . ?P)
+	  ("READING"          . ?r)
+	  ("PHILOSOPHY"       . ?s)
+	  ("TRAVEL"           . ?t)
+	  ("WRITING"          . ?T)
+	  ("UNIVERSITY"       . ?u)
+	  ("WEBSITE"          . ?w))))
 
 ;;; IMPORTANT: org-agenda
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
-(setq org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
-      org-agenda-skip-scheduled-if-done t ;; NOTE: ...
-      org-agenda-skip-deadline-if-done t ;; NOTE: ...
-      org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
-      org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
-      org-agenda-span 'month) ;; NOTE: show a month of agendas
+(after "org-agenda"
+  (setq org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+	org-agenda-skip-scheduled-if-done t ;; NOTE: ...
+	org-agenda-skip-deadline-if-done t ;; NOTE: ...
+	org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
+	org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
+	org-agenda-span 'month) ;; NOTE: show a month of agendas
 
-(setq org-agenda-files `(,(expand-file-name user-org-university-file)
-                         ,(expand-file-name user-org-notes-file) ;; IMPORTANT: this is "journal.org" 
-			 ,(expand-file-name user-org-projects-file)
-			 ,(concat (expand-file-name user-organisation-directory) "home.org")
-			 ,(concat (expand-file-name user-organisation-directory) "contacts.org")
-			 ,(concat (expand-file-name user-organisation-directory) "birthday.org")
-			 ,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
-			 ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
-			 ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
-			 ))
+  (setq org-agenda-files `(,(expand-file-name user-org-university-file)
+			   ,(expand-file-name user-org-notes-file) ;; IMPORTANT: this is "journal.org" 
+			   ,(expand-file-name user-org-projects-file)
+			   ,(concat (expand-file-name user-organisation-directory) "home.org")
+			   ,(concat (expand-file-name user-organisation-directory) "contacts.org")
+			   ,(concat (expand-file-name user-organisation-directory) "birthday.org")
+			   ,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
+			   ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
+			   ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
+			   ))
 
-;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
-(setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
-      '(("A" "All" ((agenda "" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
-				(org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
-				(org-agenda-repeating-timestamp-show-all t)
-				(org-agenda-entry-types '(:timestamp :sexp))))
-		    (agenda "" ((org-agenda-ndays 1) ;; NOTE: daily agenda
-				(org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
-				(org-agenda-todo-keyword-format "[ ]")
-				(org-agenda-scheduled-leaders '("" ""))
-				(org-agenda-prefix-format "%t%s")))
-		    (todo "TODO" ;; NOTE: todos searched by context
-			  ((org-agenda-prefix-format "[ ] %T: ")
-			   (org-agenda-sorting-strategy '(tag-up priority-down))
-			   (org-agenda-todo-keyword-format "")
-			   (org-agenda-overriding-header "\n All Tasks \n"))))
-	 "ALL"
-	 ((org-agenda-compact-blocks t)
-	  (org-agenda-remove-tags t))
-	 ) ;; NOTE: `ALL' tasks
-	("u" "University"
-	 ((org-agenda-list nil nil 1)
-	  (tags "UNIVERSITY")
-	  (tags-todo "ASSIGNMENT"))
-	 "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
-	("p" "Project"
-	 ((tags-todo "PROJECT")
-	  (tags-todo "TRAVEL")
-	  (tags-todo "GENERAL")
-	  (tags-todo "WRITING")
-	  (tags-todo "UNIVERSITY")
-	  (tags-todo "NOTES"))
-	 "PROJECTS") ;; NOTE: `PROJECT' tasks
-	("j" "Journal"
-	 ((tags "JOURNAL"))
-	 "JOURNAL")
-	("r" "Reading"
-	 ((tags "READING")
-	  (tags "WEBSITE"))
-	 "READING") ;; NOTE: `READING' tasks
-	))
+  ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
+  (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
+	'(("A" "All" ((agenda "" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
+				  (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
+				  (org-agenda-repeating-timestamp-show-all t)
+				  (org-agenda-entry-types '(:timestamp :sexp))))
+		      (agenda "" ((org-agenda-ndays 1) ;; NOTE: daily agenda
+				  (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
+				  (org-agenda-todo-keyword-format "[ ]")
+				  (org-agenda-scheduled-leaders '("" ""))
+				  (org-agenda-prefix-format "%t%s")))
+		      (todo "TODO" ;; NOTE: todos searched by context
+			    ((org-agenda-prefix-format "[ ] %T: ")
+			     (org-agenda-sorting-strategy '(tag-up priority-down))
+			     (org-agenda-todo-keyword-format "")
+			     (org-agenda-overriding-header "\n All Tasks \n"))))
+	   "ALL"
+	   ((org-agenda-compact-blocks t)
+	    (org-agenda-remove-tags t))
+	   ) ;; NOTE: `ALL' tasks
+	  ("u" "University"
+	   ((org-agenda-list nil nil 1)
+	    (tags "UNIVERSITY")
+	    (tags-todo "ASSIGNMENT"))
+	   "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
+	  ("p" "Project"
+	   ((tags-todo "PROJECT")
+	    (tags-todo "TRAVEL")
+	    (tags-todo "GENERAL")
+	    (tags-todo "WRITING")
+	    (tags-todo "UNIVERSITY")
+	    (tags-todo "NOTES"))
+	   "PROJECTS") ;; NOTE: `PROJECT' tasks
+	  ("j" "Journal"
+	   ((tags "JOURNAL"))
+	   "JOURNAL")
+	  ("r" "Reading"
+	   ((tags "READING")
+	    (tags "WEBSITE"))
+	   "READING") ;; NOTE: `READING' tasks
+	  )))
 
 ;;; IMPORTANT: org-export
 ;; SOURCE: `http://orgmode.org/manual/Exporting.html'
@@ -476,47 +477,27 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-capture "org-capture" "..." t)
 (autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
 
-;; TODO: re-order AND add new tags
-(setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
-      '(("ASSIGNMENT"       . ?a)
-	;; ("BOOKMARK"         . ?b)
-	("COMPUTER SCIENCE" . ?c)
-	("GENERAL"          . ?g)
-	("HOLIDAY"          . ?h)
-        ("LIBRARY"          . ?l)
-	;; ("IDEAS"            . ?i)
-	("JOURNAL"          . ?j)
-	("NOTES"            . ?n)
-	("MATHEMATICS"      . ?m)
-	("PROJECT"          . ?p)
-	("PROGRAMMING"      . ?P)
-	("READING"          . ?r)
-	("PHILOSOPHY"       . ?s)
-	("TRAVEL"           . ?t)
-	("WRITING"          . ?T)
-	("UNIVERSITY"       . ?u)
-	("WEBSITE"          . ?w)))
-
 ;;; IMPORTANT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
-(setq org-capture-templates
-      '(("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
-         "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
-        ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
-	 "%(add-course)" :empty-lines 1 :immediate-finish 1)
-        ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
-         "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-        ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
-         "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
-        ("J" "Journal" entry (file+datetree (expand-file-name user-org-notes-file))
-         "* %?\n Entered on %U\n  %i\n  %a")
-        ("N" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
-	 "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-        ("P" "Projects" plain (file+function (expand-file-name user-org-projects-file) project-capture)
-         "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)
-        ("R" "Reading" entry (file+headline (expand-file-name user-org-projects-file) "Reading"))
-        ("W" "Writing" entry (file+headline (expand-file-name user-org-projects-file) "Writing"))
-        ;; TODO: need to write `reading-capture' and `writing-capture' functions
-        ))
+(after "org-capture"
+  (setq org-capture-templates
+	'(("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
+	   "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
+	   "%(add-course)" :empty-lines 1 :immediate-finish 1)
+	  ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
+	   "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
+	   "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
+	  ("J" "Journal" entry (file+datetree (expand-file-name user-org-notes-file))
+	   "* %?\n Entered on %U\n  %i\n  %a")
+	  ("N" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("P" "Projects" plain (file+function (expand-file-name user-org-projects-file) project-capture)
+	   "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)
+	  ("R" "Reading" entry (file+headline (expand-file-name user-org-projects-file) "Reading"))
+	  ("W" "Writing" entry (file+headline (expand-file-name user-org-projects-file) "Writing"))
+	  ;; TODO: need to write `reading-capture' and `writing-capture' functions
+	  )))
 
 ;;; IMPORTANT: custom capture functions
 (defun search-for-heading (file heading prefix &rest junk)
@@ -611,27 +592,27 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;;; IMPORTANT: org-babel
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (autoload 'org-babel-load-file "org-babel" "Interact with programming languages in `org-mode'." t)
-;;(require 'ob-haskell) ;; NOTE: require `org-babel-haskell'
 
-(org-babel-do-load-languages 'org-babel-load-languages
-			     '((emacs-lisp . t)
-			       ;;(common-lisp . t)
-                               (maxima . t)
-			       (scheme . t)
-			       (haskell . t)
-			       (latex . t)
-			       (R . nil)
-			       (gnuplot . nil)
-			       (perl . nil)
-			       (python . nil)
-			       (ruby . nil)
-			       (screen . nil)
-			       (sh . nil)))
+(after "org-babel"
+  (org-babel-do-load-languages 'org-babel-load-languages
+			       '((emacs-lisp . t)
+				 ;;(common-lisp . t)
+				 (maxima . t)
+				 (scheme . t)
+				 (haskell . t)
+				 (latex . t)
+				 (R . nil)
+				 (gnuplot . nil)
+				 (perl . nil)
+				 (python . nil)
+				 (ruby . nil)
+				 (screen . nil)
+				 (sh . nil)))
 
-(setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
-      org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
-      org-src-tab-acts-natively t ;; NOTE: tab works properly
-      )
+  (setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
+	org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
+	org-src-tab-acts-natively t ;; NOTE: tab works properly
+	))
 
 ;;; IMPORTANT: org-latex-export
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
@@ -639,15 +620,16 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
 (eval-after-load "org-bibtex"
-  '(require 'org-exp-bibtex) ;; TODO: change to an autoload
+  '(require 'org-exp-bibtex)
   )
 
-(unless (boundp 'org-export-latex-classes)
-  (setq org-export-latex-classes nil))
+(after "org-exp"
+  (unless (boundp 'org-export-latex-classes)
+    (setq org-export-latex-classes nil))
 
-(add-to-list 'org-export-latex-classes
-	     '("paper"
-               "\\documentclass[12pt,a4paper,oneside]{paper}
+  (add-to-list 'org-export-latex-classes
+	       '("paper"
+		 "\\documentclass[12pt,a4paper,oneside]{paper}
 \\usepackage{amsfonts}
 \\usepackage{amsthm}
 \\setcounter{secnumdepth}{0}
@@ -715,9 +697,11 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	       org-beamer-sectioning))
 
 ;; IMPORTANT: enable latex source code highlighting
-(setq org-export-latex-listings t) ;; NOTE: enable listings features
+(setq org-export-latex-listings t)
+) ;; NOTE: enable listings features
 
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
+(after "org"
 (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
 (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
 (add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
@@ -725,7 +709,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
 (add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
 (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
-(add-to-list 'org-export-latex-packages-alist '("" "hyperref")) ;; NOTE: hyper-references
+(add-to-list 'org-export-latex-packages-alist '("" "hyperref"))) ;; NOTE: hyper-references
 
 ;;; IMPORTANT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
@@ -764,6 +748,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;; (add-to-list 'org-entities-user '("rangle" "\\rangle" t "&rangle;" "[right angle]" nil ""))
 
 ;; IMPORTANT: logic symbols
+(after "org-entities"
 (add-to-list 'org-entities-user '("neg" "\\neg" nil nil nil nil "¬"))
 ;;(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "↔"))
 (add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "\leftrightarrow"))
@@ -816,6 +801,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (add-to-list 'org-entities-user '("pharyngealfricative" "" nil nil nil nil "ʕ"))
 ;;(add-to-list 'org-entities-user '("Eng" "\\textipa{N}" nil nil nil nil "Ŋ"))
 ;;(add-to-list 'org-entities-user '("Esh" "\\textipa{S}" nil nil nil nil "Ʃ"))
+)
 
 ;; ⟨ʋ⟩ ⟨ɑ⟩ ⟨ɣ⟩ ⟨ɛ⟩ ⟨ɸ⟩ ⟨ʋ⟩ ⟨β⟩ ⟨θ⟩ ⟨χ⟩
 
@@ -1100,36 +1086,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   (interactive "p")
   (surround-word ?= force))
 
-(define-key org-mode-map (kbd "C-c b") 'my-bold-word)
-(define-key org-mode-map (kbd "C-c i") 'my-italic-word)
-(define-key org-mode-map (kbd "C-c u") 'my-underline-word)
-(define-key org-mode-map (kbd "C-c v") 'my-verbatim-word)
-(define-key org-mode-map (kbd "C-c t") 'my-teletyped-word)
-
-;;; IMPORTANT: ...
-(defun get-page-title (url) ;; FIX: does this actually work?
-  "Get title of web page, whose url can be found in the current line."
-  (interactive "sURL: ")
-  ;; Get title of web page, with the help of functions in url.el
-  (with-current-buffer (url-retrieve-synchronously url) ;; find title by grep the html code
-    (goto-char 0)
-    (re-search-forward "<title>\\([^<]*\\)</title>" nil t 1)
-    (setq web_title_str (match-string 1))
-    (goto-char 0)
-    (if (re-search-forward "charset=\\([-0-9a-zA-Z]*\\)" nil t 1) ;; find charset by grep the html code
-        (setq coding_charset (downcase (match-string 1)))
-      (setq coding_charset "utf-8") ;; find the charset, assume utf-8 otherwise
-      (setq web_title_str (decode-coding-string web_title_str (intern coding_charset)))) ;; decode the string of title.
-    (insert-string "\n\n\n")
-    (insert-string web_title_str)
-    (insert-string (concat "[[" url "][" web_title_str "]]"))
-    (insert-string (format "%s - %s" url web_title_str))
-    (insert "\n\n\n")
-    (insert web_title_str)
-    (insert (concat "[[" url "][" web_title_str "]]"))
-    (insert (format "%s - %s" url web_title_str))
-    (message (concat "title is: " web_title_str))))
-
 ;;; IMPORTANT: customisations
 (defun turn-on-custom-org-bindings ()
   "Activate custom `org-mode' bindings."
@@ -1140,7 +1096,11 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ;;(define-key org-mode-map (kbd "C-c c") 'org-insert-citation) ;; NOTE: insert a citation clause
   (define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
   (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote) ;; NOTE: insert a footnote with C-c f
-  )
+  (define-key org-mode-map (kbd "C-c b") 'my-bold-word)
+  (define-key org-mode-map (kbd "C-c i") 'my-italic-word)
+  (define-key org-mode-map (kbd "C-c u") 'my-underline-word)
+  (define-key org-mode-map (kbd "C-c v") 'my-verbatim-word)
+  (define-key org-mode-map (kbd "C-c t") 'my-teletyped-word))
 
 (defun turn-on-custom-org ()
   "Activate custom `org-mode' functionality."
@@ -1152,29 +1112,16 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
 
-;;; IMPORTANT: images
-;; SOURCE: `http://orgmode.org/worg/org-configs/org-config-examples.html'
-;;(add-to-list 'iimage-mode-image-regex-alist (cons (concat "\\[\\[file:\\(~?" iimage-mode-image-filename-regex "\\)\\]")  1))
-
-;; (defun org-toggle-iimage-in-org ()
-;;   "Display images in an `org-mode' buffer."
-;;   (interactive)
-;;   (if (face-underline-p 'org-link)
-;;       (set-face-underline-p 'org-link nil)
-;;       (set-face-underline-p 'org-link t))
-;;   (iimage-mode))
-
-;; TODO: add `org-toggle-iimage-in-org' to an `org-hook' function
-
 ;;; IMPORTANT: `org-link'
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
-(org-add-link-type "ebib" 'ebib)
+(after "org"
+  (org-add-link-type "ebib" 'ebib)
 
-;; TODO: add more citation types to ebib
-(org-add-link-type "cite" 'ebib
-		   (lambda (path desc format)
-		     (cond ((eq format 'latex)
-			    (format "\\cite{%s}" path)))))
+  ;; TODO: add more citation types to ebib
+  (org-add-link-type "cite" 'ebib
+		     (lambda (path desc format)
+		       (cond ((eq format 'latex)
+			      (format "\\cite{%s}" path))))))
 
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
 ;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))

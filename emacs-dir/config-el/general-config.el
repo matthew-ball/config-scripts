@@ -311,6 +311,8 @@
 		(mode . help-mode)
 		(mode . Man-mode)
 		(mode . woman-mode)
+		(mode . occur-mode)
+		(mode . grep-mode)
 		(name . "^\\*WoMan-Log\\*$")
 		(name . "^\\*Org Processes\\*$")))
 	   ("Process Manager" ;; NOTE: process management related buffers
@@ -321,9 +323,7 @@
 		(mode . package-menu-mode)
 		(name . "^\\*Package Info\\*$")))
 	   ("Miscellaneous" ;; NOTE: miscellaneous special buffers
-	    (or (mode . occur-mode)
-		(mode . grep-mode)
-		(mode . customize-mode)
+	    (or (mode . customize-mode)
 		(mode . Custom-mode)
 		(mode . completion-list-mode)
 		(mode . finder-mode)
