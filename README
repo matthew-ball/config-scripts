@@ -13,7 +13,12 @@
 
 - The configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
-** Linking Files
+** TODO learn git branches (with magit)
+*** Stable Branch
+
+*** Unstable Branch
+
+** Configuration Files
 - This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
 
 - The files and directories of the ~configuration scripts~ project can then be =symlink='d from their source to a destination location.
@@ -53,9 +58,8 @@
 - the symlink command is: =ln -s <src> <dst>=
 - example: =cd; ln -s .conf-scripts/bashrc .bashrc=
 - =config-setup.sh= started
-
-** Initial Configuration
-- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; it will run on an =arch= install or a =debian= install.
+** Configuration Script
+- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; though it has primarily been developed on a =debian= install.
 
 - An install will just run the [[file:config-setup.sh][config-setup.sh]] script.
 
@@ -67,20 +71,16 @@
   + Restart system.
 
 - The user =BASH= profile is launched with the [[file:bash-dir/profile.sh][bash-dir/profile.sh]] script.
-  + TODO: document the profile file
 
-- =startx= is launched with the [[file:xinit-dir/rc.sh][xinit/init.sh]] script.
-  + - =stumpwm= is loaded with the  command: 
-   #+begin_src shell-script
+- The system =startx= command is launched with the [[file:xinit-dir/rc.sh][xinit/init.sh]] script.
+  + The window manager =stumpwm= is loaded with the command: 
+   #+BEGIN_SRC shell-script
      exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)"
-   #+end_src
+   #+END_SRC
 
-- Have two different versions of the configuration setups:
-  + `stable' :: Guaranteed to work on both =debian= and =arch= installs.
-  + `unstable' :: No guarantee it will work on a =debian= install.
+- To automatically (un)mount USB devices install =usbmount=.
 
-*** Desktop Manager
-**** GNOME Desktop Manager
+*** GNOME Desktop Manager
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
 - To start GDM manually: =sudo /etc/init.d/gdm start=
 - To restore defaults: =sudo update-rc.d gdm defaults=
@@ -133,13 +133,12 @@
 
 *** Restore Script :: [[file:restore-script.sh][restore-script.sh]]
 - the restore script ...
-
 ** TODO Create a =mailconfig= file for handling the email configuration
 - symlink to ~/.authinfo
-   #+begin_src shell-script
+   #+BEGIN_SRC shell-script
      machine imap.gmail.com login user-primary-email-address port 993
      machine smtp.gmail.com login user-primary-email-address port 587
-   #+end_src
+   #+END_SRC
 
 *** TODO write a script to split the user-primary-email-address into user-address '@' user-provider
 
