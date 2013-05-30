@@ -24,47 +24,6 @@
 
 ;;; Code:
 
-;;; IMPORTANT: package manager
-;; SOURCE: `http://emacswiki.org/emacs/ELPA'
-(require 'package)
-
-(after "package"
-  (package-initialize)
-
-  ;; NOTE: set download repositories
-  (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-			   ("gnu" . "http://elpa.gnu.org/packages/")
-			   ("marmalade" . "http://marmalade-repo.org/packages/"))))
-
-(defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
-
-;; IMPORTANT: this needs to be called often (i.e. whenever a new package is installed/removed)
-(defalias 'export-packages '(lambda () "Export `package-alist' variable." (export-custom-packages-alist "/home/chu/.emacs.d/elpa/package-list"))) ;; TODO: clean up the hard-coded path name
-
-(defun export-custom-packages-alist (file &rest junk)
-  "Write the contents of `package-alist' to FILE."
-  (save-excursion
-    (with-temp-file file
-      (insert (format "%S" package-alist)))))
-
-(defun load-custom-package-alist (file)
-  "Load a file of packages into the variable `custom-packages-alist'."
-  (interactive)
-  (when (file-exists-p file)
-    (message "this will read the file as `custom-packages-alist'."))
-  (custom-packages-install))
-
-(defun custom-packages-install ()
-  "Install all custom configuration packages with `package.el'."
-  (interactive)
-  (unless package-archive-contents
-    (package-refresh-contents))
-  (dolist (package custom-packages-alist)
-    (let ((package-name (car package))
-	  (package-version (cdr package)))
-      (unless (package-installed-p (intern package-name))
-        (package-install (intern package-name))))))
-
 ;; IMPORTANT: default variable values
 (setq inhibit-startup-message t ;; NOTE: turn off startup message
       inhibit-startup-echo-area-message t ;; NOTE: turn off startup echo area message
