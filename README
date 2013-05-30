@@ -1,5 +1,3 @@
-This README file is best read using functionality provided by =org-mode=.
-
 * The ~configuration script~ project
 - This directory houses the configuration files most important for the perfect[fn:subjective] working system.
 
@@ -7,11 +5,11 @@ This README file is best read using functionality provided by =org-mode=.
 
 - The ~configuration script~ project is designed for use with the following applications:
   + =BASH= Terminal :: [[file:bash-dir/README][README]]
-    - Version: 0.00
+    - Version: 4.1.5(1)
   + =StumpWM= Window Manager :: [[file:stumpwm-dir/README][README]]
-    - Version: 0.00
+    - Version: 0.9.7-80
   + =GNU Emacs= Editor :: [[file:emacs-dir/README][README]]
-    - Version: 24.0.92.1
+    - Version: 24.3.50.1
 
 - The configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
@@ -36,37 +34,20 @@ This README file is best read using functionality provided by =org-mode=.
 | bash-dir/profile.sh   | ~/.bash\_profile | ln -s bash-dir/profile.sh ~/.bash\_profile |
 |-----------------------+------------------+--------------------------------------------|
 
-**** Files
-- bash-dir
-  + README
-  + init.sh
-  + profile.sh
-  + aliases.sh
-  + functions.sh
-
-- emacs-dir
-  + README
-  + init.el
-
-- stumpwm-dir
-  + README
-  + init.lisp
-
-- xinit-dir
-  + README
-  + init.sh
-
 *** List of non-link files:
-# TODO: add README files
-|-------------------|
-| File Name:        |
-|-------------------|
-| [[file:.gitignore][.gitignore]]        |
-| [[file:~/.conf-scripts][README]]            |
-| [[file:config-setup.sh][config-setup.sh]]   |
-| [[file:restore-script.sh][restore-script.sh]] |
-| [[file:backup-script.sh][backup-script.sh]]  |
-|-------------------|
+|--------------------|
+| File Name:         |
+|--------------------|
+| [[file:.gitignore][.gitignore]]         |
+| [[file:~/.conf-scripts][README]]             |
+| [[file:bash-dir/README][bash-dir/README]]    |
+| [[file:emacs-dir/README][emacs-dir/README]]   |
+| [[file:stumpwm-dir/README][stumpwm-dir/README]] |
+| [[file:xinit-dir/README][xinit-dir/README]]   |
+| [[file:config-setup.sh][config-setup.sh]]    |
+| [[file:restore-script.sh][restore-script.sh]]  |
+| [[file:backup-script.sh][backup-script.sh]]   |
+|--------------------|
 
 *** TODO create script for symlinking files and directories
 - the symlink command is: =ln -s <src> <dst>=
@@ -161,13 +142,6 @@ This README file is best read using functionality provided by =org-mode=.
    #+end_src
 
 *** TODO write a script to split the user-primary-email-address into user-address '@' user-provider
-
-** TODO Create a /literate/ configuration script
-- This would bring GNU Emacs to the centre of this configuration setup; which is a desired goal.
-
-- Based on the idea available from Eric Schulte at [[http://eschulte.me/emacs-starter-kit/starter-kit.html][Emacs Starter Kit]].
-
-- Cannot start this *until* the original project is functioning.
 
 * TODO create personal dictionary from ~/home/chu/.aspell.en.pws~
 * Footnotes
