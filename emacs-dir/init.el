@@ -100,9 +100,9 @@
     (message "Loading %s configuration" name)
     (funcall 'require (intern config-file))))
 
+(use-config-file "appearance")
 (use-config-file "general")
 (use-config-file "user")
-(use-config-file "appearance")
 (use-config-file "writing")
 (use-config-file "programming")
 (use-config-file "key-bindings")
