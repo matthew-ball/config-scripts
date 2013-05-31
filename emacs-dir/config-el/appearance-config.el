@@ -122,17 +122,26 @@
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
 (autoload 'hs-minor-mode "hideshow" "Fold code with GNU Emacs." t)
 
-;; TODO: add custom modes
-;; (defvar hs-special-modes-alist
-;;   (mapcar 'purecopy
-;;   '((c-mode "{" "}" "/[*/]" nil nil)
-;;     (c++-mode "{" "}" "/[*/]" nil nil)
-;;     (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
-;;     (java-mode "{" "}" "/[*/]" nil nil)
-;;     (js-mode "{" "}" "/[*/]" nil))))
+(after "hideshow"
+  ;; TODO: add custom modes
+  ;; (defvar hs-special-modes-alist
+  ;;   (mapcar 'purecopy
+  ;;   '((c-mode "{" "}" "/[*/]" nil nil)
+  ;;     (c++-mode "{" "}" "/[*/]" nil nil)
+  ;;     (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
+  ;;     (java-mode "{" "}" "/[*/]" nil nil)
+  ;;     (js-mode "{" "}" "/[*/]" nil))))
 
-(setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
-(setq hs-isearch-open 't) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
+  (setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
+  (setq hs-isearch-open 't) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
+
+  ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
+  ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+  ;; (add-hook 'shell-script-mode    'hs-minor-mode)
+  ;; (add-hook 'haskell-mode-hook    'hs-minor-mode)
+  (add-hook 'latex-mode-hook 'hs-minor-mode)
+
+  (setq hs-set-up-overlay 'display-code-line-counts))
 
 (defun toggle-selective-display (column)
   (interactive "P")
@@ -150,21 +159,12 @@
 	  (hs-show-all))
     (toggle-selective-display column)))
 
-;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-;; (add-hook 'shell-script-mode    'hs-minor-mode)
-;; (add-hook 'haskell-mode-hook    'hs-minor-mode)
-(after "hideshow"
-  (add-hook 'latex-mode-hook 'hs-minor-mode))
-
 (defun display-code-line-counts (ov)
   (when (eq 'code (overlay-get ov 'hs))
     (overlay-put ov 'display
 		 (format "... / %d"
 			 (count-lines (overlay-start ov)
 				      (overlay-end ov))))))
-
-(setq hs-set-up-overlay 'display-code-line-counts)
 
 ;;; IMPORTANT: diminish
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
