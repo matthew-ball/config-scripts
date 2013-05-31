@@ -31,7 +31,7 @@
 ;;(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
 
 (defun load-frame ()
-  ""
+  "Apply features to a new frame."
   (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
   (setq color-theme-is-global t ;; ...
 	frame-title-format "%b" ;; NOTE: set frame title properties
