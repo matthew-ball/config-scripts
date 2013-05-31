@@ -121,6 +121,7 @@
     (message "this will read the file as `custom-packages-alist'."))
   (custom-packages-install))
 
+;; FIX: this function is far too complicated
 (defun custom-packages-install ()
   "Install all custom configuration packages with `package.el'."
   (interactive)

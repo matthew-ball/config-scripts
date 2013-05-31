@@ -29,24 +29,21 @@
 ;; SOURCE: `http://color-theme-select.heroku.com/'
 ;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
 ;;(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
-;;(autoload 'powerline-default-theme "powerline" "" t) ;; BUG: `powerline' doesn't respect ERC colours
 
 (defun load-frame ()
   ""
   (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
   (setq color-theme-is-global t ;; ...
 	frame-title-format "%b" ;; NOTE: set frame title properties
-	icon-title-format "%b"))
+	icon-title-format "%b")
+  (color-theme-zenburn))
 
 (after "color-theme"
   (load-frame))
 
-;; IMPORTANT: X server specific (apply `powerline' mode-line extension)
+;; IMPORTANT: X server specific
 (when (display-graphic-p)
-  (load-frame)
-  ;; (color-theme-initialize)
-  ;; (powerline-default-theme)
-  )
+  (load-frame))
 
 ;; IMPORTANT: apply colour theme to a GNU Emacs frame (i.e. `emacsclient')
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
@@ -54,10 +51,7 @@
   "Decorate new frame FRAME with `zenburn' colour theme."
   (select-frame frame)
   (when (display-graphic-p)
-    ;; (powerline-default-theme)
-    (color-theme-zenburn)
-    ;; (require 'anti-zenburn-theme)
-    ))
+    (color-theme-zenburn)))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 
@@ -66,7 +60,6 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ;; NOTE: hide the scroll bar
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1)) ;; NOTE: turn off blinking cursor
 (when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; NOTE: turn off tooltip
-;;(when (fboundp 'fringe-mode) (fringe-mode -1)) ;; NOTE: turn off the fringe
 (when (fboundp 'fringe-mode) (set-fringe-mode '(1 . 0))) ;; NOTE: set fringe to 1px on left side only
 
 ;;; IMPORTANT: error bell
