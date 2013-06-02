@@ -82,9 +82,8 @@
   (setq dictem-server "dict.org"
 	dictem-port "2628"
 	dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra")
-	;; dictem-select-database "*"
-	;; dictem-select-strategy "."
-	)
+	dictem-default-database "*"
+	dictem-default-strategy ".")
 
   ;; TODO: move to key-bindings!!!
   (defconst dictem-prefix-key (kbd "C-c d") "Key map for `dictem'.")

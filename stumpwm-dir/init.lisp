@@ -316,9 +316,15 @@
   (dolist (group (cdr *groups*)) ;; NOTE: the `car' of the list is the "default" group
     (gnewbg group)))
 
+;; IMPORTANT: floating group stuff
+(defcommand resize-floating-window (x y) ((:number x)
+					  (:number y))
+  ;; TODO: check to make sure `(current-group)' *is* a floating-group (!!!)
+  (float-window-move-resize (current-window) x y))
+
 ;; IMPORTANT: group configuration
 (defun screen-window-count () ;; NOTE: count the windows in the screen (all the groups)
-  "Return the number of window frames in the current screen."
+  "Return the number of window frames in the current screen (i.e. all the groups)."
   (let ((window-count 0))
     (dolist (group (screen-groups (current-screen)))
       (setq window-count (+ (length (group-windows group)) window-count)))

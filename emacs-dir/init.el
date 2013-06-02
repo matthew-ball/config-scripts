@@ -45,6 +45,8 @@
 (defcustom user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material." :group 'user-directories :type 'string)
 (defcustom user-organisation-directory (format "%s/Organisation/" user-documents-directory) "Directory for user's organisation files." :group 'user-directories :type 'string)
 (defcustom user-university-directory (format "%s/ANU/" user-documents-directory) "Directory for user's university files." :group 'user-directories :type 'string)
+;; IMPORTANT: requires `quicklisp' and (ql:quickload "quicklisp-slime-helper")
+(defcustom quicklisp-directory (expand-file-name "~/quicklisp/dists/quicklisp/software/") "The directory path to `quicklisp'." :group 'user-directories :type 'string)
 
 ;; NOTE: user files
 (defgroup user-files nil "User files." :group 'user-variables)
@@ -80,6 +82,7 @@
 (add-to-list 'load-path (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/contrib")) ;; TODO: this is for `stumpwm-mode'
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "dictem-1.0.4")) ;; TODO: move to `../extras-el/dictem-el/'
 ;;(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/wireless/wireless") ;; TODO: move to `../extras-el/wireless-el/'
+(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20120407-cvs"))) ;; TODO: this is not ideal
 
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
   (if (file-exists-p default-directory) ;; NOTE: if the directory `~/.emacs.d/elpa/' exists ...
@@ -89,7 +92,8 @@
 ;;; IMPORTANT: info path
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
 (after "info"
-  (add-to-list 'Info-additional-directory-list (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/")))
+  (add-to-list 'Info-additional-directory-list (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/"))
+  (add-to-list 'Info-additional-directory-list (concat quicklisp-directory "slime-20120208-cvs/doc/")))
 
 ;;; IMPORTANT: package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
@@ -106,7 +110,10 @@
 (defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
 
 ;; IMPORTANT: this needs to be called often (i.e. whenever a new package is installed/removed)
-(defalias 'export-packages '(lambda () "Export `package-alist' variable." (export-custom-packages-alist "/home/chu/.emacs.d/elpa/package-list"))) ;; TODO: clean up the hard-coded path name
+(defalias 'export-packages '(lambda ()
+                              "Export `package-alist' variable."
+                              (export-custom-packages-alist
+                               "/home/chu/.emacs.d/elpa/package-list"))) ;; TODO: clean up the hard-coded path name
 
 (defun export-custom-packages-alist (file &rest junk)
   "Write the contents of `package-alist' to FILE."

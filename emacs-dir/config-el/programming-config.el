@@ -38,7 +38,7 @@
   ;; (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings (TODO: not sure about this function)
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   ;; (longlines-mode) ;; NOTE: enable long lines
-  (hl-line-mode) ;; NOTE: turn on line highlight mode
+  ;; (hl-line-mode) ;; NOTE: turn on line highlight mode
   ;;(which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   )
@@ -99,56 +99,52 @@
 				      ;; (inferior-slime-mode t)
 				      (paredit-mode t)))
 ;;; IMPORTANT: slime/swank
-;; IMPORTANT: requires `quicklisp' and (ql:quickload "quicklisp-slime-helper")
-(defvar quicklisp-directory "~/quicklisp/dists/quicklisp/software/" "The directory path to `quicklisp'.")
-
-(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20120407-cvs"))) ;; TODO: this is not ideal
-
 (require 'slime-autoloads)
 
-(slime-setup '(slime-fancy
-	       slime-tramp
-	       slime-banner
-	       slime-compiler-notes-tree
-	       slime-indentation
-	       slime-fontifying-fu
-	       slime-mdot-fu
-	       slime-scratch
-	       slime-xref-browser
-	       slime-asdf
-               ;; ---
-	       ;; slime-package-fu
-	       ;; slime-repl
-	       ;; slime-editing-commands
-	       ;; slime-fancy-inspector
-	       ;; slime-fuzzy
-	       ;; slime-autodoc
-	       ;; slime-indentation-fu
-	       ;; slime-references
-               ;; ---
-	       slime-sbcl-exts
-               ))
+(after "slime"
+  (slime-setup '(slime-fancy
+                 slime-tramp
+                 slime-banner
+                 slime-compiler-notes-tree
+                 slime-indentation
+                 slime-fontifying-fu
+                 ;; slime-mdot-fu
+                 slime-scratch
+                 slime-xref-browser
+                 slime-asdf
+                 ;; ---
+                 ;; slime-package-fu
+                 ;; slime-repl
+                 ;; slime-editing-commands
+                 ;; slime-fancy-inspector
+                 slime-fuzzy
+                 slime-autodoc
+                 ;; slime-indentation-fu
+                 ;; slime-references
+                 ;; ---
+                 slime-sbcl-exts
+                 ))
 
-(setq slime-net-coding-system 'utf-8-unix
-      slime-complete-symbol*-fancy t
-      slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+  (setq slime-net-coding-system 'utf-8-unix
+        slime-complete-symbol*-fancy t
+        slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
-(add-hook 'slime-mode-hook '(lambda ()
-			      ;; (start-slime-automatically)
-			      (turn-on-general-programming-mode)
-			      (paredit-mode t)
-			      ))
+  (add-hook 'slime-mode-hook '(lambda ()
+                                ;; (start-slime-automatically)
+                                (turn-on-general-programming-mode)
+                                (paredit-mode t)
+                                ))
 
-(add-hook 'slime-repl-mode-hook '(lambda () (paredit-mode t)))
+  (add-hook 'slime-repl-mode-hook '(lambda () (paredit-mode t)))
 
-;;(define-key slime-repl-mode-map (kbd "<return>") 'slime-repl-return)
+  ;;(define-key slime-repl-mode-map (kbd "<return>") 'slime-repl-return)
 
-;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
-(defun override-slime-repl-bindings-with-paredit (&rest junk)
-  (define-key slime-repl-mode-map
-    (read-kbd-macro paredit-backward-delete-key) nil))
+  ;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
+  (defun override-slime-repl-bindings-with-paredit (&rest junk)
+    (define-key slime-repl-mode-map
+      (read-kbd-macro paredit-backward-delete-key) nil))
 
-(add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit))
 
 ;;; IMPORTANT: clojure programming
 (autoload 'clojure-mode "clojure-mode" "Major mode for editing clojure source code files." t)

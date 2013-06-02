@@ -185,6 +185,7 @@
                                        ;; "#org-mode"
                                        "#stumpwm"
                                        "#lisp"
+                                       "#sbcl"
                                        ;; "#clojure"
                                        ;; "#ubuntu"
                                        ;; "#ubuntu-discuss"

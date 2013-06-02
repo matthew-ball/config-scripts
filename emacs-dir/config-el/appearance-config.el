@@ -27,7 +27,6 @@
 ;;; IMPORTANT: appearance
 ;; SOURCE: `http://emacswiki.org/emacs/ColorTheme'
 ;; SOURCE: `http://color-theme-select.heroku.com/'
-;; SOURCE: `http://www.emacswiki.org/emacs/PowerLine'
 ;;(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
 
 (defun load-frame ()
@@ -36,7 +35,9 @@
   (setq color-theme-is-global t ;; ...
 	frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  (color-theme-zenburn))
+  ;; (color-theme-zenburn)
+  (load-theme 'tango-dark)
+  )
 
 (after "color-theme"
   (load-frame))
@@ -48,10 +49,10 @@
 ;; IMPORTANT: apply colour theme to a GNU Emacs frame (i.e. `emacsclient')
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
 (defun decorate-frame (frame)
-  "Decorate new frame FRAME with `zenburn' colour theme."
+  "Decorate new frame FRAME with colour theme."
   (select-frame frame)
   (when (display-graphic-p)
-    (color-theme-zenburn)))
+    (load-frame)))
 
 (add-hook 'after-make-frame-functions 'decorate-frame)
 
