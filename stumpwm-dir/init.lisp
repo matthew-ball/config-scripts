@@ -82,19 +82,24 @@
 
 ;;; IMPORTANT: user variables
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
-(defvar *user-source-directory* (concat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
-(defvar *user-quicklisp-directory* (concat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
+;; TODO: `*user-projects-directory*' ???
+;;(defvar *user-source-directory* (concat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
+;;(defvar *user-quicklisp-directory* (concat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
+(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
+(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
 
 ;;; IMPORTANT: default applications
-;; NOTE: the following two probably only work on debian
+;; NOTE: the following two probably only work on debian ...
+;; TODO: system-check? If running debian ...
 (defvar *browser* "x-www-browser" "Set the default web browser.")
 (defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.")
-(defvar *editor* (getenv "EDITOR") "Set the default editor.") ;; NOTE: set shell environment editor
+;; NOTE: get from shell environment editor ...
+(defvar *editor* (getenv "EDITOR") "Set the default editor.")
+(defvar *file-manager* (getenv "FILE_MANAGER") "Set the default file manager.")
+(defvar *package-manager* (getenv "PACKAGE_MANAGER") "Set the default package manager.")
+(defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Set the default system monitor.")
 
 ;; ERROR: hardcoded
-(defvar *file-manager* "pcmanfm" "Set the default file manager.")
-(defvar *package-manager* "aptitude" "Set the default package manager.")
-(defvar *system-monitor* "htop" "Set the default system monitor.")
 (defvar *document-viewer* "evince" "Set the default document reader.")
 ;; (defvar *office-suite* "openoffice.org" "Set the default office suite.") ;; TODO: set this up
 (defvar *audio-player* "ncmpcpp" "Set the default audio player.")
@@ -163,6 +168,7 @@
       *message-window-gravity* :top-right ;; NOTE: set the message-box to the top right
       *input-window-gravity* :top-right ;; NOTE: set the input-box to the top right
       ;;*window-name-source* :title ;; NOTE: windows get their name from their title property
+      ;;*window-format* "%m%n%s%c" ;; NOTE: show application `instance' instead of application `title'
       *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
       *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
       )
@@ -184,13 +190,13 @@
 
 ;;; IMPORTANT: mode line
 ;; NOTE: mode line colours
-(setf ;; *mode-line-background-color* *background-colour*
+(setf *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
+      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
+      *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
+      ;; *mode-line-background-color* *background-colour*
       ;; *mode-line-foreground-color* *foreground-colour*
       ;; *mode-line-border-color* *border-colour*
-      *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
-      *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
-      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
-      ;;*mode-line-position* :top
+      ;; *mode-line-position* :top
       *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
       )
 
@@ -313,14 +319,15 @@
 
 (defun create-groups (&rest args)
   "Create new groups."
-  (dolist (group (cdr *groups*)) ;; NOTE: the `car' of the list is the "default" group
-    (gnewbg group)))
+  (unless (eq (cdr *groups*) nil)
+    (dolist (group (cdr *groups*)) ;; NOTE: the `car' of the list is the "default" group
+      (gnewbg group))))
 
 ;; IMPORTANT: floating group stuff
-(defcommand resize-floating-window (x y) ((:number x)
-					  (:number y))
-  ;; TODO: check to make sure `(current-group)' *is* a floating-group (!!!)
-  (float-window-move-resize (current-window) x y))
+;; (defcommand resize-floating-window (x y) ((:number x)
+;; 					  (:number y))
+;;   ;; TODO: check to make sure `(current-group)' *is* a floating-group (!!!)
+;;   (float-window-move-resize (current-window) x y))
 
 ;; IMPORTANT: group configuration
 (defun screen-window-count () ;; NOTE: count the windows in the screen (all the groups)

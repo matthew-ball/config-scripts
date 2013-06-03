@@ -26,7 +26,7 @@
 
 ;;; IMPORTANT: visual switch window
 ;; SOURCE: `http://tapoueh.org/emacs/switch-window.html'
-(require 'switch-window)
+;;(require 'switch-window)
 
 ;;; IMPORTANT: gnome network-manager
 (autoload 'gnomenm-toggle-enabled "gnomenm" "Provides an interface to the Gnome Network Manager." t)
@@ -484,11 +484,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
 ;; SOURCE: `http://emacswiki.org/emacs/Gnus'
-;; (require 'gnus nil 'noerror)
-;; (require 'nnimap)
-;; (require 'starttls)
-;; (require 'smtpmail)
-;; (autoload 'gnus-parameters "gnus" "Parameters for Gnus mail." t)
 (autoload 'gnus "gnus" "Read mail and news with GNU Emacs." t)
 
 ;; TODO:
@@ -502,12 +497,14 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 (after "gnus"
   (require 'smtpmail)
+  ;; (require 'nnimap)
+  ;; (require 'starttls)
 
-;;; IMPORTANT: encryption
+  ;; IMPORTANT: encryption
   ;; SOURCE: `http://emacswiki.org/emacs/EasyPG'
   ;; TODO: configuration encryption
 
-;;; IMPORTANT: personal settings
+  ;; IMPORTANT: personal settings
   (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
         ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
         ;; user-full-name "Matthew Ball" ;; NOTE: user full-name
@@ -530,7 +527,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
   ;; (setq custom-news-dir "~/News/") ;; NOTE: set directory for news
 
-;;; IMPORTANT: gnus settings
+  ;; IMPORTANT: gnus settings
   (setq gnus-select-method '(nnml "")
         gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
         gnus-invalid-group-regexp "[:`'\"]\\|^$"
@@ -553,13 +550,13 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
   (setq message-kill-buffer-on-exit t) ;; NOTE: kill the mail buffer after sending message
 
-;;; IMPORTANT: visible headers
+  ;; IMPORTANT: visible headers
   (setq gnus-visible-headers
         (concat "^From:\\|^Subject:\\|^Newsgroups:"
                 "\\|^Organization:"
                 "\\|^To:\\|^Cc:\\|^Date:"))
 
-;;; IMPORTANT: imap setup
+  ;; IMPORTANT: imap setup
   (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
         imap-log t ;; NOTE: log the imap session
         imap-store-password t ;; NOTE: store the session password
@@ -581,15 +578,14 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
           ))
 
 
-;;; IMPORTANT: smtp setup(single account)
+  ;; IMPORTANT: smtp setup (single account)
   (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
         smtpmail-smtp-server "smtp.gmail.com"
         smtpmail-default-smtp-server "smtp.gmail.com"
         smtpmail-smtp-service 587
         smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))) ;; TODO: replace email address
 
-;;; IMPORTANT: smtp setup (multiple accounts) (ERROR: this does not work)
-
+  ;; IMPORTANT: smtp setup (multiple accounts) (ERROR: this does not work)
   ;; (defvar smtp-accounts ;; available smtp accounts
   ;;   '((ssl "mathew.ball@gmail.com" "smtp.gmail.com" 587 "key" nil)
   ;;     (ssl "u4537508@anu.edu.au.com" "smtphost.anu.edu.au" 465 "key" nil)))
@@ -645,22 +641,22 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
   ;; 	  finally (error "Cannot interfere SMTP information."))))
 
-;;; IMPORTANT: email config
+  ;; IMPORTANT: email config
   ;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
   ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; NOTE: add tab completion to name in the "To:" field
 
   ;; (remove-hook 'gnus-summary-prepare-exit-hook
   ;; 	     'gnus-summary-expire-articles)
 
-;;; IMPORTANT: html display
+  ;; IMPORTANT: html display
   (setq mm-text-html-renderer 'w3m)
   (setq mm-inline-text-html-with-images t)
   (setq mm-inline-text-html-with-w3m-keymap nil)
 
-;;; IMPORTANT: mode-line
+  ;; IMPORTANT: mode-line
   ;; (setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n") ;; NOTE: set mode-line
 
-;;; IMPORTANT: rss config
+  ;; IMPORTANT: rss config
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
 
   ;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
@@ -669,7 +665,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; NOTE: display 'text/html' parts in nnrss groups
   ;; (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
-;;; IMPORTANT: gnus parameters
+  ;; IMPORTANT: gnus parameters
   ;; (setq gnus-parameters
   ;;       '(("mail\\..*"
   ;; 	 (gnus-show-threads nil)
@@ -801,9 +797,19 @@ Although this is interactive, call this with \\[browse-url]."
 (after "w3m"
   (require 'w3m-cookie)
   (require 'w3m-lnum)
+  (require 'w3m-filter)
+  (require 'w3m-antenna)
+  (require 'w3m-ccl)
 
   ;; NOTE: w3m interface and cookies
   (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
+
+  ;; NOTE: w3m antenna
+  (w3m-antenna-mode 1)
+  (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
+
+  ;; NOTE: w3m filter
+  ;; (w3m-filter-mode 1)
 
   (setq url-automatic-caching t
         ;; w3m-key-binding 'info
@@ -817,8 +823,11 @@ Although this is interactive, call this with \\[browse-url]."
         w3m-output-coding-system 'utf-8
         w3m-terminal-coding-system 'utf-8
         w3m-use-cookies t ;; NOTE: use cookies in w3m
+        ;; w3m-default-directory (concat (expand-file-name user-emacs-directory) "w3m")
+        w3m-default-save-directory (concat (expand-file-name user-emacs-directory) "w3m")
+        w3m-bookmark-file (concat (expand-file-name user-emacs-directory "w3m/bookmark.html"))
+        w3m-arrived-file (concat (expand-file-name user-emacs-directory) "w3m/arrived")
         w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
-        ;; w3m-bookmark-file
         w3m-cookie-accept-bad-cookies t
         w3m-cookie-accept-domains '("www.emacswiki.org"
                                     "www.google.com"

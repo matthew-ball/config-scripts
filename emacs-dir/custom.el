@@ -55,7 +55,10 @@
     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
  '(org-agenda-files
    (quote
-    ("~/Documents/ANU/PHIL2094/phil2094.org" "~/Documents/ANU/LING1001/ling1001.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/contacts.org" "/home/chu/Documents/Organisation/birthday.org" "/home/chu/Documents/Organisation/bookmarks.org"))))
+    ("~/Documents/ANU/PHIL2094/phil2094.org" "~/Documents/ANU/LING1001/ling1001.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/contacts.org" "/home/chu/Documents/Organisation/birthday.org" "/home/chu/Documents/Organisation/bookmarks.org")))
+ '(send-mail-function (quote smtpmail-send-it))
+ '(smtpmail-smtp-server "smtp.gmail.com")
+ '(smtpmail-smtp-service 587))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

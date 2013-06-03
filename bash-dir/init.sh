@@ -8,21 +8,25 @@
 export HISTCONTROL=ignoredups # NOTE: don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
 export LOCALE=UTF-8
-
-# export TERM=xterm-color # NOTE: export 8 colours in shell session
-export TERM=xterm-256color # NOTE: export 256 colours in shell session
-
-# NOTE: these exports are used in the "default applications" for stumpwm
-export ALTERNATE_EDITOR="" # NOTE: set the alternate editor as emacs (automatically start an emacs in daemon mode and connect to it if one is not found running)
-export EDITOR='emacsclient -n -c' # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
-export VISUAL=emacsclient # NOTE: set the visual edit as emacsclient (IMPORTANT: requiring emacs-server)
-
-# export BROWSER="conkeror" # NOTE: export BROWSER as conkeror
-# export BROWSER="chromium-browser" # NOTE: export BROWSER as chromium
-export BROWSER="x-www-browser" # NOTE: export BROWSER as x-www-browser ... (IMPORTANT: requires debian ???)
-# export TERMINAL="x-terminal-emulator" # NOTE: testing
 export GREP_COLOR="1;33"
 export MOZ_DISABLE_PANGO=1
+export TERM=xterm-256color # NOTE: export 256 colours in shell session
+# export TERM=xterm-color # NOTE: export 8 colours in shell session
+
+# NOTE: these exports are used in the "default applications" for stumpwm
+# export TERMINAL="x-terminal-emulator"
+export BROWSER="x-www-browser" # NOTE: export BROWSER as x-www-browser ... (IMPORTANT: requires debian ???)
+export EDITOR="emacsclient -n -c" # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
+export ALTERNATE_EDITOR="" # NOTE: automatically start an emacs in daemon mode and connect to it if one is not found running
+export VISUAL="emacsclient" # NOTE: set the visual edit as emacsclient (IMPORTANT: requiring emacs-server)
+export FILE_MANAGER="pcmanfm"
+export PACKAGE_MANAGER="aptitude"
+export SYSTEM_MONITOR="htop"
+
+# export directories ...
+# TODO: use these exports ...
+export STUMPWM_SRC_DIR="/home/chu/Programming/lisp/common-lisp/stumpwm"
+export QUICKLISP_DIR="/home/chu/quicklisp/dists/quicklisp/software"
 
 shopt -s checkwinsize # NOTE: check the window size after each command and, if necessary, update the values of LINES and COLUMNS
 
@@ -68,8 +72,9 @@ if [ "$color_prompt" = yes ]; then
     # PS1="\$ " # plain prompt
     # PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$ " # NOTE: prompt with no colour
     # PS1="${debian_chroot:+($debian_chroot)}$GREEN\u$GREY@$GREEN\h$GREY:$BLUE\w$GREY\$ " # NOTE: prompt with colour (without vc status)
-
-    PS1="${debian_chroot:+($debian_chroot)}$RED\u$GREY@$GREEN\h$GREY:$BLUE\w$YELLOW\$(parse_git_branch)$GREY\$ " # NOTE: requires parse_git_branch function
+    # ---
+    # NOTE: requires parse_git_branch function
+    PS1="${debian_chroot:+($debian_chroot)}$RED\u$GREY@$GREEN\h$GREY:$BLUE\w$YELLOW\$(parse_git_branch)$GREY\$ "
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
