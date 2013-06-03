@@ -181,21 +181,11 @@
                      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
         erc-autojoin-channels-alist '((".*\\.freenode.net"
                                        "#emacs"
-                                       ;; "#gnus"
-                                       ;; "#org-mode"
                                        "#stumpwm"
                                        "#lisp"
-                                       "#sbcl"
-                                       ;; "#clojure"
-                                       ;; "#ubuntu"
-                                       ;; "#ubuntu-discuss"
-                                       ;; "#ubuntuforums"
                                        "#ubuntu-offtopic"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
-                                       ;; "##club-ubuntu"
-                                       ;; "#anucssa"
-                                       ;; "#defocus"
                                        ))
         erc-join-buffer 'bury)
 
@@ -430,6 +420,7 @@
             "#bash"
             "#gnus"
 	    "#hurd"
+            "#sbcl"
 	    "#debian"
 	    "#debian-offtopic"
 	    "#emacs"
@@ -441,10 +432,12 @@
 	    "#lisp"
 	    "#scheme"
 	    "#guile"
+            "#clojure"
 	    "#haskell"
 	    "#latex"
             ;; social channels ...
 	    "#reddit"
+            "#anucssa"
 	    "#defocus"
 	    "##club-ubuntu"
 	    "##math"
