@@ -82,11 +82,11 @@
 
 ;;; IMPORTANT: user variables
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
-;; TODO: `*user-projects-directory*' ???
-;;(defvar *user-source-directory* (concat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
-;;(defvar *user-quicklisp-directory* (concat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
+;;(defvar *user-source-directory* (concat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
+;;(defvar *user-quicklisp-directory* (concat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
+;; TODO: `*user-projects-directory*' ???
 
 ;;; IMPORTANT: default applications
 ;; NOTE: the following two probably only work on debian ...

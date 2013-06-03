@@ -104,20 +104,20 @@
 ;; (display-time-mode t) ;; NOTE: display time status in the mode line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
-(require 'battery)
+;; (require 'battery)
 
-(display-battery-mode t) ;; NOTE: display battery status in the mode line
+;; (display-battery-mode t) ;; NOTE: display battery status in the mode line
 
-(setq battery-echo-area-format "Power %L, battery %B (%p%% load, remaining time %t)"
-      battery-load-critical 10
-      battery-load-low 25
-      battery-mode-line-format " [%b%p%%]" ;; NOTE: default
-      battery-update-interval 60
-      battery-status-function 'battery-linux-sysfs ;; NOTE: default
-      ;;battery-status-function 'battery-linux-proc-acpi
-      ;;battery-status-function 'battery-linux-proc-apm
-      ;;battery-mode-line-limit 60 ;; NOTE: display battery status when battery has less than 60% charge
-      )
+;; (setq battery-echo-area-format "Power %L, battery %B (%p%% load, remaining time %t)"
+;;       battery-load-critical 10
+;;       battery-load-low 25
+;;       battery-mode-line-format " [%b%p%%]" ;; NOTE: default
+;;       battery-update-interval 60
+;;       battery-status-function 'battery-linux-sysfs ;; NOTE: default
+;;       ;;battery-status-function 'battery-linux-proc-acpi
+;;       ;;battery-status-function 'battery-linux-proc-apm
+;;       ;;battery-mode-line-limit 60 ;; NOTE: display battery status when battery has less than 60% charge
+;;       )
 
 ;;; IMPORTANT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
