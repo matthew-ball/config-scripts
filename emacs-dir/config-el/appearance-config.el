@@ -190,6 +190,7 @@
 (eval-after-load "longlines" '(diminish 'longlines-mode ""))
 (eval-after-load "org-indent" '(diminish 'org-indent-mode ""))
 (eval-after-load "w3m-lnum" '(diminish 'w3m-lnum-mode ""))
+(eval-after-load "cwarn" '(diminish 'cwarn-mode ""))
 ;;(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
 
 ;;; IMPORTANT: adaptive text wrap
