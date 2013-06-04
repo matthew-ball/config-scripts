@@ -203,8 +203,11 @@
 ;;; IMPORTANT: C programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/CcMode'
 (autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
+(autoload 'cwarn-mode "cwarn" "Highlight suspicious C constructions." t)
 
-(add-hook 'c-mode-hook '(lambda () (turn-on-general-programming-mode)))
+(add-hook 'c-mode-hook '(lambda ()
+                          (turn-on-general-programming-mode)
+                          (turn-on-cwarn-mode)))
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
@@ -214,13 +217,6 @@
 (autoload 'imath-mode "imath" "Imath mode for math formula input." t)
 
 (setq imaxima-use-maxima-mode-flag t)
-
-;;; IMPORTANT: flymake
-;; SOURCE: `http://www.emacswiki.org/emacs/FlyMake'
-;; (autoload 'flymake-mode "flymake" "On the fly compiling in GNU Emacs." t)
-;; TODO: set `flymake-display-err-menu-for-current-line' to key-chord
-;; TODO: set `flymake-goto-next-error' to key-chord
-;; (setq flymake-log-level 3)
 
 (provide 'programming-config)
 ;;; programming-config.el ends here
