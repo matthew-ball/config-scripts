@@ -1321,5 +1321,11 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;; (add-hook 'latex-mode-hook (lambda () (turn-on-custom-latex)))
 
+;;; IMPORTANT: journal entries with `org-mode'
+;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
+(require 'org-journal)
+
+(setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/")))
+
 (provide 'writing-config)
 ;;; writing-config.el ends here
