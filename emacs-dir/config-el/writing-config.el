@@ -590,9 +590,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; IMPORTANT: org-babel
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
-(autoload 'org-babel-load-file "org-babel" "Interact with programming languages in `org-mode'." t)
+(autoload 'org-babel-load-file "ob-tangle" "Interact with programming languages in `org-mode'." t)
 
-(after "org-babel"
+(after "ob-tangle"
   (org-babel-do-load-languages 'org-babel-load-languages
 			       '((emacs-lisp . t)
 				 ;;(common-lisp . t)
@@ -619,8 +619,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
 (eval-after-load "org-bibtex"
-  '(require 'org-exp-bibtex)
-  )
+  '(require 'org-exp-bibtex))
 
 (after "org-exp"
   (unless (boundp 'org-export-latex-classes)
@@ -696,19 +695,19 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	       org-beamer-sectioning))
 
 ;; IMPORTANT: enable latex source code highlighting
-(setq org-export-latex-listings t)
-) ;; NOTE: enable listings features
+(setq org-export-latex-listings t) ;; NOTE: enable listings features
+)
 
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
 (after "org"
-(add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
-(add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
-(add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
-(add-to-list 'org-export-latex-packages-alist '("" "tipx")) ;; NOTE: support for phonetic alphabet
-;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
-(add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
-(add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
-(add-to-list 'org-export-latex-packages-alist '("" "hyperref"))) ;; NOTE: hyper-references
+  (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
+  (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
+  (add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
+  (add-to-list 'org-export-latex-packages-alist '("" "tipx")) ;; NOTE: support for phonetic alphabet
+  ;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
+  (add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
+  (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
+  (add-to-list 'org-export-latex-packages-alist '("" "hyperref"))) ;; NOTE: hyper-references
 
 ;;; IMPORTANT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
@@ -748,59 +747,59 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;; IMPORTANT: logic symbols
 (after "org-entities"
-(add-to-list 'org-entities-user '("neg" "\\neg" nil nil nil nil "¬"))
-;;(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "↔"))
-(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "\leftrightarrow"))
-(add-to-list 'org-entities-user '("top" "\\top" nil nil nil nil "⊤"))
-(add-to-list 'org-entities-user '("bot" "\\bot" nil nil nil nil "⊥"))
-(add-to-list 'org-entities-user '("therefore" "\\therefore" nil nil nil nil "∴"))
-(add-to-list 'org-entities-user '("because" "\\because" nil nil nil nil "∵"))
-(add-to-list 'org-entities-user '("derives" "\\vdash" nil nil nil nil "⊢"))
-(add-to-list 'org-entities-user '("notderives" "\\not\\vdash" nil nil nil nil "⊬"))
-(add-to-list 'org-entities-user '("models" "\\models" nil nil nil nil "⊨"))
-(add-to-list 'org-entities-user '("notmodels" "\\not\\models" nil nil nil nil "⊭"))
-(add-to-list 'org-entities-user '("forces" "\\Vdash" nil nil nil nil "⊩"))
-(add-to-list 'org-entities-user '("notforces" "\\not\\Vdash" nil nil nil nil "⊮"))
-(add-to-list 'org-entities-user '("boxconditional" "\\boxconditional" nil nil nil nil "□→"))
-(add-to-list 'org-entities-user '("box" "\\Box" nil nil nil nil "□"))
-(add-to-list 'org-entities-user '("diamond" "\\Diamond" nil nil nil nil "◇"))
-(add-to-list 'org-entities-user '("cdots" "\\cdots" nil nil nil nil "⋯"))
-(add-to-list 'org-entities-user '("ldots" "\\ldots" nil nil nil nil "…"))
-;; IMPORTANT: mathematics symbols
-(add-to-list 'org-entities-user '("reals" "\\mathbb{R}" nil nil nil nil "ℝ"))
-(add-to-list 'org-entities-user '("integers" "\\mathbb{Z}" nil nil nil nil "ℤ"))
-(add-to-list 'org-entities-user '("primes" "\\mathbb{P}" nil nil nil nil "ℙ"))
-(add-to-list 'org-entities-user '("naturals" "\\mathbb{N}" nil nil nil nil "ℕ"))
-(add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" nil nil nil nil "𝕀"))
-(add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" nil nil nil nil "ℚ"))
-(add-to-list 'org-entities-user '("complex" "\\mathbb{C}" nil nil nil nil "ℂ"))
-;; IMPORTANT: misc
-(add-to-list 'org-entities-user '("mid" "\\mid" t nil nil nil "|"))
-;; IMPORTANT: phonetic symbols
-;; TODO: investigate the \textipa{} environments as possible LaTeX exports (as done with \eng and \esh)
-;; SOURCE: `http://www.phon.ucl.ac.uk/home/wells/ipa-unicode.htm'
-;; SOURCE: `ftp://ftp.tex.ac.uk/ctan/ctan/tex-archive/bibliography/biber/documentation/utf8-macro-map.html'
-;; SOURCE: `http://en.wikibooks.org/wiki/LaTeX/Linguistics#IPA_characters'
-(add-to-list 'org-entities-user '("eng" "\\textipa{N}" nil nil nil nil "ŋ"))
-(add-to-list 'org-entities-user '("esh" "\\textipa{S}" nil nil nil nil "ʃ"))
-(add-to-list 'org-entities-user '("thy" "\\eth" nil nil nil nil "ð"))
-(add-to-list 'org-entities-user '("thi" "\\theta" nil nil nil nil "θ"))
-(add-to-list 'org-entities-user '("darkl" "\\textltilde" nil nil nil nil "ɫ"))
-(add-to-list 'org-entities-user '("schwa" "\\textipa{@}" nil nil nil nil "ə"))
-(add-to-list 'org-entities-user '("dotlessj" "\\textbardotlessj" nil nil nil nil "ɟ"))
-(add-to-list 'org-entities-user '("curvedt" "\\textsubarch{t}" nil nil nil nil "ʈ"))
-(add-to-list 'org-entities-user '("retracteddiacritic" "\\b{n}" nil nil nil nil "n̠"))
-;;(add-to-list 'org-entities-user '("alveolarapproximate" "\\textipa{\*r}" nil nil nil nil "ɹ"))
-(add-to-list 'org-entities-user '("alveolarapproximate" "\\textturnr" nil nil nil nil "ɹ"))
-(add-to-list 'org-entities-user '("fishhook" "\\textfishhookr" nil nil nil nil "ɾ"))
-(add-to-list 'org-entities-user '("palatalfricative" "\\textipa{C}" nil nil nil nil "ç"))
-(add-to-list 'org-entities-user '("bilabialclick" "\\textbullseye" nil nil nil nil "ʘ"))
-(add-to-list 'org-entities-user '("glottalstop" "" nil nil nil nil "ʔ"))
-(add-to-list 'org-entities-user '("alveolarstop" "\\textyogh" nil nil nil nil "ʒ"))
-(add-to-list 'org-entities-user '("pharyngealfricative" "" nil nil nil nil "ʕ"))
-;;(add-to-list 'org-entities-user '("Eng" "\\textipa{N}" nil nil nil nil "Ŋ"))
-;;(add-to-list 'org-entities-user '("Esh" "\\textipa{S}" nil nil nil nil "Ʃ"))
-)
+  (add-to-list 'org-entities-user '("neg" "\\neg" nil nil nil nil "¬"))
+  ;;(add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "↔"))
+  (add-to-list 'org-entities-user '("iff" "\\iff" nil nil nil nil "\leftrightarrow"))
+  (add-to-list 'org-entities-user '("top" "\\top" nil nil nil nil "⊤"))
+  (add-to-list 'org-entities-user '("bot" "\\bot" nil nil nil nil "⊥"))
+  (add-to-list 'org-entities-user '("therefore" "\\therefore" nil nil nil nil "∴"))
+  (add-to-list 'org-entities-user '("because" "\\because" nil nil nil nil "∵"))
+  (add-to-list 'org-entities-user '("derives" "\\vdash" nil nil nil nil "⊢"))
+  (add-to-list 'org-entities-user '("notderives" "\\not\\vdash" nil nil nil nil "⊬"))
+  (add-to-list 'org-entities-user '("models" "\\models" nil nil nil nil "⊨"))
+  (add-to-list 'org-entities-user '("notmodels" "\\not\\models" nil nil nil nil "⊭"))
+  (add-to-list 'org-entities-user '("forces" "\\Vdash" nil nil nil nil "⊩"))
+  (add-to-list 'org-entities-user '("notforces" "\\not\\Vdash" nil nil nil nil "⊮"))
+  (add-to-list 'org-entities-user '("boxconditional" "\\boxconditional" nil nil nil nil "□→"))
+  (add-to-list 'org-entities-user '("box" "\\Box" nil nil nil nil "□"))
+  (add-to-list 'org-entities-user '("diamond" "\\Diamond" nil nil nil nil "◇"))
+  (add-to-list 'org-entities-user '("cdots" "\\cdots" nil nil nil nil "⋯"))
+  (add-to-list 'org-entities-user '("ldots" "\\ldots" nil nil nil nil "…"))
+  ;; IMPORTANT: mathematics symbols
+  (add-to-list 'org-entities-user '("reals" "\\mathbb{R}" nil nil nil nil "ℝ"))
+  (add-to-list 'org-entities-user '("integers" "\\mathbb{Z}" nil nil nil nil "ℤ"))
+  (add-to-list 'org-entities-user '("primes" "\\mathbb{P}" nil nil nil nil "ℙ"))
+  (add-to-list 'org-entities-user '("naturals" "\\mathbb{N}" nil nil nil nil "ℕ"))
+  (add-to-list 'org-entities-user '("irrationals" "\\mathbb{I}" nil nil nil nil "𝕀"))
+  (add-to-list 'org-entities-user '("rationals" "\\mathbb{Q}" nil nil nil nil "ℚ"))
+  (add-to-list 'org-entities-user '("complex" "\\mathbb{C}" nil nil nil nil "ℂ"))
+  ;; IMPORTANT: misc
+  (add-to-list 'org-entities-user '("mid" "\\mid" t nil nil nil "|"))
+  ;; IMPORTANT: phonetic symbols
+  ;; TODO: investigate the \textipa{} environments as possible LaTeX exports (as done with \eng and \esh)
+  ;; SOURCE: `http://www.phon.ucl.ac.uk/home/wells/ipa-unicode.htm'
+  ;; SOURCE: `ftp://ftp.tex.ac.uk/ctan/ctan/tex-archive/bibliography/biber/documentation/utf8-macro-map.html'
+  ;; SOURCE: `http://en.wikibooks.org/wiki/LaTeX/Linguistics#IPA_characters'
+  (add-to-list 'org-entities-user '("eng" "\\textipa{N}" nil nil nil nil "ŋ"))
+  (add-to-list 'org-entities-user '("esh" "\\textipa{S}" nil nil nil nil "ʃ"))
+  (add-to-list 'org-entities-user '("thy" "\\eth" nil nil nil nil "ð"))
+  (add-to-list 'org-entities-user '("thi" "\\theta" nil nil nil nil "θ"))
+  (add-to-list 'org-entities-user '("darkl" "\\textltilde" nil nil nil nil "ɫ"))
+  (add-to-list 'org-entities-user '("schwa" "\\textipa{@}" nil nil nil nil "ə"))
+  (add-to-list 'org-entities-user '("dotlessj" "\\textbardotlessj" nil nil nil nil "ɟ"))
+  (add-to-list 'org-entities-user '("curvedt" "\\textsubarch{t}" nil nil nil nil "ʈ"))
+  (add-to-list 'org-entities-user '("retracteddiacritic" "\\b{n}" nil nil nil nil "n̠"))
+  ;;(add-to-list 'org-entities-user '("alveolarapproximate" "\\textipa{\*r}" nil nil nil nil "ɹ"))
+  (add-to-list 'org-entities-user '("alveolarapproximate" "\\textturnr" nil nil nil nil "ɹ"))
+  (add-to-list 'org-entities-user '("fishhook" "\\textfishhookr" nil nil nil nil "ɾ"))
+  (add-to-list 'org-entities-user '("palatalfricative" "\\textipa{C}" nil nil nil nil "ç"))
+  (add-to-list 'org-entities-user '("bilabialclick" "\\textbullseye" nil nil nil nil "ʘ"))
+  (add-to-list 'org-entities-user '("glottalstop" "" nil nil nil nil "ʔ"))
+  (add-to-list 'org-entities-user '("alveolarstop" "\\textyogh" nil nil nil nil "ʒ"))
+  (add-to-list 'org-entities-user '("pharyngealfricative" "" nil nil nil nil "ʕ"))
+  ;;(add-to-list 'org-entities-user '("Eng" "\\textipa{N}" nil nil nil nil "Ŋ"))
+  ;;(add-to-list 'org-entities-user '("Esh" "\\textipa{S}" nil nil nil nil "Ʃ"))
+  )
 
 ;; ⟨ʋ⟩ ⟨ɑ⟩ ⟨ɣ⟩ ⟨ɛ⟩ ⟨ɸ⟩ ⟨ʋ⟩ ⟨β⟩ ⟨θ⟩ ⟨χ⟩
 
