@@ -203,11 +203,15 @@
 ;;; IMPORTANT: C programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/CcMode'
 (autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
-(autoload 'cwarn-mode "cwarn" "Highlight suspicious C constructions." t)
 
-(add-hook 'c-mode-hook '(lambda ()
-                          (turn-on-general-programming-mode)
-                          (turn-on-cwarn-mode)))
+(after "cc-mode"
+  (require 'cwarn)
+  ;; TODO: set up CEDET
+  ;; (require 'cedet) ;; NOTE: collection of emacs development environment tools
+
+  (add-hook 'c-mode-hook '(lambda ()
+                            (turn-on-general-programming-mode)
+                            (turn-on-cwarn-mode))))
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
