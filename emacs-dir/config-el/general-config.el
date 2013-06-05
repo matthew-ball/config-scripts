@@ -211,6 +211,7 @@
 		(mode . magit-status-mode)
 		(mode . magit-key-mode)
 		(mode . magit-log-edit-mode)
+		(mode . magit-diff-mode)
 		(mode . vc-mode)
 		(mode . vc-dir-mode)
 		(mode . vc-log-entry-mode)
