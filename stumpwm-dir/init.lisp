@@ -407,6 +407,35 @@
 
 ;;; IMPORTANT: run applications
 ;; TODO: ...
+(defun make-application (name &optional instance title terminal)
+  (if (eq (and instance title terminal) nil)
+      (make-instance 'application :name name :instance instance :title title :terminal-p terminal)
+    (make-instance 'application :name name)))
+
+;; (make-application "name" "instance" "title" nil)
+;; (make-application "name" "instance" "title" t)
+
+(defclass application ()
+  ((name :accessor application-name
+         :initarg :name)
+   (instance :accessor application-instance
+             :initarg :instance)
+   ;; NOTE: title only needed for terminal applications (???)
+   (title :accessor application-title
+          :initarg :title)
+   (terminal :initform nil
+             :initarg terminal-p)))
+
+(defclass terminal-application (application)
+  ((terminal :initform t
+             :initarg terminal-p)))
+
+(defun run-application (application)
+  "..."
+  (with-slots (name instance title terminal)
+      application
+    (run-or-raise name `(:instance ,instance))))
+
 (defun make-keyword (name)
   "..."
   (values (intern name "KEYWORD")))
