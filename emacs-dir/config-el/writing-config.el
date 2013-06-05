@@ -171,32 +171,6 @@
 ;;; IMPORTANT: bibtex
 ;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
 
-;;; IMPORTANT: `org-ref-man'
-;; NOTE: this is the beginning of a sort of "reference manager" extension which utilises org-mode functionality
-;; TODO:
-;; - Learn `org-bibtex'.
-;; - Integrate `org-ref-man' and `org-bibtex'.
-;; (defun generate-paper-entry (file-name) ;; TODO: update this to reflect spreadsheet format
-;;   "Generate an `org-mode' style file link."
-;;   (insert "[[file:" file-name "][" (file-name-sans-extension (file-relative-name file-name)) "]]\n" ))
-
-;; SOURCE: `org-bibtex.el'
-;; (defun generate-paper-list (dir-name) ;; TODO: make the .pdf extension a variable (NOTE: perhaps modifiable as an argument)
-;;   "Generate a list of PDF documents in a directory supplied by the `DIR-NAME' argument."
-;;   (if (file-exists-p dir-name)
-;;       (let (files result)
-;; 	(setq files (directory-files dir-name t (concat "\.pdf$") t))
-;; 	(dolist (file files)
-;; 	  (when (and (file-readable-p file) (not (file-directory-p file)))
-;; 	    (setq result (cons file result))
-;; 	    (generate-paper-entry file)))
-;; 	result)))
-
-;; (defun generate-paper-list-current-buffer (&rest junk)
-;;   "Generate a list of documents from the directory of the current buffer."
-;;   (interactive)
-;;   (generate-paper-list (file-name-directory (buffer-file-name))))
-
 ;;; IMPORTANT: reftex
 ;; SOURCE:
 (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
@@ -204,69 +178,51 @@
 (autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
 (autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
 
-;; (defun latex-bibtex-file (&rest junk)
-;;   "Produce a bibliography for current LaTeX document."
-;;   (interactive)
-;;   (call-process "bibtex" nil 0 nil (file-name-sans-extension (buffer-file-name))) ;; execute asynchronous bibtex process
-;;   (message (concat "bibtex called on " (buffer-file-name))))
+(after "reftex"
+  ;; IMPORTANT: reftex formats (for biblatex)
+  ;; (setq reftex-cite-format
+  ;;       '((?c . "\\cite[]{%l}")
+  ;;         (?t . "\\textcite{%l}")
+  ;;         (?a . "\\autocite[]{%l}")
+  ;;         (?p . "\\parencite{%l}")
+  ;;         (?f . "\\footcite[][]{%l}")
+  ;;         (?F . "\\fullcite[]{%l}")
+  ;;         (?x . "[]{%l}")
+  ;;         (?X . "{%l}")))
 
-;; (defun org-mode-article-modes ()
-;;   (reftex-mode t)
-;;   (and (buffer-file-name)
-;;        (file-exists-p (buffer-file-name))
-;;        (reftex-parse-all)))
+  ;; (setq font-latex-match-reference-keywords
+  ;;       '(("cite" "[{")
+  ;;         ("cites" "[{}]")
+  ;;         ("footcite" "[{")
+  ;;         ("footcites" "[{")
+  ;;         ("parencite" "[{")
+  ;;         ("textcite" "[{")
+  ;;         ("fullcite" "[{")
+  ;;         ("citetitle" "[{")
+  ;;         ("citetitles" "[{")
+  ;;         ("headlessfullcite" "[{")))
 
-;; (defun org-mode-reftex-setup ()
-;;   "Set up `reftex' integration with `org-mode'."
-;;   ;; (unless (fboundp 'reftex-mode)
-;;   ;;   (require 'reftex))
-;;   (and (buffer-file-name) (file-exists-p (buffer-file-name))
-;;        (reftex-parse-all))
-;;   (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
+  (setq reftex-enable-partial-scans t ;; make reftex faster
+	reftex-save-parse-info t ;; save the information gathered while reading a file
+	reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
+	reftex-default-bibliography '("default.bib"
+				      "/home/chu/Documents/Papers/papers.bib"
+				      ) ;; default bibliography file(s)
+	reftex-cite-prompt-optional-args nil
+	reftex-cite-cleanup-optional-args t
+	reftex-extra-bindings t ;; enable extra reftex bindings
+	))
 
-;; (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+(defun org-mode-reftex-setup ()
+  "Set up `reftex' integration with `org-mode'."
+  (unless (fboundp 'reftex-mode)
+    (load-library "reftex"))
+  (and (buffer-file-name)
+       (file-exists-p (buffer-file-name))
+       (reftex-parse-all))
+  (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
 
-;; (defun org-mode-custom-latex ()
-;;   "Enable custom settings for org-mode."
-;;   (turn-on-reftex) ;; turn on reftex
-;;   (org-mode-reftex-setup) ;; enable org-mode/reftex integration
-;;   (lambda () (if (member "REFTEX" org-todo-keywords-1 (org-mode-article-modes)))))
-
-;; (add-hook 'org-mode-hook 'org-mode-custom-latex)
-
-;;; IMPORTANT: reftex formats (for biblatex)
-;; (setq reftex-cite-format
-;;       '((?c . "\\cite[]{%l}")
-;;         (?t . "\\textcite{%l}")
-;;         (?a . "\\autocite[]{%l}")
-;;         (?p . "\\parencite{%l}")
-;;         (?f . "\\footcite[][]{%l}")
-;;         (?F . "\\fullcite[]{%l}")
-;;         (?x . "[]{%l}")
-;;         (?X . "{%l}")))
-
-;; (setq font-latex-match-reference-keywords
-;;       '(("cite" "[{")
-;;         ("cites" "[{}]")
-;;         ("footcite" "[{")
-;;         ("footcites" "[{")
-;;         ("parencite" "[{")
-;;         ("textcite" "[{")
-;;         ("fullcite" "[{")
-;;         ("citetitle" "[{")
-;;         ("citetitles" "[{")
-;;         ("headlessfullcite" "[{")))
-
-;; (setq reftex-enable-partial-scans t ;; make reftex faster
-;;       reftex-save-parse-info t ;; save the information gathered while reading a file
-;;       reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
-;;       reftex-default-bibliography '("default.bib"
-;; 				    "other-default.bib"
-;; 				    "/home/chu/Documents/Papers/papers.bib"
-;; 				    ) ;; default bibliography file(s)
-;;       reftex-cite-prompt-optional-args nil
-;;       reftex-cite-cleanup-optional-args t
-;;       reftex-extra-bindings t) ;; enable extra reftex bindings
+;;(add-hook 'org-mode-hook 'org-mode-reftex-setup)
 
 ;;; IMPORTANT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
@@ -399,6 +355,21 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	  ("UNIVERSITY"       . ?u)
 	  ("WEBSITE"          . ?w))))
 
+;;; IMPORTANT: `org-link'
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
+(after "org"
+  (org-add-link-type "ebib" 'ebib)
+
+  ;; TODO: add more citation types to ebib
+  (org-add-link-type "cite" 'ebib
+		     (lambda (path desc format)
+		       (cond ((eq format 'latex)
+			      (format "\\cite{%s}" path)))))
+
+  ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
+  ;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
+  )
+
 ;;; IMPORTANT: org-agenda
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
 (after "org-agenda"
@@ -453,9 +424,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	    (tags-todo "UNIVERSITY")
 	    (tags-todo "NOTES"))
 	   "PROJECTS") ;; NOTE: `PROJECT' tasks
-	  ("j" "Journal"
-	   ((tags "JOURNAL"))
-	   "JOURNAL")
+	  ;; ("j" "Journal"
+	  ;;  ((tags "JOURNAL"))
+	  ;;  "JOURNAL")
 	  ("r" "Reading"
 	   ((tags "READING")
 	    (tags "WEBSITE"))
@@ -487,8 +458,8 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	   "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
 	  ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
 	   "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
-	  ("J" "Journal" entry (file+datetree (expand-file-name user-org-notes-file))
-	   "* %?\n Entered on %U\n  %i\n  %a")
+	  ;; ("J" "Journal" entry (file+datetree (expand-file-name user-org-notes-file))
+	  ;;  "* %?\n Entered on %U\n  %i\n  %a")
 	  ("N" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
 	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 	  ("P" "Projects" plain (file+function (expand-file-name user-org-projects-file) project-capture)
@@ -497,52 +468,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	  ("W" "Writing" entry (file+headline (expand-file-name user-org-projects-file) "Writing"))
 	  ;; TODO: need to write `reading-capture' and `writing-capture' functions
 	  )))
-
-;;; IMPORTANT: custom capture functions
-(defun search-for-heading (file heading prefix &rest junk)
-  "Search for an `org-heading' HEADING in an FILE."
-  (switch-to-buffer file)
-  (goto-char (point-min))
-  (when (search-forward (concat prefix heading "\t") nil nil)
-    (progn
-      ;;(beginning-of-line)
-      (end-of-line)
-      ;;(insert "\n")
-      )))
-
-;;; IMPORTANT: reading capture
-(defvar reading-material-types (list "Paper" "Book" "Web-site") "List of reading material.")
-
-(defun reading-capture (&rest junk)
-  "Capture a reading task, through one of its variants."
-  (let ((reading-type (ido-completing-read "Material Type: " reading-material-types))
-  	;;(project-str "")
-	)
-    (search-for-heading "projects.org" reading-type "** ")))
-
-;;; IMPORTANT: writing capture
-(defvar writing-types (list "Paper" "Book") "List of writing material.")
-
-(defun writing-capture (&rest junk)
-  "...")
-
-;;; IMPORTANT: project capture
-;; NOTE: this is probably not the best way of doing this
-(defvar project-options-alist nil "List of available project types.")
-
-(add-to-list 'project-options-alist "Travel")
-;;(add-to-list 'project-options-alist "Ideas")
-(add-to-list 'project-options-alist "Programming")
-(add-to-list 'project-options-alist "Writing")
-(add-to-list 'project-options-alist "General")
-
-;; TODO: write some way of "counting" the stars (something like `depth')
-(defun project-capture (&rest junk)
-  "Capture a `project' through one of its variants."
-  (let ((project-type (ido-completing-read "Project Type: " project-options-alist))
-  	;;(project-str "")
-	)
-    (search-for-heading "projects.org" project-type "** ")))
 
 ;;; IMPORTANT: school organisation
 ;; TODO: integrate with `ido-mode' somehow
@@ -618,8 +543,8 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
 (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
-(eval-after-load "org-bibtex"
-  '(require 'org-exp-bibtex))
+(after "org-bibtex"
+  (require 'org-exp-bibtex))
 
 (after "org-exp"
   (unless (boundp 'org-export-latex-classes)
@@ -639,7 +564,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-export-latex-classes
+  (add-to-list 'org-export-latex-classes
 	     '("book"
 	       "\\documentclass[12pt,a4paper,oneside]{book}
 \\usepackage{amsfonts}
@@ -978,62 +903,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
     (end-of-buffer)
     (insert (concat "\n[fn:" name "] " text))))
 
-;;; IMPORTANT: this is a sort of weird style automatic LaTeX clause monitor for `org-mode' documents
-;; TODO: write functions for the following `alist' variables
-(defvar org-latex-math-operator-alist (list "frac" "sqrt" "times") "List of mathematical operators in LaTeX.")
-
-(defvar org-latex-environment-alist (list "align" "align*" "equation" "equation*" "matrix" "matrix*" "proof")
-  "List of mathematical environments in LaTeX")
-
-(defvar org-latex-math-font-alist (list "mathbb" "mathbf" "mathcal" "mathfrak") "List of mathematical fonts in LaTeX.")
-
-;; (defvar org-latex-math-font-alist (list "mathnormal" "mathrm" "mathit" "mathbf" "mathsf" "mathtt" "mathcal" "mathfrak" "mathbb" "mathscr")
-;;   "List of mathematical fonts in LaTeX.")
-
-(defvar org-latex-clause-alist (list "font" "environment" "operator") "List of LaTeX clauses.")
-
-(defun org-insert-latex-math-font ()
-  "Insert a LaTeX math font clause into an `org-mode' document."
-  (interactive)
-  (let ((font (ido-completing-read "Select LaTeX math font: " org-latex-math-font-alist)))
-    (insert (concat "$\\" font "{}$"))
-    (backward-char 2)))
-
-(defun org-insert-latex-math-environment ()
-  "Inserts a LaTeX math environment into an `org-mode' document."
-  (interactive)
-  (let ((environment (ido-completing-read "Select LaTeX math environment: " org-latex-environment-alist)))
-    (indent-relative-maybe)
-    (insert (concat "\\begin{" environment "}\n\n"))
-    (indent-relative-maybe)
-    (insert (concat "\\end{" environment "}"))
-    (previous-line)
-    (indent-relative-maybe)))
-
-(defun org-insert-latex-math-operator ()
-  "Inserts a LaTeX math operator into an `org-mode' document."
-  (message "Hello, world"))
-
-(defun org-insert-latex-clause ()
-  "Insert a LaTeX clause into an `org-mode' document."
-  (interactive)
-  (let ((clause (ido-completing-read "Insert LaTeX clause: " org-latex-clause-alist)))
-    (funcall (intern (concat "org-insert-latex-math-" clause)))))
-
-;;; IMPORTANT: latex symbol
-;; TODO: ...
-(defvar org-custom-symbol-types nil "...")
-
-(setq org-custom-symbol-types (list "greek alphabet"
-				    "mathematics"
-				    "logic"
-				    ;; TODO: anything else?
-				    ))
-
-(defun org-custom-insert-symbol ()
-  "..."
-  )
-
 ;;; IMPORTANT: custom inserts
 (defun surrounded-by-p (char)
   "Returns t if word is surrounded by given char."
@@ -1058,6 +927,17 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
       (forward-word -1)
       (delete-char -1)
       nil)))
+
+;; (defmacro propertize-word (prop char)
+;;   "..."
+;;   `(defun (intern (concat ,prop "-word")) (&optional force)
+;;      "Insert a PROPERTY character before (and after) an input string."
+;;      (interactive "p")
+;;      (surround-word ?,char ,force)
+;;      ))
+;; (propertize-word 'bold ?*) => (bold-word)
+;; (propertize-word 'italic ?/) => (italic-word)
+;; etc
 
 (defun my-bold-word (&optional force) ;; NOTE: C-c b should be `org-insert-text-bolded'
   "Insert a bold character (*) before (and after) an input string."
@@ -1110,19 +990,14 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
 
-;;; IMPORTANT: `org-link'
-;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
-(after "org"
-  (org-add-link-type "ebib" 'ebib)
+;;; IMPORTANT: journal entries with `org-mode'
+;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
+(autoload 'org-journal-new-entry "org-journal" "Capture journal entries quickly." t)
+;;(require 'org-journal)
 
-  ;; TODO: add more citation types to ebib
-  (org-add-link-type "cite" 'ebib
-		     (lambda (path desc format)
-		       (cond ((eq format 'latex)
-			      (format "\\cite{%s}" path))))))
-
-;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
-;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
+(after "org-journal"
+  (setq org-journal-dir
+	(expand-file-name (concat user-organisation-directory "/journal/"))))
 
 ;;; IMPORTANT: word count
 ;; SOURCE: `http://orgmode.org/worg/org-hacks.html'
@@ -1212,120 +1087,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;;         (re-search-forward "\\w+\\W*")))
 ;;     (message (format "%d words in %s." wc
 ;;                      (if mark-active "region" "buffer")))))
-
-
-;;; IMPORTANT: latex configuration
-;; SOURCE: `http://emacswiki.org/emacs/LaTeX'
-
-;; (autoload 'latex-mode "tex-mode" "LaTeX major mode for GNU Emacs." t)
-
-;; (setq latex-run-command "pdflatex") ;; use `pdflatex' to compile LaTeX documents
-
-;; (defun latex-file (&rest junk)
-;;   "Produce current LaTeX document as PDF."
-;;   (interactive)
-;;   (tex-file)
-;;   (switch-to-buffer (current-buffer)) ;; refocus on main window
-;;   (delete-other-windows)) ;; delete remaining window
-
-;; (defun latex-view (&rest junk)
-;;   "Produce and preview current LaTeX document as PDF."
-;;   (interactive)
-;;   (tex-file)
-;;   (let ((pdf-file (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
-;;     (message pdf-file) ;; print pdf-file in minibuffer
-;;     (call-process "evince" nil 0 nil pdf-file)) ;; execute asynchronous evince process
-;;     (switch-to-buffer (current-buffer)) ;; refocus on main window
-;;     (delete-other-windows)) ;; delete remaining window
-
-;; (defun latex-smart-underscore ()
-;;   "Smart \"_\" key: insert \"_{}\". If the underscore key is pressed a second time, \"_{}\" is removed and replaced by the underscore."
-;;   (interactive)
-;;   (let ((assign-len (length "_{")))
-;;     (if (and
-;;          (>= (point) (+ assign-len (point-min))) ;; check that we can move back
-;;          (save-excursion
-;;            (backward-char assign-len)
-;;            (looking-at "_{}")))
-;;         (progn ;; if we are currently looking at ess-S-assign, replace it with _
-;;           (forward-char)
-;;           (delete-backward-char (+ 1 assign-len))
-;;           (insert "_"))
-;;       (delete-horizontal-space)
-;;       (insert "_{}")
-;;       (backward-char))))
-
-;; (defun latex-smart-caret ()
-;;   "Smart \"^\" key: insert \"^{}\". If the caret key is pressed a second time, \"^{}\" is removed and replaced by the caret."
-;;   (interactive)
-;;   (let ((assign-len (length "^{")))
-;;     (if (and
-;;          (>= (point) (+ assign-len (point-min))) ;; check that we can move back
-;;          (save-excursion
-;;            (backward-char assign-len)
-;;            (looking-at "\\^{}"))) ;; looking-at reads regexp, so need to escape the caret character
-;;         (progn ;; if we are currently looking at ess-S-assign, replace it with ^
-;;           (forward-char)
-;;           (delete-backward-char (+ 1 assign-len))
-;;           (insert "^"))
-;;       (delete-horizontal-space)
-;;       (insert "^{}")
-;;       (backward-char))))
-
-;; (defun latex-smart-period ()
-;;   "Smart \".\" key: insert \".  \n\". If the period key is pressed a second time, \".  \n\" is removed and replaced by the period."
-;;   (interactive)
-;;   (let ((assign-len (length ".  %%\n")))
-;;     (if (and
-;;          (>= (point) (+ assign-len (point-min))) ;; check that we can move back
-;;          (save-excursion
-;;            (backward-char assign-len)
-;;            (looking-at "\\.  %%")))
-;;         (progn ;; if we are currently looking at ess-S-assign, replace it with _
-;;           (delete-backward-char assign-len)
-;;           (insert "."))
-;;       (delete-horizontal-space)
-;;       (insert ".  %%\n"))))
-
-;; (defmacro latex-skeleton (code) ;; inserts a custom clause skeleton in a LaTeX document
-;;   (let ((func (intern (concat "latex-skeleton-" code)))
-;; 	(doc (format "Inserts a %s clause in a LaTeX document." code)))
-;;     `(define-skeleton ,func ,doc "String: "
-;;        "\\" ,code  "{" str | "insert text" "}")))
-
-;; (latex-skeleton "textbf") ;; inserts a bold clause
-;; (latex-skeleton "footnote") ;; inserts a footnote
-;; (latex-skeleton "texttt") ;; inserts a tele-type clause
-;; (latex-skeleton "emph") ;; inserts an emphasis clause
-;; (latex-skeleton "textsc") ;; inserts a small capitals clause
-
-;; (defun turn-on-custom-latex-bindings ()
-;;   "Activate custom LaTeX bindings."
-;;   (define-key latex-mode-map (kbd "C-c C-v") 'latex-view) ;; enable latex-view
-;;   (define-key latex-mode-map (kbd "C-c C-f") 'latex-file) ;; enable latex-file
-;;   (define-key latex-mode-map (kbd "C-c C-b") 'latex-bibtex-file) ;; enable latex-bibtex-file
-;;   (define-key latex-mode-map (kbd "C-c b") 'latex-skeleton-textbf) ;; bind bold to keyboard
-;;   (define-key latex-mode-map (kbd "C-c f") 'latex-skeleton-footnote) ;; bind footnote to keyboard
-;;   (define-key latex-mode-map (kbd "C-c t") 'latex-skeleton-texttt) ;; bind tele-type to keyboard
-;;   (define-key latex-mode-map (kbd "C-c e") 'latex-skeleton-emph) ;; bind emphasise to keyboard
-;;   (define-key latex-mode-map (kbd "C-c s") 'latex-skeleton-textsc) ;; bind small-capitals to keyboard
-;;   (define-key latex-mode-map (kbd "_") 'latex-smart-underscore) ;; bind _ to smart underscore
-;;   (define-key latex-mode-map (kbd "^") 'latex-smart-caret) ;; bind ^ to smart caret
-;;   (define-key latex-mode-map (kbd ".") 'latex-smart-period)) ;; bind . to smart period
-
-;; (defun turn-on-custom-latex ()
-;;   "Activate custom LaTeX functionality."
-;;   ;;(turn-on-reftex) ;; enable reftex mode
-;;   (turn-on-custom-latex-bindings) ;; enable custom latex bindings
-;;   (setq ispell-parser 'tex))
-
-;; (add-hook 'latex-mode-hook (lambda () (turn-on-custom-latex)))
-
-;;; IMPORTANT: journal entries with `org-mode'
-;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
-(require 'org-journal)
-
-(setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/")))
 
 (provide 'writing-config)
 ;;; writing-config.el ends here
