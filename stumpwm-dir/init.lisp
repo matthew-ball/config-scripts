@@ -406,35 +406,49 @@
 	(return)))))
 
 ;;; IMPORTANT: run applications
-;; TODO: ...
-(defun make-application (name &optional instance title terminal)
-  (if (eq (and instance title terminal) nil)
-      (make-instance 'application :name name :instance instance :title title :terminal-p terminal)
-    (make-instance 'application :name name)))
-
-;; (make-application "name" "instance" "title" nil)
-;; (make-application "name" "instance" "title" t)
-
 (defclass application ()
   ((name :accessor application-name
          :initarg :name)
    (instance :accessor application-instance
+             :initform nil
              :initarg :instance)
    ;; NOTE: title only needed for terminal applications (???)
    (title :accessor application-title
+          :initform nil
           :initarg :title)
-   (terminal :initform nil
-             :initarg terminal-p)))
+   (terminal :accessor application-terminal
+             :initform nil
+             :initarg :terminal-p)))
 
 (defclass terminal-application (application)
-  ((terminal :initform t
-             :initarg terminal-p)))
+  ((terminal :initform t)))
+
+(defun make-application (name &optional instance title terminal)
+  (when (eq instance nil)
+    (setf instance name))
+  (make-instance 'application :name name :instance instance :title title :terminal-p terminal))
+
+;; (defun initialise-applications ()
+;;   "Create applications."
+;;     ;; NOTE: this makes `run-or-raise' work (unfortunately have to do some hard-coding)
+;;     (defvar *editor* (make-application (getenv "EDITOR") "emacs")) 
+;;     (defvar *browser* (make-application "x-www-browser"))
+;;     (defvar *terminal* (make-application (format nil "~A -t ~A" *terminal* "terminal") "terminal"))
+;;     (defvar *file-manager* (make-application (getenv "FILE_MANAGER")))
+;;     (defvar *system-monitor* (make-application (getenv "SYSTEM_MONITOR") *terminal* (getenv "SYSTEM_MONITOR") t))
+;;     (defvar *package-manager* (make-application (getenv "PACKAGE_MANAGER") *terminal* (getenv "PACKAGE_MANAGER") t)))
 
 (defun run-application (application)
   "..."
   (with-slots (name instance title terminal)
       application
-    (run-or-raise name `(:instance ,instance))))
+    (if (eq terminal t)
+        (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* title name) `(:title ,title))
+      (run-or-raise name `(:instance ,instance)))))
+
+;; TODO: make an interactive command which calls `run-application' with appropriate argument
+
+;; ---------------------------------------------
 
 (defun make-keyword (name)
   "..."
@@ -502,7 +516,7 @@
   "Run an instance of CMD in `*terminal*'."
   (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
 
-;; NOTE: ...
+;; NOTE: ...1
 (defcommand run-terminal () () (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :title *terminal*)))
 
 ;; NOTE: application run commands

@@ -992,8 +992,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; IMPORTANT: journal entries with `org-mode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
-(autoload 'org-journal-new-entry "org-journal" "Capture journal entries quickly." t)
-;;(require 'org-journal)
+(require 'org-journal)
 
 (after "org-journal"
   (setq org-journal-dir

@@ -186,7 +186,7 @@
                                        "#ubuntu-offtopic"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
-                                       "#debian-offtopic"
+                                       ;; "#debian-offtopic"
                                        ))
         erc-join-buffer 'bury)
 
