@@ -375,7 +375,6 @@
 
 ;;; IMPORTANT: desktop save mode
 ;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
-;;(autoload 'desktop-save-mode "desktop" "Save session file." t)
 (require 'desktop)
 
 (after "desktop"

@@ -841,9 +841,12 @@ Although this is interactive, call this with \\[browse-url]."
 
   ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
 
-  (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+  (progn
+    (unless (fboundp 'desktop)
+      (require 'desktop))
+    (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
-  (add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
+    (add-hook 'w3m-mode-hook 'w3m-register-desktop-save)) ;; NOTE: add w3m-buffers to desktop-save
 
   ;; NOTE: w3m mode hooks
   (add-hook 'w3m-display-hook
