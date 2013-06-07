@@ -977,5 +977,41 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
 
+;;; IMPORTANT: emacs snippets
+(autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
+;;(require 'yasnippet)
+
+(after "yasnippet"
+  ;;(yas--initialize)
+  (yas-reload-all)
+  (yas/load-directory "/home/chu/.conf-scripts/emacs-dir/elpa/yasnippet-20130505.2115/snippets")
+
+  (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
+  ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
+  )
+
+;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
+;; (defun yas-ido-expand () ;; NOTE: Completing point by some yasnippet key
+;;   "Lets you select (and expand) a yasnippet key"
+;;   (interactive)
+;;   (let ((original-point (point)))
+;;     (while (and
+;;             (not (= (point) (point-min) ))
+;;             (not
+;;              (string-match "[[:space:]\n]" (char-to-string (char-before)))))
+;;       (backward-word 1))
+;;     (let* ((init-word (point))
+;;            (word (buffer-substring init-word original-point))
+;;            (list (yas-active-keys)))
+;;       (goto-char original-point)
+;;       (let ((key (remove-if-not
+;;                   (lambda (s) (string-match (concat "^" word) s)) list)))
+;;         (if (= (length key) 1)
+;;             (setq key (pop key))
+;;           (setq key (ido-completing-read "key: " list nil nil word)))
+;;         (delete-char (- init-word original-point))
+;;         (insert key)
+;;         (yas-expand)))))
+
 (provide 'user-config)
 ;;; user-config.el ends here

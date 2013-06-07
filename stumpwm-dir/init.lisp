@@ -26,7 +26,6 @@
 ;;; Code:
 
 ;;; IMPORTANT: common-lisp implementation
-;; SOURCE: ...
 ;debian=sbcl
 
 ;;; IMPORTANT: initial config
@@ -44,7 +43,7 @@
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 
 ;;; IMPORTANT: general functions
-(defun hostname (&rest junk)
+(defun hostname ()
   "Return a string representing the hostname."
   (first (split-string (machine-instance) ".")))
 
@@ -116,7 +115,6 @@
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
 (load (concat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
-;;(require 'swank) ;; TODO: work out!!
 
 (swank-loader:init)
 
@@ -160,7 +158,7 @@
 
 ;;(setf *prefer-sysfs* nil)
 
-;;; IMPORTANT: windows, message and input box appearances
+;;; IMPORTANT: windows, message, input box appearances and mode line
 (setf *normal-border-width* 0 ;; NOTE: the width in pixels given to the borders of regular windows
       *maxsize-border-width* 0 ;; NOTE: the width in pixels given to the borders of windows with maxsize or ratio hints
       *transient-border-width* 0 ;; NOTE: the width in pixels given to the borders of transient or pop-up windows
@@ -171,6 +169,14 @@
       ;;*window-format* "%m%n%s%c" ;; NOTE: show application `instance' instead of application `title'
       *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
       *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
+      *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
+      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
+      *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
+      *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
+      ;; *mode-line-background-color* *background-colour*
+      ;; *mode-line-foreground-color* *foreground-colour*
+      ;; *mode-line-border-color* *border-colour*
+      ;; *mode-line-position* :top
       )
 
 ;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
@@ -187,18 +193,6 @@
 ;; (set-fg-color *foreground-colour*)
 ;; (set-bg-color *background-colour*)
 ;; (set-border-color *border-colour*)
-
-;;; IMPORTANT: mode line
-;; NOTE: mode line colours
-(setf *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
-      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
-      *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
-      ;; *mode-line-background-color* *background-colour*
-      ;; *mode-line-foreground-color* *foreground-colour*
-      ;; *mode-line-border-color* *border-colour*
-      ;; *mode-line-position* :top
-      *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
-      )
 
 (defvar *mode-line-format* "[^B%n^b] ^[^3*%d^] " "Show the group name and date/time in the mode-line.")
 
@@ -409,6 +403,9 @@
 (defclass application ()
   ((name :accessor application-name
          :initarg :name)
+   (group :accessor application-group
+          :initform nil
+          :initarg :group)
    (instance :accessor application-instance
              :initform nil
              :initarg :instance)
@@ -424,74 +421,42 @@
   ((terminal :initform t)))
 
 (defun make-application (name &optional instance title terminal)
+  "..."
   (when (eq instance nil)
     (setf instance name))
   (make-instance 'application :name name :instance instance :title title :terminal-p terminal))
 
-;; (defun initialise-applications ()
-;;   "Create applications."
-;;     ;; NOTE: this makes `run-or-raise' work (unfortunately have to do some hard-coding)
-;;     (defvar *editor* (make-application (getenv "EDITOR") "emacs")) 
-;;     (defvar *browser* (make-application "x-www-browser"))
-;;     (defvar *terminal* (make-application (format nil "~A -t ~A" *terminal* "terminal") "terminal"))
-;;     (defvar *file-manager* (make-application (getenv "FILE_MANAGER")))
-;;     (defvar *system-monitor* (make-application (getenv "SYSTEM_MONITOR") *terminal* (getenv "SYSTEM_MONITOR") t))
-;;     (defvar *package-manager* (make-application (getenv "PACKAGE_MANAGER") *terminal* (getenv "PACKAGE_MANAGER") t)))
-
 (defun run-application (application)
-  "..."
+  "Run (or raise) argument."
   (with-slots (name instance title terminal)
       application
     (if (eq terminal t)
         (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* title name) `(:title ,title))
       (run-or-raise name `(:instance ,instance)))))
 
-;; TODO: make an interactive command which calls `run-application' with appropriate argument
-
-;; ---------------------------------------------
-
 (defun make-keyword (name)
-  "..."
+  "Turn string NAME into Common Lisp keyword."
   (values (intern name "KEYWORD")))
 
-(defvar *programs-alist* '((*browser* . nil)
-                           (*terminal* . t)
-                           (*editor* . nil)
-                           (*file-manager* . nil)
-                           (*package-manager* . t)
-                           (*system-monitor* . t)))
+(defmacro create-application (name &optional instance title terminal)
+  "Create a general framework for the running (raising) of applications."
+  ;; NOTE: make application ...
+  ;;(make-application ...)
+  ;; NOTE: define frame preference for application
+  ;;(define-frame-preference ...)
+  ;; NOTE: make command for application
+  `(defcommand ,(make-symbol (concat (string-upcase "run-") (string `,name))) () ()
+     (run-application ,name)))
 
-(defun programs-list ()
-  ""
-  (mapcar #'(lambda (program-alist) (eval (first program-alist))) *programs-alist*))
-
-(define-stumpwm-type :program-list (input prompt)
-    (or (argument-pop input)
-        (completing-read (current-screen) prompt (programs-list))))
-
-(defcommand run-program (program) ((:program-list "Select: "))
-  "Run a program from the list `*programs*'."
-  (run-or-raise program `(:instance ,program)))
-
-;; TODO: need `add-program' function
-;; TODO: need `run-program' function
-
-(defun make-program-name (symbol)
-  (let ((sym (symbol-name symbol)))
-    (subseq sym 1 (- (length sym) 1))))
-
-(defun make-program-list ()
-  ""
-  (mapcar #'(lambda (entry) (make-program-name (first entry))) *programs-alist*))
-
-;; TODO: need to also add group window frame preference
-;; (defmacro create-application-run-command (application group)
-;;   (let ((application-name (make-program-name (quote application))))
-;;     `(define-frame-preference ,group `(0 t t :instance ,application))
-;;     `(defcommand (make-keyword (concat "run-" ,application-name)) () ()
-;;        (run-or-raise ,application `(:instance ,application)))))
-
-;;(create-application-run-command *browser*) ;; => `run-browser'
+;; (defun initialise-applications ()
+;;   "Create applications."
+;;     ;; NOTE: this makes `run-or-raise' work (unfortunately have to do some hard-coding)
+;;     (setf *editor* (make-application (getenv "EDITOR") "emacs")) 
+;;     (setf *browser* (make-application "x-www-browser"))
+;;     (setf *terminal* (make-application (format nil "~A -t ~A" *terminal* "terminal") "terminal"))
+;;     (setf *file-manager* (make-application (getenv "FILE_MANAGER")))
+;;     (setf *system-monitor* (make-application (getenv "SYSTEM_MONITOR") *terminal* (getenv "SYSTEM_MONITOR") t))
+;;     (setf *package-manager* (make-application (getenv "PACKAGE_MANAGER") *terminal* (getenv "PACKAGE_MANAGER") t)))
 
 ;;(clear-window-placement-rules) ;; NOTE: clear rules
 
@@ -516,12 +481,11 @@
   "Run an instance of CMD in `*terminal*'."
   (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
 
-;; NOTE: ...1
+;; NOTE: ...
 (defcommand run-terminal () () (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :title *terminal*)))
 
 ;; NOTE: application run commands
 (defcommand run-editor () () (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
-;; ---
 (defcommand run-browser () () (run-or-raise-app *browser*))
 (defcommand run-file-manager () () (run-or-raise-app *file-manager*))
 (defcommand run-document-viewer () () (run-or-raise-app *document-viewer*))

@@ -39,11 +39,11 @@
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   ;; (longlines-mode) ;; NOTE: enable long lines
   ;; (hl-line-mode) ;; NOTE: turn on line highlight mode
-  ;;(which-function-mode t) ;; NOTE: keep track of active function
+  ;; (which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   )
 
-;;; IMPORTANT: available modes for the which function mode-line tag
+;;; important: available modes for the which function mode-line tag
 ;; SOURCE: `http://www.emacswiki.org/emacs/WhichFuncMode'
 ;; SOURCE: `http://emacs-fu.blogspot.com.au/2009/01/which-function-is-this.html'
 ;; (autoload 'which-func-mode "which-func" "Display the current function name in the mode-line." t)
@@ -208,6 +208,8 @@
   (require 'cwarn)
   ;; TODO: set up CEDET
   ;; (require 'cedet) ;; NOTE: collection of emacs development environment tools
+
+  (setq c-default-style "linux")
 
   (add-hook 'c-mode-hook '(lambda ()
                             (turn-on-general-programming-mode)
