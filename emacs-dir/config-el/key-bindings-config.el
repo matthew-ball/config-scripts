@@ -101,6 +101,7 @@
 (define-key programming-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
 (define-key programming-map (kbd "s") 'slime-connect) ;; NOTE: start slime session
 (define-key programming-map (kbd "S") 'slime-disconnect) ;; NOTE: stop slime session
+(define-key programming-map (kbd "M") '(lambda () (interactive) (manual-entry (current-word)))) ;; NOTE: invoke `man' on word under point
 
 ;; (global-set-key (kbd "M-<f5>") 'function)
 ;; (global-set-key (kbd "C-<f5>") 'function)

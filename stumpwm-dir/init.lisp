@@ -25,7 +25,7 @@
 
 ;;; Code:
 
-;;; IMPORTANT: common-lisp implementation
+;;; IMPORTANT: common lisp implementation
 ;debian=sbcl
 
 ;;; IMPORTANT: initial config
@@ -38,7 +38,7 @@
       *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse (alternatives are: `:click' and `:ignore')
 
 ;; (setf *data-dir* (expand-file-name "~/.stumpwm.d/"))
-(redirect-all-output (data-dir-file "debug-output" "txt")) ;; NOTE: debug information `~/.stumpwm.d/debug-output.txt'
+(redirect-all-output (data-dir-file "debug" "lisp")) ;; NOTE: debug information `~/.stumpwm.d/debug.lisp'
 
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 

@@ -58,6 +58,7 @@ emacs-dir/erc-extras/*
 mutt-dir/
 # ignore stumpwm's debug text
 stumpwm-dir/debug-output.txt
+stumpwm-dir/debug.lisp
 # ignore ncmpcpp's error.log files
 ncmpcpp-dir/error.log
 # ignore aptitude stuff

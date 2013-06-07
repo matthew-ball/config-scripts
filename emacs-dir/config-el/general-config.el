@@ -340,6 +340,9 @@
 (fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
 (setq read-buffer-completion-ignore-case t) ;; NOTE: ignore case when reading a buffer name
 
+;; NOTE: don't let the cursor go into minibuffer prompt
+;;(setq minibuffer-prompt-properties '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
+
 ;;; IMPORTANT: selection
 (delete-selection-mode 1) ;; NOTE: replace (delete) selected region
 
