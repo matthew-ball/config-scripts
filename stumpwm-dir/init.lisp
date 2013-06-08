@@ -90,19 +90,19 @@
 ;;; IMPORTANT: default applications
 ;; NOTE: the following two probably only work on debian ...
 ;; TODO: system-check? If running debian ...
-(defvar *browser* "x-www-browser" "Set the default web browser.")
-(defvar *terminal* "x-terminal-emulator" "Set the default terminal emulator.")
+(defvar *browser* "x-www-browser" "Default web browser.")
+(defvar *terminal* "x-terminal-emulator" "Default terminal emulator.")
 ;; NOTE: get from shell environment editor ...
-(defvar *editor* (getenv "EDITOR") "Set the default editor.")
-(defvar *file-manager* (getenv "FILE_MANAGER") "Set the default file manager.")
-(defvar *package-manager* (getenv "PACKAGE_MANAGER") "Set the default package manager.")
-(defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Set the default system monitor.")
+(defvar *editor* (getenv "EDITOR") "Default editor.")
+(defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
+(defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
+(defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
 
 ;; ERROR: hardcoded
-(defvar *document-viewer* "evince" "Set the default document reader.")
-;; (defvar *office-suite* "openoffice.org" "Set the default office suite.") ;; TODO: set this up
-(defvar *audio-player* "ncmpcpp" "Set the default audio player.")
-(defvar *video-player* "vlc" "Set the default video player.")
+(defvar *document-viewer* "evince" "Default document reader.")
+(defvar *office-suite* "openoffice.org" "Default office suite.") ;; TODO: set this up
+(defvar *audio-player* "ncmpcpp" "Default audio player.")
+(defvar *video-player* "vlc" "Default video player.")
 
 ;;; IMPORTANT: (zenburn-inspired) color theme
 ;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line format
@@ -438,15 +438,26 @@
   "Turn string NAME into Common Lisp keyword."
   (values (intern name "KEYWORD")))
 
-(defmacro create-application (name &optional instance title terminal)
+(defmacro create-application (name command &optional instance title terminal group)
   "Create a general framework for the running (raising) of applications."
   ;; NOTE: make application ...
-  ;;(make-application ...)
-  ;; NOTE: define frame preference for application
-  ;;(define-frame-preference ...)
-  ;; NOTE: make command for application
-  `(defcommand ,(make-symbol (concat (string-upcase "run-") (string `,name))) () ()
-     (run-application ,name)))
+  (let ((var (make-keyword (concat "*" name "*"))))
+    (setf var (make-application command instance title terminal))
+    ;; NOTE: define frame preference for application
+    ;; (let ((key :nil))
+    ;;   (if (eq terminal t)
+    ;;       (setf key :title)
+    ;;     (setf key :instance))
+    ;;   `(define-frame-preference ,group `(0 t t ,key ,name)))
+    ;; NOTE: make command for application
+    `(defcommand ,(make-symbol (concat (string-upcase "run-") (string `,name))) () ()
+       ""
+       (run-application ,var))))
+
+;;(create-application editor (getenv "EDITOR") "emacs")
+;;(create-application "browser" "x-www-browser")
+;;(create-application "file-manager" (getenv "FILE_MANAGER"))
+;;(create-application "terminal" (format nil "~S -t ~S" "x-terminal-emulator" "terminal") "terminal")
 
 ;; (defun initialise-applications ()
 ;;   "Create applications."
@@ -625,15 +636,15 @@
 (add-hook *destroy-window-hook* 'clean-trash)
 
 ;;; IMPORTANT: startup applications (should be called during initialization)
-;; (defun launch-mpd (&rest junk)
+;; (defun launch-mpd ()
 ;;   "Start music player daemon, `mpd', server."
 ;;   (run-shell-command "mpd"))
 
-(defun launch-nm-applet (&rest junk)
+(defun launch-nm-applet ()
   "Start the network manager applet, `nm-applet'."
   (run-shell-command "nm-applet"))
 
-(defun launch-lxpanel (&rest junk)
+(defun launch-lxpanel ()
   "Start an instance of `lxpanel'."
   (run-shell-command "lxpanel"))
 

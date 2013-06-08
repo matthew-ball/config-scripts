@@ -754,7 +754,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (after "yasnippet"
   ;;(yas--initialize)
   (yas-reload-all)
-  (yas/load-directory "/home/chu/.conf-scripts/emacs-dir/elpa/yasnippet-20130505.2115/snippets")
+  (yas/load-directory "/home/chu/.conf-scripts/emacs-dir/elpa/yasnippet-20130505.2115/snippets/")
 
   (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
   ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
