@@ -42,6 +42,7 @@
       auto-save-interval 1000 ;; NOTE: change auto-save interval from 300 to 1000 keystrokes
       sentence-end-double-space 'nil ;; NOTE: sentences end with a single space
       echo-keystrokes 0.1 ;; NOTE: see what you are typing
+      use-dialog-box nil ;; NOTE: do not use mouse
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings
 
 (setq-default scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
@@ -130,13 +131,18 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
 (autoload 'ibuffer "ibuffer" "..." t)
 
-;; TODO: investigate `ibuffer-directory-abbrev-list'
 (after "ibuffer"
   (require 'ibuf-ext)
-  (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
-  (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
-  (add-to-list 'ibuffer-never-show-predicates "^ \\*Ibuffer\\*$")
-  (add-to-list 'ibuffer-never-show-predicates "^ \\*AgendaCommands\\*$")
+
+  ;; TODO: investigate `ibuffer-directory-abbrev-list'
+  ;; (setq ibuffer-directory-abbrev-alist
+  ;; 	'((expand-file-name "~/Documents/" . "Documents")
+  ;; 	  (expand-file-name "~/Programming" . "Programming")))
+
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*$")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*$")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
   ;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
 
   (setq ibuffer-saved-filter-groups

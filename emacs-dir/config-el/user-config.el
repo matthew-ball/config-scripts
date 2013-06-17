@@ -831,15 +831,15 @@ Although this is interactive, call this with \\[browse-url]."
   (require 'w3m-cookie)
   (require 'w3m-lnum)
   (require 'w3m-filter)
-  (require 'w3m-antenna)
+  ;; (require 'w3m-antenna)
   (require 'w3m-ccl)
 
   ;; NOTE: w3m interface and cookies
   (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
 
   ;; NOTE: w3m antenna
-  (w3m-antenna-mode 1)
-  (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
+  ;; (w3m-antenna-mode 1)
+  ;; (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
 
   ;; NOTE: w3m filter
   ;; (w3m-filter-mode 1)
@@ -857,6 +857,7 @@ Although this is interactive, call this with \\[browse-url]."
         w3m-terminal-coding-system 'utf-8
         w3m-use-cookies t ;; NOTE: use cookies in w3m
         ;; w3m-default-directory (concat (expand-file-name user-emacs-directory) "w3m")
+        ;; w3m-use-title-buffer-name t
         w3m-default-save-directory (concat (expand-file-name user-emacs-directory) "w3m")
         w3m-bookmark-file (concat (expand-file-name user-emacs-directory "w3m/bookmark.html"))
         w3m-arrived-file (concat (expand-file-name user-emacs-directory) "w3m/arrived")

@@ -21,7 +21,7 @@
 ;;; Commentary:
 
 ;;; This is the main point of entry for the StumpWM environment.
-;;; This configuration sets a bunch of variables, and modifies a bunch of the default settings.
+;;; This configuration sets user-defined variables, and modifies the default settings.
 
 ;;; Code:
 
@@ -620,9 +620,9 @@
         (switch-to-group (second (screen-groups (current-screen))))
         (switch-to-group *trash-group*))))
 
-(defun clean-trash (w)
+(defun clean-trash (window)
   "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
-  (let ((current-group (window-group w)))
+  (let ((current-group (window-group window)))
     (when *trash-group*
       (when (and (eq current-group *trash-group*)
                  (not (group-windows current-group)))
@@ -655,13 +655,10 @@
   ;; (launch-nm-applet) ;; NOTE: start `nm-applet' instance
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
-  ;; ---
   (run-swank) ;; NOTE: start the swank server
   (run-editor) ;; NOTE: start the editor
   ;; (run-browser) ;; NOTE: start the browser
   ;; (run-system-monitor) ;; NOTE: start the system monitor
-  ;; ---
-  ;; TODO: this only needs to be called once
   (rename-default-group)
   (create-groups)
   )

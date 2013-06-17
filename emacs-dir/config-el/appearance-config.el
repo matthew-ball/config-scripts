@@ -184,7 +184,7 @@
 (eval-after-load "reftex" '(diminish 'reftex-mode ""))
 (eval-after-load "glasses" '(diminish 'glasses-mode ""))
 (eval-after-load "face-remap" '(diminish 'buffer-face-mode ""))
-(eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
+;;(eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
 (eval-after-load "hilit-chg" '(diminish 'highlight-changes-mode ""))
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
 (eval-after-load "longlines" '(diminish 'longlines-mode ""))
