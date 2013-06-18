@@ -56,6 +56,15 @@
 ;; SOURCE: `http://emacswiki.org/emacs/ParEdit'
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
+;;; IMPORTANT: pretty lambdas
+;; SOURCE: `http://www.emacswiki.org/emacs/PrettyLambda'
+(defun pretty-lambdas ()
+  "..."
+  (font-lock-add-keywords nil
+                          `(("(\\(lambda\\>\\)"
+                             (0 (progn (compose-region (match-beginning 1) (match-end 1)
+                                                       ,(make-char 'greek-iso8859-7 107)) nil))))))
+
 ;;; IMPORTANT: emacs lisp programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLisp'
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
@@ -66,16 +75,20 @@
   ;; NOTE: make `eldoc' recognise `paredit' functions
   (eldoc-add-command 'paredit-backward-delete 'paredit-close-round))
 
-(add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
-				   (turn-on-general-programming-mode)
-                                   (turn-on-eldoc-mode)
-                                   ;; NOTE: some key-bindings
-                                   (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
-                                   (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp)
-				   (paredit-mode t)))
+(after "lisp-mode"
+  (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
+                                     (turn-on-general-programming-mode)
+                                     (turn-on-eldoc-mode)
+                                     ;; NOTE: some key-bindings
+                                     (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
+                                     (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp)
+                                     (paredit-mode t)
+                                     (pretty-lambdas)
+                                     )))
 
 ;;; IMPORTANT: interactive emacs lisp
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(after "ielm"
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode))
 
 ;;; IMPORTANT: emacs byte-compiled code
 ;; SOURCE: `http://www.emacswiki.org/emacs/CompiledFile'
@@ -83,25 +96,28 @@
 
 ;;; IMPORTANT: common lisp programming
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
-;;(setq inferior-lisp-program "/usr/bin/sbcl")
-(setq inferior-lisp-program "/usr/bin/sbcl --noinform") ;; NOTE: suppress the printing of any banner or other informational message at startup
+(after "lisp-mode"
+  (add-hook 'lisp-mode-hook '(lambda ()
+                               (turn-on-general-programming-mode)
+                               (paredit-mode t)
+                               (pretty-lambdas)
+                               ))
 
-(add-hook 'lisp-mode-hook '(lambda ()
-			     (turn-on-general-programming-mode)
-			     (paredit-mode t)))
+  (add-hook 'lisp-interaction-mode-hook '(lambda ()
+                                           (turn-on-general-programming-mode)
+                                           (turn-on-eldoc-mode)
+                                           (paredit-mode t)))
 
-(add-hook 'lisp-interaction-mode-hook '(lambda ()
-					 (turn-on-general-programming-mode)
-					 (turn-on-eldoc-mode)
-					 (paredit-mode t)))
-
-(add-hook 'inferior-lisp-mode-hook '(lambda ()
-				      ;; (inferior-slime-mode t)
-				      (paredit-mode t)))
+  (add-hook 'inferior-lisp-mode-hook '(lambda ()
+                                        ;; (inferior-slime-mode t)
+                                        (paredit-mode t))))
 ;;; IMPORTANT: slime/swank
 (require 'slime-autoloads)
 
 (after "slime"
+  ;;(setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq inferior-lisp-program "/usr/bin/sbcl --noinform") ;; NOTE: suppress the printing of any banner or other informational message at startup
+
   (slime-setup '(slime-fancy
                  slime-tramp
                  slime-banner
@@ -150,51 +166,57 @@
 (autoload 'clojure-mode "clojure-mode" "Major mode for editing clojure source code files." t)
 (autoload 'nrepl-mode "nrepl" "Major mode for nREPL interactions." t)
 
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(after "nrepl"
+  (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 
-(setq nrepl-hide-special-buffers t)
+  (setq nrepl-hide-special-buffers t)
 
-(add-hook 'nrepl-mode-hook 'paredit-mode)
+  (add-hook 'nrepl-mode-hook 'paredit-mode))
 
-(add-hook 'clojure-mode-hook '(lambda ()
-                                (turn-on-general-programming-mode)
-                                (paredit-mode t)))
+(after "clojure-mode"
+  (add-hook 'clojure-mode-hook '(lambda ()
+                                  (turn-on-general-programming-mode)
+                                  (paredit-mode t))))
 
 ;;; IMPORTANT: scheme programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
-;; (autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t);; TODO: find a `guile-mode' for scheme ...
+(autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t);; TODO: find a `guile-mode' for scheme ...
 
-;; (add-hook 'scheme-mode-hook '(lambda ()
-;; 			       (turn-on-general-programming-mode)
-;; 			       (paredit-mode t)))
+(after "scheme"
+  (add-hook 'scheme-mode-hook '(lambda ()
+                                 (turn-on-general-programming-mode)
+                                 (paredit-mode t))))
 
 ;;; IMPORTANT: haskell programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
 (autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)
 
-(setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
+(after "haskell-site-file"
+  (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
 
-(defun custom-turn-on-haskell-modes (&rest junk)
-  (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
-  (turn-on-haskell-indent)) ;; NOTE: enable haskell's indentation mode
+  (defun custom-turn-on-haskell-modes (&rest junk)
+    (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
+    (turn-on-haskell-indent)) ;; NOTE: enable haskell's indentation mode
 
-(add-hook 'haskell-mode-hook '(lambda ()
-				(turn-on-general-programming-mode)
-				(custom-turn-on-haskell-modes)))
+  (add-hook 'haskell-mode-hook '(lambda ()
+                                  (turn-on-general-programming-mode)
+                                  (custom-turn-on-haskell-modes))))
 
 ;;; IMPORTANT: shell script
 ;; SOURCE: `http://emacswiki.org/emacs/ShMode'
 (autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
 
-(add-hook 'shell-script-mode '(lambda ()
-				(turn-on-general-programming-mode)))
+(after "sh-mode"
+  (add-hook 'shell-script-mode '(lambda ()
+                                  (turn-on-general-programming-mode))))
 
 ;;; IMPORTANT: python programming
 ;; SOURCE: `http://emacswiki.org/emacs/PythonProgrammingInEmacs'
 (autoload 'python-mode "python" "Major mode for editing python source code." t)
 
-(add-hook 'python-mode-hook '(lambda ()
-			       (turn-on-general-programming-mode)))
+(after "python"
+  (add-hook 'python-mode-hook '(lambda ()
+                                 (turn-on-general-programming-mode))))
 
 ;;; IMPORTANT: javascript programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/JavaScriptMode'
