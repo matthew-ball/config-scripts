@@ -68,7 +68,6 @@
 ;;; IMPORTANT: emacs lisp programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLisp'
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
-;;(require 'eldoc)
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
 (after "eldoc"

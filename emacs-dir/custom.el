@@ -50,16 +50,12 @@
      (unpublished
       (author title note)
       (month year)))))
- '(eshell-modules-list
-   (quote
-    (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
+ ;; '(eshell-modules-list
+ ;;   (quote
+ ;;    (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
  '(org-agenda-files
    (quote
-    ("~/Documents/ANU/PHIL2094/phil2094.org" "~/Documents/ANU/LING1001/ling1001.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/contacts.org" "/home/chu/Documents/Organisation/birthday.org" "/home/chu/Documents/Organisation/bookmarks.org")))
- ;; '(send-mail-function (quote smtpmail-send-it))
- ;; '(smtpmail-smtp-server "smtp.gmail.com")
- ;; '(smtpmail-smtp-service 587)
- )
+    ("~/Documents/ANU/PHIL2094/phil2094.org" "~/Documents/ANU/LING1001/ling1001.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/contacts.org" "/home/chu/Documents/Organisation/birthday.org" "/home/chu/Documents/Organisation/bookmarks.org"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -67,6 +63,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(erc-input-face ((t (:foreground "wheat"))))
+ '(erc-pal-face ((t (:foreground "light gray" :weight bold))))
  '(erc-prompt-face ((t (:inherit erc-prompt :foreground "dark gray" :weight bold))))
  '(erc-timestamp-face ((t (:inherit erc-timestamp :foreground "dark gray" :weight bold))))
  '(info-header-xref ((t (:inherit info-xref :foreground "dark slate gray" :weight bold)))))

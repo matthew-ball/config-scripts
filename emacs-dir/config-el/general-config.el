@@ -477,6 +477,21 @@
 	eshell-review-quick-commands nil ;; NOTE: enable quick review
 	eshell-smart-space-goes-to-end t) ;; NOTE: save buffer history
 
+  (setq eshell-modules-list '((eshell-alias
+			       eshell-banner
+			       eshell-basic
+			       eshell-cmpl
+			       eshell-dirs
+			       eshell-glob
+			       eshell-hist
+			       eshell-ls
+			       eshell-pred
+			       eshell-prompt
+			       eshell-script
+			       eshell-term
+			       eshell-tramp
+			       eshell-unix)))
+
   (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply))
 
 (defun eshell/git-branch (&rest junk)

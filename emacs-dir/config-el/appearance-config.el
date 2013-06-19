@@ -35,8 +35,8 @@
   (setq color-theme-is-global t ;; ...
 	frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  ;; (color-theme-zenburn)
-  (load-theme 'tango-dark)
+  (color-theme-zenburn)
+  ;; (load-theme 'tango-dark)
   )
 
 (after "color-theme"

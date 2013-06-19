@@ -100,12 +100,13 @@
   (erc-button-enable)
   (erc-ring-enable)
   (erc-netsplit-enable)
-  (erc-fill-disable)
+  (erc-match-enable)
   (erc-autojoin-enable)
   (erc-spelling-enable)
   (erc-scrolltobottom-enable) ;; NOTE: enable scroll-to-bottom mode
   (erc-hl-nicks-enable)
   (erc-timestamp-mode t) ;; NOTE: enable ERC timestamp mode
+  (erc-fill-disable)
 
   ;;(eval-after-load "erc-capab" '(erc-capab-identify-mode t))
 
@@ -113,14 +114,14 @@
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
   (setq erc-keywords '() ;; NOTE: highlight specific keywords
         erc-current-nick-highlight-type 'nick ;; NOTE: ...
-        erc-pal-highlight-type 'all ;; NOTE: nicknames in a message
+        erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
         erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-        erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx" "syrinx_"
+        erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx"
                    "sabetts"
-                   "rww" "dax" "LjL" "ldunn" "moocow" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
+                   "rww" "dax" "LjL" "ldunn" "moocow" "mc44" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
         erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
         erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
-  (erc-match-mode t)
+
   (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
   ;; IMPORTANT: erc notify
