@@ -547,10 +547,10 @@
    ":"
    (with-face (eshell/pwd) :foreground "blue" :weight 'bold)
    (if (string= (substring (shell-command-to-string "git branch") 0 1) "f")
-       ""
+       " "
      (with-face (concat " (" (eshell/git-branch) ")") :foreground "yellow" :weight 'bold))
    (if (= (user-uid) 0)
-       (with-face "#" :foreground "red")
+       (with-face " #" :foreground "red")
      "$")
    " "))
 
