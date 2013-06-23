@@ -43,9 +43,14 @@
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 
 ;;; IMPORTANT: general functions
-(defun hostname ()
+(defun host-name ()
   "Return a string representing the hostname."
   (first (split-string (machine-instance) ".")))
+
+(defun system-name ()
+  "Return a string representing the system name."
+  (when (probe-file "/etc/debian_version")
+    'debian))
 
 (defun battery-charge ()
   "Return a string representing the current battery charge."
@@ -83,15 +88,14 @@
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
-;;(defvar *user-source-directory* (concat *user-home-directory* "/Programming/lisp/common-lisp/stumpwm") "Source directory.")
-;;(defvar *user-quicklisp-directory* (concat *user-home-directory* "/quicklisp/dists/quicklisp/software") "Quicklisp directory path.")
 ;; TODO: `*user-projects-directory*' ???
 
 ;;; IMPORTANT: default applications
-;; NOTE: the following two probably only work on debian ...
-;; TODO: system-check? If running debian ...
-(defvar *browser* "x-www-browser" "Default web browser.")
-(defvar *terminal* "x-terminal-emulator" "Default terminal emulator.")
+(defvar *browser* nil "Default web browser.")
+(defvar *terminal* nil "Default terminal emulator.")
+(when (eq (system-name) 'debian) ;; NOTE: If running debian ...
+  (setq *browser* "x-www-browser"
+        *terminal* "x-terminal-emulator"))
 ;; NOTE: get from shell environment editor ...
 (defvar *editor* (getenv "EDITOR") "Default editor.")
 (defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
@@ -516,7 +520,7 @@
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
-(defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (concat "Hostname: " (hostname))))
+(defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (concat "Hostname: " (host-name))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."

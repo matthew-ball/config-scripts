@@ -267,6 +267,34 @@
 	       (format "ChanServ ACCESS %s LIST"
 		       (erc-default-target))))
 
+;; SOURCE: `http://www.emacswiki.org/emacs/EmacsChannelMaintenance'
+(defun erc-cmd-BAN (nick)
+  "..."
+  (let* ((chan (erc-default-target))
+         (who (erc-get-server-user nick))
+         (host (erc-server-user-host who))
+         (user (erc-server-user-login who)))
+    (erc-send-command (format "MODE %s +b *!%s@%s" chan user host))))
+
+;; (defun erc-cmd-KICK (nick)
+;;   "..."
+;;   (erc-send-command (format "KICK %s %s %s"
+;;                             (erc-default-target)
+;;                             nick
+;;                             "Kicked (kickban)")))
+
+(defun erc-cmd-KICKBAN (nick &rest reason)
+  "..."
+  (setq reason (mapconcat #'identity reason " "))
+  (and (string= reason "")
+       (setq reason nil))
+  (erc-cmd-BAN nick)
+  (erc-send-command (format "KICK %s %s %s"
+                            (erc-default-target)
+                            nick
+                            (or reason
+                                "Kicked (kickban)"))))
+
 ;;; IMPORTANT: macros for "custom" ERC commands
 (defmacro erc-user-message (command message)
   "Macro to create \"custom\" messages to an IRC user in an `erc-mode' session."
