@@ -116,9 +116,22 @@
         erc-current-nick-highlight-type 'nick ;; NOTE: ...
         erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
         erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-        erc-pals '("twb" "k-man" "macrobat" "tali713" "syrinx"
-                   "sabetts"
-                   "rww" "dax" "LjL" "ldunn" "moocow" "mc44" "IdleOne" "jussi" "topyli") ;; NOTE: highlight pals
+        erc-pals '(;;"twb"
+                   ;;"k-man"
+                   ;;"macrobat"
+                   ;;"tali713"
+                   "syrinx"
+                   ;;"sabetts"
+                   "rww"
+                   ;;"dax"
+                   "LjL"
+                   "ldunn"
+                   ;;"moocow"
+                   "mc44"
+                   "IdleOne"
+                   ;;"jussi"
+                   ;;"topyli"
+                   ) ;; NOTE: highlight pals
         erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
         erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
 

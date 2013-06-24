@@ -630,6 +630,7 @@
 	dired-guess-shell-alist-user (list
 				      (list "\\.pdf$" "evince")
 				      (list "\\.PDF$" "evince")
+				      (list "\\.odt$" "openoffice.org")
 				      (list "\\.doc$" "openoffice.org")
 				      (list "\\.docx$" "openoffice.org")
 				      (list "\\.DOC$" "openoffice.org"))))

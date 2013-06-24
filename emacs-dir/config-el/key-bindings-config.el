@@ -24,9 +24,7 @@
 
 ;;; Code:
 
-;; TODO: considering changing the `Ctrl' key to `CapsLock'
-
-;;; IMPORTANT: when running GNU Emacs inside a terminal mode
+;;; IMPORTANT: when running inside a terminal mode ...
 (defun terminal-mode-init (&rest args)
   "Cleans up how GNU Emacs receives/interprets the CONTROL and META characters when run in a terminal session."
   (interactive)
@@ -103,9 +101,6 @@
 (define-key programming-map (kbd "S") 'slime-disconnect) ;; NOTE: stop slime session
 (define-key programming-map (kbd "M") '(lambda () (interactive) (manual-entry (current-word)))) ;; NOTE: invoke `man' on word under point
 
-;; (global-set-key (kbd "M-<f5>") 'function)
-;; (global-set-key (kbd "C-<f5>") 'function)
-
 ;; IMPORTANT: writing specific keys
 (defconst writing-prefix-key (kbd "<f6>") "Writing prefix key.")
 (defvar writing-map (lookup-key global-map writing-prefix-key) "Keymap designed for writing.")
@@ -114,26 +109,22 @@
   (setq writing-map (make-sparse-keymap)))
 
 (define-key global-map writing-prefix-key writing-map)
-;; "apps"
+;; NOTE: "apps"
 (define-key writing-map (kbd "e") 'ebib) ;; NOTE: run the emacs bibliography manager
 (define-key writing-map (kbd "n") 'deft) ;; NOTE: quick note taking with `deft'
-;; commands
+;; NOTE: commands
 (define-key writing-map (kbd "c") 'count-words) ;; NOTE: count the words in the current buffer
 (define-key writing-map (kbd "t") 'thesaurus-choose-synonym-and-replace) ;; NOTE: ...
 (define-key writing-map (kbd "d") 'dictem-run-search) ;; NOTE: dictionary search for word.
-;; text manipulation
+;; NOTE: text manipulation
 (define-key writing-map (kbd "u") 'upcase-word)
 (define-key writing-map (kbd "l") 'downcase-word)
 (define-key writing-map (kbd "C") 'capitalize-word)
-;; spelling
+;; NOTE: spelling
 (define-key writing-map (kbd "i") 'ispell-word)
 (define-key writing-map (kbd "I") 'ispell-buffer)
 
-;;(global-set-key (kbd "M-<f6>") 'function)
-;;(global-set-key (kbd "C-<f6>") 'function)
-
 ;; IMPORTANT: emacs internals
-;; TODO: should have `gnus' and `erc' etc but meh
 (defconst internals-prefix-key (kbd "<f7>") "Emacs internals prefix key.")
 (defvar internals-map (lookup-key global-map internals-prefix-key) "Keymap designed for emacs internal functions.")
 
@@ -152,9 +143,11 @@
 (define-key internals-map (kbd "p") 'proced) ;; NOTE: start a process manager session
 (define-key internals-map (kbd "r") 'regexp-builder) ;; NOTE: start regular-expression builder
 (define-key internals-map (kbd "m") 'imaxima) ;; NOTE: start interactive maxima session
-
-;; (global-set-key (kbd "M-<f7>") 'function)
-;; (global-set-key (kbd "C-<f7>") 'function)
+;; ---
+;; (define-key internals-map (kbd "s") 'eshell) ;; NOTE: ..
+;; (define-key internals-map (kbd "i") 'erc-start-or-switch) ;; NOTE: ...
+;; (define-key internals-map (kbd "g") 'gnus) ;; NOTE: ...
+;; (define-key internals-map (kbd "w") 'w3m) ;; NOTE: ...
 
 ;; IMPORTANT: `org-mode' related
 (defconst org-prefix-key (kbd "<f8>") "Emacs org-mode prefix key.")
@@ -176,9 +169,6 @@
 (define-key org-map (kbd "s") 'org-schedule)
 (define-key org-map (kbd "A") 'org-archive-subtree)
 (define-key org-map (kbd "S") 'org-store-link)
-
-;; (global-set-key (kbd "M-<f8>") 'function)
-;; (global-set-key (kbd "C-<f8>") 'function)
 
 ;; IMPORTANT:
 ;; (global-set-key (kbd "<f9>") 'function)

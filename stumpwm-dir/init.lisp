@@ -49,8 +49,8 @@
 
 (defun system-name ()
   "Return a string representing the system name."
-  (when (probe-file "/etc/debian_version")
-    'debian))
+  (cond
+   ((probe-file "/etc/debian_version") 'debian)))
 
 (defun battery-charge ()
   "Return a string representing the current battery charge."
@@ -88,19 +88,20 @@
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
-;; TODO: `*user-projects-directory*' ???
+;; TODO: `*user-projects-directory*'
 
 ;;; IMPORTANT: default applications
 (defvar *browser* nil "Default web browser.")
 (defvar *terminal* nil "Default terminal emulator.")
-(when (eq (system-name) 'debian) ;; NOTE: If running debian ...
-  (setq *browser* "x-www-browser"
-        *terminal* "x-terminal-emulator"))
-;; NOTE: get from shell environment editor ...
+;; NOTE: get from shell environment
 (defvar *editor* (getenv "EDITOR") "Default editor.")
 (defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
 (defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
 (defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
+
+(when (eq (system-name) 'debian) ;; NOTE: If running debian ...
+  (setq *browser* "x-www-browser"
+        *terminal* "x-terminal-emulator"))
 
 ;; ERROR: hardcoded
 (defvar *document-viewer* "evince" "Default document reader.")
@@ -134,33 +135,20 @@
                            :dont-close t)
       (setf *swank-p* t))))
 
-;;; IMPORTANT: contribution scripts
-(set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
-
-;; NOTE: load selected modules
-(mapcar #'load-module '(;; "amixer"
-			;; "app-menu"
-			;; "aumix"
-			"battery"
-			"battery-portable"
-			;; "cpu"
-			;; "disk"
-			;; "g15-keysyms"
-			;; "maildir"
-			;; "mem"
-			;; "mpd"
-			;; "net"
-			;; "notifications"
-			;; "passwd"
-			;; "productivity"
-			"sbclfix"
-			;; "surfraw"
-			;; "undocumented"
-			"wifi"
-			;; "window-tags"
-			))
-
-;;(setf *prefer-sysfs* nil)
+;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
+(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
+(set-frame-outline-width 0)
+(set-normal-gravity :top)
+(set-maxsize-gravity :top-right)
+(set-transient-gravity :top-right)
+;; NOTE: window border colours
+(set-msg-border-width 0)
+;; (set-focus-color *focus-colour*)
+;; (set-unfocus-color *unfocus-colour*)
+;; NOTE: input box colours
+;; (set-fg-color *foreground-colour*)
+;; (set-bg-color *background-colour*)
+;; (set-border-color *border-colour*)
 
 ;;; IMPORTANT: windows, message, input box appearances and mode line
 (setf *normal-border-width* 0 ;; NOTE: the width in pixels given to the borders of regular windows
@@ -183,21 +171,35 @@
       ;; *mode-line-position* :top
       )
 
-;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
-(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
-(set-frame-outline-width 0)
-(set-normal-gravity :top)
-(set-maxsize-gravity :top-right)
-(set-transient-gravity :top-right)
-;; NOTE: window border colours
-(set-msg-border-width 0)
-;; (set-focus-color *focus-colour*)
-;; (set-unfocus-color *unfocus-colour*)
-;; NOTE: input box colours
-;; (set-fg-color *foreground-colour*)
-;; (set-bg-color *background-colour*)
-;; (set-border-color *border-colour*)
+;;; IMPORTANT: contribution scripts
+(set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
 
+;; NOTE: load selected modules
+(mapcar #'load-module '(;; "amixer"
+			;; "app-menu"
+			;; "aumix"
+			;; "battery"
+			;; "battery-portable"
+			;; "cpu"
+			;; "disk"
+			;; "g15-keysyms"
+			;; "maildir"
+			;; "mem"
+			;; "mpd"
+			;; "net"
+			;; "notifications"
+			;; "passwd"
+			;; "productivity"
+			"sbclfix"
+			;; "surfraw"
+			;; "undocumented"
+			;; "wifi"
+			;; "window-tags"
+			))
+
+;;(setf *prefer-sysfs* nil)
+
+;;; IMPORTANT: mode line
 (defvar *mode-line-format* "[^B%n^b] ^[^3*%d^] " "Show the group name and date/time in the mode-line.")
 
 (setf *screen-mode-line-format*
@@ -255,8 +257,8 @@
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
 
 (defkeys-root ;; NOTE: define root-map keys
-    ("s-b" "global-select")
-    ("s-q" "safe-quit")
+  ("s-b" "global-select")
+  ("s-q" "safe-quit")
   ("s-d" "trash-window")
   ("s-s" "trash-show")
   ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
@@ -269,8 +271,8 @@
   )
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
-    ("s-S" '*sudo-map*)
-    ("s-V" '*volume-map*)
+  ("s-S" '*sudo-map*)
+  ("s-V" '*volume-map*)
   ;; ("s-M" '*mpd-map*)
   ("s-:" "eval")
   ("s-x" "colon")
@@ -313,7 +315,7 @@
 (defun rename-default-group ()
   "Rename 'Default' group 'default'"
   (run-commands "gselect 1")
-  (setf (group-name (first (screen-groups (current-screen)))) "default"))
+  (setf (group-name (first (screen-groups (current-screen)))) (first *groups*)))
 
 (defun create-groups (&rest args)
   "Create new groups."
@@ -473,11 +475,11 @@
 ;;     (setf *system-monitor* (make-application (getenv "SYSTEM_MONITOR") *terminal* (getenv "SYSTEM_MONITOR") t))
 ;;     (setf *package-manager* (make-application (getenv "PACKAGE_MANAGER") *terminal* (getenv "PACKAGE_MANAGER") t)))
 
-;;(clear-window-placement-rules) ;; NOTE: clear rules
-
 (defmacro group-frame-preference (application group key)
   (let ((app (eval application)))
     `(define-frame-preference ,group (0 t t ,key ,app))))
+
+;;(clear-window-placement-rules) ;; NOTE: clear rules
 
 (group-frame-preference *file-manager* "default" :instance)
 (group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
@@ -573,6 +575,7 @@
 
 ;;; IMPORTANT: key sequence
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/FAQ'
+;; WARNING: this (understandably) slows the stumpwm responsiveness
 ;; (defun key-press-hook (key key-seq cmd)
 ;;   (declare (ignore key))
 ;;   (unless (eq *top-map* *resize-map*)
