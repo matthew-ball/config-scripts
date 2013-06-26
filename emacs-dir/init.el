@@ -92,8 +92,10 @@
 ;;; IMPORTANT: info path
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
 (after "info"
-  (add-to-list 'Info-additional-directory-list (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/"))
-  (add-to-list 'Info-additional-directory-list (concat quicklisp-directory "slime-20120208-cvs/doc/")))
+  (setq Info-default-directory-list
+        (append Info-default-directory-list `("~/.emacs.d/info"
+                                              "~/Programming/lisp/common-lisp/stumpwm"
+                                              ,(concat quicklisp-directory "slime-20120208-cvs/doc/")))))
 
 ;;; IMPORTANT: package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'

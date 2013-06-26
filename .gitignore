@@ -65,3 +65,5 @@ ncmpcpp-dir/error.log
 # aptitude-dir/config-old
 # ignore backup files
 *~
+/emacs-dir/info/dir
+/emacs-dir/info/sicp.info.gz

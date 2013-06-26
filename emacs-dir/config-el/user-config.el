@@ -33,8 +33,8 @@
 
 ;;; IMPORTANT: extension to info
 ;; SOURCE: `http://emacswiki.org/emacs/info+.el'
-(after "info"
-  (require 'info+))
+;; (after "info"
+;;   (require 'info+))
 
 ;;; IMPORTANT: extension to `ido'
 (after "ido"
@@ -67,6 +67,11 @@
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
 (autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
+
+;; NOTE: persistent undo history
+;; (after "undo-tree"
+;;   (setq undo-tree-auto-save-history t
+;;         undo-tree-history-directory-alist `((".*" . ,(concat user-emacs-directory "undo")))))
 
 (global-undo-tree-mode) ;; NOTE: enable undo-tree mode
 
@@ -342,6 +347,25 @@
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
 
 ;; IMPORTANT: freenode <*>Serv interaction commands
+;; SOURCE: `http://keramida.wordpress.com/2008/11/04/extending-erc-with-emacs-lisp/'
+(defun erc-cmd-CS (&rest args)
+  "Short alias for `/chanserv ARGS'."
+  (let ((command-args (append (list "CHANSERV") args)))
+    (let ((chanserv-command (mapconcat #'identity command-args " ")))
+      (erc-send-command chanserv-command))))
+
+(defun erc-cmd-MS (&rest args)
+  "Short alias for `/memoserv ARGS'."
+  (let ((command-args (append (list "MEMOSERV") args)))
+    (let ((memoserv-command (mapconcat #'identity command-args " ")))
+      (erc-send-command memoserv-command))))
+
+(defun erc-cmd-NS (&rest args)
+  "Short alias for `/nickserv ARGS'."
+  (let ((command-args (append (list "NICKSERV") args)))
+    (let ((nickserv-command (mapconcat #'identity command-args " ")))
+      (erc-send-command nickserv-command))))
+
 ;; NOTE: Freenode `NickServ' commands:
 ;; GHOST           Reclaims use of a nickname.
 ;; GROUP           Adds a nickname to your account.
@@ -369,12 +393,12 @@
 
 ;;(erc-user-cmd "NICKSERV")
 
-(defun erc-cmd-NS ()
-  ""
-  (let ((choice (ido-completing-read "Select command: " nickserv-commands-list)))
-    (erc-message "PRIVMSG"
-                 (format "NickServ help %s"
-                         choice))))
+;; (defun erc-cmd-NS ()
+;;   ""
+;;   (let ((choice (ido-completing-read "Select command: " nickserv-commands-list)))
+;;     (erc-message "PRIVMSG"
+;;                  (format "NickServ help %s"
+;;                          choice))))
 
 ;; IMPORTANT: freenode user and channel modes
 ;; (defvar freenode-user-modes-list (list "D" "g" "i" "Q" "R" "w" "z"))
@@ -403,15 +427,15 @@
 
 (defvar memoserv-commands-list (list "DEL" "DELETE" "FORWARD" "HELP" "IGNORE" "LIST" "READ" "SEND" "SENDOPS") "List of Freenode's `MemoServ' commands.")
 
-(defun erc-cmd-MS (&rest junk)
-  "Send `MemoServ' command to server process in an `erc-mode' buffer."
-  (let ((choice (ido-completing-read "Select command: " memoserv-commands-list)))
-    (erc-message "PRIVMSG" (concat "MemoServ " choice " help") nil)))
+;; (defun erc-cmd-MS (&rest junk)
+;;   "Send `MemoServ' command to server process in an `erc-mode' buffer."
+;;   (let ((choice (ido-completing-read "Select command: " memoserv-commands-list)))
+;;     (erc-message "PRIVMSG" (concat "MemoServ " choice " help") nil)))
 
 ;; TODO: add a bunch of commands to automagically handle ChanServ stuff
 ;; ...
-(defun erc-cmd-CS (&rest junk)
-  )
+;; (defun erc-cmd-CS (&rest junk)
+;;   )
 
 ;;; IMPORTANT: "Custom" `erc-mode' interactions with outside environment
 (defun erc-cmd-MAN (program &rest args)
