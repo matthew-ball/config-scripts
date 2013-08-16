@@ -51,6 +51,7 @@
 ;;; IMPORTANT: default auto-mode list
 (add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; NOTE: open `README' files in `org-mode'
 (add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; NOTE: open `NEWS' files in `org-mode'
+(add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; NOTE: open `*.org' files in `org-mode'
 ;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; NOTE: open `*.hs' files in `haskell-mode'
 ;; (add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; NOTE: open `*.cabal' files in `haskell-cabal-mode'
@@ -227,6 +228,7 @@
 	    (or (mode . org-mode)
 		(mode . org-agenda-mode)
 		(mode . calendar-mode)
+		(mode . cfw:calendar-mode)
 		(mode . diary-mode)
 		(filename . ,(expand-file-name user-organisation-directory))))
 	   ("IRC" ;; NOTE: irc related buffers
@@ -242,7 +244,6 @@
 	    (or (mode . eshell-mode)
 		(mode . shell-mode)
 		(mode . term-mode)
-		(mode . locate-mode)
 		(mode . tex-shell-mode)
 		(name . "^\\*Shell Command Output\\*$")))
 	   ("Games" ;; NOTE: buffers related to games
@@ -275,6 +276,7 @@
 	    (or (mode . info-mode)
 		(mode . Info-mode)
 		(mode . apropos-mode)
+		(mode . locate-mode)
 		(mode . Help-Mode)
 		(mode . help-mode)
 		(mode . Man-mode)
@@ -541,9 +543,9 @@
 (defun eshell-prompt ()
   "Fancy prompt for `eshell'."
   (concat
-   (with-face user-login-name :foreground "red")
+   (with-face user-login-name :foreground "dim gray" :weight 'bold)
    "@"
-   (with-face (car (split-string system-name "\\.")) :foreground "green")
+   (with-face (car (split-string system-name "\\.")) :foreground "dim gray" :weight 'bold)
    ":"
    (with-face (eshell/pwd) :foreground "blue" :weight 'bold)
    (if (string= (substring (shell-command-to-string "git branch") 0 1) "f")
@@ -628,12 +630,12 @@
 				      dired-texinfo-unclean-extensions)
 	;; NOTE: dired application management
 	dired-guess-shell-alist-user (list
-				      (list "\\.pdf$" "evince")
-				      (list "\\.PDF$" "evince")
-				      (list "\\.odt$" "openoffice.org")
-				      (list "\\.doc$" "openoffice.org")
-				      (list "\\.docx$" "openoffice.org")
-				      (list "\\.DOC$" "openoffice.org"))))
+				      (list "\\.pdf$" "epdfview")
+				      (list "\\.PDF$" "epdfview")
+				      (list "\\.odt$" "libreoffice")
+				      (list "\\.doc$" "libreoffice")
+				      (list "\\.docx$" "libreoffice")
+				      (list "\\.DOC$" "libreoffice"))))
 
 (defun turn-on-dired-find-alternate-file (&rest junk)
   "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
@@ -660,6 +662,15 @@
   "Switch to the previous window"
   (interactive)
   (select-window (previous-window)))
+
+(defun flip-windows ()
+  "Flip windows."
+  (interactive)
+  (let (bufname (buffer-name))
+    (save-excursion
+      (delete-other-windows)
+      (split-window-below)
+      (switch-to-buffer bufname))))
 
 ;; SOURCE: `http://wenshanren.org/?p=298'
 (defun edit-current-file-as-root ()

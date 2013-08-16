@@ -100,6 +100,8 @@
                                (turn-on-general-programming-mode)
                                (paredit-mode t)
                                (pretty-lambdas)
+			       ;; TODO: check for slime first?
+			       (slime-mode t)
                                ))
 
   (add-hook 'lisp-interaction-mode-hook '(lambda ()
@@ -108,14 +110,28 @@
                                            (paredit-mode t)))
 
   (add-hook 'inferior-lisp-mode-hook '(lambda ()
-                                        ;; (inferior-slime-mode t)
+                                        ;;(inferior-slime-mode t)
                                         (paredit-mode t))))
+
+;;; IMPORTANT: elisp slime navigation
+;; SOURCE: `https://github.com/purcell/elisp-slime-nav'
+;;(autoload "elisp-slime-nav-mode" "elisp-slime-nav" t)
+(require 'elisp-slime-nav)
+
+(after "elisp-slime-nav"
+  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+    (add-hook hook 'elisp-slime-nav-mode)))
+
 ;;; IMPORTANT: slime/swank
+(add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130615-cvs"))
+
 (require 'slime-autoloads)
+;; (when (member slime-autoloads features)
+;;   (require 'slime-autoloads))
 
 (after "slime"
-  ;;(setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq inferior-lisp-program "/usr/bin/sbcl --noinform") ;; NOTE: suppress the printing of any banner or other informational message at startup
+  ;; (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq inferior-lisp-program "/usr/bin/sbcl --noinform --userinit=\"$HOME/.sbclrc\"") ;; NOTE: suppress the printing of any banner or other informational message at startup
 
   (slime-setup '(slime-fancy
                  slime-tramp
@@ -123,24 +139,26 @@
                  slime-compiler-notes-tree
                  slime-indentation
                  slime-fontifying-fu
-                 ;; slime-mdot-fu
                  slime-scratch
                  slime-xref-browser
                  slime-asdf
-                 ;; ---
-                 ;; slime-package-fu
-                 ;; slime-repl
-                 ;; slime-editing-commands
-                 ;; slime-fancy-inspector
+                 slime-repl
+                 slime-editing-commands
                  slime-fuzzy
                  slime-autodoc
+                 slime-sbcl-exts
+                 ;; ---
+                 ;; slime-mdot-fu
+                 ;; slime-package-fu
+                 ;; slime-fancy-inspector
                  ;; slime-indentation-fu
                  ;; slime-references
                  ;; ---
-                 slime-sbcl-exts
+		 ;; inferior-slime-mode
                  ))
 
-  (setq slime-net-coding-system 'utf-8-unix
+  (setq slime-startup-animation nil
+	slime-net-coding-system 'utf-8-unix
         slime-complete-symbol*-fancy t
         slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
@@ -226,7 +244,7 @@
 (autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
 
 (after "cc-mode"
-  (require 'cwarn)
+  ;; (require 'cwarn)
   ;; TODO: set up CEDET
   ;; (require 'cedet) ;; NOTE: collection of emacs development environment tools
 
@@ -234,7 +252,8 @@
 
   (add-hook 'c-mode-hook '(lambda ()
                             (turn-on-general-programming-mode)
-                            (turn-on-cwarn-mode))))
+                            ;;(turn-on-cwarn-mode)
+			    )))
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'

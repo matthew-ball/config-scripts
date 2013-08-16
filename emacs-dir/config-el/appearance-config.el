@@ -31,12 +31,11 @@
 
 (defun load-frame ()
   "Apply features to a new frame."
-  (set-face-attribute 'default nil :height 80) ;; NOTE: reduce font-size slightly
+  (set-face-attribute 'default nil :height 90)
   (setq color-theme-is-global t ;; ...
 	frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  (color-theme-zenburn)
-  ;; (load-theme 'tango-dark)
+  ;;(load-theme 'whiteboard)
   )
 
 (after "color-theme"
@@ -192,7 +191,9 @@
 (eval-after-load "w3m-lnum" '(diminish 'w3m-lnum-mode ""))
 (eval-after-load "cwarn" '(diminish 'cwarn-mode ""))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode ""))
+(eval-after-load "elisp-slime-nav" '(diminish 'elisp-slime-nav-mode ""))
 ;;(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
+
 
 ;;; IMPORTANT: adaptive text wrap
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)

@@ -1,4 +1,11 @@
 
+- IMPORTANT: The entire StumpWM environment can now be installed from quicklisp.
+  + That said, certain things must also be downloaded:
+    1. swank
+    2. slime-helper
+    3. clx
+    4. cl-ppcre
+
 * The =StumpWM= configuration
 ** Appearance Configuration
 - The following variables are set:

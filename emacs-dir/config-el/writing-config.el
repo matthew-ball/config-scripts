@@ -45,6 +45,10 @@
 	deft-text-mode 'org-mode
 	deft-directory (format "%s.deft/" user-organisation-directory)))
 
+;;; IMPORTANT: calendar
+;; SOURCE: `https://github.com/kiwanami/emacs-calfw'
+(require 'calfw)
+
 ;;; IMPORTANT: diary and calendar mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
@@ -61,18 +65,20 @@
 
 ;;; IMPORTANT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-(autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
-(autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-;;(autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
-;;(autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
+;; (autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
+;; (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
+;; (autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
+;; (autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
+(require 'flyspell)
 
 (after "flyspell"
   (add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
 ;;; IMPORTANT: ispell
-(setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
-      ispell-parser 'tex
-      ispell-extra-args '("--sug-mode=ultra"))
+(after "ispell"
+  (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
+	ispell-parser 'tex
+	ispell-extra-args '("--sug-mode=ultra")))
 
 ;;; IMPORTANT: dictem
 ;; SOURCE: ...
@@ -250,7 +256,7 @@
 	ebib-file-search-dirs (list (format "%s" user-home-directory)
 				    (format "%sPapers/" user-documents-directory))) ;; NOTE: directories to search when viewing external files
 
-  (setcdr (assoc "pdf" ebib-file-associations) "evince"))
+  (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
 
 ;; Ebib Entry: [[ebib:horwich1996][Horwich (1996)]]
 ;; Citation Entry: [[cite:horwich1996][Horwich (1996)]]
@@ -373,8 +379,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;;; IMPORTANT: org-agenda
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
 (after "org-agenda"
-  (setq org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+  (setq org-agenda-include-diary nil ;; NOTE: include entries from the emacs diary
 	org-agenda-skip-scheduled-if-done t ;; NOTE: ...
+	org-agenda-inhibit-startup t
 	org-agenda-skip-deadline-if-done t ;; NOTE: ...
 	org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
 	org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
@@ -384,9 +391,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 			   ,(expand-file-name user-org-notes-file) ;; IMPORTANT: this is "journal.org" 
 			   ,(expand-file-name user-org-projects-file)
 			   ,(concat (expand-file-name user-organisation-directory) "home.org")
-			   ,(concat (expand-file-name user-organisation-directory) "contacts.org")
+			   ;;,(concat (expand-file-name user-organisation-directory) "contacts.org")
 			   ,(concat (expand-file-name user-organisation-directory) "birthday.org")
-			   ,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
+			   ;;,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
 			   ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
 			   ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
 			   ))
@@ -435,7 +442,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; IMPORTANT: org-export
 ;; SOURCE: `http://orgmode.org/manual/Exporting.html'
-(setq org-export-latex-default-class "paper"
+(setq org-export-latex-default-class "article"
       org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
       org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
       org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
@@ -450,8 +457,8 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;;; IMPORTANT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
 (after "org-capture"
   (setq org-capture-templates
-	'(("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
-	   "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
+	'(;; ("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
+	  ;;  "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
 	  ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
 	   "%(add-course)" :empty-lines 1 :immediate-finish 1)
 	  ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
@@ -518,9 +525,11 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-babel-load-file "ob-tangle" "Interact with programming languages in `org-mode'." t)
 
 (after "ob-tangle"
+  (require 'ob-lisp)
+
   (org-babel-do-load-languages 'org-babel-load-languages
 			       '((emacs-lisp . t)
-				 ;;(common-lisp . t)
+				 (lisp . t)
 				 (maxima . t)
 				 (scheme . t)
 				 (haskell . t)

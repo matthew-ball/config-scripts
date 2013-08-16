@@ -20,7 +20,7 @@
 
 ;;; Commentary:
 
-;; This is the "entrance" point of the configuration.
+;; This is the "entrance" point of the (GNU) Emacs configuration.
 
 ;;; Code:
 
@@ -33,7 +33,7 @@
 (defcustom user-shell (getenv "SHELL") "The user's $SHELL environment variable." :group 'user-directories :type 'string)
 (defcustom user-browser (getenv "BROWSER") "The user's $BROWSER environment variable." :group 'user-directories :type 'string)
 (defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable." :group 'user-directories :type 'string)
-(defcustom user-scripts-directory (format "%s/.conf-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
+(defcustom user-scripts-directory (format "%s/config-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
 (defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents." :group 'user-directories :type 'string)
 (defcustom user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news." :group 'user-directories :type 'string)
 (defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
@@ -79,10 +79,11 @@
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add `config-el/' to `load-path' variable
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el")) ;; NOTE: add `extras-el/' to `load-path' variable
 ;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add `apt-el/' to `load-path' variable
-(add-to-list 'load-path (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/contrib")) ;; TODO: this is for `stumpwm-mode'
-(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "dictem-1.0.4")) ;; TODO: move to `../extras-el/dictem-el/'
+;;(add-to-list 'load-path (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/contrib")) ;; TODO: this is for `stumpwm-mode'
+;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "dictem-1.0.4")) ;; TODO: move to `../extras-el/dictem-el/'
 ;;(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/wireless/wireless") ;; TODO: move to `../extras-el/wireless-el/'
-(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20120407-cvs"))) ;; TODO: this is not ideal
+(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20130615-cvs"))) ;; TODO: this is not ideal
+(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/contrib"))) ;; TODO: this is not ideal
 
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
   (if (file-exists-p default-directory) ;; NOTE: if the directory `~/.emacs.d/elpa/' exists ...
@@ -92,10 +93,9 @@
 ;;; IMPORTANT: info path
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
 (after "info"
-  (setq Info-default-directory-list
-        (append Info-default-directory-list `("~/.emacs.d/info"
-                                              "~/Programming/lisp/common-lisp/stumpwm"
-                                              ,(concat quicklisp-directory "slime-20120208-cvs/doc/")))))
+  (add-to-list 'Info-default-directory-list (expand-file-name "~/.emacs.d/info"))
+  (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/")))
+  (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "slime-20130615-cvs/doc/"))))
 
 ;;; IMPORTANT: package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
@@ -107,7 +107,8 @@
   ;; NOTE: set download repositories
   (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
 			   ("gnu" . "http://elpa.gnu.org/packages/")
-			   ("marmalade" . "http://marmalade-repo.org/packages/"))))
+			   ;;("marmalade" . "http://marmalade-repo.org/packages/")
+			   )))
 
 (defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
 

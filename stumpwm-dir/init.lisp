@@ -33,12 +33,12 @@
 
 (setf *default-package* :stumpwm ;; NOTE: set default package to be stumpwm
       *startup-message* nil ;; NOTE: suppress the startup message
-      ;; *debug-level* 5 ;; NOTE: turn on stumpwm debugging (WARNING: creates massive text dumps)
+      ;; *debug-level* 5 ;; NOTE: enable debugging (WARNING: creates massive text dumps)
       *shell-program* (getenv "SHELL") ;; NOTE: set the default shell
-      *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse (alternatives are: `:click' and `:ignore')
+      *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse
 
 ;; (setf *data-dir* (expand-file-name "~/.stumpwm.d/"))
-(redirect-all-output (data-dir-file "debug" "lisp")) ;; NOTE: debug information `~/.stumpwm.d/debug.lisp'
+(redirect-all-output (data-dir-file "debug" "lisp")) ;; NOTE: debug information
 
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 
@@ -48,9 +48,9 @@
   (first (split-string (machine-instance) ".")))
 
 (defun system-name ()
-  "Return a string representing the system name."
-  (cond
-   ((probe-file "/etc/debian_version") 'debian)))
+  "Return symbol representing the system name."
+  (let ((system-name (run-shell-command "lsb_release -i -s" t)))
+    (values (intern (string-upcase (read-line (make-string-input-stream system-name)))))))
 
 (defun battery-charge ()
   "Return a string representing the current battery charge."
@@ -62,27 +62,35 @@
   (let ((raw-battery (run-shell-command "acpi | cut -d: -f2 | cut -d, -f1" t)))
     (substitute #\Space #\Newline raw-battery)))
 
+(defun cut-beyond (sequence max-length)
+  "Cut a sequence beyond a specified length (because `subseq' is fickle)"
+  (if (> (length sequence) max-length)
+      (subseq sequence 0 max-length)
+    sequence))
+
+(defmacro replace-hook (hook fn)
+  `(remove-hook, hook, fn)
+  `(add-hook, hook, fn))
+
 ;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
 ;; TODO: use functions `user-homedir-pathname' and `merge-pathnames' to update it.
 (defun expand-file-name (path &optional default-directory)
   "Expand file-name."
   (let ((first-char (subseq path 0 1))
-        (home-dir (concat (getenv "HOME") "/"))
+        (home-dir ;;(user-homedir-pathname)
+		  (concat (getenv "HOME") "/"))
         (dir (if default-directory
                  (if (string= (subseq (reverse default-directory) 0 1) "/")
                      default-directory
-                     (concat default-directory "/")))))
-    (cond ((string= first-char "~") (concat home-dir (subseq path 2)))
-          ((string= first-char "/") path)
-          (dir (if (string= (subseq dir 0 1) "/")
-                   (concat dir path)
-                   (expand-file-name (concat dir path))))
-          (t (concat home-dir path)))))
-
-;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
-(defmacro replace-hook (hook fn)
-  `(remove-hook, hook, fn)
-  `(add-hook, hook, fn))
+		   (concat default-directory "/")))))
+    (cond
+     ((string= first-char "~") (concat home-dir (subseq path 2)))
+     ((string= first-char "/") path)
+     ;; TODO: maybe should ask for root password here (?)
+     (dir (if (string= (subseq dir 0 1) "/")
+	      (concat dir path)
+	    (expand-file-name (concat dir path))))
+     (t (concat home-dir path)))))
 
 ;;; IMPORTANT: user variables
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
@@ -99,18 +107,18 @@
 (defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
 (defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
 
-(when (eq (system-name) 'debian) ;; NOTE: If running debian ...
+(when (or (eq (system-name) 'DEBIAN) (eq (system-name) 'UBUNTU))
   (setq *browser* "x-www-browser"
         *terminal* "x-terminal-emulator"))
 
 ;; ERROR: hardcoded
-(defvar *document-viewer* "evince" "Default document reader.")
-(defvar *office-suite* "openoffice.org" "Default office suite.") ;; TODO: set this up
-(defvar *audio-player* "ncmpcpp" "Default audio player.")
+(defvar *document-viewer* "epdfview" "Default document reader.")
+(defvar *office-suite* "libreoffice" "Default office suite.")
+;; (defvar *audio-player* "ncmpcpp" "Default audio player.")
 (defvar *video-player* "vlc" "Default video player.")
 
 ;;; IMPORTANT: (zenburn-inspired) color theme
-;; TODO: possibly need to set *colors* so that I can use the `zenburn' face colours in the mode-line format
+;; TODO: set *colors* so that I can use the `zenburn' face colours in the mode-line format
 ;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.")
 ;; (defparameter *background-colour* "grey25" "Set the background colour.")
 ;; (defparameter *border-colour* "grey25" "Set the border colour.")
@@ -119,25 +127,26 @@
 
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
-(load (concat *user-quicklisp-directory* "/slime-20120407-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
+(load (concat *user-quicklisp-directory* "/slime-20130615-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
 
 (swank-loader:init)
 
-(defvar *swank-p* nil)
+(defvar *swank-p* nil "Predicate representing whether or not a common lisp swank server is active.")
 
 (defcommand run-swank () ()
   "Start a (persistent) swank server on port 4005."
   (setf *top-level-error-action* :break)
-  (unless *swank-p*    
+  (unless *swank-p*
     (progn
       (swank:create-server :port 4005
-                           :style swank:*communication-style*
-                           :dont-close t)
+			   :style swank:*communication-style*
+			   :dont-close t)
       (setf *swank-p* t))))
 
-;; NOTE: set the font for the message and input bars, and the mode line (emacs font)
-(set-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1")
-(set-frame-outline-width 0)
+;; NOTE: use `xfontsel' to discover fonts
+;; (set-font "-*-helvetica-bold-r-normal-*-12-*-*-*-*-*-*-*")
+
+(set-frame-outline-width 1)
 (set-normal-gravity :top)
 (set-maxsize-gravity :top-right)
 (set-transient-gravity :top-right)
@@ -151,9 +160,9 @@
 ;; (set-border-color *border-colour*)
 
 ;;; IMPORTANT: windows, message, input box appearances and mode line
-(setf *normal-border-width* 0 ;; NOTE: the width in pixels given to the borders of regular windows
-      *maxsize-border-width* 0 ;; NOTE: the width in pixels given to the borders of windows with maxsize or ratio hints
-      *transient-border-width* 0 ;; NOTE: the width in pixels given to the borders of transient or pop-up windows
+(setf *normal-border-width* 1 ;; NOTE: the width in pixels given to the borders of regular windows
+      *maxsize-border-width* 1 ;; NOTE: the width in pixels given to the borders of windows with maxsize or ratio hints
+      *transient-border-width* 1 ;; NOTE: the width in pixels given to the borders of transient or pop-up windows
       *window-border-style* :thin ;; NOTE: set the window border to thin (alternatives are: `:thick' `:thin' `:tight' `:none')
       *message-window-gravity* :top-right ;; NOTE: set the message-box to the top right
       *input-window-gravity* :top-right ;; NOTE: set the input-box to the top right
@@ -162,7 +171,7 @@
       *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
       *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
       *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
-      *mode-line-pad-y* 0 ;; NOTE: set the padding between the mode line text and the top/bottom
+      *mode-line-pad-y* 1 ;; NOTE: set the padding between the mode line text and the top/bottom
       *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
       *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
       ;; *mode-line-background-color* *background-colour*
@@ -180,11 +189,11 @@
 			;; "aumix"
 			;; "battery"
 			;; "battery-portable"
-			;; "cpu"
-			;; "disk"
+			"cpu"
+			;;"disk"
 			;; "g15-keysyms"
 			;; "maildir"
-			;; "mem"
+			"mem"
 			;; "mpd"
 			;; "net"
 			;; "notifications"
@@ -197,14 +206,24 @@
 			;; "window-tags"
 			))
 
-;;(setf *prefer-sysfs* nil)
+;; (setf *prefer-sysfs* nil)
+
+;; (setf *disk-usage-paths* '("/"
+;; 			   "/home")) ;; NOTE: see ../contrib/disk.lisp
 
 ;;; IMPORTANT: mode line
-(defvar *mode-line-format* "[^B%n^b] ^[^3*%d^] " "Show the group name and date/time in the mode-line.")
-
 (setf *screen-mode-line-format*
       (list
-       '(:eval *mode-line-format*)
+       ;; "^B[^b%n^B]^b "
+       ;;"^B%M %N^b - " ;; NOTE: display memory usage (with bar)
+       ;; "^B%M^b" ;; NOTE: ... (without bar)
+       ;;"^B%c %C %t^b - " ;; NOTE: display CPU usage and temperature (with bar)
+       ;; "- ^B%c %t^b" ;; NOTE: ... (without bar)
+       ;;"^B%D^b" ;; NOTE: display disk usage
+       ;; ----
+       "[^B%n^b] %d ^B%M^b^B%c %t^b"
+       ;; '(:eval (cut-beyond "[^B%n^b] %d ^B%M^b^B%c %t^b" 50))
+       ;; ----
        ;; "[^[^1*%B^]] " ;; NOTE: display battery details
        ;; "[^[^2*"
        ;; '(:eval (battery-charge))
@@ -216,19 +235,15 @@
        ;; "%W " ;; NOTE: window list ("%v " is similar)
        ;; "[" '(:eval (run-shell-command "acpi -b" t)) "]"
        ;; "["
-       ;; "%M" ;; NOTE: display memory usage
-       ;; "%C" ;; NOTE: display CPU metre as a bar
-       ;; "%c" ;; NOTE: display CPU metre as digits
        ;; "%b" ;; NOTE: display battery details
        ;; "%I" ;; NOTE: display wireless details
        ;; "^B%m^b" ;; NOTE: display mpd details
-       ;; "%D" ;; NOTE: display disk usage
        ;; "]"
        ;; " ^B%g^b" ;; NOTE: display group name
        ;; "^B%W^b" ;; NOTE: display current and available frames
        ))
 
-;; (when (not (head-mode-line (current-head))) ;; NOTE: turn on the `mode-line'
+;; (when (not (head-mode-line (current-head))) ;; NOTE: when the `mode-line' is disabled, turn it on
 ;;    (toggle-mode-line (current-screen) (current-head)))
 
 ;;; IMPORTANT: key bindings
@@ -261,18 +276,20 @@
   ("s-q" "safe-quit")
   ("s-d" "trash-window")
   ("s-s" "trash-show")
-  ("s-R" "loadrc") ;; NOTE: reload run-time configuartion file
+  ("s-R" "reinit") ;; NOTE: reload run-time configuartion file
   ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
   ("M-c" "command-mode") ;; NOTE: active `command-mode'
   ("M-b" "show-battery") ;; NOTE: show battery status
   ("M-u" "show-uptime") ;; NOTE: show uptime status
-  ("M-h" "show-hostname") ;; NOTE: show hostname
+  ("M-h" "show-host-name") ;; NOTE: show host name
+  ("M-s" "show-system-name") ;; NOTE: show system name
   ("M-i" "show-window-properties") ;; NOTE: show current window's properties
   )
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
   ("s-S" '*sudo-map*)
   ("s-V" '*volume-map*)
+  ("s-G" "vgroups")
   ;; ("s-M" '*mpd-map*)
   ("s-:" "eval")
   ("s-x" "colon")
@@ -302,39 +319,49 @@
 	     (kbd "d") "volume-down"
 	     (kbd "m") "volume-toggle-mute")
 
-;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
-;; (defun raise-urgent-window-hook (target)
-;;   (gselect (window-group target))
-;;   (really-raise-window target))
+;;; IMPORTANT: groups (virtual desktops)
+(defparameter *default-group* '("default") "Default StumpWM group object.")
+(defparameter *tiling-groups* '("internet" "misc") "Tiling group objects.")
+(defparameter *floating-groups* nil "Floating group objects.")
+(defparameter *groups* (append *default-group* *tiling-groups* *floating-groups*) "StumpWM group (virtual desktop) object names.")
 
-;; (add-hook *urgent-window-hook* 'raise-urgent-window-hook)
+;; NOTE: the following two functions probably already exist (or at least, something very much like them must exist)
+(defun tiling-group-p (group)
+  "Predicate returning whether or not GROUP is a tiling group."
+  (if (member group *tiling-groups* :test #'string-equal)
+      t
+    nil))
 
-;;; IMPORTANT: groups (virtual desktops) and frame preferences
-(defparameter *groups* '("default" "internet" "misc") "Group (virtual desktop) names.")
+(defun floating-group-p (group)
+  "Predicate returning whether or not GROUP is a floating group."
+  (if (member group *floating-groups* :test #'string-equal)
+      t
+    nil))
 
 (defun rename-default-group ()
-  "Rename 'Default' group 'default'"
+  "Rename 'Default' group 'default'."
   (run-commands "gselect 1")
   (setf (group-name (first (screen-groups (current-screen)))) (first *groups*)))
 
-(defun create-groups (&rest args)
+(defun create-groups ()
   "Create new groups."
-  (unless (eq (cdr *groups*) nil)
-    (dolist (group (cdr *groups*)) ;; NOTE: the `car' of the list is the "default" group
-      (gnewbg group))))
+  (unless *trash-group*
+    (setf *trash-group* (gnewbg ".trash")))
+  (unless (eq (cdr *groups*) nil) ;; NOTE: the `car' of the list is the "default" group
+    (dolist (group (cdr *groups*))
+      (cond
+       ((tiling-group-p group) (gnewbg group))
+       ((floating-group-p group) (gnewbg-float group))
+       ;;(t ...) ;; ERROR: something needs to be done in this case, even if it (theoretically) will never get reached
+       ))))
 
-;; IMPORTANT: floating group stuff
-;; (defcommand resize-floating-window (x y) ((:number x)
-;; 					  (:number y))
-;;   ;; TODO: check to make sure `(current-group)' *is* a floating-group (!!!)
-;;   (float-window-move-resize (current-window) x y))
-
-;; IMPORTANT: group configuration
+;; WARNING: not sure how this will work with multiple screens
 (defun screen-window-count () ;; NOTE: count the windows in the screen (all the groups)
   "Return the number of window frames in the current screen (i.e. all the groups)."
   (let ((window-count 0))
     (dolist (group (screen-groups (current-screen)))
-      (setq window-count (+ (length (group-windows group)) window-count)))
+      (unless (string-equal (group-name group) ".trash")
+	(setq window-count (+ (length (group-windows group)) window-count))))
     window-count))
 
 (defun group-window-count () ;; NOTE: count the windows in the current group
@@ -354,11 +381,39 @@
           (let ((grp-num 1))
             (dolist (group (sort-groups (current-screen)))
               ;; NOTE: we'll find a non-empty group
-              (unless (= (length (group-windows group)) 0)
+              (unless (or (= (length (group-windows group)) 0) (string-equal (group-name group) ".trash"))
                 (run-commands (format nil "gselect ~A" grp-num)))
               (incf grp-num)))))))
 
 (add-hook *destroy-window-hook* 'switch-to-non-empty-group)
+
+;; IMPORTANT: mouse interaction
+;; NOTE: *root-click-hook* and *mode-line-click-hook*
+
+;; (defun root-dimensions (screen code x y)
+;;   "..."
+;;   (message (format nil "Mouse button ~A, (x:~A, y:~A)" code x y)))
+
+;; (add-hook *root-click-hook* 'root-dimensions)
+
+;; IMPORTANT: mode-line group scrolling
+(defun mode-line-scroll (&rest args)
+  "Scroll between groups by clicking on the mode-line."
+  (cond
+   ((eq (second args) 1)
+    (run-commands "gnext")) ;; NOTE: left mouse button
+   ((eq (second args) 2)
+    (run-commands "gother")) ;; NOTE: middle mouse click
+   ((eq (second args) 3)
+    (run-commands "gprev")))) ;; NOTE: right mouse button
+
+(add-hook *mode-line-click-hook* 'mode-line-scroll)
+
+;; IMPORTANT: floating group stuff
+;; (defcommand resize-floating-window (x y) ((:number x) (:number y))
+;;   "Resize floating group application window."
+;;   ;; TODO: (unless (floating-group-p (group-name (current-group))) ...
+;;   (float-window-move-resize (current-window) x y))
 
 ;; IMPORTANT: global window select
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
@@ -399,11 +454,13 @@
   (let ((window nil))
     ;; NOTE: check each group to see if it's in
     (dolist (group (screen-groups (current-screen)))
-      (setq window (window-in-group query group))
-      (when window
-	(switch-to-group group)
-	(frame-raise-window group (window-frame window) window)
-	(return)))))
+      ;; NOTE: don't scan over hidden groups (they're hidden for a reason)
+      (unless (string-equal ".trash" (group-name group))
+	(setq window (window-in-group query group))
+	(when window
+	  (switch-to-group group)
+	  (frame-raise-window group (window-frame window) window)
+	  (return))))))
 
 ;;; IMPORTANT: run applications
 (defclass application ()
@@ -437,14 +494,14 @@
   (with-slots (name instance title terminal)
       application
     (if (eq terminal t)
-        (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* title name) `(:title ,title))
+        (run-or-raise (format nil "~A -T ~A -e ~A" *terminal* title name) `(:title ,title))
       (run-or-raise name `(:instance ,instance)))))
 
 (defun make-keyword (name)
   "Turn string NAME into Common Lisp keyword."
   (values (intern name "KEYWORD")))
 
-(defmacro create-application (name command &optional instance title terminal group)
+(defmacro create-application (name command &optional instance title terminal)
   "Create a general framework for the running (raising) of applications."
   ;; NOTE: make application ...
   (let ((var (make-keyword (concat "*" name "*"))))
@@ -481,14 +538,21 @@
 
 ;;(clear-window-placement-rules) ;; NOTE: clear rules
 
-(group-frame-preference *file-manager* "default" :instance)
-(group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
-(group-frame-preference "stumpish" "default" :title)
-(group-frame-preference *browser* "internet" :instance)
-(group-frame-preference *terminal* "misc" :title)
-(group-frame-preference "htop" "misc" :title)
-(group-frame-preference "utop" "misc" :title)
-(group-frame-preference "aptitude" "misc" :title)
+;; TODO: too much hard-coding
+(defun define-window-placement-rules ()
+  "Define placement rules for windows."
+  (group-frame-preference *file-manager* "default" :instance)
+  (group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
+  (group-frame-preference "stumpish" "default" :title)
+  (group-frame-preference *browser* "internet" :instance)
+  (group-frame-preference "chromium" "internet" :instance)
+  (group-frame-preference "terminal" "misc" :title)
+  ;; (group-frame-preference *terminal* "misc" :title)
+  (group-frame-preference "htop" "misc" :title)
+  (group-frame-preference "utop" "misc" :title)
+  (group-frame-preference "aptitude" "misc" :title)
+  ;; (group-frame-preference "xfdesktop" ".trash" :instance) ;; TODO: group frame preference for XFCE ;; ERROR: doesn't work
+  )
 
 (defun run-or-raise-app (app)
   "Run (or raise) an instance of APP with `instance' property."
@@ -496,33 +560,33 @@
 
 (defun run-or-raise-terminal-app (cmd ttl)
   "Run an instance of CMD in `*terminal*'."
-  (run-or-raise (format nil "~A -t ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
+  (run-or-raise (format nil "~A -T ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
 
 ;; NOTE: ...
-(defcommand run-terminal () () (run-or-raise (format nil "~A -t ~A" *terminal* "terminal") (list :title *terminal*)))
+(defcommand run-terminal () () "Run terminal emulator." (run-or-raise (format nil "~A -T ~A" *terminal* "terminal") (list :title *terminal*)))
 
 ;; NOTE: application run commands
-(defcommand run-editor () () (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
-(defcommand run-browser () () (run-or-raise-app *browser*))
-(defcommand run-file-manager () () (run-or-raise-app *file-manager*))
-(defcommand run-document-viewer () () (run-or-raise-app *document-viewer*))
-(defcommand run-referencer () () (run-or-raise-app "referencer"))
+(defcommand run-editor () () "Run `*editor*'." (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
+(defcommand run-browser () () "Run `*browser*'."(run-or-raise-app *browser*))
+(defcommand run-file-manager () () "Run `*file-manager*'." (run-or-raise-app *file-manager*))
+(defcommand run-document-viewer () () "Run `*document-viewer*'." (run-or-raise-app *document-viewer*))
 
 ;; NOTE: terminal apps
-(defcommand run-system-monitor () () (run-or-raise-terminal-app *system-monitor* "htop"))
-(defcommand run-package-manager () () (run-or-raise-terminal-app *package-manager* "aptitude"))
+(defcommand run-system-monitor () () "Run `*system-monitor*'." (run-or-raise-terminal-app *system-monitor* "htop"))
+(defcommand run-package-manager () () "Run `*package-manager*'." (run-or-raise-terminal-app *package-manager* "aptitude"))
 ;; (defcommand run-audio-player () () (run-terminal-app *audio-player* "ncmpcpp"))
 ;; (defcommand run-video-player () () (run-terminal-app *video-player* "mplayer"))
 
-(defcommand run-stumpish () () (run-or-raise-terminal-app "stumpish" "stumpish"))
-(defcommand run-screen () () (run-or-raise-terminal-app "screen -D -R" "screen"))
-(defcommand run-user-monitor () () (run-or-raise-terminal-app (concat *system-monitor* " -u " (getenv "USER")) "utop"))
+(defcommand run-stumpish () () "Run stumpish shell." (run-or-raise-terminal-app "stumpish" "stumpish"))
+(defcommand run-screen () () "Connect to existing screen session." (run-or-raise-terminal-app "screen -D -R" "screen"))
+(defcommand run-user-monitor () () "Run user monitor." (run-or-raise-terminal-app (concat *system-monitor* " -u " (getenv "USER")) "utop"))
 
 ;;; IMPORTANT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
-(defcommand show-hostname () () "Show the hostname." (echo-string (current-screen) (concat "Hostname: " (host-name))))
+(defcommand show-host-name () () "Show the host name." (echo-string (current-screen) (concat "Host name: " (host-name))))
+(defcommand show-system-name () () "Show the system name." (echo-string (current-screen) (concat "System name: " (string-downcase (symbol-name (system-name))))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."
@@ -532,9 +596,10 @@
   "Checks if any windows are open before quitting."
   (let ((win-count 0))
     (dolist (group (screen-groups (current-screen))) ;; NOTE: count the windows in each group
-      (setq win-count (+ (length (group-windows group)) win-count)))
+      (unless (string-equal (group-name group) ".trash")
+	(setq win-count (+ (length (group-windows group)) win-count))))
     (if (= win-count 0) ;; NOTE: if there are 0 windows then quit, else display the number of open windows
-        (run-commands "quit")
+	(run-commands "quit")
       (message (format nil "You have ~d ~a open" win-count
 		       (if (= win-count 1) "window" "windows"))))))
 
@@ -549,7 +614,8 @@
     (unless arg
       (unwind-protect
            (setf (symbol-function 'draw-input-bucket)
-                 (lambda (screen prompt input &optional errorp)
+                 ;; (lambda (screen prompt input &optional errorp)
+		 (lambda (screen prompt input)
                    (let ((i (copy-structure input)))
                      (setf (input-line-string i)
                            (make-string (length (input-line-string i))
@@ -647,17 +713,16 @@
 ;;   "Start music player daemon, `mpd', server."
 ;;   (run-shell-command "mpd"))
 
-(defun launch-nm-applet ()
-  "Start the network manager applet, `nm-applet'."
-  (run-shell-command "nm-applet"))
+;; (defun launch-nm-applet ()
+;;   "Start the network manager applet, `nm-applet'."
+;;   (run-shell-command "nm-applet"))
 
-(defun launch-lxpanel ()
-  "Start an instance of `lxpanel'."
-  (run-shell-command "lxpanel"))
+;; (defun launch-lxpanel () ;; TODO: this should be `xfce-panel'
+;;   "Start an instance of `lxpanel'."
+;;   (run-shell-command "lxpanel"))
 
 (defun mwsb-start-hook ()
-  "Launch initiation process. This function is called the first time StumpWM is launched."
-  ;; ---
+  "Launch initiation process. This function is only called the first time StumpWM is launched."
   ;; (launch-lxpanel) ;; NOTE: start `lxpanel' instance
   ;; (launch-nm-applet) ;; NOTE: start `nm-applet' instance
   ;; (launch-mpd) ;; NOTE: start mpd server
@@ -668,7 +733,7 @@
   ;; (run-system-monitor) ;; NOTE: start the system monitor
   (rename-default-group)
   (create-groups)
-  )
+  (define-window-placement-rules))
 
 (replace-hook *start-hook* 'mwsb-start-hook)
 

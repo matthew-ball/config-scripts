@@ -24,10 +24,6 @@
 
 ;;; Code:
 
-;;; IMPORTANT: visual switch window
-;; SOURCE: `http://tapoueh.org/emacs/switch-window.html'
-;;(require 'switch-window)
-
 ;;; IMPORTANT: gnome network-manager
 (autoload 'gnomenm-toggle-enabled "gnomenm" "Provides an interface to the Gnome Network Manager." t)
 
@@ -82,73 +78,75 @@
 
 (after "erc"
   (require 'tls)
-  (require 'erc-hl-nicks)
-  (require 'erc-stamp)
-  (require 'erc-join)
+  ;; (require 'erc-hl-nicks)
+  ;; (require 'erc-stamp)
+  ;; (require 'erc-join)
   (require 'erc-spelling)
-  (require 'erc-netsplit)
-  (require 'erc-ring)
-  (require 'erc-goodies)
+  ;; (require 'erc-netsplit)
+  ;; (require 'erc-ring)
+  ;; (require 'erc-goodies)
   ;; (require 'erc-track)
   ;; (require 'erc-button)
   ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
   ;; (require 'erc-goodies)
-  (require 'erc-match)
-  (require 'erc-fill)
-  (require 'erc-log)
-  (require 'erc-pcomplete)
-  (require 'erc-notify)
+  ;; (require 'erc-match)
+  ;; (require 'erc-fill)
+  ;; (require 'erc-log)
+  ;; (require 'erc-pcomplete)
+  ;; (require 'erc-notify)
   
-  (defvar erc-insert-post-hook)
+  ;;(defvar erc-insert-post-hook)
 
   ;; IMPORTANT: erc modules
-  (erc-button-enable)
-  (erc-ring-enable)
-  (erc-netsplit-enable)
-  (erc-match-enable)
-  (erc-autojoin-enable)
+  ;; (erc-button-enable)
+  ;; (erc-ring-enable)
+  ;; (erc-netsplit-enable)
+  ;; (erc-match-enable)
+  ;; (erc-autojoin-enable)
   (erc-spelling-enable)
-  (erc-scrolltobottom-enable) ;; NOTE: enable scroll-to-bottom mode
-  (erc-hl-nicks-enable)
-  (erc-timestamp-mode t) ;; NOTE: enable ERC timestamp mode
-  (erc-fill-disable)
+  ;; (erc-scrolltobottom-enable) ;; NOTE: enable scroll-to-bottom mode
+  ;; (erc-hl-nicks-enable)
+  ;; (erc-timestamp-mode t) ;; NOTE: enable ERC timestamp mode
+  ;; (erc-fill-disable)
 
   ;;(eval-after-load "erc-capab" '(erc-capab-identify-mode t))
 
   ;; IMPORTANT: erc match
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
-  (setq erc-keywords '() ;; NOTE: highlight specific keywords
-        erc-current-nick-highlight-type 'nick ;; NOTE: ...
-        erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
-        erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-        erc-pals '(;;"twb"
-                   ;;"k-man"
-                   ;;"macrobat"
-                   ;;"tali713"
-                   "syrinx"
-                   ;;"sabetts"
-                   "rww"
-                   ;;"dax"
-                   "LjL"
-                   "ldunn"
-                   ;;"moocow"
-                   "mc44"
-                   "IdleOne"
-                   ;;"jussi"
-                   ;;"topyli"
-                   ) ;; NOTE: highlight pals
-        erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
-        erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
+  ;; (setq erc-keywords '() ;; NOTE: highlight specific keywords
+  ;;       erc-current-nick-highlight-type 'nick ;; NOTE: ...
+  ;;       erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
+  ;;       erc-fool-highlight-type 'all ;; NOTE: highlight entire message
+  ;;       erc-pals '(;;"twb"
+  ;;                  ;;"k-man"
+  ;;                  ;;"macrobat"
+  ;;                  ;;"tali713"
+  ;;                  ;; "syrinx"
+  ;;                  ;;"sabetts"
+  ;;                  ;; "rww"
+  ;;                  ;;"dax"
+  ;;                  ;; "LjL"
+  ;;                  ;; "ldunn"
+  ;;                  ;;"moocow"
+  ;;                  ;; "mc44"
+  ;;                  ;; "IdleOne"
+  ;;                  ;;"jussi"
+  ;;                  ;;"topyli"
+  ;;                  ) ;; NOTE: highlight pals
+  ;;       erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
+  ;;       erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
 
-  (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
+  ;; (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
   ;; IMPORTANT: erc notify
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
-  (setq erc-notify-list erc-pals)
-  (erc-notify-mode t)
+  ;;(setq erc-notify-list erc-pals)
+  ;;(erc-notify-mode t)
 
   ;; IMPORTANT: erc logging
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
+  (require 'erc-log)
+
   (setq erc-log-channels-directory "~/.emacs.d/erc/logs/" ;; FIX: hard-coded ...
         erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
         erc-save-queries-on-quit t
@@ -156,14 +154,18 @@
         erc-log-write-after-insert t
         ;;erc-log-insert-log-on-open t
         erc-log-file-coding-system 'utf-8)
+
   (erc-log-enable)
+
+  ;; IMPORTANT: erc ignore
+  ;; (setq-default erc-ignore-list '("kcj"))
 
   ;; IMPORTANT: erc completion
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcCompletion'
-  (add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))  ;; NOTE: nick completion
+  ;;(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))  ;; NOTE: nick completion
 
   ;; TODO: use variables in here ...
-  (setq erc-nick "chu"
+  (setq erc-nick (getenv "USER")
         erc-nick-uniquifier "_"
         erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
         ;; erc-user-full-name user-full-name
@@ -185,7 +187,8 @@
         erc-kill-queries-on-quit t ;; NOTE: kill buffers for queries after quitting the server
         erc-kill-server-buffer-on-quit t ;; NOTE: kill buffers for server messages after quitting the server
         erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
-        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE") ;; NOTE: do not track these messages
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" ;; "324" "329" "332" "333" "353" "477"
+				  ) ;; NOTE: do not track these messages
         ;; erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
         ;; erc-lurker-hide-list '("JOIN" "PART" "QUIT")
         erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
@@ -198,16 +201,18 @@
         (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
                        (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
                      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
+        erc-join-buffer 'bury
         erc-autojoin-channels-alist '((".*\\.freenode.net"
                                        "#emacs"
+				       ;; "#gnus"
+				       "#org-mode"
                                        "#stumpwm"
                                        "#lisp"
                                        "#ubuntu-offtopic"
+                                       "#debian-offtopic"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
-                                       ;; "#debian-offtopic"
-                                       ))
-        erc-join-buffer 'bury)
+                                       )))
 
   ;;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
   (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
@@ -217,6 +222,8 @@
   (setq erc-remove-parsed-property nil))
 
 (after "erc-goodies"
+  (erc-scrolltobottom-enable)
+
   (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
   (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
   (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN))
@@ -313,6 +320,24 @@
                             (or reason
                                 "Kicked (kickban)"))))
 
+(defvar *greetings-list* nil "List of welcoming greetings.")
+
+(setq *greetings-list* '("Hello"
+			 "Hi"
+			 "Howdy"
+			 "Greetings"
+			 "G'day"
+			 "Hey"
+			 "Sup"
+			 "Good morning"
+			 "Good afternoon"
+			 "Good evening"))
+
+(defun erc-cmd-GREETING (nick)
+  "Welcome user NICK with a random greeting."
+  (let ((greet (nth (random (length *greetings-list*)) *greetings-list*)))
+    (erc-send-message (format "%s %s" greet nick))))
+
 ;;; IMPORTANT: macros for "custom" ERC commands
 (defmacro erc-user-message (command message)
   "Macro to create \"custom\" messages to an IRC user in an `erc-mode' session."
@@ -342,6 +367,10 @@
 (erc-user-message "STUMPWM" "StumpWM is a tiling window manager for X11 written in common lisp. See: http://www.nongnu.org/stumpwm/")
 ;;(erc-user-message "CONKEROR" "Conkeror is a highly extensible web browser based on Firefox. See: http://conkeror.org/")
 (erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
+
+(defun erc-cmd-GENTLEMEN ()
+  "Send calm down message."
+  (erc-send-message "Gentlemen, you can't fight here. This is the war room!"))
 
 ;; SOURCE: `fsbot' in #emacs
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
@@ -820,7 +849,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (after "yasnippet"
   ;;(yas--initialize)
   (yas-reload-all)
-  (yas/load-directory "/home/chu/.conf-scripts/emacs-dir/elpa/yasnippet-20130505.2115/snippets/")
+  ;;(yas-load-directory "~/.emacs.d/elpa/yasnippet-20130505.2115/snippets/")
+  (yas-load-directory "~/.emacs.d/snippets/")
 
   (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
   ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
@@ -859,7 +889,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (defun smart-tab () ;; NOTE: implement a smarter TAB
   "This smart tab is minibuffer compliant: it acts as usual in the minibuffer.
 
-If mark is active, indents region. Else if point is at the end of a symbol, expands it. Else indents the current line."
+If mark is active, indents region. Else if point is at the end ofa symbol, expands it. Else indents the current line."
   (interactive)
   (if (minibufferp)
       (unless (minibuffer-complete)
@@ -964,6 +994,7 @@ Although this is interactive, call this with \\[browse-url]."
   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
   (setq w3m-search-engine-alist
         '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+	  ("cliki" "http://www.cliki.net/site/search?query=%s" utf-8)
           ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
           ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
           ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
@@ -1082,6 +1113,30 @@ Although this is interactive, call this with \\[browse-url]."
 ;;  (bbdb-initialize 'gnus 'message)
 
 ;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
+
+;;; IMPORTANT: window configuration
+;; SOURCE: `http://www.emacswiki.org/emacs/TransposeWindows'
+(defun swap-window-positions ()
+   "*Swap the positions of this window and the next one."
+   (interactive)
+   (let ((other-window (next-window (selected-window) 'no-minibuf)))
+     (let ((other-window-buffer (window-buffer other-window))
+           (other-window-hscroll (window-hscroll other-window))
+           (other-window-point (window-point other-window))
+           (other-window-start (window-start other-window)))
+       (set-window-buffer other-window (current-buffer))
+       (set-window-hscroll other-window (window-hscroll (selected-window)))
+       (set-window-point other-window (point))
+       (set-window-start other-window (window-start (selected-window)))
+       (set-window-buffer (selected-window) other-window-buffer)
+       (set-window-hscroll (selected-window) other-window-hscroll)
+       (set-window-point (selected-window) other-window-point)
+       (set-window-start (selected-window) other-window-start))
+     (select-window other-window)))
+
+;;; IMPORTANT: visual switch window
+;; SOURCE: `http://tapoueh.org/emacs/switch-window.html'
+;;(require 'switch-window)
 
 (provide 'user-config)
 ;;; user-config.el ends here

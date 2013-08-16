@@ -99,6 +99,7 @@
 (define-key programming-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
 (define-key programming-map (kbd "s") 'slime-connect) ;; NOTE: start slime session
 (define-key programming-map (kbd "S") 'slime-disconnect) ;; NOTE: stop slime session
+(define-key programming-map (kbd "SPC") 'slime-selector)
 (define-key programming-map (kbd "M") '(lambda () (interactive) (manual-entry (current-word)))) ;; NOTE: invoke `man' on word under point
 
 ;; IMPORTANT: writing specific keys
@@ -168,6 +169,7 @@
 (define-key org-map (kbd "r") 'org-refile)
 (define-key org-map (kbd "s") 'org-schedule)
 (define-key org-map (kbd "A") 'org-archive-subtree)
+(define-key org-map (kbd "C") 'cfw:open-calendar-buffer)
 (define-key org-map (kbd "S") 'org-store-link)
 
 ;; IMPORTANT:
@@ -240,6 +242,7 @@
 (global-set-key (kbd "C-c h") 'toggle-hiding) ;; NOTE: toggle code folding with C-c h
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; NOTE: remove binding on C-z (suspend-frame)
+(global-unset-key (kbd "<insert>")) ;; NOTE: turn off inset mode
 
 ;;; IMPORTANT: mode specific key-bindings
 

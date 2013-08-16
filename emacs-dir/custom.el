@@ -6,6 +6,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(custom-safe-themes
+   (quote
+    ("764777857ef24b4ef1041be725960172ac40964b9f23a75894a578759ba6652f" "3d6b08cd1b1def3cc0bc6a3909f67475e5612dba9fa98f8b842433d827af5d30" default)))
  '(doc-view-continuous t)
  '(ebib-entry-types
    (quote
@@ -50,20 +55,18 @@
      (unpublished
       (author title note)
       (month year)))))
- ;; '(eshell-modules-list
- ;;   (quote
- ;;    (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
  '(org-agenda-files
    (quote
-    ("~/Documents/ANU/PHIL2094/phil2094.org" "~/Documents/ANU/LING1001/ling1001.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/contacts.org" "/home/chu/Documents/Organisation/birthday.org" "/home/chu/Documents/Organisation/bookmarks.org"))))
+    ("~/Documents/Organisation/europe-trip.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/birthday.org"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(erc-input-face ((t (:foreground "wheat"))))
+ '(erc-current-nick-face ((t (:weight bold))))
+ '(erc-input-face ((t nil)))
  '(erc-pal-face ((t (:foreground "light gray" :weight bold))))
- '(erc-prompt-face ((t (:inherit erc-prompt :foreground "dark gray" :weight bold))))
- '(erc-timestamp-face ((t (:inherit erc-timestamp :foreground "dark gray" :weight bold))))
+ '(erc-prompt-face ((t (:inherit erc-prompt :foreground "black" :weight bold))))
+ '(erc-timestamp-face ((t (:inherit erc-timestamp :foreground "black" :weight bold))))
  '(info-header-xref ((t (:inherit info-xref :foreground "dark slate gray" :weight bold)))))
