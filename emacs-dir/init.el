@@ -75,7 +75,8 @@
 
 ;;; IMPORTANT: load path
 ;; SOURCE: `http://emacswiki.org/emacs/LoadPath'
-(add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; NOTE: add `~/.emacs.d/' to `load-path' variable
+(add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; NOTE: add `~/.emacs.d/' to `load-path' variable ;; ERROR: not needed
+
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add `config-el/' to `load-path' variable
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el")) ;; NOTE: add `extras-el/' to `load-path' variable
 ;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add `apt-el/' to `load-path' variable

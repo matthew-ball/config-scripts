@@ -75,15 +75,14 @@
   (eldoc-add-command 'paredit-backward-delete 'paredit-close-round))
 
 (after "lisp-mode"
-  (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: active general programming mode
+  (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: general programming mode
                                      (turn-on-general-programming-mode)
                                      (turn-on-eldoc-mode)
-                                     ;; NOTE: some key-bindings
-                                     (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
-                                     (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp)
                                      (paredit-mode t)
                                      (pretty-lambdas)
-                                     )))
+                                     ;; NOTE: some key-bindings
+                                     (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
+                                     (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp))))
 
 ;;; IMPORTANT: interactive emacs lisp
 (after "ielm"
@@ -162,11 +161,11 @@
         slime-complete-symbol*-fancy t
         slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
-  (add-hook 'slime-mode-hook '(lambda ()
-                                ;; (start-slime-automatically)
-                                (turn-on-general-programming-mode)
-                                (paredit-mode t)
-                                ))
+  ;; (add-hook 'slime-mode-hook '(lambda ()
+  ;;                               ;; (start-slime-automatically)
+  ;;                               ;; (turn-on-general-programming-mode)
+  ;;                               ;; (paredit-mode t)
+  ;;                               ))
 
   (add-hook 'slime-repl-mode-hook '(lambda () (paredit-mode t)))
 
@@ -262,7 +261,8 @@
 (autoload 'imaxima "imaxima" "Major mode frontend for maxima with image support." t)
 (autoload 'imath-mode "imath" "Imath mode for math formula input." t)
 
-(setq imaxima-use-maxima-mode-flag t)
+(after "imaxima"
+  (setq imaxima-use-maxima-mode-flag t))
 
 (provide 'programming-config)
 ;;; programming-config.el ends here

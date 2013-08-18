@@ -371,7 +371,7 @@
 (setq save-place-file (concat (expand-file-name user-emacs-directory) "save-place"))
 
 ;;; IMPORTANT: temporary buffers
-(temp-buffer-resize-mode t) ;; NOTE: auto-fit the *Help* buffer to its contents
+;;(temp-buffer-resize-mode t) ;; NOTE: auto-fit the *Help* buffer to its contents
 
 ;;; IMPORTANT: backups
 (setq-default delete-old-versions t) ;; NOTE: delete excess file backups silently
@@ -666,11 +666,11 @@
 (defun flip-windows ()
   "Flip windows."
   (interactive)
-  (let (bufname (buffer-name))
+  (let (buffer (buffer-name))
     (save-excursion
       (delete-other-windows)
       (split-window-below)
-      (switch-to-buffer bufname))))
+      (switch-to-buffer buffer))))
 
 ;; SOURCE: `http://wenshanren.org/?p=298'
 (defun edit-current-file-as-root ()

@@ -1,11 +1,8 @@
-## FILE: /home/chu/.conf-scripts/xinit-dir/init.sh
-## AUTHOR: Matthew Ball (copyleft 2012, 2013)
+# Matthew Ball (copyleft 2012, 2013)
 
-# exec /home/chu/Programming/lisp/common-lisp/stumpwm/stumpwm
+# NOTE: launch stumpwm directly (with quicklisp)
+# exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)"
 
-exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)" # NOTE: launch stumpwm with quicklisp
-
-#exec stumpwm # NOTE: launch stumpwm session
-#exec openbox # NOTE: launch openbox
-#exec lxde # NOTE: launch lxde
+# NOTE: start xfce with stumpwm as the window manager
+exec startxfce4
 
