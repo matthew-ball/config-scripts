@@ -65,7 +65,8 @@
 
 ;;; IMPORTANT: common lisp
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib))
 
 ;;; IMPORTANT: after macro
 (defmacro after (mode &rest body)
@@ -75,15 +76,13 @@
 
 ;;; IMPORTANT: load path
 ;; SOURCE: `http://emacswiki.org/emacs/LoadPath'
-(add-to-list 'load-path (expand-file-name user-emacs-directory)) ;; NOTE: add `~/.emacs.d/' to `load-path' variable ;; ERROR: not needed
-
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add `config-el/' to `load-path' variable
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el")) ;; NOTE: add `extras-el/' to `load-path' variable
 ;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add `apt-el/' to `load-path' variable
 ;;(add-to-list 'load-path (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/contrib")) ;; TODO: this is for `stumpwm-mode'
 ;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "dictem-1.0.4")) ;; TODO: move to `../extras-el/dictem-el/'
 ;;(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/wireless/wireless") ;; TODO: move to `../extras-el/wireless-el/'
-(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20130615-cvs"))) ;; TODO: this is not ideal
+(add-to-list 'load-path (expand-file-name (concat quicklisp-directory "slime-20130720-cvs"))) ;; TODO: this is not ideal
 (add-to-list 'load-path (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/contrib"))) ;; TODO: this is not ideal
 
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
@@ -96,7 +95,7 @@
 (after "info"
   (add-to-list 'Info-default-directory-list (expand-file-name "~/.emacs.d/info"))
   (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/")))
-  (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "slime-20130615-cvs/doc/"))))
+  (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "slime-20130720-cvs/doc/"))))
 
 ;;; IMPORTANT: package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
@@ -104,20 +103,20 @@
 
 (after "package"
   (package-initialize)
+  (setq package-enable-at-startup nil)
 
   ;; NOTE: set download repositories
   (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
 			   ("gnu" . "http://elpa.gnu.org/packages/")
-			   ;;("marmalade" . "http://marmalade-repo.org/packages/")
+			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")
 			   )))
 
 (defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
 
 ;; IMPORTANT: this needs to be called often (i.e. whenever a new package is installed/removed)
-(defalias 'export-packages '(lambda ()
-                              "Export `package-alist' variable."
-                              (export-custom-packages-alist
-                               "/home/chu/.emacs.d/elpa/package-list"))) ;; TODO: clean up the hard-coded path name
+;; TODO: clean up the hard-coded path name
+(defalias 'export-packages '(lambda () (export-custom-packages-alist
+                               (expand-file-name "~/.emacs.d/elpa/package-list"))) "Export `package-alist' variable.")
 
 (defun export-custom-packages-alist (file &rest junk)
   "Write the contents of `package-alist' to FILE."
@@ -145,6 +144,7 @@
         (package-install (intern package-name))))))
 
 ;;; IMPORTANT: use configuration files
+;; NOTE: requires that config files are in `load-path' already
 (defun use-config-file (name)
   "Print a loading message and call `require' on configuration file referred to by \"NAME-config\"."
   (let ((config-file (concat name "-config")))
@@ -163,7 +163,8 @@
 (defun server-shutdown (&rest junk)
   "Shutdown (kill) the GNU Emacs daemon server."
   (interactive)
-  (kill-emacs)) ;; NOTE: kill GNU Emacs instance
+  (when (y-or-n-p "Kill emacs daemon? ")
+    (kill-emacs))) ;; NOTE: kill GNU Emacs instance
 
 ;;; IMPORTANT: customize configuration file
 ;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'

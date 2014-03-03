@@ -2,7 +2,7 @@
 ## AUTHOR: Matthew Ball (copyleft 2012, 2013)
 
 # NOTE: if not running interactively, don't do anything
-[ -z "$PS1" ] && return
+#[ -z "$PS1" ] && return
 
 ### COMMENT: export functionality
 export HISTCONTROL=ignoredups # NOTE: don't put duplicate lines in the history
@@ -10,10 +10,11 @@ export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
 export LOCALE=UTF-8
 export GREP_COLOR="1;33"
 export MOZ_DISABLE_PANGO=1
-# export TERM=xterm-256color # NOTE: export 256 colours in shell session
-export TERM=xterm-color # NOTE: export 8 colours in shell session
+export TERM=xterm-256color # NOTE: export 256 colours in shell session
+# export TERM=xterm-color # NOTE: export 8 colours in shell session
 
 # NOTE: these exports are used in the "default applications" for stumpwm
+# NOTE: there is probably no point in these exports anymore; xfce doesn't source this file and won't have them set
 # export TERMINAL="x-terminal-emulator"
 export BROWSER="x-www-browser" # NOTE: export BROWSER as x-www-browser ... (IMPORTANT: requires debian ???)
 export EDITOR="emacsclient -n -c" # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
@@ -201,7 +202,7 @@ fi
 
 # NOTE: bash-ido
 # SOURCE: http://gitorious.org/bash-ido
-. $HOME/Projects/bash-ido/bash-ido
+#. $HOME/Projects/bash-ido/bash-ido
 
 # NOTE: zenburn for bash
 # function EXT_COLOR () { echo -ne "\033[38;5;$1m"; }

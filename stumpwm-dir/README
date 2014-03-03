@@ -1,12 +1,16 @@
 
-- IMPORTANT: The entire StumpWM environment can now be installed from quicklisp.
-  + That said, certain things must also be downloaded:
-    1. swank
-    2. slime-helper
-    3. clx
-    4. cl-ppcre
-
 * The =StumpWM= configuration
+This is an attempt at a full blown desktop environment using XFCE in combination with StumpWM.
+
+This configuration extends the default StumpWM behaviour.
+
+** Applications
+StumpWM has a powerful "run-or-raise" system for dealing with application frames.
+
+** Mode Line
+StumpWM features a minimal mode-line as a replacement for the more feature-ful panels found in desktop environments. However, StumpWM is compatible with the aforementioned desktop panels if the mode-line is not sufficient.
+
+* Old
 ** Appearance Configuration
 - The following variables are set:
   + foreground :: ...

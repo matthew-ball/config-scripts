@@ -27,12 +27,13 @@
 ;; IMPORTANT: default variable values
 (setq inhibit-startup-message t ;; NOTE: turn off startup message
       inhibit-startup-echo-area-message t ;; NOTE: turn off startup echo area message
+      pop-up-windows nil
       initial-scratch-message (concat ";; For information about "
       				      (substring (emacs-version) 0 16)
       				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
       completion-ignore-case t ;; NOTE: ignore case in auto-completing text
       read-file-name-completion-ignore-case t ;; NOTE: ignore cases in filenames
-      ;; enable-recursive-minibuffers t ;; NOTE: ...
+      ;; enable-recursive-minibuffer t ;; NOTE: ...
       auto-compression-mode t ;; NOTE: automatically parse an archive
       message-log-max 1000 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
       show-trailing-whitespace t ;; NOTE: show trailing whitespace
@@ -43,7 +44,7 @@
       sentence-end-double-space 'nil ;; NOTE: sentences end with a single space
       echo-keystrokes 0.1 ;; NOTE: see what you are typing
       use-dialog-box nil ;; NOTE: do not use mouse
-      suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings
+      suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings when using M-x to run a command
 
 (setq-default scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
 	      scroll-down-aggressively 0) ;; NOTE: local variables for smooth scrolling
@@ -53,8 +54,8 @@
 (add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; NOTE: open `NEWS' files in `org-mode'
 (add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode)) ;; NOTE: open `*.org' files in `org-mode'
-;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; NOTE: open `*.hs' files in `haskell-mode'
-;; (add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; NOTE: open `*.cabal' files in `haskell-cabal-mode'
+(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode)) ;; NOTE: open `*.hs' files in `haskell-mode'
+(add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode)) ;; NOTE: open `*.cabal' files in `haskell-cabal-mode'
 ;; (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode)) ;; NOTE: open `*.tex' files in `latex-mode'
 ;; (add-to-list 'auto-mode-alist '(".screenrc" . shell-script-mode)) ;; NOTE: open .screenrc in `shell-script-mode'
 ;; (add-to-list 'auto-mode-alist '(".emacs" . emacs-lisp-mode)) ;; NOTE: open .emacs in `emacs-lisp-mode'
@@ -71,8 +72,15 @@
 (after "uniquify"
   (setq uniquify-buffer-name-style 'reverse
 	uniquify-separator "/"
-	uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified
+	uniquify-after-kill-buffer-p t ;; NOTE: rename after killing uniquified buffer
 	uniquify-ignore-buffers-re "^\\*")) ;; NOTE: don't muck with special buffers
+
+;;; IMPORTANT: highlight interactively
+;; SOURCE: `http://www.emacswiki.org/emacs/HiLock'
+(require 'hi-lock)
+
+(after "hi-lock"
+  (global-hi-lock-mode t))
 
 ;;; IMPORTANT: ido mode
 ;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
@@ -93,7 +101,7 @@
 	;; ido-ignore-files '(".")
 	ido-ignore-extensions t ;; NOTE: ignore extentions
 	;; TODO: can clean up the following ...
-	ido-ignore-buffers '("\\` " "^\#[#]?" "^\*Mess" "^\*Back" ".*Completion" "^\*Ido"
+	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" ;;"^\#[#]?"
 			     "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
 	ido-work-directory-list `(,(expand-file-name user-home-directory)
 				  ,(expand-file-name user-documents-directory)
@@ -130,7 +138,7 @@
 
 ;;; IMPORTANT: ibuffer
 ;; SOURCE: `http://www.emacswiki.org/emacs/IbufferMode'
-(autoload 'ibuffer "ibuffer" "..." t)
+(autoload 'ibuffer "ibuffer" "List buffers." t)
 
 (after "ibuffer"
   (require 'ibuf-ext)
@@ -140,11 +148,15 @@
   ;; 	'((expand-file-name "~/Documents/" . "Documents")
   ;; 	  (expand-file-name "~/Programming" . "Programming")))
 
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*$")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*$")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
-  ;;(add-to-list 'ibuffer-never-show-predicates (lambda () (when (eq major-mode minibuffer-inactive-mode)))) ;; WILL IT BLEND?!
+  ;; TODO: need to look at how the regexp is handled here
+  (defvar *never-show-regexp* '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
+
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
+  ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt *never-show-regexp*))
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*$")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*$")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
 
   (setq ibuffer-saved-filter-groups
 	`(("default"
@@ -179,10 +191,13 @@
 		(mode . nrepl-mode)
 		(name . "^\\*nrepl-error\\*$")
 		(mode . lisp-mode)
+		(mode . gud-mode)
 		(mode . common-lisp-mode)
 		(mode . emacs-lisp-mode)
 		(mode . inferior-lisp-mode)
 		(mode . inferior-emacs-lisp-mode)
+		(mode . geiser-repl-mode)
+		(mode . geiser-messages-mode)
 		(mode . nxml-mode)
 		(mode . ada-mode)
 		(mode . makefile-gmake-mode)
@@ -191,6 +206,7 @@
 		(mode . slime-xref-mode)
 		(mode . html-mode)
 		(mode . css-mode)
+		(mode . speedbar-mode)
 		(mode . javascript-mode)
 		(mode . scheme-mode)
 		(mode . inferior-scheme-mode)
@@ -469,7 +485,7 @@
   (require 'esh-util)
 
   (setq eshell-prompt-function 'eshell-prompt
-	eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
+	;; eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
 	eshell-highlight-prompt nil
 	eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
 	eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion
@@ -607,6 +623,12 @@
    (t
     (while (pcomplete-here (pcomplete-entries))))))
 
+;;; IMPORTANT: automatic buffer clean-up
+;; SOURCE:
+;; (require 'midnight)
+
+;; TODO: investigate `midnight-mode'
+
 ;;; IMPORTANT: directory editor (extensions)
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
 (autoload 'dired "dired" "File manager in Emacs." t)
@@ -614,8 +636,12 @@
 (after "dired"
   (require 'dired-x)
 
+  ;; (dired-hide-details-mode t)
+  (define-key dired-mode-map (kbd "C-c o") 'dired-open-file)
+
   (add-hook 'dired-mode-hook (lambda ()
 			       (turn-on-dired-find-alternate-file)
+			       (dired-hide-details-mode t) ;; NOTE: hide file details
 			       ;; NOTE: set `dired-x' buffer-local variables here
 			       (dired-omit-mode)))
 
@@ -636,6 +662,13 @@
 				      (list "\\.doc$" "libreoffice")
 				      (list "\\.docx$" "libreoffice")
 				      (list "\\.DOC$" "libreoffice"))))
+
+;; NOTE: use `xdg-open' which is freedesktop.org comtabile
+(defun dired-open-file ()
+  "In dired, open the file named on this line."
+  (interactive)
+  (let* ((file (dired-get-filename nil t)))
+    (call-process "xdg-open" nil 0 nil file)))
 
 (defun turn-on-dired-find-alternate-file (&rest junk)
   "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
@@ -681,6 +714,14 @@
         (setq file (concat "/sudo:root@localhost:" (buffer-file-name)))
         (find-file file))
     (message "Current buffer does not have an associated file.")))
+
+;;; IMPORTANT: unfill paragraph
+;; SOURCE: `http://www.emacswiki.org/emacs/UnfillParagraph'
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
 
 (provide 'general-config)
 ;;; general-config.el ends here

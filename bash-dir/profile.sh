@@ -15,4 +15,4 @@ export PATH=/home/chu/Programming/lisp/clojure/leiningen/:$PATH
 export LEIN_JVM_OPTS=
 
 ## IMPORTANT: start the X server
-startx &
+#startx &

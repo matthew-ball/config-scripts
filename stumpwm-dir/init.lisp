@@ -37,7 +37,6 @@
       *shell-program* (getenv "SHELL") ;; NOTE: set the default shell
       *mouse-focus-policy* :sloppy) ;; NOTE: focus follows mouse
 
-;; (setf *data-dir* (expand-file-name "~/.stumpwm.d/"))
 (redirect-all-output (data-dir-file "debug" "lisp")) ;; NOTE: debug information
 
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
@@ -74,39 +73,57 @@
 
 ;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
 ;; TODO: use functions `user-homedir-pathname' and `merge-pathnames' to update it.
-(defun expand-file-name (path &optional default-directory)
-  "Expand file-name."
-  (let ((first-char (subseq path 0 1))
-        (home-dir ;;(user-homedir-pathname)
-		  (concat (getenv "HOME") "/"))
-        (dir (if default-directory
-                 (if (string= (subseq (reverse default-directory) 0 1) "/")
-                     default-directory
-		   (concat default-directory "/")))))
-    (cond
-     ((string= first-char "~") (concat home-dir (subseq path 2)))
-     ((string= first-char "/") path)
-     ;; TODO: maybe should ask for root password here (?)
-     (dir (if (string= (subseq dir 0 1) "/")
-	      (concat dir path)
-	    (expand-file-name (concat dir path))))
-     (t (concat home-dir path)))))
+;; (defun expand-file-name (path &optional default-directory)
+;;   "Expand file-name."
+;;   (let ((first-char (subseq path 0 1))
+;;         (home-dir ;;(user-homedir-pathname)
+;; 		  (concat (getenv "HOME") "/"))
+;;         (dir (if default-directory
+;;                  (if (string= (subseq (reverse default-directory) 0 1) "/")
+;;                      default-directory
+;; 		   (concat default-directory "/")))))
+;;     (cond
+;;      ((string= first-char "~") (concat home-dir (subseq path 2)))
+;;      ((string= first-char "/") path)
+;;      ;; TODO: maybe should ask for root password here (?)
+;;      (dir (if (string= (subseq dir 0 1) "/")
+;; 	      (concat dir path)
+;; 	    (expand-file-name (concat dir path))))
+;;      (t (concat home-dir path)))))
 
 ;;; IMPORTANT: user variables
+;; ERROR: these don't get sourced
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
-(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
-(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
+(defvar *user-source-directory* nil "StumpWM source directory path.")
+(defvar *user-quicklisp-directory* nil "Quicklisp directory path.")
+
+;; ERROR: this is problematic (login doesn't source appropriate environment variables)
+;;(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
+;;(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
+;; NOTE: quick fix
+(setq *user-source-directory* (format nil "~A/quicklisp/dists/quicklisp/software/stumpwm-20120107-git/" *user-home-directory*))
+(setq *user-quicklisp-directory* (format nil "~A/quicklisp/dists/quicklisp/software" *user-home-directory*))
+
 ;; TODO: `*user-projects-directory*'
 
 ;;; IMPORTANT: default applications
 (defvar *browser* nil "Default web browser.")
 (defvar *terminal* nil "Default terminal emulator.")
-;; NOTE: get from shell environment
-(defvar *editor* (getenv "EDITOR") "Default editor.")
-(defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
-(defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
-(defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
 
+;; NOTE: get from shell environment
+;; ERROR: none of these work, since the environment variables are never sourced
+;; (defvar *editor* (getenv "EDITOR") "Default editor.")
+;; (defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
+;; (defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
+;; (defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
+
+;; ERROR: hardcoded
+(defvar *editor* "emacsclient -n -c" "Default editor.")
+(defvar *file-manager* "thunar" "Default file manager.")
+(defvar *package-manager* "aptitude" "Default package manager.")
+(defvar *system-monitor* "htop" "Default system monitor.")
+
+;; NOTE: ...
 (when (or (eq (system-name) 'DEBIAN) (eq (system-name) 'UBUNTU))
   (setq *browser* "x-www-browser"
         *terminal* "x-terminal-emulator"))
@@ -127,7 +144,7 @@
 
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
-(load (concat *user-quicklisp-directory* "/slime-20130615-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
+(load (concat *user-quicklisp-directory* "/slime-20130720-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
 
 (swank-loader:init)
 
@@ -170,10 +187,11 @@
       ;;*window-format* "%m%n%s%c" ;; NOTE: show application `instance' instead of application `title'
       *suppress-abort-messages* t ;; NOTE: suppress abort message when non-nil
       *timeout-wait* 5 ;; NOTE: how long a message will appear for (in seconds)
-      *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
-      *mode-line-pad-y* 1 ;; NOTE: set the padding between the mode line text and the top/bottom
-      *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
-      *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
+      *input-history-ignore-duplicates* t ;; NOTE: ;; don't add duplicate commands to the command history
+      ;; *mode-line-pad-x* 1 ;; NOTE: set the padding between the mode line text and the sides
+      ;; *mode-line-pad-y* 1 ;; NOTE: set the padding between the mode line text and the top/bottom
+      ;; *mode-line-border-width* 1 ;; NOTE: set thickness of the mode line border
+      ;; *mode-line-timeout* 1 ;; NOTE: update every second (if nothing else has triggered it already)
       ;; *mode-line-background-color* *background-colour*
       ;; *mode-line-foreground-color* *foreground-colour*
       ;; *mode-line-border-color* *border-colour*
@@ -188,7 +206,7 @@
 			;; "app-menu"
 			;; "aumix"
 			;; "battery"
-			;; "battery-portable"
+			"battery-portable"
 			"cpu"
 			;;"disk"
 			;; "g15-keysyms"
@@ -211,6 +229,25 @@
 ;; (setf *disk-usage-paths* '("/"
 ;; 			   "/home")) ;; NOTE: see ../contrib/disk.lisp
 
+(defun mode-line-battery-details ()
+  "Return string of battery details."
+  (format nil "^[^~A*%B^]" (cond
+			    ((string-equal (battery-state) " Discharging ") 1) ;; NOTE: red string
+			    ((string-equal (battery-state) " Charging ") 4) ;; NOTE: blue string
+			    (t 7) ;; NOTE: default string
+			    )))
+
+;; TODO: this can be cleaned up quite substantially
+(defun mode-line-wireless-details ()
+  "Return string of wireless details."
+  (let* ((name (run-shell-command "nmcli con status" t))
+	 (wireless (run-shell-command "cat /proc/net/wireless" t))
+	 (start-wireless (+ (search "wlan0:" wireless) 14))
+	 (start-name (+ (search "MASTER-PATH" name) 44)))
+    (format nil "~A: ~A%%"
+	    (remove #\Newline (subseq name start-name (+ start-name 10)))
+	    (subseq wireless start-wireless (+ start-wireless 2)))))
+
 ;;; IMPORTANT: mode line
 (setf *screen-mode-line-format*
       (list
@@ -221,22 +258,26 @@
        ;; "- ^B%c %t^b" ;; NOTE: ... (without bar)
        ;;"^B%D^b" ;; NOTE: display disk usage
        ;; ----
-       "[^B%n^b] %d ^B%M^b^B%c %t^b"
+       "[^B%n^b] %d ^B%M^b^B%c^b"
        ;; '(:eval (cut-beyond "[^B%n^b] %d ^B%M^b^B%c %t^b" 50))
        ;; ----
-       ;; "[^[^1*%B^]] " ;; NOTE: display battery details
+       ;; TODO: this should be a string which changes colour depending on current state of battery
+       ;; "^[^7*%B^]" ;; NOTE: display battery details
+       ;; '(:eval (mode-line-battery-details)) ;; ...
        ;; "[^[^2*"
        ;; '(:eval (battery-charge))
        ;; ":"
        ;; '(:eval (battery-state))
        ;; "^]] "
-       ;; "%l " ;; NOTE: show network connection details
+       ;; " %l" ;; NOTE: show network connection details
        ;; "%w"
        ;; "%W " ;; NOTE: window list ("%v " is similar)
        ;; "[" '(:eval (run-shell-command "acpi -b" t)) "]"
        ;; "["
        ;; "%b" ;; NOTE: display battery details
-       ;; "%I" ;; NOTE: display wireless details
+       ;; " %I" ;; NOTE: display wireless details
+       " "
+       ;; '(:eval (mode-line-wireless-details)) ;; ...
        ;; "^B%m^b" ;; NOTE: display mpd details
        ;; "]"
        ;; " ^B%g^b" ;; NOTE: display group name
@@ -272,7 +313,6 @@
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
 
 (defkeys-root ;; NOTE: define root-map keys
-  ("s-b" "global-select")
   ("s-q" "safe-quit")
   ("s-d" "trash-window")
   ("s-s" "trash-show")
@@ -291,6 +331,7 @@
   ("s-V" '*volume-map*)
   ("s-G" "vgroups")
   ;; ("s-M" '*mpd-map*)
+  ("s-B" "global-select")
   ("s-:" "eval")
   ("s-x" "colon")
   ("s-b" "run-browser") ;; NOTE: open (or switch to an existing instance of) *browser*
@@ -319,6 +360,40 @@
 	     (kbd "d") "volume-down"
 	     (kbd "m") "volume-toggle-mute")
 
+;; IMPORTANT: hidden (trash) group
+;; (defvar *trash-group* '() "Group containing the trashed windows")
+
+;; (defcommand trash-window () ()
+;;   "Put the current window in the trash group. If it doesn't exist, create it"
+;;   (unless (or (eq (current-group) *trash-group*)
+;;               (not (current-window)))
+;;     (unless *trash-group*
+;;       (setf *trash-group* (gnewbg ".trash")))
+;;       ;; (setf *trash-group* (gnewbg-float ".trash")))
+;;     (move-window-to-group (current-window) *trash-group*)))
+
+;; (defcommand trash-show () ()
+;;   "Switch to the trash group if it exists, call again to return to the previous group"
+;;   (when *trash-group*
+;;     (if (eq (current-group) *trash-group*)
+;;         (switch-to-group (second (screen-groups (current-screen))))
+;;         (switch-to-group *trash-group*))))
+
+;; (defun clean-trash (window)
+;;   "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
+;;   (let ((current-group (window-group window)))
+;;     (when *trash-group*
+;;       (when (and (eq current-group *trash-group*)
+;;                  (not (group-windows current-group)))
+;;         (if (eq (current-group) *trash-group*)
+;;             (let ((to-group (second (screen-groups (current-screen)))))
+;;               (switch-to-group to-group)
+;;               (kill-group *trash-group* to-group))
+;;             (kill-group *trash-group* (current-group)))
+;;         (setf *trash-group* nil)))))
+
+;; (add-hook *destroy-window-hook* 'clean-trash)
+
 ;;; IMPORTANT: groups (virtual desktops)
 (defparameter *default-group* '("default") "Default StumpWM group object.")
 (defparameter *tiling-groups* '("internet" "misc") "Tiling group objects.")
@@ -326,6 +401,7 @@
 (defparameter *groups* (append *default-group* *tiling-groups* *floating-groups*) "StumpWM group (virtual desktop) object names.")
 
 ;; NOTE: the following two functions probably already exist (or at least, something very much like them must exist)
+;; this implementation is poor and relies on hardcoded groups.
 (defun tiling-group-p (group)
   "Predicate returning whether or not GROUP is a tiling group."
   (if (member group *tiling-groups* :test #'string-equal)
@@ -345,8 +421,8 @@
 
 (defun create-groups ()
   "Create new groups."
-  (unless *trash-group*
-    (setf *trash-group* (gnewbg ".trash")))
+  ;; (unless *trash-group*
+  ;;   (setf *trash-group* (gnewbg ".trash")))
   (unless (eq (cdr *groups*) nil) ;; NOTE: the `car' of the list is the "default" group
     (dolist (group (cdr *groups*))
       (cond
@@ -414,6 +490,25 @@
 ;;   "Resize floating group application window."
 ;;   ;; TODO: (unless (floating-group-p (group-name (current-group))) ...
 ;;   (float-window-move-resize (current-window) x y))
+
+;; SOURCE: `http://paste.debian.net/72809'
+;; (defcommand move-window-right (val) (:number)
+;;   "Move current floating window right by VAL."
+;;   (float-window-move-resize (current-window)
+;;                             :x (+ (window-x (current-window)) val)))
+
+;; (defcommand move-window-down (val) (:number)
+;;   "Move current floating window down by VAL."
+;;   (float-window-move-resize (current-window)
+;;                             :y (+ (window-y (current-window)) val)))
+
+;; (define-key *float-group-top-map* (kbd "s-Left" ) "move-window-right -1")
+;; (define-key *float-group-top-map* (kbd "s-Left" ) "move-window-right 1")
+
+;; (define-key *top-map* (kbd "s-Left"  ) "move-window-right -10")
+;; (define-key *top-map* (kbd "s-Right" ) "move-window-right 10")
+;; (define-key *top-map* (kbd "s-Up"    ) "move-window-down -10")
+;; (define-key *top-map* (kbd "s-Down"  ) "move-window-down 10")
 
 ;; IMPORTANT: global window select
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
@@ -501,23 +596,20 @@
   "Turn string NAME into Common Lisp keyword."
   (values (intern name "KEYWORD")))
 
-(defmacro create-application (name command &optional instance title terminal)
-  "Create a general framework for the running (raising) of applications."
-  ;; NOTE: make application ...
-  (let ((var (make-keyword (concat "*" name "*"))))
-    (setf var (make-application command instance title terminal))
-    ;; NOTE: define frame preference for application
-    ;; (let ((key :nil))
-    ;;   (if (eq terminal t)
-    ;;       (setf key :title)
-    ;;     (setf key :instance))
-    ;;   `(define-frame-preference ,group `(0 t t ,key ,name)))
-    ;; NOTE: make command for application
-    `(defcommand ,(make-symbol (concat (string-upcase "run-") (string `,name))) () ()
-       ""
-       (run-application ,var))))
+;; (defmacro create-application (name command &optional instance title terminal)
+;;   "Create a general framework for the running (raising) of applications."
+;;   ;; NOTE: make application ...
+;;   (let ((var (make-keyword `(concat "*" ,name "*")))
+;; 	(key (if (eq terminal t) :title :instance)))
+;;     (setf var (make-application command instance title terminal))
+;;     ;; NOTE: define frame preference for application
+;;     `(define-frame-preference ,group `(0 t t ,key ,name))
+;;     ;; NOTE: make command for application
+;;     `(defcommand ,(make-symbol (concat (string-upcase "run-") (string `,name))) () ()
+;;        ""
+;;        (run-application ,var))))
 
-;;(create-application editor (getenv "EDITOR") "emacs")
+;;(create-application editor (getenv "EDITOR") "emacs") ;; => two functions; (def-frame-pref ...) and (run-editor)
 ;;(create-application "browser" "x-www-browser")
 ;;(create-application "file-manager" (getenv "FILE_MANAGER"))
 ;;(create-application "terminal" (format nil "~S -t ~S" "x-terminal-emulator" "terminal") "terminal")
@@ -592,6 +684,10 @@
   "Capture current desktop with a screenshot."
   (run-shell-command (concat "import -window root \"" filename "\" &")))
 
+(defcommand run-ssh (connection) ((:string "Enter connection address: "))
+  "Connect via ssh to CONNECTION."
+  (run-or-raise-terminal-app (format nil "ssh ~A" connection) "ssh"))
+
 (defcommand safe-quit () ()
   "Checks if any windows are open before quitting."
   (let ((win-count 0))
@@ -602,9 +698,6 @@
 	(run-commands "quit")
       (message (format nil "You have ~d ~a open" win-count
 		       (if (= win-count 1) "window" "windows"))))))
-
-;;; IMPORTANT: (auto)mounting storage devices
-;; TODO: implement something like: "udisks -mount /dev/sdb1"
 
 ;;; IMPORTANT: super user commands
 (define-stumpwm-type :password (input prompt)
@@ -674,63 +767,37 @@
   "Toggle between mute/unmute volume level."
   (run-commands "amixer-Master-toggle")) ;; NOTE: toggle master between mute/unmute
 
-;; IMPORTANT: hidden (trash) group
-(defvar *trash-group* '() "Group containing the trashed windows")
-
-(defcommand trash-window () ()
-  "Put the current window in the trash group. If it doesn't exist, create it"
-  (unless (or (eq (current-group) *trash-group*)
-              (not (current-window)))
-    (unless *trash-group*
-      (setf *trash-group* (gnewbg ".trash")))
-      ;; (setf *trash-group* (gnewbg-float ".trash")))
-    (move-window-to-group (current-window) *trash-group*)))
-
-(defcommand trash-show () ()
-  "Switch to the trash group if it exists, call again to return to the previous group"
-  (when *trash-group*
-    (if (eq (current-group) *trash-group*)
-        (switch-to-group (second (screen-groups (current-screen))))
-        (switch-to-group *trash-group*))))
-
-(defun clean-trash (window)
-  "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
-  (let ((current-group (window-group window)))
-    (when *trash-group*
-      (when (and (eq current-group *trash-group*)
-                 (not (group-windows current-group)))
-        (if (eq (current-group) *trash-group*)
-            (let ((to-group (second (screen-groups (current-screen)))))
-              (switch-to-group to-group)
-              (kill-group *trash-group* to-group))
-            (kill-group *trash-group* (current-group)))
-        (setf *trash-group* nil)))))
-
-(add-hook *destroy-window-hook* 'clean-trash)
-
 ;;; IMPORTANT: startup applications (should be called during initialization)
 ;; (defun launch-mpd ()
 ;;   "Start music player daemon, `mpd', server."
 ;;   (run-shell-command "mpd"))
 
-;; (defun launch-nm-applet ()
-;;   "Start the network manager applet, `nm-applet'."
-;;   (run-shell-command "nm-applet"))
+(defun launch-emacs-daemon ()
+  "Launch an emacs daemon process."
+  (run-shell-command "emacs --daemon"))
 
-;; (defun launch-lxpanel () ;; TODO: this should be `xfce-panel'
-;;   "Start an instance of `lxpanel'."
-;;   (run-shell-command "lxpanel"))
+(defun launch-xfce-panel ()
+  "Start an instance of `xfce4-panel'."
+  (run-shell-command "xfce4-panel --disable-wm-check"))
+
+;; (defun launch-nm-applet ()
+;;   "Start nm-applet instance with ConsoleKit."
+;;   (run-shell-command "ck-launch-session nm-applet"))
 
 (defun mwsb-start-hook ()
-  "Launch initiation process. This function is only called the first time StumpWM is launched."
-  ;; (launch-lxpanel) ;; NOTE: start `lxpanel' instance
-  ;; (launch-nm-applet) ;; NOTE: start `nm-applet' instance
+  "Launch initiation process. Start the user environment; launch anything whihc is user-specific here (such as panels, music servers, etc).
+
+This function is only called the first time StumpWM is launched."
+  (run-swank) ;; NOTE: start the swank server
+  (launch-emacs-daemon) ;; NOTE: start the emacs daemon service
+  (launch-xfce-panel) ;; NOTE: start panel
+  ;; (launch-nm-applet) ;; NOTE: start nm-applet
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
-  (run-swank) ;; NOTE: start the swank server
-  (run-editor) ;; NOTE: start the editor
+  ;; (run-editor) ;; NOTE: start the editor
   ;; (run-browser) ;; NOTE: start the browser
   ;; (run-system-monitor) ;; NOTE: start the system monitor
+  ;; NOTE: the following modifies the StumpWM environment with user-specific settings
   (rename-default-group)
   (create-groups)
   (define-window-placement-rules))

@@ -90,11 +90,12 @@
 
 (define-key global-map programming-prefix-key programming-map) ;; NOTE: join `programming-map' to `programming-prefix-key'
 (define-key programming-map (kbd "c") 'compile)
+(define-key programming-map (kbd "t") 'sr-speedbar-toggle)
 (define-key programming-map (kbd "n") 'next-error)
 (define-key programming-map (kbd "p") 'previous-error)
 (define-key programming-map (kbd "d") 'gdb)
 (define-key programming-map (kbd "m") 'magit-status) ;; NOTE: view the `git-status' of the current file
-(define-key programming-map (kbd "g") 'ido-goto-symbol) ;; NOTE: go to a symbol in the current buffer
+(define-key programming-map (kbd "g") 'gist-buffer) ;; NOTE: ...
 (define-key programming-map (kbd "e") 'eval-and-replace) ;; NOTE: evaluate a lisp expression and replace with the value
 (define-key programming-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
 (define-key programming-map (kbd "s") 'slime-connect) ;; NOTE: start slime session
@@ -212,7 +213,7 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files) ;; NOTE: shows a list of recently opened files
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file) ;; NOTE: use ido to navigate recentf files
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window) ;; NOTE: open new window
-(global-set-key (kbd "C-x p") 'select-previous-window)
+;;(global-set-key (kbd "C-x p") 'select-previous-window)
 ;; ---
 (global-set-key (kbd "C-z") 'undo-tree-visualize) ;; NOTE: visualise changes in the `undo-tree'
 (global-set-key (kbd "M-Z") 'undo-tree-redo) ;; NOTE: visualise changes in the `undo-tree'
@@ -239,7 +240,6 @@
 ;; ---
 (global-set-key (kbd "C-+") 'toggle-hiding)
 (global-set-key (kbd "C-M-+") 'toggle-selective-display)
-(global-set-key (kbd "C-c h") 'toggle-hiding) ;; NOTE: toggle code folding with C-c h
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; NOTE: remove binding on C-z (suspend-frame)
 (global-unset-key (kbd "<insert>")) ;; NOTE: turn off inset mode

@@ -25,21 +25,12 @@
 ;;; Code:
 
 ;;; IMPORTANT: appearance
-;; SOURCE: `http://emacswiki.org/emacs/ColorTheme'
-;; SOURCE: `http://color-theme-select.heroku.com/'
-;;(autoload 'color-theme-initialize "color-theme" "Colour theme for GNU Emacs." t)
-
 (defun load-frame ()
   "Apply features to a new frame."
   (set-face-attribute 'default nil :height 90)
-  (setq color-theme-is-global t ;; ...
-	frame-title-format "%b" ;; NOTE: set frame title properties
+  (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  ;;(load-theme 'whiteboard)
-  )
-
-(after "color-theme"
-  (load-frame))
+  (load-theme 'tango))
 
 ;; IMPORTANT: X server specific
 (when (display-graphic-p)
@@ -59,7 +50,7 @@
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; NOTE: hide the tool bar
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ;; NOTE: hide the scroll bar
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1)) ;; NOTE: turn off blinking cursor
-(when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; NOTE: turn off tooltip
+;; (when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; NOTE: turn off tooltip
 (when (fboundp 'fringe-mode) (set-fringe-mode '(1 . 0))) ;; NOTE: set fringe to 1px on left side only
 
 ;;; IMPORTANT: error bell
@@ -67,9 +58,11 @@
 
 ;;; IMPORTANT: visual lines
 ;; SOURCE: `http://www.emacswiki.org/emacs/VisualLineMode'
-(global-visual-line-mode t) ;; NOTE: enable visual line mode for all buffers (i.e. globally)
+;;(global-visual-line-mode t) ;; NOTE: enable visual line mode for all buffers (i.e. globally)
 ;; TODO: this needs to be activated only for selected modes
 ;; DEBUG: (add-to-hook 'text-mode-hook '(turn-on-visual-line-mode))
+
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 (setq visual-line-fringe-indicators '(left-curly-arrow nil))
 
@@ -102,21 +95,38 @@
 
 ;; (display-time-mode t) ;; NOTE: display time status in the mode line
 
+;; TODO: check if laptop
+(defun laptop ()
+  (require 'wireless)
+  ;; (require 'battery)
+  (display-battery-mode t)
+  (after "wireless"
+    (setq wireless-mode-line-format "[%k%%]")
+    (display-wireless-mode t)))
+
+;;(laptop)
+
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
-;; (require 'battery)
+;;(require 'battery)
 
-;; (display-battery-mode t) ;; NOTE: display battery status in the mode line
+;;(after "battery"
+;;   (setq battery-mode-line-format "[%b%p%%]" ;; NOTE: default
+;; 	;;battery-echo-area-format "Power %L, battery %B (%p%% load, remaining time %t)"
+;; 	;;battery-load-critical 10
+;; 	;;battery-load-low 25
+;; 	;;battery-update-interval 60
+;; 	;;battery-status-function 'battery-linux-sysfs ;; NOTE: default
+;; 	;;battery-status-function 'battery-linux-proc-acpi
+;; 	;;battery-status-function 'battery-linux-proc-apm
+;; 	;;battery-mode-line-limit 60 ;; NOTE: display battery status when battery has less than 60% charge
+;; 	)
+;; (display-battery-mode t)) ;; NOTE: display battery status in the mode line
 
-;; (setq battery-echo-area-format "Power %L, battery %B (%p%% load, remaining time %t)"
-;;       battery-load-critical 10
-;;       battery-load-low 25
-;;       battery-mode-line-format " [%b%p%%]" ;; NOTE: default
-;;       battery-update-interval 60
-;;       battery-status-function 'battery-linux-sysfs ;; NOTE: default
-;;       ;;battery-status-function 'battery-linux-proc-acpi
-;;       ;;battery-status-function 'battery-linux-proc-apm
-;;       ;;battery-mode-line-limit 60 ;; NOTE: display battery status when battery has less than 60% charge
-;;       )
+;; SOURCE: `https://github.com/hh/emacs/blob/master/.emacs.d/wireless.el'
+;;(require 'wireless)
+
+;; (after "wireless"
+;;   (display-wireless-mode t))
 
 ;;; IMPORTANT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
@@ -174,7 +184,7 @@
 (eval-after-load "flymake" '(diminish 'flymake-mode ""))
 (eval-after-load "auto-complete" '(diminish 'auto-complete-mode ""))
 (eval-after-load "simple" '(diminish 'visual-line-mode ""))
-(eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
+;;(eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
 (eval-after-load "eldoc" '(diminish 'eldoc-mode ""))
 (eval-after-load "hideshow" '(diminish 'hs-minor-mode ""))
 (eval-after-load "paredit" '(diminish 'paredit-mode ""))
@@ -192,8 +202,10 @@
 (eval-after-load "cwarn" '(diminish 'cwarn-mode ""))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode ""))
 (eval-after-load "elisp-slime-nav" '(diminish 'elisp-slime-nav-mode ""))
+(eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
 ;;(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
-
+(eval-after-load "haskell-indentation" '(diminish 'haskell-indentation-mode ""))
+(eval-after-load "eproject" '(diminish 'eproject-mode ""))
 
 ;;; IMPORTANT: adaptive text wrap
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)

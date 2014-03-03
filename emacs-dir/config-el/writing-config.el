@@ -550,10 +550,10 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;;; IMPORTANT: org-latex-export
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
 (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
-(autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
+;; (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
-(after "org-bibtex"
-  (require 'org-exp-bibtex))
+;; (after "org-bibtex"
+;;   (require 'org-exp-bibtex))
 
 (after "org-exp"
   (unless (boundp 'org-export-latex-classes)
@@ -633,15 +633,15 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 )
 
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
-(after "org"
-  (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
-  (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
-  (add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
-  (add-to-list 'org-export-latex-packages-alist '("" "tipx")) ;; NOTE: support for phonetic alphabet
-  ;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
-  (add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
-  (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
-  (add-to-list 'org-export-latex-packages-alist '("" "hyperref"))) ;; NOTE: hyper-references
+;; (after "org"
+;;   (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
+;;   (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
+;;   (add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
+;;   (add-to-list 'org-export-latex-packages-alist '("" "tipx")) ;; NOTE: support for phonetic alphabet
+;;   ;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
+;;   (add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
+;;   (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
+;;   (add-to-list 'org-export-latex-packages-alist '("" "hyperref"))) ;; NOTE: hyper-references
 
 ;;; IMPORTANT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
@@ -994,6 +994,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   (org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
   ;;(org-indent-mode) ;; NOTE: indent with headings
   ;;(setq org-startup-indented t) ;; NOTE: indent with headings
+  (auto-complete-mode t)
   (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
 
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))

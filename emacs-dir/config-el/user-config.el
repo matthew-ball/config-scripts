@@ -24,8 +24,14 @@
 
 ;;; Code:
 
-;;; IMPORTANT: gnome network-manager
-(autoload 'gnomenm-toggle-enabled "gnomenm" "Provides an interface to the Gnome Network Manager." t)
+;;; IMPORTANT: the insidious big brother database
+;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
+;; (autoload 'bbdb "bbdb" "" t)
+
+;; (after "bbdb"
+;;  (bbdb-initialize 'gnus 'message)
+
+;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
 
 ;;; IMPORTANT: extension to info
 ;; SOURCE: `http://emacswiki.org/emacs/info+.el'
@@ -33,10 +39,31 @@
 ;;   (require 'info+))
 
 ;;; IMPORTANT: extension to `ido'
+;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
 (after "ido"
   (require 'ido-ubiquitous)
-
   (ido-ubiquitous-mode t))
+
+;;; IMPORTANT: improve `ido's flex matching
+;; SOURCE: `https://github.com/lewang/flx'
+;; ERROR: there's a bug with flx, such that it doesn't refresh/redisplay the `frame-title' - minor issue
+(after "ido"
+  (require 'flx)
+  (flx-ido-mode t))
+
+;;; IMPORTANT: smex mode
+;; SOURCE: `http://emacswiki.org/emacs/Smex'
+(autoload 'smex "smex" "Super-charge ido-mode." t)
+
+(after "smex"
+  (setq smex-save-file (concat user-emacs-directory "smex-items")
+        smex-key-advice-ignore-menu-bar t)
+
+  (smex-initialize)) ;; NOTE: super-charge `ido-mode'
+
+;;; IMPORTANT: gist
+;; SOURCE: `https://github.com/defunkt/gist.el'
+(autoload 'gist-buffer "gist" "Integrate with Github." t)
 
 ;;; IMPORTANT: git integration
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
@@ -78,65 +105,64 @@
 
 (after "erc"
   (require 'tls)
+  (require 'erc-spelling)
   ;; (require 'erc-hl-nicks)
   ;; (require 'erc-stamp)
   ;; (require 'erc-join)
-  (require 'erc-spelling)
   ;; (require 'erc-netsplit)
   ;; (require 'erc-ring)
   ;; (require 'erc-goodies)
   ;; (require 'erc-track)
   ;; (require 'erc-button)
-  ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
-  ;; (require 'erc-goodies)
   ;; (require 'erc-match)
   ;; (require 'erc-fill)
   ;; (require 'erc-log)
   ;; (require 'erc-pcomplete)
   ;; (require 'erc-notify)
-  
-  ;;(defvar erc-insert-post-hook)
+  ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
+  ;; (require 'erc-goodies)
 
   ;; IMPORTANT: erc modules
+  (erc-spelling-enable)
   ;; (erc-button-enable)
   ;; (erc-ring-enable)
   ;; (erc-netsplit-enable)
   ;; (erc-match-enable)
   ;; (erc-autojoin-enable)
-  (erc-spelling-enable)
-  ;; (erc-scrolltobottom-enable) ;; NOTE: enable scroll-to-bottom mode
+  ;; (erc-scrolltobottom-enable)
   ;; (erc-hl-nicks-enable)
-  ;; (erc-timestamp-mode t) ;; NOTE: enable ERC timestamp mode
+  ;; (erc-timestamp-mode t)
   ;; (erc-fill-disable)
 
-  ;;(eval-after-load "erc-capab" '(erc-capab-identify-mode t))
+  ;; IMPORTANT: erc capab
+  ;; (eval-after-load "erc-capab" '(erc-capab-identify-mode t))
 
   ;; IMPORTANT: erc match
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
-  ;; (setq erc-keywords '() ;; NOTE: highlight specific keywords
-  ;;       erc-current-nick-highlight-type 'nick ;; NOTE: ...
-  ;;       erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
-  ;;       erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-  ;;       erc-pals '(;;"twb"
-  ;;                  ;;"k-man"
-  ;;                  ;;"macrobat"
-  ;;                  ;;"tali713"
-  ;;                  ;; "syrinx"
-  ;;                  ;;"sabetts"
-  ;;                  ;; "rww"
-  ;;                  ;;"dax"
-  ;;                  ;; "LjL"
-  ;;                  ;; "ldunn"
-  ;;                  ;;"moocow"
-  ;;                  ;; "mc44"
-  ;;                  ;; "IdleOne"
-  ;;                  ;;"jussi"
-  ;;                  ;;"topyli"
-  ;;                  ) ;; NOTE: highlight pals
-  ;;       erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
-  ;;       erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
+  (setq erc-keywords '() ;; NOTE: highlight specific keywords
+        erc-current-nick-highlight-type 'nick ;; NOTE: ...
+        erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
+        erc-fool-highlight-type 'all ;; NOTE: highlight entire message
+        erc-pals '(;;"twb"
+                   ;;"k-man"
+                   ;;"macrobat"
+                   ;;"tali713"
+                   ;; "syrinx"
+                   ;;"sabetts"
+                   ;; "rww"
+                   ;;"dax"
+                   ;; "LjL"
+                   ;; "ldunn"
+                   ;;"moocow"
+                   ;; "mc44"
+                   ;; "IdleOne"
+                   ;;"jussi"
+                   ;;"topyli"
+                   ) ;; NOTE: highlight pals
+        erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
+        erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
 
-  ;; (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
+  (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
   ;; IMPORTANT: erc notify
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
@@ -158,12 +184,16 @@
   (erc-log-enable)
 
   ;; IMPORTANT: erc ignore
-  ;; (setq-default erc-ignore-list '("kcj"))
+  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcIgnoring'
+  ;; (setq-default erc-ignore-list '())
 
   ;; IMPORTANT: erc completion
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcCompletion'
-  ;;(add-hook 'erc-mode-hook '(lambda () (pcomplete-erc-setup) (erc-completion-mode 1)))  ;; NOTE: nick completion
+  ;; (require 'erc-pcomplete)
 
+  ;; (erc-pcomplete-enable)
+
+  ;; IMPORTANT: erc user variables
   ;; TODO: use variables in here ...
   (setq erc-nick (getenv "USER")
         erc-nick-uniquifier "_"
@@ -171,12 +201,11 @@
         ;; erc-user-full-name user-full-name
         ;; erc-email-userid user-mail-address
         ;; erc-fill-column 90
-        ;; erc-echo-notices-in-minibuffer-flag t ;; NOTE: notices in minibuffer
         erc-format-nick-function 'erc-format-@nick
         erc-port 7000 ;; NOTE: `erc-tls' port (for ssl)
         erc-current-nick-highlight-type 'all ;; NOTE: highlight the entire message where current nickname occurs
         erc-button-google-url "http://www.google.com/search?q=%s"
-        erc-fill-prefix nil ;; NOTE: ... prefix column on the left (same size as the `timestamp-format' variable above)
+        erc-fill-prefix "       " ;; NOTE: ... prefix column on the left (same size as the `timestamp-format' variable above)
         erc-fill-mode nil ;; NOTE: again, disable ERC fill (not sure why I have done it in multiple places)
         erc-timestamp-format "[%H:%M] " ;; NOTE: put timestamps on the left
         erc-timestamp-right-column 61
@@ -204,12 +233,14 @@
         erc-join-buffer 'bury
         erc-autojoin-channels-alist '((".*\\.freenode.net"
                                        "#emacs"
-				       ;; "#gnus"
-				       "#org-mode"
                                        "#stumpwm"
-                                       "#lisp"
+                                       ;; "#lisp"
+				       ;; "#gnus"
+				       ;; "#org-mode"
+				       ;; "#ubuntu-fr-offtopic"
+                                       ;; "#debian-offtopic"
+				       ;; ---
                                        "#ubuntu-offtopic"
-                                       "#debian-offtopic"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
                                        )))
@@ -221,14 +252,63 @@
 
   (setq erc-remove-parsed-property nil))
 
+;;; IMPORTANT: irssi-like /window command
+(defun erc-cmd-WINDOW (window)
+  "..."
+  (let* ((number 0)
+	 (channels (mapcar #'(lambda (element) `(,(incf number) . ,element))
+			   (reverse (cdr (car erc-autojoin-channels-alist))))))
+    (switch-to-buffer (cdr (assoc window channels)))))
+
 (after "erc-goodies"
   (erc-scrolltobottom-enable)
 
   (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
   (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
-  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN))
+  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN)
+  ;;(add-to-list 'erc-noncommands-list 'erc-cmd-WINDOW)
+  )
+
+;;; IMPORTANT: conference mode
+;; ERROR: this doesn't work
+;; (after "erc"
+;;   (defvar erc-conference-p nil "If non-nil disable conference mode. If nil enable conference mode.")
+;;   ;; (setq erc-conference-p nil)
+
+;;   (defun erc-cmd-CONFERENCE (&optional force)
+;;     "Function for enabling/disabling user JOIN, PART and QUIT messages."
+;;     (if (and (boundp 'erc-conference-p) erc-conference-p)
+;; 	(progn
+;; 	  (setq erc-conference-p nil
+;; 		erc-hide-list (default-value 'erc-hide-list))
+;; 	  (erc-display-line (erc-make-notice "Conference mode disabled.") 'active))
+;;       (progn
+;;         (make-local-variable 'erc-hide-list)
+;;         (make-local-variable 'erc-conference-p) 
+;;         (setq erc-conference-p t
+;;               erc-hide-list '("JOIN" "PART" "QUIT"))
+;;         (erc-display-line (erc-make-notice "Conference mode enabled.") 'active)))
+;;     t))
+
+(defun erc-enable-conference-mode ()
+  (interactive)
+  (setq erc-hide-list (quote ("JOIN" "QUIT" "MODE")))
+  (setq erc-minibuffer-ignored t)
+  (message "Now ignoring JOINs, QUITs, and MODEs"))
+
+(defun erc-disable-conference-mode ()
+  (interactive)
+  (setq erc-hide-list nil)
+  (setq erc-minibuffer-ignored nil)
+  (message "Now showing everything"))
 
 ;;; IMPORTANT: erc commands
+(defun erc-cmd-ACCESSLIST ()
+  "Display the `access-list' for the current channel."
+  (erc-message "PRIVMSG"
+	       (format "ChanServ ACCESS %s LIST"
+		       (erc-default-target))))
+
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcUname'
 (defun erc-cmd-UNAME (&rest ignore)
   "Display the result of running `uname -a' to the current ERC buffer."
@@ -240,7 +320,7 @@
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcUptime'
 (defun erc-cmd-UPTIME (&rest ignore)
-  "Display the uptime of the system, as well as some load-related stuff, to the current ERC buffer."
+  "Display the uptime of the system, as well as some load-related information, to the current ERC buffer."
   (let ((uname-output
          (replace-regexp-in-string
 	  ", load average: " "] {Load average} ["
@@ -286,39 +366,63 @@
    (format "%s"
 	   (erc-current-nick))))
 
-(defun erc-cmd-ACCESSLIST ()
-  "Display the `access-list' for the current channel."
-  (erc-message "PRIVMSG"
-	       (format "ChanServ ACCESS %s LIST"
-		       (erc-default-target))))
-
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsChannelMaintenance'
-(defun erc-cmd-BAN (nick)
-  "..."
-  (let* ((chan (erc-default-target))
-         (who (erc-get-server-user nick))
-         (host (erc-server-user-host who))
-         (user (erc-server-user-login who)))
-    (erc-send-command (format "MODE %s +b *!%s@%s" chan user host))))
-
-;; (defun erc-cmd-KICK (nick)
+;; (defun erc-cmd-BAN (nick)
 ;;   "..."
-;;   (erc-send-command (format "KICK %s %s %s"
-;;                             (erc-default-target)
-;;                             nick
-;;                             "Kicked (kickban)")))
+;;   (let* ((chan (erc-default-target))
+;;          (who (erc-get-server-user nick))
+;;          (host (erc-server-user-host who))
+;;          (user (erc-server-user-login who)))
+;;     (erc-send-command (format "MODE %s +b *!%s@%s" chan user host))))
 
-(defun erc-cmd-KICKBAN (nick &rest reason)
-  "..."
-  (setq reason (mapconcat #'identity reason " "))
-  (and (string= reason "")
-       (setq reason nil))
-  (erc-cmd-BAN nick)
-  (erc-send-command (format "KICK %s %s %s"
-                            (erc-default-target)
-                            nick
-                            (or reason
-                                "Kicked (kickban)"))))
+;; (defun erc-cmd-UNBAN (nick)
+;;   "..."
+;;   (let* ((chan (erc-default-target))
+;; 	 (who (erc-get-server-user nick))
+;; 	 (host (erc-server-user-host who))
+;; 	 (user (erc-server-user-login who)))
+;;     (erc-send-command (format "MODE %s -b *!%s@%s" chan user host))))
+
+(defun erc-cmd-BAN (nick)
+  "Ban user NICK from channel specified by `erc-default-target'."
+  (let* ((chan (erc-default-target))
+	 (who (erc-get-server-user nick))
+	 (host (erc-server-user-host who))
+	 ;(user (erc-server-user-login who))
+	 )
+    (erc-send-command (format "MODE %s +b *!*@%s" chan host))))
+
+(defun erc-cmd-UNBAN (nick)
+  "Unban user NICK from channel specified by `erc-default-target'."
+  (let* ((chan (erc-default-target))
+	 (who (erc-get-server-user nick))
+	 (host (erc-server-user-host who))
+	 ;(user (erc-server-user-login who))
+	 )
+    (erc-send-command (format "MODE %s -b *!*@%s" chan host))))
+
+(defun erc-cmd-KICK (nick)
+  "Kick NICK from channel."
+  (let* ((chan (erc-default-target))
+	 (who (erc-get-server-user nick)))
+    (erc-send-command (format "KICK %s %s (Kicked)" chan nick))))
+
+(defun erc-cmd-REMOVE (nick)
+  "Remove user NICK from current ERC channel."
+  (let* ((chan (erc-default-target))
+	 (who (erc-get-server-user nick)))
+    (erc-send-command (format "REMOVE %s %s Removed" chan nick))))
+
+(defun erc-cmd-BANREMOVE (nick)
+  "Remove and ban user NICK from current ERC channel."
+  (let* ((chan (erc-default-target))
+	 (who (erc-get-server-user nick)))
+    ;;(erc-cmd-OPME)
+    ;;(sit-for 1)
+    (erc-cmd-REMOVE nick)
+    (erc-cmd-BAN nick)
+    ;;(erc-cmd-DEOPME)
+    ))
 
 (defvar *greetings-list* nil "List of welcoming greetings.")
 
@@ -597,6 +701,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
         ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
         ;; user-full-name "Matthew Ball" ;; NOTE: user full-name
+	gnus-use-full-window nil ;; NOTE: don't ruin my frame!
         mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file'
         auth-source-save-behavior nil
         gnus-inhibit-startup-message t
@@ -803,46 +908,42 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: dired extensions
 ;; SOURCE: `http://emacswiki.org/emacs/dired+.el'
-(after "dired"
-  (require 'dired+))
+;; (after "dired"
+;;   (require 'dired+))
 
 ;;; IMPORTANT: directory details
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiredDetails'
-(after "dired"
-  (require 'dired-details+)
+;; (after "dired"
+;;   (require 'dired-details+)
 
-  (setq dired-details-hidden-string "")
-  (dired-details-install))
-
-;;; IMPORTANT: smex mode
-;; SOURCE: `http://emacswiki.org/emacs/Smex'
-(require 'smex)
-;;(autoload 'smex "smex" "Super-charge ido-mode." t)
-
-(after "smex"
-  (setq smex-save-file (concat user-emacs-directory "smex-items")
-        smex-key-advice-ignore-menu-bar t)
-
-  (smex-initialize)) ;; NOTE: super-charge `ido-mode'
+;;   (setq dired-details-hidden-string "")
+;;   (dired-details-install))
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(autoload 'auto-complete "auto-complete" "..." t)
+(require 'auto-complete)
+;;(autoload 'auto-complete "auto-complete" "..." t)
 
 (after "auto-complete"
-  (global-auto-complete-mode t)
+  (require 'auto-complete-config)
+  (ac-config-default)
+
+  ;; (global-auto-complete-mode t)
 
   (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
         ;; ac-ignore-case t ;; NOTE: always ignore case
-        ;; ac-auto-show-menu t ;; NOTE: automatically show menu
-        ac-source-yasnippet nil
-        )
+        ac-auto-show-menu t ;; NOTE: automatically show menu
+	ac-use-menu-map t ;; NOTE: use menu map
+	ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+        ;;ac-source-yasnippet nil
+	)
 
   (set-face-background 'ac-candidate-face "lightgray")
   (set-face-underline 'ac-candidate-face "darkgray")
   (set-face-background 'ac-selection-face "steelblue"))
 
 ;;; IMPORTANT: emacs snippets
+;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
 (autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
 ;;(require 'yasnippet)
 
@@ -856,7 +957,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
   )
 
-;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
 ;; (defun yas-ido-expand () ;; NOTE: Completing point by some yasnippet key
 ;;   "Lets you select (and expand) a yasnippet key"
 ;;   (interactive)
@@ -904,7 +1004,9 @@ If mark is active, indents region. Else if point is at the end ofa symbol, expan
 ;;; IMPORTANT: default browser
 (setq browse-url-new-window-flag t
       browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
-      browse-url-generic-program (getenv "BROWSER")) ;; NOTE: use the system's $BROWSER environment variable
+      browse-url-generic-program "x-www-browser"
+      ;;browse-url-generic-program (getenv "BROWSER") ;; NOTE: use the system's $BROWSER environment variable
+      )
 
 (defun choose-browser (url &rest junk) ;; NOTE: select which browser to use (i.e. internal or external)
   "Navigate a web browser to URL.
@@ -914,6 +1016,41 @@ Although this is interactive, call this with \\[browse-url]."
   (if (y-or-n-p "Use w3m web browser? ")
       (w3m-browse-url url t)
     (browse-url-generic url)))
+
+(defvar *internet-search-urls* '("http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+				 "http://en.wikipedia.org/wiki/Special:Search?search="))
+
+(defun search-internet (arg)
+  "Searches the internet using the ARGth custom URL for the marked text.
+
+If a region is not selected, prompts for the string to search on.
+
+The prefix number ARG indicates the Search URL to use. By default the search URL at position 1 will be used."
+  (interactive "p")
+
+  ;; NOTE: some sanity check
+  (if (> arg (length *internet-search-urls*))
+      (error "There is no search URL defined at position %s." arg))
+
+  (let ((query ;; NOTE: set the search query first
+	 (if (region-active-p)
+	     (buffer-substring (region-beginning) (region-end))
+	   (read-from-minibuffer "Search: ")))
+
+	;; NOTE: now get the base URL to use for the search
+	(base-url (nth (1- arg) *internet-search-urls*)))
+
+    ;; NOTE: add the query parameter
+    (let ((url
+	   (if (string-match "%s" base-url)
+	       ;; NOTE: if the base URL has a %s embedded, then replace it ...
+	       (replace-match query t t base-url)
+	     ;; NOTE: ... else just append the query string at end of the URL
+	     (concat base-url query))))
+      
+      (message "Search: %s @ %s" query url)
+      ;; NOTE: browse the URL
+      (browse-url url))))
 
 ;;; IMPORTANT: w3m
 ;; SOURCE: `http://www.emacswiki.org/emacs/emacs-w3m'
@@ -1050,25 +1187,23 @@ Although this is interactive, call this with \\[browse-url]."
           (w3m-goto-url-new-session url))
         (current-buffer)))))
 
-;; TODO: this should do a check to make sure there are w3m buffers alive, and if not, start a new w3m instance
+;; I don't think this works ...
 (defun switch-to-w3m-buffer ()
   "Switch to an existing w3m buffer."
   (interactive)
-  (switch-to-buffer
-   (ido-completing-read "w3m session: "
-                        (save-excursion
-                          (delq
-                           nil
-                           (mapcar (lambda (buf)
-                                     (when (buffer-live-p buf)
-                                       (with-current-buffer buf
-                                         (and (eq major-mode 'w3m-mode)
-                                              (buffer-name buf)))))
-                                   (buffer-list)))))))
-
-;;; IMPORTANT: gist
-;; SOURCE: `https://github.com/defunkt/gist.el'
-(autoload 'gist-region-or-buffer "gist" "Integrate with Github." t)
+  (if (get-buffer "*w3m*")
+      (switch-to-buffer
+       (completing-read "w3m session: "
+			(save-excursion
+			  (delq
+			   nil
+			   (mapcar (lambda (buf)
+				     (when (buffer-live-p buf)
+				       (with-current-buffer buf
+					 (and (eq major-mode 'w3m-mode)
+					      (buffer-name buf)))))
+				   (buffer-list))))))
+    (w3m w3m-home-page)))
 
 ;;; IMPORTANT: highlight custom comment tags
 ;; NOTE: i suppose technically this should be in the `appearance-config.el' file
@@ -1105,15 +1240,6 @@ Although this is interactive, call this with \\[browse-url]."
 ;;(custom-comment-mode t)
 (highlight-custom-comment-tags) ;; TEMP: call this until the mode works ...
 
-;;; IMPORTANT: the insidious big brother database
-;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-;; (autoload 'bbdb "bbdb" "" t)
-
-;; (after "bbdb"
-;;  (bbdb-initialize 'gnus 'message)
-
-;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
-
 ;;; IMPORTANT: window configuration
 ;; SOURCE: `http://www.emacswiki.org/emacs/TransposeWindows'
 (defun swap-window-positions ()
@@ -1134,9 +1260,43 @@ Although this is interactive, call this with \\[browse-url]."
        (set-window-start (selected-window) other-window-start))
      (select-window other-window)))
 
-;;; IMPORTANT: visual switch window
-;; SOURCE: `http://tapoueh.org/emacs/switch-window.html'
-;;(require 'switch-window)
+;; IMPORTANT: google translate
+;; SOURCE: `https://github.com/manzyuk/google-translate'
+(require 'google-translate)
+
+(after "google-translate"
+  (setq google-translate-enable-ido-completion t
+	google-translate-show-phonetic t
+	;; google-translate-default-source-language "auto"
+	;; google-translate-default-target-language "en"
+	)
+
+  (global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
+  (global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse))
+
+;;; IMPORTANT: rainbow delimiters
+;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
+(require 'rainbow-delimiters)
+
+(after "rainbow-delimiters"
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+;;; IMPORTANT: ibuffer version control
+;; SOURCE: `https://github.com/purcell/ibuffer-vc'
+(require 'ibuffer-vc)
+
+(after "ibuffer-vc"
+  (setq ibuffer-formats
+	'((mark modified read-only vc-status-mini " "
+		(name 18 18 :left :elide)
+		" "
+		(size 9 -1 :right)
+		" "
+		(mode 16 16 :left :elide)
+		" "
+		(vc-status 16 16 :left)
+		" "
+		filename-and-process))))
 
 (provide 'user-config)
 ;;; user-config.el ends here

@@ -24,6 +24,35 @@
 
 ;;; Code:
 
+;; IMPORTANT: ...
+;; SOURCE: `http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/'
+;; (defun smarter-move-beginning-of-line (arg)
+;;   "Move point back to indentation of beginning of line.
+
+;; Move point to the first non-whitespace character on this line.
+;; If point is already there, move to the beginning of the line.
+;; Effectively toggle between the first non-whitespace character and
+;; the beginning of the line.
+
+;; If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+;; point reaches the beginning or end of the buffer, stop there."
+;;   (interactive "^p")
+;;   (setq arg (or arg 1))
+
+;;   ;; Move lines first
+;;   (when (/= arg 1)
+;;     (let ((line-move-visual nil))
+;;       (forward-line (1- arg))))
+
+;;   (let ((orig-point (point)))
+;;     (back-to-indentation)
+;;     (when (= orig-point (point))
+;;       (move-beginning-of-line 1))))
+
+;; ;; remap C-a to `smarter-move-beginning-of-line'
+;; (global-set-key [remap move-beginning-of-line]
+;;                 'smarter-move-beginning-of-line)
+
 ;;; IMPORTANT: stumpwm mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/StumpWM'
 (autoload 'stumpwm-mode "stumpwm-mode" "Major mode for editing StumpWM." t) ;; NOTE: not ideal
@@ -32,18 +61,26 @@
 ;; TODO: make this a `general-programming-mode-hook'
 ;; TODO: this should possibly just be activated in `prog-mode-hook'
 (defun turn-on-general-programming-mode (&rest junk)
-  "General function for programming modes."
+  "General function for programming modes.
+
+Enable the following minor modes:
+1. `hs-minor-mode' - Fold comment blocks.
+2. `electric-pair-mode' - Autmatic pairing of parenthesis.
+3. `yas-minor-mode' - Expand snippets of code.
+4. `auto-insert-mode' - Insert a template into new files."
   (modify-syntax-entry ?- "w") ;; NOTE: treat '-' as part of the word
   ;; (flymake-mode) ;; NOTE: turn on flymake mode
-  ;; (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings (TODO: not sure about this function)
+  ;; (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   ;; (longlines-mode) ;; NOTE: enable long lines
   ;; (hl-line-mode) ;; NOTE: turn on line highlight mode
   ;; (which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
-  )
+  (electric-pair-mode)
+  (yas-minor-mode t)
+  (auto-insert-mode))
 
-;;; important: available modes for the which function mode-line tag
+;;; IMPORTANT: available modes for the which function mode-line tag
 ;; SOURCE: `http://www.emacswiki.org/emacs/WhichFuncMode'
 ;; SOURCE: `http://emacs-fu.blogspot.com.au/2009/01/which-function-is-this.html'
 ;; (autoload 'which-func-mode "which-func" "Display the current function name in the mode-line." t)
@@ -112,6 +149,18 @@
                                         ;;(inferior-slime-mode t)
                                         (paredit-mode t))))
 
+;; SOURCE: `http://www.xach.com/lisp/scratch-lisp-file.el'
+(defun scratch-lisp-file ()
+  "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into
+  the current buffer."
+  (interactive)
+  (goto-char 0)
+  (let* ((file (file-name-nondirectory (buffer-file-name)))
+         (package (file-name-sans-extension file)))
+    (insert ";;;; " file "\n")
+    (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
+    (insert "(in-package #:" package ")\n\n")))
+
 ;;; IMPORTANT: elisp slime navigation
 ;; SOURCE: `https://github.com/purcell/elisp-slime-nav'
 ;;(autoload "elisp-slime-nav-mode" "elisp-slime-nav" t)
@@ -122,7 +171,7 @@
     (add-hook hook 'elisp-slime-nav-mode)))
 
 ;;; IMPORTANT: slime/swank
-(add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130615-cvs"))
+(add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130720-cvs"))
 
 (require 'slime-autoloads)
 ;; (when (member slime-autoloads features)
@@ -194,9 +243,13 @@
                                   (turn-on-general-programming-mode)
                                   (paredit-mode t))))
 
-;;; IMPORTANT: scheme programming
+;;; IMPORTANT: scheme (guile) programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
-(autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t);; TODO: find a `guile-mode' for scheme ...
+(autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t)
+(require 'geiser) ;; TODO: find a `guile-mode' for scheme ...
+
+(after "geiser"
+  (setq geiser-active-implementations '(guile)))
 
 (after "scheme"
   (add-hook 'scheme-mode-hook '(lambda ()
@@ -205,14 +258,14 @@
 
 ;;; IMPORTANT: haskell programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
-(autoload 'haskell-mode "haskell-site-file" "Major mode for editing haskell source code." t)
+(autoload 'haskell-mode "haskell-mode" "Major mode for editing haskell source code." t)
 
-(after "haskell-site-file"
+(defun custom-turn-on-haskell-modes ()
+  (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
+  (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
+
+(after "haskell-mode"
   (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
-
-  (defun custom-turn-on-haskell-modes (&rest junk)
-    (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
-    (turn-on-haskell-indent)) ;; NOTE: enable haskell's indentation mode
 
   (add-hook 'haskell-mode-hook '(lambda ()
                                   (turn-on-general-programming-mode)
@@ -243,16 +296,16 @@
 (autoload 'c-mode "cc-mode" "Major mode for editing C source code." t)
 
 (after "cc-mode"
-  ;; (require 'cwarn)
+  (require 'cwarn)
   ;; TODO: set up CEDET
   ;; (require 'cedet) ;; NOTE: collection of emacs development environment tools
 
-  (setq c-default-style "linux")
+  (setq c-default-style "linux"
+	c-basic-offset 4)
 
   (add-hook 'c-mode-hook '(lambda ()
                             (turn-on-general-programming-mode)
-                            ;;(turn-on-cwarn-mode)
-			    )))
+                            (turn-on-cwarn-mode))))
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
@@ -263,6 +316,20 @@
 
 (after "imaxima"
   (setq imaxima-use-maxima-mode-flag t))
+
+;;; IMPORTANT: speedbar
+;; SOURCE: `'
+;; (autoload 'speedbar "speedbar" "" t)
+
+;; (after "speedbar"
+;;   (setq speedbar-mode-hook '(lambda () (interactive) (other-frame 0)))
+
+;;   (add-hook 'speedbar-mode-hook '(lambda () (set-face-attribute 'default nil :height 90))))
+
+(require 'sr-speedbar)
+
+(after "sr-speedbar"
+  (setq sr-speedbar-right-side nil))
 
 (provide 'programming-config)
 ;;; programming-config.el ends here
