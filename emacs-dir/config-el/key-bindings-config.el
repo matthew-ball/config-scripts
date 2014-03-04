@@ -205,6 +205,8 @@
 (global-set-key	(kbd "M-X") 'smex-major-mode-commands) ;; NOTE: available major mode commands
 ;; ---
 (global-set-key	(kbd "C-c C-c M-x") 'execute-extended-command) ;; NOTE: original M-x command
+;; --- `ido'
+(global-set-key (kbd "C-x B") 'ido-switch-buffer-other-window)
 ;; --- `dired-x'
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 (global-set-key (kbd "C-x 4 C-j") 'dired-jump-other-window)

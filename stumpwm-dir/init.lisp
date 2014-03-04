@@ -92,39 +92,23 @@
 ;;      (t (concat home-dir path)))))
 
 ;;; IMPORTANT: user variables
-;; ERROR: these don't get sourced
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
-(defvar *user-source-directory* nil "StumpWM source directory path.")
-(defvar *user-quicklisp-directory* nil "Quicklisp directory path.")
-
-;; ERROR: this is problematic (login doesn't source appropriate environment variables)
-;;(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "Source directory.")
-;;(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
-;; NOTE: quick fix
-(setq *user-source-directory* (format nil "~A/quicklisp/dists/quicklisp/software/stumpwm-20120107-git/" *user-home-directory*))
-(setq *user-quicklisp-directory* (format nil "~A/quicklisp/dists/quicklisp/software" *user-home-directory*))
-
-;; TODO: `*user-projects-directory*'
+(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
+(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
+(defvar *user-projects-directory* nil "User's projects directory.")
 
 ;;; IMPORTANT: default applications
 (defvar *browser* nil "Default web browser.")
 (defvar *terminal* nil "Default terminal emulator.")
 
 ;; NOTE: get from shell environment
-;; ERROR: none of these work, since the environment variables are never sourced
-;; (defvar *editor* (getenv "EDITOR") "Default editor.")
-;; (defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
-;; (defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
-;; (defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
-
-;; ERROR: hardcoded
-(defvar *editor* "emacsclient -n -c" "Default editor.")
-(defvar *file-manager* "thunar" "Default file manager.")
-(defvar *package-manager* "aptitude" "Default package manager.")
-(defvar *system-monitor* "htop" "Default system monitor.")
+(defvar *editor* (getenv "EDITOR") "Default editor.")
+(defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
+(defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
+(defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
 
 ;; NOTE: ...
-(when (or (eq (system-name) 'DEBIAN) (eq (system-name) 'UBUNTU))
+(when (eq (system-name) 'DEBIAN)
   (setq *browser* "x-www-browser"
         *terminal* "x-terminal-emulator"))
 

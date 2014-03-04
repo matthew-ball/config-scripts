@@ -68,6 +68,11 @@
 (eval-when-compile
   (require 'cl-lib))
 
+;; TODO: `use' function
+;; similar to `after' I need to create a `use' function which calls `autoload' (or `require') and if not available when called installs the package from the repository.
+(defun use (mode)
+  "`require' or `autoload' MODE (or install it if not available).")
+
 ;;; IMPORTANT: after macro
 (defmacro after (mode &rest body)
   "`eval-after-load' MODE evaluate BODY."
@@ -112,6 +117,7 @@
 			   )))
 
 (defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
+;; (setq custom-packages-alist '(adaptive-wrap auto-complete browse-kill-ring dash diminish dired+ dired-details+ dired-details ebib elisp-slime-nav epl erc-hl-nicks flx flx-ido geiser gh gist git-commit-mode git-rebase-mode google-translate haskell-mode ibuffer-vc ido-ubiquitous logito magit org-journal paredit pcache pkg-info popup rainbow-delimiters smex sr-speedbar s tabulated-list undo-tree w3m yasnippet))
 
 ;; IMPORTANT: this needs to be called often (i.e. whenever a new package is installed/removed)
 ;; TODO: clean up the hard-coded path name

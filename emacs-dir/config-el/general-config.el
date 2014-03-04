@@ -151,12 +151,15 @@
   ;; TODO: need to look at how the regexp is handled here
   (defvar *never-show-regexp* '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
 
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Completions")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer")
   ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
   ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt *never-show-regexp*))
-  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*$")
-  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*$")
   ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
   ;; (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Messages")
 
   (setq ibuffer-saved-filter-groups
 	`(("default"
@@ -485,7 +488,7 @@
   (require 'esh-util)
 
   (setq eshell-prompt-function 'eshell-prompt
-	;; eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
+	eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
 	eshell-highlight-prompt nil
 	eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
 	eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion

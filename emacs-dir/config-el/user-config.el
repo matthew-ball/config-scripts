@@ -1187,7 +1187,7 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
           (w3m-goto-url-new-session url))
         (current-buffer)))))
 
-;; I don't think this works ...
+;; ERROR: I don't think this works ...
 (defun switch-to-w3m-buffer ()
   "Switch to an existing w3m buffer."
   (interactive)
@@ -1210,9 +1210,9 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 (require 'custom-comments)
 
 (custom-comment-create-new-tag "heading" '((t (:foreground "Blue" :weight bold))))
-(custom-comment-create-new-tag "comment" '((t (:foreground "Green" :weight bold))))
+(custom-comment-create-new-tag "comment" '((t (:foreground "Orange" :weight bold))))
 (custom-comment-create-new-tag "warning" '((t (:foreground "Red" :weight bold))))
-(custom-comment-create-new-tag "testing" '((t (:foreground "Yellow" :weight bold))))
+(custom-comment-create-new-tag "testing" '((t (:foreground "Dark Grey" :weight bold))))
 (custom-comment-create-new-tag "misc"    '((t (:foreground "Magenta" :weight bold))))
 ;; (custom-comment-create-new-tag "misc" '((t (:foreground "Cyan" :weight bold))))
 
@@ -1279,24 +1279,26 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 (require 'rainbow-delimiters)
 
 (after "rainbow-delimiters"
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
 
 ;;; IMPORTANT: ibuffer version control
 ;; SOURCE: `https://github.com/purcell/ibuffer-vc'
-(require 'ibuffer-vc)
+;; NOTE: since this package relies on `ibuffer'
+(after "ibuffer"
+  (require 'ibuffer-vc))
 
 (after "ibuffer-vc"
-  (setq ibuffer-formats
-	'((mark modified read-only vc-status-mini " "
-		(name 18 18 :left :elide)
-		" "
-		(size 9 -1 :right)
-		" "
-		(mode 16 16 :left :elide)
-		" "
-		(vc-status 16 16 :left)
-		" "
-		filename-and-process))))
+  (setq ibuffer-formats	'((mark modified read-only vc-status-mini " "
+				(name 18 18 :left :elide)
+				" "
+				;;(size 9 -1 :right)
+				;;" "
+				(mode 14 14 :left :elide)
+				" "
+				(vc-status 12 12 :left)
+				" "
+				filename-and-process))))
 
 (provide 'user-config)
 ;;; user-config.el ends here

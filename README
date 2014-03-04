@@ -2,7 +2,7 @@
 * The ~configuration script~ project
 This configuration project /essentially/ replaces xfwm4 with StumpWM under an XFCE environment. The base system used in the development has been Debian Squeeze/Wheezy but presumably it should be independent of specific GNU/Linux distribution (and indeed, desktop environment); the configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
-I describe this as "essentially" for the reason that, to use this configuration effectively, it is desirable that you use GNU Emacs[fn:emacs-version], of course, it's not /impossible/ to use the configuration without it, but it does make certain things easier. As such, this configuration is designed primarily to maximize the use, and work-flow, of GNU Emacs. In this respect, it's a simple distraction-free desktop environment. To cater to this demand, the window manager StumpWM was chosen; StumpWM is a /tiling/ window manager (although, it offers /floating/ window management too). An [[file:config-setup.sh][install]] script is provided which includes functionality to ~save~, ~restore~, and ~update~ the configuration script project.
+I describe this as "essentially" for the reason that, to use this configuration effectively, it is desirable that you use GNU Emacs[fn:emacs-version], of course, it's not /impossible/ to use the configuration without it, but it does make certain things easier. As such, this configuration is designed primarily to maximize the use, and work-flow, of GNU Emacs. In this respect, it's a simple distraction-free desktop environment. To cater to this demand, the window manager StumpWM was chosen; StumpWM is a /tiling/ window manager (although, it offers /floating/ window management too). An [[file:config-setup.sh][install]] script is provided which includes functionality to ~save~, and ~update~ the configuration script project.
 
 Given this, the configuration sets up a desirable[fn:subjective] working system; unique workstations for each task - editing, browsing, misc, etc - which launch applications to specific workstations. This is a paradigm shift in window management, with an emphasis on focusing on tasks.
 
@@ -15,9 +15,7 @@ The ~configuration script~ project is designed for use with the following applic
   - Version: 24.3.50.1
 
 ** TODO source .bashrc on login
-After a user logs in from LightDM, which is the default login manager for XFCE distributions, the shell executes the user's [[file:~/.xsessionrc][~/.xsessionrc]] file. In the original days of working with ~StumpWM~ I relied on setting environment variables in the user [[file:~/.bashrc][~/.bashrc]] file, however, LightDM doesn't appear to set them, even after being sourced from ~/.bashrc.
-
-Ultimately, the biggest problem facing this configuration right now, is working out how to =source ~/.bashrc= during the LightDM login process.
+After a user logs in from LightDM, which is the default login manager for XFCE distributions, the shell executes the user's [[file:~/.xsessionrc][~/.xsessionrc]] file. This configuration includes the file ~session.sh~ which exports a number of environment variables. These variables are used both by the StumpWM window manager process, the GNU Emacs process, and a terminal with a BASH shell process.
 
 ** TODO learn git branches (with magit)
 *** Stable Branch

@@ -45,10 +45,6 @@
 	deft-text-mode 'org-mode
 	deft-directory (format "%s.deft/" user-organisation-directory)))
 
-;;; IMPORTANT: calendar
-;; SOURCE: `https://github.com/kiwanami/emacs-calfw'
-(require 'calfw)
-
 ;;; IMPORTANT: diary and calendar mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'

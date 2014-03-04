@@ -171,6 +171,7 @@ Enable the following minor modes:
     (add-hook hook 'elisp-slime-nav-mode)))
 
 ;;; IMPORTANT: slime/swank
+;; WARNING: this is not ideal
 (add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130720-cvs"))
 
 (require 'slime-autoloads)
