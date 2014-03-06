@@ -91,32 +91,22 @@
 ;; 	    (expand-file-name (concat dir path))))
 ;;      (t (concat home-dir path)))))
 
-;;; IMPORTANT: user variables
+;;; IMPORTANT: user variables and default applications
+;; NOTE: get from shell environment
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
-(defvar *user-projects-directory* nil "User's projects directory.")
-
-;;; IMPORTANT: default applications
-(defvar *browser* nil "Default web browser.")
-(defvar *terminal* nil "Default terminal emulator.")
-
-;; NOTE: get from shell environment
+(defvar *user-projects-directory* (getenv "USER_PROJECT_DIR") "User's projects directory.")
+(defvar *browser* (getenv "BROWSER") "Default web browser.")
+(defvar *terminal* (getenv "TERMINAL") "Default terminal emulator.")
 (defvar *editor* (getenv "EDITOR") "Default editor.")
 (defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
 (defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
 (defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
-
-;; NOTE: ...
-(when (eq (system-name) 'DEBIAN)
-  (setq *browser* "x-www-browser"
-        *terminal* "x-terminal-emulator"))
-
-;; ERROR: hardcoded
-(defvar *document-viewer* "epdfview" "Default document reader.")
-(defvar *office-suite* "libreoffice" "Default office suite.")
-;; (defvar *audio-player* "ncmpcpp" "Default audio player.")
-(defvar *video-player* "vlc" "Default video player.")
+(defvar *document-viewer* (getenv "DOCUMENT_VIEWER") "Default document reader.")
+(defvar *office-suite* (getenv "OFFICE_SUITE") "Default office suite.")
+(defvar *audio-player* (getenv "AUDIO_PLAYER") "Default audio player.")
+(defvar *video-player* (getenv "VIDEO_PLAYER") "Default video player.")
 
 ;;; IMPORTANT: (zenburn-inspired) color theme
 ;; TODO: set *colors* so that I can use the `zenburn' face colours in the mode-line format
@@ -202,6 +192,7 @@
 			;; "passwd"
 			;; "productivity"
 			"sbclfix"
+			;; "stumptray" ;; WARNING: additional requirements ...
 			;; "surfraw"
 			;; "undocumented"
 			;; "wifi"
@@ -345,38 +336,39 @@
 	     (kbd "m") "volume-toggle-mute")
 
 ;; IMPORTANT: hidden (trash) group
-;; (defvar *trash-group* '() "Group containing the trashed windows")
+;; SOURCE: `https://github.com/stumpwm/stumpwm/wiki/StumpPatches'
+(defvar *trash-group* '() "Group containing the trashed windows")
 
-;; (defcommand trash-window () ()
-;;   "Put the current window in the trash group. If it doesn't exist, create it"
-;;   (unless (or (eq (current-group) *trash-group*)
-;;               (not (current-window)))
-;;     (unless *trash-group*
-;;       (setf *trash-group* (gnewbg ".trash")))
-;;       ;; (setf *trash-group* (gnewbg-float ".trash")))
-;;     (move-window-to-group (current-window) *trash-group*)))
+(defcommand trash-window () ()
+  "Put the current window in the trash group. If it doesn't exist, create it"
+  (unless (or (eq (current-group) *trash-group*)
+              (not (current-window)))
+    (unless *trash-group*
+      (setf *trash-group* (gnewbg ".trash")))
+      ;; (setf *trash-group* (gnewbg-float ".trash")))
+    (move-window-to-group (current-window) *trash-group*)))
 
-;; (defcommand trash-show () ()
-;;   "Switch to the trash group if it exists, call again to return to the previous group"
-;;   (when *trash-group*
-;;     (if (eq (current-group) *trash-group*)
-;;         (switch-to-group (second (screen-groups (current-screen))))
-;;         (switch-to-group *trash-group*))))
+(defcommand trash-show () ()
+  "Switch to the trash group if it exists, call again to return to the previous group"
+  (when *trash-group*
+    (if (eq (current-group) *trash-group*)
+        (switch-to-group (second (screen-groups (current-screen))))
+        (switch-to-group *trash-group*))))
 
-;; (defun clean-trash (window)
-;;   "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
-;;   (let ((current-group (window-group window)))
-;;     (when *trash-group*
-;;       (when (and (eq current-group *trash-group*)
-;;                  (not (group-windows current-group)))
-;;         (if (eq (current-group) *trash-group*)
-;;             (let ((to-group (second (screen-groups (current-screen)))))
-;;               (switch-to-group to-group)
-;;               (kill-group *trash-group* to-group))
-;;             (kill-group *trash-group* (current-group)))
-;;         (setf *trash-group* nil)))))
+(defun clean-trash (window)
+  "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
+  (let ((current-group (window-group window)))
+    (when *trash-group*
+      (when (and (eq current-group *trash-group*)
+                 (not (group-windows current-group)))
+        (if (eq (current-group) *trash-group*)
+            (let ((to-group (second (screen-groups (current-screen)))))
+              (switch-to-group to-group)
+              (kill-group *trash-group* to-group))
+            (kill-group *trash-group* (current-group)))
+        (setf *trash-group* nil)))))
 
-;; (add-hook *destroy-window-hook* 'clean-trash)
+(add-hook *destroy-window-hook* 'clean-trash)
 
 ;;; IMPORTANT: groups (virtual desktops)
 (defparameter *default-group* '("default") "Default StumpWM group object.")
@@ -486,13 +478,13 @@
 ;;   (float-window-move-resize (current-window)
 ;;                             :y (+ (window-y (current-window)) val)))
 
-;; (define-key *float-group-top-map* (kbd "s-Left" ) "move-window-right -1")
-;; (define-key *float-group-top-map* (kbd "s-Left" ) "move-window-right 1")
+;; (define-key *float-group-top-map* (kbd "s-Left") "move-window-right -1")
+;; (define-key *float-group-top-map* (kbd "s-Left") "move-window-right 1")
 
-;; (define-key *top-map* (kbd "s-Left"  ) "move-window-right -10")
-;; (define-key *top-map* (kbd "s-Right" ) "move-window-right 10")
-;; (define-key *top-map* (kbd "s-Up"    ) "move-window-down -10")
-;; (define-key *top-map* (kbd "s-Down"  ) "move-window-down 10")
+;; (define-key *top-map* (kbd "s-Left") "move-window-right -10")
+;; (define-key *top-map* (kbd "s-Right") "move-window-right 10")
+;; (define-key *top-map* (kbd "s-Up") "move-window-down -10")
+;; (define-key *top-map* (kbd "s-Down") "move-window-down 10")
 
 ;; IMPORTANT: global window select
 ;; SOURCE: `https://github.com/sabetts/stumpwm/wiki/TipsAndTricks'
@@ -563,7 +555,7 @@
   ((terminal :initform t)))
 
 (defun make-application (name &optional instance title terminal)
-  "..."
+  "Create an instance of application NAME passing arguments."
   (when (eq instance nil)
     (setf instance name))
   (make-instance 'application :name name :instance instance :title title :terminal-p terminal))
@@ -663,6 +655,16 @@
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-host-name () () "Show the host name." (echo-string (current-screen) (concat "Host name: " (host-name))))
 (defcommand show-system-name () () "Show the system name." (echo-string (current-screen) (concat "System name: " (string-downcase (symbol-name (system-name))))))
+
+;; TODO: update
+;; (define-stumpwm-command "reload" (screen)
+;;   (echo-string screen "Reloading StumpWM...")
+;;   (asdf:operate 'asdf:load-op :stumpwm)
+;;   (multiple-value-bind (success err rc) (load-rc-file)
+;;     (echo-string screen
+;; 		 (if success
+;; 		     "Reloading StumpWM...Done"
+;; 		     (format nil "Error loading ~A: ~A" rc err)))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."
@@ -769,7 +771,7 @@
 ;;   (run-shell-command "ck-launch-session nm-applet"))
 
 (defun mwsb-start-hook ()
-  "Launch initiation process. Start the user environment; launch anything whihc is user-specific here (such as panels, music servers, etc).
+  "Launch initiation process. Start the user environment; launch anything which is user-specific here (such as panels, music servers, etc).
 
 This function is only called the first time StumpWM is launched."
   (run-swank) ;; NOTE: start the swank server

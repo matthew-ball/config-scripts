@@ -2,34 +2,50 @@
 * The ~configuration script~ project
 This configuration project /essentially/ replaces xfwm4 with StumpWM under an XFCE environment. The base system used in the development has been Debian Squeeze/Wheezy but presumably it should be independent of specific GNU/Linux distribution (and indeed, desktop environment); the configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
-I describe this as "essentially" for the reason that, to use this configuration effectively, it is desirable that you use GNU Emacs[fn:emacs-version], of course, it's not /impossible/ to use the configuration without it, but it does make certain things easier. As such, this configuration is designed primarily to maximize the use, and work-flow, of GNU Emacs. In this respect, it's a simple distraction-free desktop environment. To cater to this demand, the window manager StumpWM was chosen; StumpWM is a /tiling/ window manager (although, it offers /floating/ window management too). An [[file:config-setup.sh][install]] script is provided which includes functionality to ~save~, and ~update~ the configuration script project.
+I describe this as "essentially" for the reason that, to use this configuration effectively, it is desirable that you use GNU Emacs[fn:emacs-version], of course, it's not /impossible/ to use the configuration without it, but it does make certain things easier. As such, this configuration is designed primarily to maximize the use, and work-flow, of GNU Emacs. With this in mind, this configuration creates a simple distraction-free desktop environment. To cater to this demand, the window manager StumpWM was chosen; StumpWM is a /tiling/ window manager (although, it offers /floating/ window management too). An [[file:config-setup.sh][install]] script is provided which includes functionality to ~save~, and ~update~ the configuration script project.
 
-Given this, the configuration sets up a desirable[fn:subjective] working system; unique workstations for each task - editing, browsing, misc, etc - which launch applications to specific workstations. This is a paradigm shift in window management, with an emphasis on focusing on tasks.
+The configuration sets up a desirable[fn:subjective] working system; unique workstations for each task - editing, browsing, misc, etc - which launch applications to specific workstations. This is a paradigm shift in window management, with an emphasis on focusing on tasks.
 
 The ~configuration script~ project is designed for use with the following applications:
-+ =BASH= Terminal :: [[file:bash-dir/README][README]]
++ =BASH= Shell :: [[file:bash-dir/README][README]]
   - Version: 4.2.37(1)
 + =StumpWM= Window Manager :: [[file:stumpwm-dir/README][README]]
   - Version: 0.9.8
 + =GNU Emacs= Editor :: [[file:emacs-dir/README][README]]
   - Version: 24.3.50.1
++ =htop= System Monitor :: An interactive process viewer.
+  - Version: 1.0.1
++ =aptitude= Package Manager :: An ncurses front-end to ~apt~.
+  - Version: 0.6.8.2-1
++ =thunar= File Manager :: A graphical file manager.
+  - Version: 1.2.3
++ =chromium= Web Browser :: A web browser.
+  - Version: 32
 
-** TODO source .bashrc on login
-After a user logs in from LightDM, which is the default login manager for XFCE distributions, the shell executes the user's [[file:~/.xsessionrc][~/.xsessionrc]] file. This configuration includes the file ~session.sh~ which exports a number of environment variables. These variables are used both by the StumpWM window manager process, the GNU Emacs process, and a terminal with a BASH shell process.
+The ~session.sh~ file (which is linked to ~/.xsessionrc) sets environment variables which are read by the StumpWM window manager[fn:login] as the /default/ applications.
 
-** TODO learn git branches (with magit)
-*** Stable Branch
+The environment variables are:
++ =FILE_MANAGER= :: =thunar=
++ =EDITOR= :: =emacsclient -n -c=
++ =PACKAGE_MANAGER= :: =aptitude=
++ =SYSTEM_MONITOR= :: =htop=
 
-*** Unstable Branch
+After a user logs in from LightDM, which is the default login manager for XFCE distributions, the shell executes the user's [[file:~/.xsessionrc][~/.xsessionrc]] file. This configuration is included in the file ~session.sh~ which exports a number of environment variables. These variables are used both by the StumpWM window manager process, the GNU Emacs process, and a terminal with a BASH shell process.
+
+** TODO Git Branches
+*** Main Branch
+Creates a configuration.
+
 *** Desktop Branch
+Creates a configuration for a desktop environment.
+
 *** Laptop Branch
+Creates a configuration for a laptop environment.
 
 ** Configuration Files
-- This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
+This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required. The script ~config-setup.sh~ (which should have been distributed with this file) will install the configuration project.
 
-- The files and directories of the ~configuration scripts~ project can then be =symlink='d from their source to a destination location.
-
-- WARNING: The linking process needs to be run from the ~configuration scripts~ project root directory.
+# WARNING: The linking process needs to be run from the ~configuration scripts~ project root directory.
 
 *** List of link files:
 |-----------------------+----------------+------------------------------------------|
@@ -40,6 +56,7 @@ After a user logs in from LightDM, which is the default login manager for XFCE d
 | stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
 |-----------------------+----------------+------------------------------------------|
 | bash-dir/init.sh      | ~/.bashrc      | ln -s bash-dir/init.sh ~/.bashrc         |
+| bash-dir/session.sh   | ~/.xsessionrc  | ln -s bash-dir/session.sh ~/.xsessionrc  |
 | xinit-dir/init.sh     | ~/.xinitrc     | ln -s xinit-dir/init.sh ~/.xinitrc       |
 | stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
 | bash-dir/profile.sh   | ~/.bash_profile | ln -s bash-dir/profile.sh ~/.bash_profile |
@@ -65,80 +82,44 @@ After a user logs in from LightDM, which is the default login manager for XFCE d
 - example: =cd; ln -s .conf-scripts/bashrc .bashrc=
 - =config-setup.sh= started
 ** Configuration Script
-- The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; though it has primarily been developed on a =debian= install.
+The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; though it has primarily been developed on a =debian= install.
 
-- An install will just run the [[file:config-setup.sh][config-setup.sh]] script.
-
-- The script runs the following operations:
+An install will just run the [[file:config-setup.sh][config-setup.sh]] script. The script runs the following operations:
   + Execute =clone= on the /configuration scripts/ project directory from [[http://www.github.com][github]].
-  + (DEBIAN ONLY) Add the [[http://emacs.naquadah.org][emacs-snapshot]] repository to the package manager.
+  + Download stumpwm source code and compile.
   + Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
   + Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
-  + Restart system.
 
-- The user =BASH= profile is launched with the [[file:bash-dir/profile.sh][bash-dir/profile.sh]] script.
+The user =BASH= profile is launched with the [[file:bash-dir/profile.sh][bash-dir/profile.sh]] script. Also the [[file:bash-dir/session.sh][bash-dir/session.sh]] script.
 
-- The system =startx= command is launched with the [[file:xinit-dir/rc.sh][xinit/init.sh]] script.
-  + The window manager =stumpwm= is loaded with the command: 
+The system =startx= command is launched with the [[file:xinit-dir/rc.sh][xinit/init.sh]] script.
+ + The window manager =stumpwm= is loaded with the command: 
    #+BEGIN_SRC shell-script
      exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)"
    #+END_SRC
-
-- To automatically (un)mount USB devices install =usbmount=.
 
 *** GNOME Desktop Manager
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
 - To start GDM manually: =sudo /etc/init.d/gdm start=
 - To restore defaults: =sudo update-rc.d gdm defaults=
+
+*** XFCE Desktop Manager
+- The following command:
+- To start LightDM manually:
+- To restore defaults:
   
-*** Configuration Script :: [[file:config-setup.sh][config-setup.sh]]
+*** [[file:config-setup.sh][Configuration Script]]
 - The =configuration script= serves three main purposes:
   1. install the custom configuration
   2. backup the custom configuration
   3. restore the custom configuration
 
-- the following variables are hard-coded in the file:
-  + APTITUDE\_DIR\_SRC="~/.conf-scripts/aptitude-dir/
-  + APTITUDE\_DIR\_DEST="~/.aptitude/"
-
-  + EMACS\_DIR\_SRC="~/.conf-scripts/emacs-dir/"
-  + EMACS\_DIR\_DEST="~/.emacs.d/"
-
-  + CONKEROR\_DIR\_SRC="~/.conf-scripts/conkeror-dir/"
-  + CONKEROR\_DIR\_DEST="~/.conkerorrc/"
-
-  + STUMPWM\_DIR\_SRC="~/.conf-scripts/stumpwm-dir/"
-  + STUMPWM\_DIR\_DEST="~/.stumpwm.d/"
-
-  + STUMPWM\_RC\_SRC="~/.conf-scripts/stumpwm-dir/init.lisp"
-  + STUMPWM\_RC\_DEST="~/.stumpwmrc"
-
-  + BASH\_DIR\_SRC="~/.conf-scripts/bash-dir/"
-  + BASH\_DIR\_DEST="~/.bash.d/"
-
-  + BASH\_RC\_SRC="~/.conf-scripts/bash-dir/bashrc"
-  + BASH\_RC\_DEST="~/.bashrc"
-
-  + MPD\_RC\_SRC="~/.conf-scripts/mpd.conf"
-  + MPD\_RC\_DEST="~/.mpd.conf"
-
-**** Install Script
-- the install process is written with two functions of use:
-  1. the "maximal" function: this function will pull in all the required files (through 'git clone' for example)
-  2. the "minimal" function: this function will symlink files from a $SRC location to a $DEST location
-
-- the maximal process allows one to configure the whole system from this script alone, it executes:
-  + download the project file from a source repository (in this case, github)
-  + create directory structure
-
-- the minimal process allows one to configure the system from this custom config setup script
-  + create symlink's from $SRC to $DEST
-
-*** Backup Script :: [[file:backup-script.sh][backup-script.sh]]
+*** [[file:backup-script.sh][Backup Script]]
 - the backup script ...
 
-*** Restore Script :: [[file:restore-script.sh][restore-script.sh]]
+*** [[file:restore-script.sh][Restore Script]]
 - the restore script ...
+
 ** TODO Create a =mailconfig= file for handling the email configuration
 - symlink to ~/.authinfo
    #+BEGIN_SRC shell-script
@@ -146,10 +127,9 @@ After a user logs in from LightDM, which is the default login manager for XFCE d
      machine smtp.gmail.com login user-primary-email-address port 587
    #+END_SRC
 
-*** TODO write a script to split the user-primary-email-address into user-address '@' user-provider
-
 ** TODO create personal dictionary from ~/home/chu/.aspell.en.pws~
 * Footnotes
 [fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
 [fn:broken-link] WARNING: Broken link.
 [fn:emacs-version] GNU Emacs 24.3.50.1
+[fn:login] This is actually read by the LightDM process upon logging into the XFCE environment.

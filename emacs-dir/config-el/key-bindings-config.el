@@ -96,6 +96,7 @@
 (define-key programming-map (kbd "d") 'gdb)
 (define-key programming-map (kbd "m") 'magit-status) ;; NOTE: view the `git-status' of the current file
 (define-key programming-map (kbd "g") 'gist-buffer) ;; NOTE: ...
+(define-key programming-map (kbd "G") 'ido-goto-symbol)
 (define-key programming-map (kbd "e") 'eval-and-replace) ;; NOTE: evaluate a lisp expression and replace with the value
 (define-key programming-map (kbd "i") 'ielm) ;; NOTE: start the interactive emacs lisp mode
 (define-key programming-map (kbd "s") 'slime-connect) ;; NOTE: start slime session

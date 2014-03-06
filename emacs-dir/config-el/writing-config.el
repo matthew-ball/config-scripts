@@ -991,6 +991,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ;;(org-indent-mode) ;; NOTE: indent with headings
   ;;(setq org-startup-indented t) ;; NOTE: indent with headings
   (auto-complete-mode t)
+  (imenu-add-to-menubar "Imenu")
   (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
 
 (add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
