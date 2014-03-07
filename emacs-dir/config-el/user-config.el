@@ -1007,9 +1007,7 @@ If mark is active, indents region. Else if point is at the end ofa symbol, expan
 ;;; IMPORTANT: default browser
 (setq browse-url-new-window-flag t
       browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
-      browse-url-generic-program "x-www-browser"
-      ;;browse-url-generic-program (getenv "BROWSER") ;; NOTE: use the system's $BROWSER environment variable
-      )
+      browse-url-generic-program (getenv "BROWSER")) ;; NOTE: use the system's $BROWSER environment variable
 
 (defun choose-browser (url &rest junk) ;; NOTE: select which browser to use (i.e. internal or external)
   "Navigate a web browser to URL.
