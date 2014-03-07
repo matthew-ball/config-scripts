@@ -56,7 +56,7 @@ This configuration should be stored in a single directory; the configuration can
 | stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
 |-----------------------+----------------+------------------------------------------|
 | bash-dir/init.sh      | ~/.bashrc      | ln -s bash-dir/init.sh ~/.bashrc         |
-| bash-dir/session.sh   | ~/.xsessionrc  | ln -s bash-dir/session.sh ~/.xsessionrc  |
+| xinit-dir/session.sh  | ~/.xsessionrc  | ln -s xinit-dir/session.sh ~/.xsessionrc |
 | xinit-dir/init.sh     | ~/.xinitrc     | ln -s xinit-dir/init.sh ~/.xinitrc       |
 | stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
 | bash-dir/profile.sh   | ~/.bash_profile | ln -s bash-dir/profile.sh ~/.bash_profile |

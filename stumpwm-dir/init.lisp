@@ -96,7 +96,8 @@
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
-(defvar *user-projects-directory* (getenv "USER_PROJECT_DIR") "User's projects directory.")
+(defvar *user-projects-directory* (getenv "USER_PROJECTS_DIR") "User's projects directory.")
+;; 
 (defvar *browser* (getenv "BROWSER") "Default web browser.")
 (defvar *terminal* (getenv "TERMINAL") "Default terminal emulator.")
 (defvar *editor* (getenv "EDITOR") "Default editor.")
@@ -619,7 +620,7 @@
   (group-frame-preference "htop" "misc" :title)
   (group-frame-preference "utop" "misc" :title)
   (group-frame-preference "aptitude" "misc" :title)
-  ;; (group-frame-preference "xfdesktop" ".trash" :instance) ;; TODO: group frame preference for XFCE ;; ERROR: doesn't work
+  ;; (group-frame-preference "xfdesktop" ".trash" :instance) ;; TODO: group frame preference for XFCE
   )
 
 (defun run-or-raise-app (app)
@@ -655,16 +656,6 @@
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-host-name () () "Show the host name." (echo-string (current-screen) (concat "Host name: " (host-name))))
 (defcommand show-system-name () () "Show the system name." (echo-string (current-screen) (concat "System name: " (string-downcase (symbol-name (system-name))))))
-
-;; TODO: update
-;; (define-stumpwm-command "reload" (screen)
-;;   (echo-string screen "Reloading StumpWM...")
-;;   (asdf:operate 'asdf:load-op :stumpwm)
-;;   (multiple-value-bind (success err rc) (load-rc-file)
-;;     (echo-string screen
-;; 		 (if success
-;; 		     "Reloading StumpWM...Done"
-;; 		     (format nil "Error loading ~A: ~A" rc err)))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."

@@ -164,6 +164,9 @@
 
   (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
+  ;;; IMPORTANT: erc autoaway
+  ;; (require 'erc-autoaway)
+
   ;; IMPORTANT: erc notify
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
   ;;(setq erc-notify-list erc-pals)
@@ -222,6 +225,7 @@
         ;; erc-lurker-hide-list '("JOIN" "PART" "QUIT")
         erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
         erc-header-line-format nil ;; NOTE: turn off the topic (header) bar
+	;; erc-header-line-uses-tabbar-p t ;; TEST: ...
         header-line-format nil ;; NOTE: turn off the topic (header) bar
         erc-input-line-position -1 ;; NOTE: keep input at the last line
         erc-max-buffer-size 20000 ;; NOTE: truncate buffers (so they don't hog core)
@@ -1290,14 +1294,14 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 (after "ibuffer-vc"
   (setq ibuffer-formats	'((mark modified read-only vc-status-mini " "
-				(name 18 18 :left :elide)
+				(name 16 16 :left :elide)
 				" "
 				;;(size 9 -1 :right)
 				;;" "
 				(mode 14 14 :left :elide)
 				" "
-				(vc-status 12 12 :left)
-				" "
+				;; (vc-status 12 12 :left)
+				;; " "
 				filename-and-process))))
 
 (provide 'user-config)
