@@ -58,10 +58,10 @@
 (defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
 
 ;; NOTE: user details
-(setq user-full-name "Matthew Ball") ;; NOTE: set the user full name
-(defcustom user-university-id "u4537508" "University ID for the user." :group 'user-variables :type 'string)
-(defcustom user-primary-email-address "mathew.ball@gmail.com" "Primary email address for the user." :group 'user-variables :type 'string)
-(defcustom user-secondary-email-address (format "%s@%s" user-university-id "anu.edu.au") "Secondary email address for the user." :group 'user-variables :type 'string)
+(setq user-full-name (getenv "USER_FULL_NAME")) ;; NOTE: set the user full name
+(defcustom user-university-id (getenv "USER_UNI_ID") "University ID for the user." :group 'user-variables :type 'string)
+(defcustom user-primary-email-address (getenv "PRIMARY_EMAIL") "Primary email address for the user." :group 'user-variables :type 'string)
+(defcustom user-secondary-email-address (format "%s@%s" user-university-id (getenv "USER_UNI")) "Secondary email address for the user." :group 'user-variables :type 'string)
 
 ;;; IMPORTANT: common lisp
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'

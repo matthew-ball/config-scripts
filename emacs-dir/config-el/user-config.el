@@ -679,7 +679,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (interactive)
   (switch-to-buffer
    (ido-completing-read
-    "Switch to ERC Channel: " 
+    "Switch to ERC channel: " 
     (save-excursion
       (delq nil (mapcar (lambda (buf)
                           (when (buffer-live-p buf)
@@ -776,7 +776,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         '((nnimap "gmail" ;; NOTE: gmail login
                   (nnimap-address "imap.gmail.com") ;; NOTE: being the "gmail" account, this hard-coding is ok?
                   (nnimap-server-port 993)
-                  ;; (nnimap-authinfo-file "~/.authinfo")
+                  (nnimap-authinfo-file "~/.authinfo")
                   (nnimap-authenticator login)
                   (nnimap-expunge-on-close 'never)
                   (nnimap-stream ssl))
@@ -1306,12 +1306,12 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 (after "ibuffer-vc"
   (setq ibuffer-formats	'((mark modified read-only vc-status-mini " "
-				(name 16 16 :left :elide)
+				(name 18 18 :left :elide)
 				" "
 				;;(size 9 -1 :right)
 				;;" "
-				(mode 14 14 :left :elide)
-				" "
+				;; (mode 14 14 :left :elide)
+				;; " "
 				;; (vc-status 12 12 :left)
 				;; " "
 				filename-and-process))))

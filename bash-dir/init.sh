@@ -4,6 +4,8 @@
 # NOTE: if not running interactively, don't do anything
 #[ -z "$PS1" ] && return
 
+# TODO: this file has to inherit the environment variables set in profile.sh
+
 ### COMMENT: export functionality
 export HISTCONTROL=ignoredups # NOTE: don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
@@ -13,8 +15,7 @@ export MOZ_DISABLE_PANGO=1
 export TERM=xterm-256color # NOTE: export 256 colours in shell session
 # export TERM=xterm-color # NOTE: export 8 colours in shell session
 
-# NOTE: these exports are used in the "default applications" for stumpwm
-# NOTE: there is probably no point in these exports anymore; xfce doesn't source this file and won't have them set
+# TODO: these values are now set elsewhere...
 # export TERMINAL="x-terminal-emulator"
 export BROWSER="x-www-browser" # NOTE: export BROWSER as x-www-browser ... (IMPORTANT: requires debian ???)
 export EDITOR="emacsclient -n -c" # NOTE: set the main editor as emacsclient (IMPORTANT: requiring emacs-server)
@@ -24,8 +25,7 @@ export FILE_MANAGER="thunar"
 export PACKAGE_MANAGER="aptitude"
 export SYSTEM_MONITOR="htop"
 
-# export directories ...
-# TODO: use these exports ...
+# TODO: these values are now set elsewhere...
 export STUMPWM_SRC_DIR="/home/chu/quicklisp/dists/quicklisp/software/stumpwm-20120107-git/"
 export QUICKLISP_DIR="/home/chu/quicklisp/dists/quicklisp/software"
 

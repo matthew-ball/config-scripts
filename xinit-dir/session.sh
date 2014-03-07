@@ -14,12 +14,20 @@ export ALTERNATE_EDITOR=""
 export VISUAL="emacsclient"
 export PACKAGE_MANAGER="aptitude"
 export SYSTEM_MONITOR="htop"
-# --- IMPORTANT: extra applications
 export OFFICE_SUITE="libreoffice"
 export DOCUMENT_VIEWER="epdfview"
 # export AUDIO_PLAYER="ncmpcpp"
 export VIDEO_PLAYER="vlc"
+# --- IMPORTANT: default user variables
+export USER_FULL_NAME="Matthew Ball"
+export USER_UNI_ID="u4537508"
+export USER_UNI="anu.edu.au"
+export PRIMARY_EMAIL="mathew.ball@gmail.com"
 # --- IMPORTANT: default path variables
 export STUMPWM_SRC_DIR="/home/chu/Public/stumpwm"
 export QUICKLISP_DIR="/home/chu/quicklisp/dists/quicklisp/software"
 export USER_PROJECTS_DIR="/home/chu/Public/"
+export CONFIG_SCRIPTS_DIR="/home/chu/config-scripts/"
+# NOTE: add clojure's lein to $PATH
+#export PATH=/home/chu/Programming/lisp/clojure/leiningen/:$PATH
+#export LEIN_JVM_OPTS=

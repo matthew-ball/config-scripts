@@ -776,5 +776,11 @@
               (add-to-list 'symbol-names name)
               (add-to-list 'name-and-pos (cons name position))))))))
 
+;;; IMPORTANT: easy pg
+;; SOURCE: `http://www.emacswiki.org/emacs-en/EasyPG'
+;; NOTE: this is for ~/.authinfo
+(require 'epa-file)
+(epa-file-enable)
+
 (provide 'general-config)
 ;;; general-config.el ends here
