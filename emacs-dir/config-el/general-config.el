@@ -102,7 +102,7 @@
 	ido-file-extensions-order '(".org" ".el" ".lisp" ".c" ".h" ".sh")
 	ido-ignore-extensions t ;; NOTE: ignore extentions
 	;; TODO: can clean up the following ...
-	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" ;;"^\#[#]?"
+	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\#[#]?"
 			     "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
 	ido-work-directory-list `(,(expand-file-name user-home-directory)
 				  ,(expand-file-name user-documents-directory)

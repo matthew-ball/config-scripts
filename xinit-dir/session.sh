@@ -1,5 +1,8 @@
+## FILE: /home/chu/config-scripts/xinit-dir/session.sh
+## AUTHOR: Matthew Ball (copyleft 2014)
+
 # export environment variables for stumpwm
-# should be symlink'd to ~/.xsessionrc
+
 # --- IMPORTANT: environment settings
 export LOCALE=UTF-8
 # --- IMPORTANT: default applications

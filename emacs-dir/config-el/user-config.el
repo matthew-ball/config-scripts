@@ -664,7 +664,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (interactive)
   (switch-to-buffer
    (ido-completing-read
-    "Channel:" 
+    "Switch to ERC Channel: " 
     (save-excursion
       (delq nil (mapcar (lambda (buf)
                           (when (buffer-live-p buf)
@@ -674,9 +674,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
                         (buffer-list)))))))
 
 ;; NOTE: `erc' key-bindings
-;; (eval-after-load "erc" '(progn
-;;                           (define-key erc-mode-map (kbd "C-c C-b") 'custom-erc-join-channel)
-;;                           (global-set-key (kbd "C-c e") 'custom-erc-switch-buffer)))
+(after "erc"
+  (define-key erc-mode-map (kbd "C-c b") 'custom-erc-join-channel))
 
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'

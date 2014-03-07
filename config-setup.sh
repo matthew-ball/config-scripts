@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # variables
-source_links="bash-dir/init.sh stumpwm-dir/init.lisp bash-dir/session.sh bash-dir/profile.sh emacs-dir/"
-destination_links=".bashrc .stumpwmrc .xsessionrc .profile .emacs.d/"
+source_links="bash-dir/init.sh bash-dir/profile.sh xinit-dir/session.sh xinit-dir/init.sh stumpwm-dir/init.lisp emacs-dir/"
+destination_links=".bashrc .profile .xsessionrc .xinitrc .stumpwmrc .emacs.d/"
 
 # IMPORTANT: install script
 # TODO: install state package-list

@@ -138,14 +138,17 @@
 (define-key internals-map (kbd "E") 'elisp-index-search) ;; NOTE: search for the documentation of an emacs lisp function
 (define-key internals-map (kbd "M") 'emacs-index-search) ;; NOTE: search for the documentation of an emacs command
 (define-key internals-map (kbd "S") 'switch-to-scratch) ;; NOTE: switch to `*scratch*' buffer
-(define-key internals-map (kbd "b") 'browse-url) ;; NOTE: browse a URL session
+;; ---
+(define-key internals-map (kbd "b") 'custom-erc-switch-buffer)
 (define-key internals-map (kbd "c") 'bbdb-create) ;; NOTE: add an entry to the `bbdb' database
-(define-key internals-map (kbd "v") 'battery) ;; NOTE: display battery statistics
-(define-key internals-map (kbd "l") 'list-packages)  ;; NOTE: list available elpa packages
 (define-key internals-map (kbd "e") 'emms) ;; NOTE: start emacs multimedia system
+(define-key internals-map (kbd "l") 'list-packages)  ;; NOTE: list available elpa packages
+(define-key internals-map (kbd "m") 'imaxima) ;; NOTE: start interactive maxima session
 (define-key internals-map (kbd "p") 'proced) ;; NOTE: start a process manager session
 (define-key internals-map (kbd "r") 'regexp-builder) ;; NOTE: start regular-expression builder
-(define-key internals-map (kbd "m") 'imaxima) ;; NOTE: start interactive maxima session
+(define-key internals-map (kbd "u") 'browse-url) ;; NOTE: browse a URL session
+(define-key internals-map (kbd "v") 'battery) ;; NOTE: display battery statistics
+(define-key internals-map (kbd "w") 'w3m) ;; ...
 ;; ---
 ;; (define-key internals-map (kbd "s") 'eshell) ;; NOTE: ..
 ;; (define-key internals-map (kbd "i") 'erc-start-or-switch) ;; NOTE: ...
@@ -237,6 +240,8 @@
 (global-set-key (kbd "C-c c c") 'insert-custom-comment-tag) ;; NOTE: insert a custom comment tag
 (global-set-key (kbd "C-c c s") 'show-custom-comment-tag)   ;; NOTE: show custom comment tags
 (global-set-key (kbd "C-c c h") 'insert-custom-header-text) ;; NOTE: insert custom header text for a source code dot file
+;; ---
+;; (global-set-key (kbd "C-c C-b") 'custom-erc-switch-buffer) ;; NOTE: switch to an erc-buffer
 ;; ---
 (global-set-key (kbd "C-<prior>") 'previous-user-buffer) ;; NOTE: bind C-<PGUP> to oldest buffer
 (global-set-key (kbd "C-<next>") 'next-user-buffer) ;; NOTE: bind C-<PGDN> to most recently used
