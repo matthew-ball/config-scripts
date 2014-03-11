@@ -59,8 +59,6 @@
 ;;; IMPORTANT: visual lines
 ;; SOURCE: `http://www.emacswiki.org/emacs/VisualLineMode'
 ;;(global-visual-line-mode t) ;; NOTE: enable visual line mode for all buffers (i.e. globally)
-;; TODO: this needs to be activated only for selected modes
-;; DEBUG: (add-to-hook 'text-mode-hook '(turn-on-visual-line-mode))
 
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
@@ -77,7 +75,8 @@
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
 ;; BUG: this does not like `doc-view-mode'
-;; (add-hook 'find-file-hook (lambda () (linum-mode 1))) ;; NOTE: turn on linum-mode if in a file
+;; (add-hook 'find-file-hook 'linum-mode) ;; NOTE: turn on linum-mode if in a file
+;; (add-hook 'text-mode-hook 'linum-mode) ;; 
 
 ;;; IMPORTANT: indicate empty lines
 ;; (toggle-indicate-empty-lines)
@@ -211,6 +210,44 @@
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
 
 (add-hook 'text-mode-hook (lambda () (adaptive-wrap-prefix-mode t)))
+
+;;; IMPORTANT: hide the mode-line
+;; SOURCE: `http://bzg.fr/emacs-hide-mode-line.html'
+(defvar-local hidden-mode-line-mode nil)
+
+;; TODO: rename
+(define-minor-mode hidden-mode-line-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global t
+  :variable hidden-mode-line-mode
+  :group 'editing-basics
+  (if hidden-mode-line-mode
+      (setq hide-mode-line mode-line-format
+            mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+          hide-mode-line nil))
+  (force-mode-line-update)
+  ;; NOTE: apparently force-mode-line-update is not always enough to redisplay the mode-line
+  (redraw-display)
+  (when (and (called-interactively-p 'interactive)
+             hidden-mode-line-mode)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden Mode Line Mode enabled.  "
+             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+
+(defun hide-mode-line ()
+  "Hide the mode-line in every buffer."
+  (interactive)
+  (hidden-mode-line-mode)
+  (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode))
+
+(defun show-mode-line ()
+  "Show the mode-line in every buffer."
+  (interactive)
+  (remove-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
+  (hidden-mode-line-mode))
 
 (provide 'appearance-config)
 ;;; appearance-config.el ends here

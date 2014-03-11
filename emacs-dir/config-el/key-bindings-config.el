@@ -94,6 +94,7 @@
 (define-key programming-map (kbd "n") 'next-error)
 (define-key programming-map (kbd "p") 'previous-error)
 (define-key programming-map (kbd "d") 'gdb)
+(define-key programming-map (kbd "D") 'slime-documentation-lookup)
 (define-key programming-map (kbd "m") 'magit-status) ;; NOTE: view the `git-status' of the current file
 (define-key programming-map (kbd "g") 'gist-buffer) ;; NOTE: ...
 (define-key programming-map (kbd "G") 'ido-goto-symbol)
@@ -142,6 +143,7 @@
 (define-key internals-map (kbd "b") 'custom-erc-switch-buffer)
 (define-key internals-map (kbd "c") 'bbdb-create) ;; NOTE: add an entry to the `bbdb' database
 (define-key internals-map (kbd "e") 'emms) ;; NOTE: start emacs multimedia system
+(define-key internals-map (kbd "h") 'hidden-mode-line-mode)
 (define-key internals-map (kbd "l") 'list-packages)  ;; NOTE: list available elpa packages
 (define-key internals-map (kbd "m") 'imaxima) ;; NOTE: start interactive maxima session
 (define-key internals-map (kbd "p") 'proced) ;; NOTE: start a process manager session

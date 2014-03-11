@@ -1,6 +1,6 @@
 ;;; init.lisp --- Configuration for StumpWM environment
 
-;; Copyright (C) 2013  Matthew Ball
+;; Copyright (C) 2008-2014  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
 ;; Keywords: window manager
@@ -181,12 +181,12 @@
 			;; "app-menu"
 			;; "aumix"
 			;; "battery"
-			"battery-portable"
-			"cpu"
-			;;"disk"
+			;; "battery-portable"
+			;; "cpu"
+			;; "disk"
 			;; "g15-keysyms"
 			;; "maildir"
-			"mem"
+			;; "mem"
 			;; "mpd"
 			;; "net"
 			;; "notifications"
@@ -252,7 +252,7 @@
        ;; "["
        ;; "%b" ;; NOTE: display battery details
        ;; " %I" ;; NOTE: display wireless details
-       " "
+       ;; " "
        ;; '(:eval (mode-line-wireless-details)) ;; ...
        ;; "^B%m^b" ;; NOTE: display mpd details
        ;; "]"
@@ -289,8 +289,8 @@
 ;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
 
 (defkeys-root ;; NOTE: define root-map keys
-  ("s-q" "safe-quit")
-  ("s-d" "trash-window")
+    ("s-q" "safe-quit")
+    ("s-d" "trash-window")
   ("s-s" "trash-show")
   ("s-R" "reinit") ;; NOTE: reload run-time configuartion file
   ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
@@ -299,14 +299,13 @@
   ("M-u" "show-uptime") ;; NOTE: show uptime status
   ("M-h" "show-host-name") ;; NOTE: show host name
   ("M-s" "show-system-name") ;; NOTE: show system name
-  ("M-i" "show-window-properties") ;; NOTE: show current window's properties
-  )
+  ("M-i" "show-window-properties")) ;; NOTE: show current window's properties
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
-  ("s-S" '*sudo-map*)
-  ("s-V" '*volume-map*)
+    ("s-S" '*sudo-map*)
+    ("s-V" '*volume-map*)
+  ("s-M" '*mpd-map*)
   ("s-G" "vgroups")
-  ;; ("s-M" '*mpd-map*)
   ("s-B" "global-select")
   ("s-:" "eval")
   ("s-x" "colon")
@@ -317,11 +316,8 @@
   ("s-h" "run-system-monitor") ;; NOTE: open (or switch to an existing instance of) *system-monitor*
   ("s-s" "run-stumpish") ;; NOTE: open (or switch to an existing instance of) "stumpish"
   ("s-p" "run-package-manager") ;; NOTE: open (or switch to an existing insance of) *package-manager*
-  ;; ("s-a" "run-audio-player") ;; NOTE: open (or switch to an existing instance of) *audio-player*
-  ;; ("s-v" "run-video-player") ;; NOTE: open (or switch to an existing instance of) *video-player*
-  ;; ("s-i" "run-irc") ;; NOTE: open (or switch to an existing instance of) *irc-client*
-  ;; ("s-m" "run-mail") ;; NOTE: open (or switch to an existing instance of) *mail-client*
-  )
+  ("s-a" "run-audio-player") ;; NOTE: open (or switch to an existing instance of) *audio-player*
+  ("s-v" "run-video-player")) ;; NOTE: open (or switch to an existing instance of) *video-player*
 
 (defvar *sudo-map* nil "Super-user specific key-bindings.")
 (defvar *volume-map* nil "Control volume key-bindings.")
@@ -613,8 +609,8 @@
   (group-frame-preference *file-manager* "default" :instance)
   (group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
   (group-frame-preference "stumpish" "default" :title)
-  (group-frame-preference *browser* "internet" :instance)
-  (group-frame-preference "chromium" "internet" :instance)
+  ;; (group-frame-preference *browser* "internet" :instance)
+  (group-frame-preference "chromium" "internet" :instance) ;; :(
   (group-frame-preference "terminal" "misc" :title)
   ;; (group-frame-preference *terminal* "misc" :title)
   (group-frame-preference "htop" "misc" :title)
@@ -635,16 +631,17 @@
 (defcommand run-terminal () () "Run terminal emulator." (run-or-raise (format nil "~A -T ~A" *terminal* "terminal") (list :title *terminal*)))
 
 ;; NOTE: application run commands
+;; TODO: need to find some generic abstraction which says whether or not an application uses the terminal
 (defcommand run-editor () () "Run `*editor*'." (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
 (defcommand run-browser () () "Run `*browser*'."(run-or-raise-app *browser*))
 (defcommand run-file-manager () () "Run `*file-manager*'." (run-or-raise-app *file-manager*))
 (defcommand run-document-viewer () () "Run `*document-viewer*'." (run-or-raise-app *document-viewer*))
-
+(defcommand run-office-suite () () "Run `*office-suite*'." (run-or-raise-app *office-suite*))
+(defcommand run-video-player () () "Run `*video-player*'." (run-or-raise-app *video-player*))
 ;; NOTE: terminal apps
 (defcommand run-system-monitor () () "Run `*system-monitor*'." (run-or-raise-terminal-app *system-monitor* "htop"))
 (defcommand run-package-manager () () "Run `*package-manager*'." (run-or-raise-terminal-app *package-manager* "aptitude"))
-;; (defcommand run-audio-player () () (run-terminal-app *audio-player* "ncmpcpp"))
-;; (defcommand run-video-player () () (run-terminal-app *video-player* "mplayer"))
+(defcommand run-audio-player () () "Run `*audio-player*'." (run-or-raise-terminal-app *audio-player* "ncmpcpp"))
 
 (defcommand run-stumpish () () "Run stumpish shell." (run-or-raise-terminal-app "stumpish" "stumpish"))
 (defcommand run-screen () () "Connect to existing screen session." (run-or-raise-terminal-app "screen -D -R" "screen"))

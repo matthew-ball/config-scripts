@@ -116,38 +116,60 @@
 			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")
 			   )))
 
-(defvar custom-packages-alist nil "Packages to be installed through `package.el'.")
-;; (setq custom-packages-alist '(adaptive-wrap auto-complete browse-kill-ring dash diminish dired+ dired-details+ dired-details ebib elisp-slime-nav epl erc-hl-nicks flx flx-ido geiser gh gist git-commit-mode git-rebase-mode google-translate haskell-mode ibuffer-vc ido-ubiquitous logito magit org-journal paredit pcache pkg-info popup rainbow-delimiters smex sr-speedbar s tabulated-list undo-tree w3m yasnippet))
+;; SOURCE: `http://hastebin.com/yidodunufo.lisp'
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it's not.
 
-;; IMPORTANT: this needs to be called often (i.e. whenever a new package is installed/removed)
-;; TODO: clean up the hard-coded path name
-(defalias 'export-packages '(lambda () (export-custom-packages-alist
-                               (expand-file-name "~/.emacs.d/elpa/package-list"))) "Export `package-alist' variable.")
+Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     (if (package-installed-p package)
+	 nil
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+	   (package-install package)
+	 package)))
+   packages))
 
-(defun export-custom-packages-alist (file &rest junk)
-  "Write the contents of `package-alist' to FILE."
-  (save-excursion
-    (with-temp-file file
-      (insert (format "%S" package-alist)))))
-
-(defun load-custom-package-alist (file)
-  "Load a file of packages into the variable `custom-packages-alist'."
-  (interactive)
-  (when (file-exists-p file)
-    (message "this will read the file as `custom-packages-alist'."))
-  (custom-packages-install))
-
-;; FIX: this function is far too complicated
-(defun custom-packages-install ()
-  "Install all custom configuration packages with `package.el'."
-  (interactive)
-  (unless package-archive-contents
+;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
+(or (file-exists-p package-user-dir)
     (package-refresh-contents))
-  (dolist (package custom-packages-alist)
-    (let ((package-name (car package))
-	  (package-version (cdr package)))
-      (unless (package-installed-p (intern package-name))
-        (package-install (intern package-name))))))
+
+(ensure-package-installed
+ 'adaptive-wrap
+ 'auto-complete
+ 'browse-kill-ring
+ 'dash
+ 'diminish
+ 'ebib
+ 'elisp-slime-nav
+ 'epl
+ 'erc-hl-nicks
+ 'flx
+ 'flx-ido
+ 'geiser
+ 'gh
+ 'gist
+ 'git-commit-mode
+ 'git-rebase-mode
+ 'google-translate
+ 'haskell-mode
+ 'ibuffer-vc
+ 'ido-ubiquitous
+ 'logito
+ 'magit
+ 'org-journal
+ 'paredit
+ 'pcache
+ 'pkg-info
+ 'popup
+ 'rainbow-delimiters
+ 'smex
+ 'sr-speedbar
+ 's
+ 'tabulated-list
+ 'undo-tree
+ 'w3m
+ 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already

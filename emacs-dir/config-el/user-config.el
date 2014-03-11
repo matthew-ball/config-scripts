@@ -221,7 +221,7 @@
         erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
         erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" ;; "324" "329" "332" "333" "353" "477"
 				  ) ;; NOTE: do not track these messages
-        ;; erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
+        erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
         ;; erc-lurker-hide-list '("JOIN" "PART" "QUIT")
         erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
         erc-header-line-format nil ;; NOTE: turn off the topic (header) bar
@@ -420,6 +420,16 @@
 	 )
     (erc-send-command (format "MODE %s -b *!*@%s" chan host))))
 
+;; (defun erc-cmd-MUTE (nick)
+;;   (let ((chan (erc-default-target))
+;; 	(host (erc-get-server-user nick)))
+;;     (erc-send-command (format "QUIET %s *!*@%s" chan host))))
+
+;; (defun erc-cmd-UNMUTE (nick)
+;;   (let ((chan (erc-default-target))
+;; 	(who (erc-get-server-user nick)))
+;;     (erc-send-command (format "UNQUIET %s *!*@%s" chan host))))
+
 (defun erc-cmd-KICK (nick)
   "Kick NICK from channel."
   (let* ((chan (erc-default-target))
@@ -608,9 +618,11 @@
 (defun erc-start-or-switch (&rest junk)
   "Connect to ERC, or switch to last active buffer"
   (interactive)
-  (if (get-buffer "irc.freenode.net:7000") ;; NOTE: if ERC is already active ...
-      (erc-track-switch-buffer 1) ;; NOTE: ... switch to last active buffer ...
-    (erc-tls-connect-server "irc.freenode.net"))) ;; NOTE: ... else, start an `erc-tls' session on `irc.freenode.net'
+  (save-excursion
+    (if (get-buffer "irc.freenode.net:7000") ;; NOTE: if ERC is already active ...
+	;; TODO: if connected to IRC and there has been no activity, execute `custom-erc-switch-buffer'
+	(erc-track-switch-buffer 1) ;; NOTE: ... switch to last active buffer ...
+      (erc-tls-connect-server "irc.freenode.net")))) ;; NOTE: ... else, start an `erc-tls' session on `irc.freenode.net'
 
 (defvar custom-erc-channel-list nil "List of channels to connect to.")
 
@@ -635,6 +647,8 @@
 	    "#ubuntu-release-party"
 	    "#ubuntu-classroom"
 	    "#ubuntu-classroom-chat"
+	    "#ubuntu-fr"
+	    "#ubuntu-fr-offtopic"
 	    "#freenode"
             "#bash"
             "#gnus"
@@ -661,6 +675,7 @@
 	    "##club-ubuntu"
 	    "##math"
 	    "##programming"
+	    "##economics"
             "##linguistics"
 	    "##philosophy"))
 
@@ -677,16 +692,17 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (defun custom-erc-switch-buffer (&rest junk)
   "Switch to an existing `erc-mode' buffer."
   (interactive)
-  (switch-to-buffer
-   (ido-completing-read
-    "Switch to ERC channel: " 
-    (save-excursion
-      (delq nil (mapcar (lambda (buf)
-                          (when (buffer-live-p buf)
-                            (with-current-buffer buf
-                              (and (eq major-mode 'erc-mode)
-                                   (buffer-name buf)))))
-                        (buffer-list)))))))
+  (when (get-buffer "irc.freenode.net:7000")
+    (switch-to-buffer
+     (ido-completing-read
+      "Switch to ERC channel: " 
+      (save-excursion
+	(delq nil (mapcar (lambda (buf)
+			    (when (buffer-live-p buf)
+			      (with-current-buffer buf
+				(and (eq major-mode 'erc-mode)
+				     (buffer-name buf)))))
+			  (buffer-list))))))))
 
 ;; NOTE: `erc' key-bindings
 (after "erc"
@@ -923,19 +939,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
   ;; (add-to-list 'nnmail-extra-headers nnrss-url-field)
   )
-
-;;; IMPORTANT: dired extensions
-;; SOURCE: `http://emacswiki.org/emacs/dired+.el'
-;; (after "dired"
-;;   (require 'dired+))
-
-;;; IMPORTANT: directory details
-;; SOURCE: `http://www.emacswiki.org/emacs/DiredDetails'
-;; (after "dired"
-;;   (require 'dired-details+)
-
-;;   (setq dired-details-hidden-string "")
-;;   (dired-details-install))
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
