@@ -30,7 +30,8 @@
   (set-face-attribute 'default nil :height 90)
   (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  (load-theme 'tango))
+  ;;(load-theme 'tango)
+  )
 
 ;; IMPORTANT: X server specific
 (when (display-graphic-p)

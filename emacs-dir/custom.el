@@ -8,9 +8,6 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(custom-safe-themes
-   (quote
-    ("764777857ef24b4ef1041be725960172ac40964b9f23a75894a578759ba6652f" "3d6b08cd1b1def3cc0bc6a3909f67475e5612dba9fa98f8b842433d827af5d30" default)))
  '(doc-view-continuous t)
  '(ebib-entry-types
    (quote
@@ -57,7 +54,8 @@
       (month year)))))
  '(org-agenda-files
    (quote
-    ("~/Documents/Organisation/europe-trip.org" "~/Documents/Organisation/thailand-trip.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/birthday.org"))))
+    ("~/Documents/Organisation/europe-trip.org" "~/Documents/Organisation/thailand-trip.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/birthday.org")))
+ '(powerline-default-separator (quote bar)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

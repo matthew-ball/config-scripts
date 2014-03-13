@@ -700,14 +700,14 @@
   (interactive)
   (select-window (previous-window)))
 
-(defun flip-windows ()
-  "Flip windows."
-  (interactive)
-  (let (buffer (buffer-name))
-    (save-excursion
-      (delete-other-windows)
-      (split-window-below)
-      (switch-to-buffer buffer))))
+;; (defun flip-windows ()
+;;   "Flip windows."
+;;   (interactive)
+;;   (let (buffer (buffer-name))
+;;     (save-excursion
+;;       (delete-other-windows)
+;;       (split-window-below)
+;;       (switch-to-buffer buffer))))
 
 ;; SOURCE: `http://wenshanren.org/?p=298'
 (defun edit-current-file-as-root ()
@@ -727,7 +727,8 @@
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
-;; ido goto symbol
+;;; IMPORTANT: ido goto symbol
+;; SOURCE: `http://www.emacswiki.org/emacs/ImenuMode'
 (defun ido-goto-symbol (&optional symbol-list)
       "Refresh imenu and jump to a place in the buffer using Ido."
       (interactive)
@@ -780,7 +781,9 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs-en/EasyPG'
 ;; NOTE: this is for ~/.authinfo
 (require 'epa-file)
-(epa-file-enable)
+
+(after "epa-file"
+  (epa-file-enable))
 
 (provide 'general-config)
 ;;; general-config.el ends here

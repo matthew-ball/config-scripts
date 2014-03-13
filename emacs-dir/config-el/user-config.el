@@ -1,6 +1,6 @@
 ;;; user-config.el --- Configuration for user settings/options
 
-;; Copyright (C) 2013  Matthew Ball
+;; Copyright (C) 2008-2014  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
 ;; Keywords: configuration
@@ -33,12 +33,7 @@
 
 ;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
 
-;;; IMPORTANT: extension to info
-;; SOURCE: `http://emacswiki.org/emacs/info+.el'
-;; (after "info"
-;;   (require 'info+))
-
-;;; IMPORTANT: extension to `ido'
+;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
 (after "ido"
   (require 'ido-ubiquitous)
@@ -219,8 +214,7 @@
         erc-kill-queries-on-quit t ;; NOTE: kill buffers for queries after quitting the server
         erc-kill-server-buffer-on-quit t ;; NOTE: kill buffers for server messages after quitting the server
         erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
-        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" ;; "324" "329" "332" "333" "353" "477"
-				  ) ;; NOTE: do not track these messages
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "324" "329" "332" "333" "353" "477") ;; NOTE: do not track these messages
         erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
         ;; erc-lurker-hide-list '("JOIN" "PART" "QUIT")
         erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
@@ -245,6 +239,7 @@
                                        ;; "#debian-offtopic"
 				       ;; ---
                                        "#ubuntu-offtopic"
+				       "#ubuntu-irc"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
                                        )))
@@ -951,17 +946,31 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
   ;; (global-auto-complete-mode t)
 
-  (setq ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-        ;; ac-ignore-case t ;; NOTE: always ignore case
-        ac-auto-show-menu t ;; NOTE: automatically show menu
-	ac-use-menu-map t ;; NOTE: use menu map
-	ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
-        ;;ac-source-yasnippet nil
+  (setq ;;ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
+        ;;ac-ignore-case t ;; NOTE: always ignore case
+	ac-expand-on-auto-complete t ;; NOTE: expand common portions
+	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+        ;;ac-auto-show-menu t ;; NOTE: automatically show menu
+  	;;ac-use-menu-map t ;; NOTE: use menu map
+  	;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+        ;;ac-source-yasnippet t
 	)
 
-  (set-face-background 'ac-candidate-face "lightgray")
-  (set-face-underline 'ac-candidate-face "darkgray")
-  (set-face-background 'ac-selection-face "steelblue"))
+  ;; (set-face-background 'ac-candidate-face "lightgray")
+  ;; (set-face-underline 'ac-candidate-face "darkgray")
+  ;; (set-face-background 'ac-selection-face "steelblue")
+
+  (set-default 'ac-sources '(ac-source-features
+			     ac-source-functions
+			     ac-source-yasnippet
+			     ac-source-variables
+			     ac-source-symbols
+			     ac-source-abbrev
+			     ac-source-imenu
+			     ac-source-dictionary
+			     ac-source-words-in-buffer
+			     ac-source-words-in-same-mode-buffers
+			     ac-source-words-in-all-buffer)))
 
 ;;; IMPORTANT: emacs snippets
 ;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
@@ -1212,7 +1221,7 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
   (interactive)
   (if (get-buffer "*w3m*")
       (switch-to-buffer
-       (completing-read "w3m session: "
+       (ido-completing-read "w3m session: "
 			(save-excursion
 			  (delq
 			   nil
@@ -1318,6 +1327,10 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 				;; (vc-status 12 12 :left)
 				;; " "
 				filename-and-process))))
+
+;;; IMPORTANT: iedit
+;; SOURCE: `http://www.emacswiki.org/emacs/Iedit'
+(autoload 'iedit-mode "iedit" "Interactive editing." t)
 
 (provide 'user-config)
 ;;; user-config.el ends here

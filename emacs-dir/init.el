@@ -1,6 +1,6 @@
 ;;; init.el --- Configuration initiation
 
-;; Copyright (C) 2013  Matthew Ball
+;; Copyright (C) 2008-2013  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
 ;; Keywords: configuration
@@ -99,6 +99,7 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
 (after "info"
   (add-to-list 'Info-default-directory-list (expand-file-name "~/.emacs.d/info"))
+  ;; TODO: update ...
   (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/")))
   (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "slime-20130720-cvs/doc/"))))
 

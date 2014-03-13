@@ -1,6 +1,6 @@
 ;;; programming-config.el --- Configuration for programming-related settings
 
-;; Copyright (C) 2013  Matthew Ball
+;; Copyright (C) 2008-2014  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
 ;; Keywords: configuration
@@ -301,12 +301,14 @@ Enable the following minor modes:
   ;; TODO: set up CEDET
   ;; (require 'cedet) ;; NOTE: collection of emacs development environment tools
 
-  (setq c-default-style "linux"
-	c-basic-offset 4)
+  (defun c-mode-settings ()
+    (setq c-default-style "linux"
+	  c-basic-offset 4))
 
   (add-hook 'c-mode-hook '(lambda ()
                             (turn-on-general-programming-mode)
-                            (turn-on-cwarn-mode))))
+                            (turn-on-cwarn-mode)
+			    (c-mode-settings))))
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'

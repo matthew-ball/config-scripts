@@ -1,6 +1,6 @@
 ;;; key-bindings-config.el --- Configuration for key-bindings
 
-;; Copyright (C) 2013  Matthew Ball
+;; Copyright (C) 2008-2014  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
 ;; Keywords: configuration
@@ -150,12 +150,11 @@
 (define-key internals-map (kbd "r") 'regexp-builder) ;; NOTE: start regular-expression builder
 (define-key internals-map (kbd "u") 'browse-url) ;; NOTE: browse a URL session
 (define-key internals-map (kbd "v") 'battery) ;; NOTE: display battery statistics
-(define-key internals-map (kbd "w") 'w3m) ;; ...
+(define-key internals-map (kbd "w") 'switch-to-w3m-buffer) ;; NOTE: switch to a `w3m' buffer if one exists, else start `w3m' session
 ;; ---
 ;; (define-key internals-map (kbd "s") 'eshell) ;; NOTE: ..
 ;; (define-key internals-map (kbd "i") 'erc-start-or-switch) ;; NOTE: ...
 ;; (define-key internals-map (kbd "g") 'gnus) ;; NOTE: ...
-;; (define-key internals-map (kbd "w") 'w3m) ;; NOTE: ...
 
 ;; IMPORTANT: `org-mode' related
 (defconst org-prefix-key (kbd "<f8>") "Emacs org-mode prefix key.")
@@ -252,7 +251,7 @@
 (global-set-key (kbd "C-M-+") 'toggle-selective-display)
 ;; ---
 ;; (global-unset-key (kbd "C-z")) ;; NOTE: remove binding on C-z (suspend-frame)
-(global-unset-key (kbd "<insert>")) ;; NOTE: turn off inset mode
+(global-unset-key (kbd "<insert>")) ;; NOTE: turn off insert mode
 
 ;;; IMPORTANT: mode specific key-bindings
 
