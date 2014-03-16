@@ -56,6 +56,13 @@
 
   (smex-initialize)) ;; NOTE: super-charge `ido-mode'
 
+;;; IMPORTANT: browse kill ring
+;; SOURCE: `http://www.emacswiki.org/BrowseKillRing'
+(autoload 'browse-kill-ring "browse-kill-ring" "Browse the `kill-ring'." t)
+
+(after "browse-kill-ring"
+  (browse-kill-ring-default-keybindings))
+
 ;;; IMPORTANT: gist
 ;; SOURCE: `https://github.com/defunkt/gist.el'
 (autoload 'gist-buffer "gist" "Integrate with Github." t)
@@ -66,6 +73,7 @@
 
 (after "magit"
   (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
+
 	magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
 
   ;; NOTE: full screen magit-status
@@ -979,7 +987,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 (after "yasnippet"
   ;;(yas--initialize)
-  (yas-reload-all)
+  ;;(yas-reload-all)
   ;;(yas-load-directory "~/.emacs.d/elpa/yasnippet-20130505.2115/snippets/")
   (yas-load-directory "~/.emacs.d/snippets/")
 

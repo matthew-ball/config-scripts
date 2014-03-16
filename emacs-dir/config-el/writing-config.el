@@ -372,6 +372,19 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
   )
 
+;;; IMPORTANT: blogging from emacs
+;; SOURCE: `http://bzg.fr/blogging-from-emacs.html'
+;; (after "ox-publish"
+;;   (setq org-publish-project-alist
+;; 	'(("blog"
+;; 	   :base-directory "~/"
+;; 	   :html-extension "html"
+;; 	   :base-extension "org"
+;; 	   :publishing-directory "~/Public/html/"
+;; 	   :publishing-function (org-html-publish-to-html)
+;; 	   :html-preamble nil
+;; 	   :html-postamble nil))))
+
 ;;; IMPORTANT: org-agenda
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
 (after "org-agenda"

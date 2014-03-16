@@ -82,23 +82,25 @@
 (after "hi-lock"
   (global-hi-lock-mode t))
 
-;;; IMPORTANT: ido mode
+;;; IMPORTANT: interactively do things
 ;; SOURCE: `http://emacswiki.org/emacs/InteractivelyDoThings'
 (autoload 'ido-switch-buffer "ido" "Interactively do thing." t)
 
 (after "ido"
   (ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
+  ;; (ido-mode 'buffer)
 
   (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
+	ido-enable-regexp t ;; NOTE: enable regexp
 	ido-use-virtual-buffers t ;; NOTE: keep buffers around
 	ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
-	ido-everywhere t ;; NOTE: enable ido everywhere
+	ido-everywhere nil ;; NOTE: disable ido everywhere
 	ido-use-filename-at-point 'ffap-guesser
 	ido-use-url-at-point t
 	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
 	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
-	;; ido-ignore-directories '("." "..")
-	;; ido-ignore-files '(".")
+	;; ido-ignore-directories '("~/.emacs.d/snippets") ;; NOTE: ignore snippets
+	;; ido-ignore-files '()
 	ido-file-extensions-order '(".org" ".el" ".lisp" ".c" ".h" ".sh")
 	ido-ignore-extensions t ;; NOTE: ignore extentions
 	;; TODO: can clean up the following ...
@@ -135,6 +137,26 @@
 	recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
 	recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
+  (defcustom exclude-list '() "Files to exclude from `recentf' history.")
+
+  (setq exclude-list '("\\.yasnippet"
+		       "\\.snippet"
+		       "\\-autoloads.el"
+		       "\\.el.gz"
+		       "COMMIT_EDITMSG"
+		       ".newsrc.eld"
+		       "ido.last"
+		       "smex-items"
+		       "recent-files"
+		       "save-place"
+		       "ac-comphist.dat"
+		       "archive-contents"
+		       "minibuffer-history"
+		       "cookies"
+		       "emacs-desktop"))
+
+  (mapc '(lambda (exclude) (add-to-list 'recentf-exclude exclude)) exclude-list)
+
   (recentf-mode t))
 
 ;;; IMPORTANT: ibuffer
@@ -152,10 +174,10 @@
   ;; TODO: need to look at how the regexp is handled here
   (defvar *never-show-regexp* '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
 
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Completions")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*")
+;;  (add-to-list 'ibuffer-never-show-predicates "^\\*Completions")
+  (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer*")
   ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
   ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt *never-show-regexp*))
   ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
@@ -465,13 +487,6 @@
   (when (not (emacs-process-p ad-return-value))
     (setq ad-return-value nil)))
 
-;;; IMPORTANT: browse kill ring
-;; SOURCE: `http://www.emacswiki.org/BrowseKillRing'
-(autoload 'browse-kill-ring "browse-kill-ring" "Browse the `kill-ring'." t)
-
-(after "browse-kill-ring"
-  (browse-kill-ring-default-keybindings))
-
 ;;; IMPORTANT: auto refresh buffers
 ;; SOURCE: `http://www.emacswiki.org/emacs/AutoRevertMode'
 (global-auto-revert-mode 1) ;; NOTE: auto refresh buffers
@@ -489,7 +504,7 @@
   (require 'esh-util)
 
   (setq eshell-prompt-function 'eshell-prompt
-	eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
+	;;eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
 	eshell-highlight-prompt nil
 	eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
 	eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion
@@ -627,12 +642,6 @@
    (t
     (while (pcomplete-here (pcomplete-entries))))))
 
-;;; IMPORTANT: automatic buffer clean-up
-;; SOURCE:
-;; (require 'midnight)
-
-;; TODO: investigate `midnight-mode'
-
 ;;; IMPORTANT: directory editor (extensions)
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
 (autoload 'dired "dired" "File manager in Emacs." t)
@@ -719,7 +728,6 @@
         (find-file file))
     (message "Current buffer does not have an associated file.")))
 
-;;; IMPORTANT: unfill paragraph
 ;; SOURCE: `http://www.emacswiki.org/emacs/UnfillParagraph'
 (defun unfill-paragraph ()
   "Takes a multi-line paragraph and makes it into a single line of text."
@@ -727,7 +735,6 @@
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
-;;; IMPORTANT: ido goto symbol
 ;; SOURCE: `http://www.emacswiki.org/emacs/ImenuMode'
 (defun ido-goto-symbol (&optional symbol-list)
       "Refresh imenu and jump to a place in the buffer using Ido."

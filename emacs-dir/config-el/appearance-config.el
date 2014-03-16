@@ -176,6 +176,10 @@
 			 (count-lines (overlay-start ov)
 				      (overlay-end ov))))))
 
+;;; IMPORTANT: prettyify symbols
+;; SOURCE: `http://ergoemacs.org/emacs/emacs_pretty_lambda.html'
+(global-prettify-symbols-mode 1)
+
 ;;; IMPORTANT: diminish
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
 (autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
@@ -206,8 +210,10 @@
 ;;(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
 (eval-after-load "haskell-indentation" '(diminish 'haskell-indentation-mode ""))
 (eval-after-load "eproject" '(diminish 'eproject-mode ""))
+(eval-after-load "magit" '(diminish 'magit-auto-revert-mode ""))
 
 ;;; IMPORTANT: adaptive text wrap
+;; TODO: move to `user-config.el'
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
 
 (add-hook 'text-mode-hook (lambda () (adaptive-wrap-prefix-mode t)))

@@ -65,7 +65,7 @@
 
 Enable the following minor modes:
 1. `hs-minor-mode' - Fold comment blocks.
-2. `electric-pair-mode' - Autmatic pairing of parenthesis.
+2. `electric-pair-mode' - Automatic pairing of parenthesis.
 3. `yas-minor-mode' - Expand snippets of code.
 4. `auto-insert-mode' - Insert a template into new files."
   (modify-syntax-entry ?- "w") ;; NOTE: treat '-' as part of the word
@@ -93,15 +93,6 @@ Enable the following minor modes:
 ;; SOURCE: `http://emacswiki.org/emacs/ParEdit'
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
-;;; IMPORTANT: pretty lambdas
-;; SOURCE: `http://www.emacswiki.org/emacs/PrettyLambda'
-(defun pretty-lambdas ()
-  "..."
-  (font-lock-add-keywords nil
-                          `(("(\\(lambda\\>\\)"
-                             (0 (progn (compose-region (match-beginning 1) (match-end 1)
-                                                       ,(make-char 'greek-iso8859-7 107)) nil))))))
-
 ;;; IMPORTANT: emacs lisp programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLisp'
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
@@ -116,7 +107,6 @@ Enable the following minor modes:
                                      (turn-on-general-programming-mode)
                                      (turn-on-eldoc-mode)
                                      (paredit-mode t)
-                                     (pretty-lambdas)
                                      ;; NOTE: some key-bindings
                                      (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
                                      (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp))))
@@ -135,7 +125,6 @@ Enable the following minor modes:
   (add-hook 'lisp-mode-hook '(lambda ()
                                (turn-on-general-programming-mode)
                                (paredit-mode t)
-                               (pretty-lambdas)
 			       ;; TODO: check for slime first?
 			       (slime-mode t)
                                ))
@@ -163,6 +152,7 @@ Enable the following minor modes:
 
 ;;; IMPORTANT: elisp slime navigation
 ;; SOURCE: `https://github.com/purcell/elisp-slime-nav'
+;; TODO: move to user-config.el
 ;;(autoload "elisp-slime-nav-mode" "elisp-slime-nav" t)
 (require 'elisp-slime-nav)
 
