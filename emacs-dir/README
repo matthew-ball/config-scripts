@@ -131,14 +131,44 @@ This file provides a configuration for visual appearance:
 *** [[file:config-el/general-config.el::%3B%3B%3B%20IMPORTANT:%20easy%20pg][easy pg]]
 
 ** [[file:config-el/user-config.el][User]]
-*** ERC Settings
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20the%20insidious%20big%20brother%20database][the insidious big brother database]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20make%20`ido'%20available%20everywhere][make ido available everywhere]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20improve%20`ido's%20flex%20matching][improve ido's flex matching]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20smex%20mode][smex]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20browse%20kill%20ring][browse kill ring]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20gist][gist]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20git%20integration][git integration]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20undo%20tree][undo tree]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20emacs%20relay%20chat][emacs relay chat]]
 This file provides a configuration for =ERC= (the GNU Emacs IRC Client):
-
-*** GNUS Settings
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20gnus][gnus]]
 This file provides a configuration for =GNUS= (the GNU Emacs Mail and News Reader):
 
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20auto-complete%20mode][auto-complete mode]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20emacs%20snippets][emacs snippets]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20smart%20completion][smart completion]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20smart%20tab][smart tab]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20default%20browser][default browser]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20w3m][w3m]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20highlight%20custom%20comment%20tags][hightlight custom comment tags]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20window%20configuration][window configuration]]
+*** [[file:config-el/user-config.el::%3B%3B%20IMPORTANT:%20google%20translate][google translate]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20rainbow%20delimiters][rainbow delimiters]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20ibuffer%20version%20control][ibuffer version control]]
+*** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20iedit][iedit]]
+
 ** [[file:config-el/writing-config.el][Writing]]
-*** Organisation Settings
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20insert%20date%20and%20time][insert date and time]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20deft][deft]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20diary%20and%20calendar%20mode][diary and calendar mode]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20flyspell][flyspell]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20ispell][ispell]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20dictem][dictem]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20thesaurus][thesaurus]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20bibtex][bibtex]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20reftex][reftex]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20the%20emacs%20bibliography%20manager][the emacs bibliography manager]]
+*** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20org-mode%20configuration][org-mode configuration]]
 #+BEGIN_QUOTE
 Org is a mode for keeping notes, maintaining TODO lists, and doing project planning with a fast and effective plain text system.
 #+END_QUOTE
@@ -153,25 +183,28 @@ Org is a mode for keeping notes, maintaining TODO lists, and doing project plann
 This file provides a configuration for =LaTeX=:
 
 ** [[file:config-el/programming-config.el][Programming]]
-This file provides a configuration for the following programming modes:
-+ =general=:
-  - A function which enables specific functionality for programming modes.
-    1. *hs-minor-mode* - Fold comment blocks.
-    2. *electric-pair-mode* - Automatic pairing of parenthesis.
-    3. *yas-minor-mode* - Expand snippets of code.
-    4. *auto-insert-mode* - Insert a template into new files.
-  - This function has the code to enable more programming specific functionality, but it is commented out..
-+ =emacs-lisp=:
-+ =common-lisp=:
-+ =slime=:
-+ =clojure=:
-+ =scheme=:
-+ =haskell=:
-+ =shell-script=:
-+ =python=:
-+ =javascript=:
-+ =c=:
-+ =maxima=:
+This file provides a configuration for programming modes.
+
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20stumpwm%20mode][stumpwm mode]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20general%20programming][general programming]]
+- A function which enables specific functionality for programming modes.
+  1. *hs-minor-mode* - Fold comment blocks.
+  2. *electric-pair-mode* - Automatic pairing of parenthesis.
+  3. *yas-minor-mode* - Expand snippets of code.
+  4. *auto-insert-mode* - Insert a template into new files.
+ - This function has the code to enable more programming specific functionality, but it is commented out..
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20paredit][paredit]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20emacs%20lisp%20programming][emacs lisp programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20common%20lisp%20programming][common lisp programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20clojure%20programming][clojure programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20scheme%20(guile)%20programming][scheme (guile) programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20haskell%20programming][haskell programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20shell%20script][shell script]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20python%20programming][pythong programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20javascript%20programming][javascript programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20C%20programming][C programming]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20maxima][maxima]]
+*** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20speedbar][speedbar]]
 
 ** [[file:config-el/key-bindings-config.el][Key Bindings]]
 This file provides a configuration for key bindings:

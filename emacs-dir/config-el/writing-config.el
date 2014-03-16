@@ -946,16 +946,17 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
       (delete-char -1)
       nil)))
 
+;; TODO: this unfortunately doesn't work
 ;; (defmacro propertize-word (prop char)
 ;;   "..."
-;;   `(defun (intern (concat ,prop "-word")) (&optional force)
+;;   `(defun (intern (concat ,prop "-word")) ()
 ;;      "Insert a PROPERTY character before (and after) an input string."
 ;;      (interactive "p")
-;;      (surround-word ?,char ,force)
+;;      (surround-word ,char)
 ;;      ))
-;; (propertize-word 'bold ?*) => (bold-word)
-;; (propertize-word 'italic ?/) => (italic-word)
-;; etc
+
+;; (propertize-word 'bold #'?*) => (bold-word)
+;; (propertize-word 'italic #'?/) => (italic-word)
 
 (defun my-bold-word (&optional force) ;; NOTE: C-c b should be `org-insert-text-bolded'
   "Insert a bold character (*) before (and after) an input string."
@@ -1011,6 +1012,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
 
 ;;; IMPORTANT: journal entries with `org-mode'
+;; TODO: move this to `user-config.el'
 ;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
 (require 'org-journal)
 
