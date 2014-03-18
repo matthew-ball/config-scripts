@@ -949,14 +949,13 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 ;; TODO: this unfortunately doesn't work
 ;; (defmacro propertize-word (prop char)
 ;;   "..."
-;;   `(defun (intern (concat ,prop "-word")) ()
+;;   `(defun (intern (concat ,prop "-word")) (&optional force)
 ;;      "Insert a PROPERTY character before (and after) an input string."
 ;;      (interactive "p")
-;;      (surround-word ,char)
-;;      ))
+;;      (surround-word ,char ,force)))
 
-;; (propertize-word 'bold #'?*) => (bold-word)
-;; (propertize-word 'italic #'?/) => (italic-word)
+;; (propertize-word 'bold ?*) => (bold-word)
+;; (propertize-word 'italic ?/) => (italic-word)
 
 (defun my-bold-word (&optional force) ;; NOTE: C-c b should be `org-insert-text-bolded'
   "Insert a bold character (*) before (and after) an input string."
@@ -1008,8 +1007,12 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   (imenu-add-to-menubar "Imenu")
   (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
 
-(add-hook 'org-mode-hook (lambda () (turn-on-custom-org)))
-(add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)) 'append)
+(defun turn-on-hl-mode ()
+  ""
+  (hl-line-mode t))
+
+(add-hook 'org-mode-hook 'turn-on-custom-org)
+(add-hook 'org-agenda-mode-hook 'turn-on-hl-mode 'append)
 
 ;;; IMPORTANT: journal entries with `org-mode'
 ;; TODO: move this to `user-config.el'

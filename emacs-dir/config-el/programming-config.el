@@ -103,13 +103,16 @@ Enable the following minor modes:
   (eldoc-add-command 'paredit-backward-delete 'paredit-close-round))
 
 (after "lisp-mode"
-  (add-hook 'emacs-lisp-mode-hook '(lambda () ;; NOTE: general programming mode
-                                     (turn-on-general-programming-mode)
-                                     (turn-on-eldoc-mode)
-                                     (paredit-mode t)
-                                     ;; NOTE: some key-bindings
-                                     (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
-                                     (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp))))
+  (defun custom-emacs-lisp-mode ()
+    ""
+    (turn-on-general-programming-mode)
+    (turn-on-eldoc-mode)
+    (paredit-mode t)
+    ;; NOTE: some key-bindings
+    (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
+    (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp))
+
+(add-hook 'emacs-lisp-mode-hook 'custom-emacs-lisp-mode))
 
 ;;; IMPORTANT: interactive emacs lisp
 (after "ielm"
@@ -207,7 +210,7 @@ Enable the following minor modes:
   ;;                               ;; (paredit-mode t)
   ;;                               ))
 
-  (add-hook 'slime-repl-mode-hook '(lambda () (paredit-mode t)))
+  (add-hook 'slime-repl-mode-hook 'paredit-mode t)
 
   ;;(define-key slime-repl-mode-map (kbd "<return>") 'slime-repl-return)
 
@@ -230,9 +233,12 @@ Enable the following minor modes:
   (add-hook 'nrepl-mode-hook 'paredit-mode))
 
 (after "clojure-mode"
-  (add-hook 'clojure-mode-hook '(lambda ()
-                                  (turn-on-general-programming-mode)
-                                  (paredit-mode t))))
+  (defun custom-clojure-mode ()
+    ""
+    (turn-on-general-programming-mode)
+    (paredit-mode t))
+  
+  (add-hook 'clojure-mode-hook 'custom-clojure-mode))
 
 ;;; IMPORTANT: scheme (guile) programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
@@ -242,41 +248,41 @@ Enable the following minor modes:
 (after "geiser"
   (setq geiser-active-implementations '(guile)))
 
+(defun custom-scheme-mode ()
+  ""
+  (turn-on-general-programming-mode)
+  (paredit-mode t))
+
 (after "scheme"
-  (add-hook 'scheme-mode-hook '(lambda ()
-                                 (turn-on-general-programming-mode)
-                                 (paredit-mode t))))
+  (add-hook 'scheme-mode-hook 'custom-scheme-mode))
 
 ;;; IMPORTANT: haskell programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
 (autoload 'haskell-mode "haskell-mode" "Major mode for editing haskell source code." t)
 
 (defun custom-turn-on-haskell-modes ()
+  (turn-on-general-programming-mode)
   (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
   (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
 
 (after "haskell-mode"
   (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
 
-  (add-hook 'haskell-mode-hook '(lambda ()
-                                  (turn-on-general-programming-mode)
-                                  (custom-turn-on-haskell-modes))))
+  (add-hook 'haskell-mode-hook 'custom-turn-on-haskell-modes))
 
 ;;; IMPORTANT: shell script
 ;; SOURCE: `http://emacswiki.org/emacs/ShMode'
 (autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
 
 (after "sh-mode"
-  (add-hook 'shell-script-mode '(lambda ()
-                                  (turn-on-general-programming-mode))))
+  (add-hook 'shell-script-mode 'turn-on-general-programming-mode))
 
 ;;; IMPORTANT: python programming
 ;; SOURCE: `http://emacswiki.org/emacs/PythonProgrammingInEmacs'
 (autoload 'python-mode "python" "Major mode for editing python source code." t)
 
 (after "python"
-  (add-hook 'python-mode-hook '(lambda ()
-                                 (turn-on-general-programming-mode))))
+  (add-hook 'python-mode-hook 'turn-on-general-programming-mode))
 
 ;;; IMPORTANT: javascript programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/JavaScriptMode'
@@ -295,10 +301,13 @@ Enable the following minor modes:
     (setq c-default-style "linux"
 	  c-basic-offset 4))
 
-  (add-hook 'c-mode-hook '(lambda ()
-                            (turn-on-general-programming-mode)
-                            (turn-on-cwarn-mode)
-			    (c-mode-settings))))
+  (defun custom-c-mode ()
+    ""
+    (turn-on-general-programming-mode)
+    (turn-on-cwarn-mode)
+    (c-mode-settings))
+
+  (add-hook 'c-mode-hook 'custom-c-mode))
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'

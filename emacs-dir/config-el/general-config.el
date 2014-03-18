@@ -277,7 +277,9 @@
 	    (or (mode . erc-mode)
 		(mode . rcirc-mode)))
 	   ("Web Browser" ;; NOTE: w3m related buffers
-	    (mode . w3m-mode))
+	    (or
+	     (mode . w3m-mode)
+	     (mode . eww-mode)))
 	   ("File Manager" ;; NOTE: dired related buffers
 	    (or (mode . dired-mode)
 		(mode . tar-mode)
@@ -301,19 +303,19 @@
 		(mode . inferior-maxima-mode)
 		(name . "^\\*ESS\\*$")))
 	   ("Mail and News" ;; NOTE: mail (and news) related buffers
-	    (or ;;(newsticker-treeview-mode)
-	     ;;(newsticker-plainview-mode)
-	     (mode . gnus-group-mode)
-	     (mode . gnus-topic-mode)
-	     (mode . gnus-browse-mode)
-	     (mode . gnus-summary-mode)
-	     (mode . gnus-server-mode)
-	     (mode . gnus-article-mode)
-	     (mode . gnus-edit-form-mode)
-	     (mode . message-mode)
-	     (mode . bbdb-mode)
-	     (name . "^\\*gnus trace\\*$")
-	     (filename . ".newsrc-dribble$")))
+	    (or (mode . gnus-group-mode)
+		(mode . gnus-topic-mode)
+		(mode . gnus-browse-mode)
+		(mode . gnus-summary-mode)
+		(mode . gnus-server-mode)
+		(mode . gnus-article-mode)
+		(mode . gnus-edit-form-mode)
+		(mode . message-mode)
+		(mode . bbdb-mode)
+		(name . "^\\*gnus trace\\*$")
+		;;(newsticker-treeview-mode)
+		;;(newsticker-plainview-mode)
+		(filename . ".newsrc-dribble$")))
 	   ("Information" ;; NOTE: help and information related buffers
 	    (or (mode . info-mode)
 		(mode . Info-mode)
@@ -352,6 +354,7 @@
 		(name . "\\*Org PDF LaTeX Output\\*$"))))))
 
   (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
+	ibuffer-marked-char ?✓
 	;; ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
 	ibuffer-default-sorting-mode 'filename/process ;; NOTE: sort buffers by `buffer-file-name'
 	ibuffer-sorting-mode 'recency
@@ -366,13 +369,16 @@
 	ibuffer-truncate-lines t ;; NOTE: do not display continuation lines
 	ibuffer-use-header-line t) ;; NOTE: display a line containing current filters
 
-  (add-hook 'ibuffer-mode-hook (lambda ()
-				 (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
-				 (ibuffer-switch-to-saved-filter-groups "default"))))
+  (defun turn-on-custom-ibuffer ()
+    "Modify `ibuffer' behaviour slightly."
+    (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
+    (ibuffer-switch-to-saved-filter-groups "default"))
+
+  (add-hook 'ibuffer-mode-hook 'turn-on-custom-ibuffer))
 
 ;;; IMPORTANT: find file at point
 ;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
-(autoload 'find-file-at-point "ffap" "" t)
+(autoload 'find-file-at-point "ffap" "Find files (and urls) at point." t)
 
 ;;; IMPORTANT: tramp
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
@@ -652,11 +658,14 @@
   ;; (dired-hide-details-mode t)
   (define-key dired-mode-map (kbd "C-c o") 'dired-open-file)
 
-  (add-hook 'dired-mode-hook (lambda ()
-			       (turn-on-dired-find-alternate-file)
-			       (dired-hide-details-mode t) ;; NOTE: hide file details
-			       ;; NOTE: set `dired-x' buffer-local variables here
-			       (dired-omit-mode)))
+  (defun turn-on-custom-dired ()
+    "Modify the default `dired' behaviour slightly."
+    (turn-on-dired-find-alternate-file)
+    (dired-hide-details-mode t) ;; NOTE: hide file details
+    ;; NOTE: set `dired-x' buffer-local variables here
+    (dired-omit-mode))
+
+  (add-hook 'dired-mode-hook 'turn-on-custom-dired)
 
   ;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
   (setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
@@ -787,7 +796,7 @@
 ;;; IMPORTANT: easy pg
 ;; SOURCE: `http://www.emacswiki.org/emacs-en/EasyPG'
 ;; NOTE: this is for ~/.authinfo
-(require 'epa-file)
+;;(require 'epa-file)
 
 (after "epa-file"
   (epa-file-enable))

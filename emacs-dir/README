@@ -7,17 +7,46 @@ This configuration presents the /best[fn:best]/ environment for using emacs eith
 Emacs is extensible, and many hackers have contributed extensions which would fall outside the classification of a "text-editor"; things such as a fully-featured email client, an IRC client, a directory editor, a shell, a web browser, a bibliography manager; and many new extensions being contributed daily.
 
 ** [[file:init.el][Initiation]]
-This file initialises the configuration:
+This file initialises the configuration.
 
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20user%20variables][user variables]]
-Define two customisation groups: [[elisp:(customize-group%20user-variables)][user-variables]] and [[elisp:(customize-group%20'user-directories)][user-directories]].
+Define a customisation group [[elisp:(customize-group%20user-variables)][user-variables]] which defines two variables [[elisp:(customize-group%20'user-directories)][user-directories]] and [[elisp:(customize-group%20'user-directories)][user-files]].
 
-Each customisation group includes a number of variables, these variables are mainly used by org-mode or for interaction with a StumpWM environment.
+The user directories are:
+- user-shell
+- user-browser
+- user-home-directory
+- user-scripts-directory
+- user-documents-directory
+- user-news-directory
+- user-mail-directory
+- user-audio-directory
+- user-video-directory
+- user-programming-directory
+- user-projects-directory
+- user-reading-directory
+- user-writing-directory
+- user-organisation-directory
+- user-university-directory
+- user-quicklisp-directory
 
-Sets the user details (name and email address).
+The user files are:
+- user-org-coontacts-file
+- user-org-university-file
+- user-org-notes-file
+- user-org-projects-file
+- user-org-archive-file
+
+User details are, this sets use details:
+- user-full-name
+- user-university-id
+- user-primary-email-address
+- user-secondary-email-address
+
+These variables are mainly used by org-mode or for interaction with a StumpWM environment, and are all set from the login shell[fn:login].
 
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20common%20lisp][common lisp]]
-Require common-lisp library.
+Require common-lisp library. Some functions and macros commonly employed in common lisp programming ported to emacs lisp.
 
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20after%20macro][after macro]]
 Define a macro [[file:init.el::(defmacro%20after%20(mode%20&rest%20body)][after]] which loads the body code after its argument file (syntactic sugar over [[help:eval-after-load][eval-after-load]]).
@@ -91,14 +120,24 @@ Provide the user with the command [[file:init.el::%3B%3B%3B%20COMMENT:%20shutdow
 Set the custom configuration file (so that it doesn't populate this file with customisations).
 
 ** [[file:config-el/appearance-config.el][Appearance]]
-This file provides a configuration for visual appearance:
+This file provides a configuration for visual appearance.
 
-*** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20appearance][Appearance]]
-*** [[file:config-el/appearance-config.el::%3B%3B%20IMPORTANT:%20X%20server%20specific][X server specific]] (i.e. GUI frame)
+*** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20X%20frame%20specific][X frame specific]]
+This section sets GUI specific decorations for both single session emacs and emacsclient connections. These decorations include re-sizing font and applying a colour theme.
+
+To maximise screen real estate, and in effect minimise GUI elements, I disable menu-bar-mode, tool-bar-mode, scroll-bar-mode, blink-cursor-mode, and tooltip-mode. I adjust the fringe so it is a single space wide and only on the left hand side of the screen.
+
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20error%20bell][error bell]]
+
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20visual%20lines][visual lines]]
+This is good for writing.
+
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20show%20matching%20parenthesis][show matching parenthesis]]
+Highlights matching parenthesis. Delay time set to 0 (i.e. instant).
+
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20line%20numbers][line numbers]]
+This section takes advantage of the fringe and displays a line number count for each buffer. This setting doesn't make sense in some contexts, so it is only enabled if the major-mode is a text-mode derivative or a prog-mode derivative (this essentially gives us a /file/).
+
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20indicate%20empty%20lines][indicate empty lines]]
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20mode%20line][mode line]]
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20text%20folding][text folding]]
@@ -141,6 +180,7 @@ This file provides a configuration for visual appearance:
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20undo%20tree][undo tree]]
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20emacs%20relay%20chat][emacs relay chat]]
 This file provides a configuration for =ERC= (the GNU Emacs IRC Client):
+
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20gnus][gnus]]
 This file provides a configuration for =GNUS= (the GNU Emacs Mail and News Reader):
 
@@ -193,6 +233,7 @@ This file provides a configuration for programming modes.
   3. *yas-minor-mode* - Expand snippets of code.
   4. *auto-insert-mode* - Insert a template into new files.
  - This function has the code to enable more programming specific functionality, but it is commented out..
+
 *** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20paredit][paredit]]
 *** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20emacs%20lisp%20programming][emacs lisp programming]]
 *** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20common%20lisp%20programming][common lisp programming]]
@@ -214,5 +255,5 @@ This file provides a configuration for key bindings:
 [fn:auto-setup] This still needs to be correctly configured.
 [fn:best] Obviously this is going to be subjective. This configuration presented here is very much based around /my/ preferences.
 [fn:order-of-evaluation] The order these files are listed in is the order they are included in. This ordering may (or may not) be necessary.
-
+[fn:login] See the file [[file:~/.xsessionrc][xsessionrc]] for details on these variables.
 

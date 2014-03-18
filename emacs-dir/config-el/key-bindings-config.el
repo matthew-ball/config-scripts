@@ -48,9 +48,8 @@
     ]" (kbd "C-<f5>")) ;; NOTE: bind `C-<f5>'
   )
 
-;; ERROR: this does not work
-;; (unless (window-system)
-;;   (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
+(unless (window-system)
+  (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
 
 ;; NOTE: this would be nice and simple, but wouldn't save much (unless it did an `fboundp' search, or something.
 (defmacro bind-key (key &rest body)

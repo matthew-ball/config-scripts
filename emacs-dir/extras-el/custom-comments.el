@@ -60,6 +60,7 @@
   (let ((tag-name (intern (format "custom-comment-tags-%s" category))))
     `(add-to-list (quote ,tag-name) (quote ,tag))))
 
+;; TODO: find a better way to do this
 (defun highlight-custom-comment-tags (&rest junk)
   "Highlight custom comment tags in for all major-modes which inherit from `prog-mode'."
   (mapc

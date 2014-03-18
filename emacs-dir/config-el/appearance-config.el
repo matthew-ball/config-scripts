@@ -24,34 +24,36 @@
 
 ;;; Code:
 
-;;; IMPORTANT: appearance
-(defun load-frame ()
+;;; IMPORTANT: X frame specific
+(defun decorate-frame ()
   "Apply features to a new frame."
+  ;; (set-face-attribute 'default nil :height 90 :font "Terminus-10")
   (set-face-attribute 'default nil :height 90)
   (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
   ;;(load-theme 'tango)
   )
 
-;; IMPORTANT: X server specific
+;; NOTE: apply `load-frame' to a graphical emacs instance
 (when (display-graphic-p)
-  (load-frame))
+  (decorate-frame))
 
-;; IMPORTANT: apply colour theme to a GNU Emacs frame (i.e. `emacsclient')
+;; NOTE: apply `load-frame' to an emacsclient frame
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
-(defun decorate-frame (frame)
+(defun turn-on-frame-decorations (frame)
   "Decorate new frame FRAME with colour theme."
   (select-frame frame)
   (when (display-graphic-p)
-    (load-frame)))
+    (decorate-frame)))
 
-(add-hook 'after-make-frame-functions 'decorate-frame)
+(add-hook 'after-make-frame-functions 'turn-on-frame-decorations)
 
+;; NOTE: minimal GUI elements ...
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; NOTE: hide the tool bar
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ;; NOTE: hide the scroll bar
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1)) ;; NOTE: turn off blinking cursor
-;; (when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; NOTE: turn off tooltip
+(when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; NOTE: turn off tooltip
 (when (fboundp 'fringe-mode) (set-fringe-mode '(1 . 0))) ;; NOTE: set fringe to 1px on left side only
 
 ;;; IMPORTANT: error bell
@@ -75,9 +77,15 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/line-num.el'
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-;; BUG: this does not like `doc-view-mode'
-;; (add-hook 'find-file-hook 'linum-mode) ;; NOTE: turn on linum-mode if in a file
-;; (add-hook 'text-mode-hook 'linum-mode) ;; 
+;; (add-hook 'text-mode-hook 'linum-mode)
+;; (add-hook 'prog-mode-hook 'linum-mode)
+
+;;; IMPORTANT: truncate lines
+(defun turn-on-truncate-lines ()
+  "..."
+  (setq truncate-lines t))
+
+(add-hook 'prog-mode-hook 'turn-on-truncate-lines)
 
 ;;; IMPORTANT: indicate empty lines
 ;; (toggle-indicate-empty-lines)
@@ -181,6 +189,7 @@
 (global-prettify-symbols-mode 1)
 
 ;;; IMPORTANT: diminish
+;; TODO: move to `user-config.el'
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
 (autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
 
@@ -211,12 +220,6 @@
 (eval-after-load "haskell-indentation" '(diminish 'haskell-indentation-mode ""))
 (eval-after-load "eproject" '(diminish 'eproject-mode ""))
 (eval-after-load "magit" '(diminish 'magit-auto-revert-mode ""))
-
-;;; IMPORTANT: adaptive text wrap
-;; TODO: move to `user-config.el'
-(autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
-
-(add-hook 'text-mode-hook (lambda () (adaptive-wrap-prefix-mode t)))
 
 ;;; IMPORTANT: hide the mode-line
 ;; SOURCE: `http://bzg.fr/emacs-hide-mode-line.html'

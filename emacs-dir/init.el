@@ -193,9 +193,9 @@ Return a list of installed packages or nil for every skipped package."
   "Shutdown (kill) the GNU Emacs daemon server."
   (interactive)
   (when (y-or-n-p "Kill emacs daemon? ")
-    (kill-emacs))) ;; NOTE: kill GNU Emacs instance
+    (kill-emacs)))
 
 ;;; IMPORTANT: customize configuration file
 ;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'
 (setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
-(load custom-file 'noerror) ;; NOTE: load custom file
+(load custom-file 'noerror)

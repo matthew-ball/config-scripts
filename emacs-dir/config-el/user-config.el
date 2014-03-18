@@ -252,7 +252,11 @@
                                        "#ubuntu-ops-team"
                                        )))
 
-  ;;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode 0)))
+  ;; (defun erc-disable-auto-fill-mode ()
+  ;;   ""
+  ;;   (auto-fill-mode 0))
+
+  ;;(add-hook 'erc-mode-hook 'erc-disable-auto-fill-mode)
   (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
 
   (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
@@ -260,6 +264,7 @@
   (setq erc-remove-parsed-property nil))
 
 ;;; IMPORTANT: irssi-like /window command
+;; TODO: this is horrible
 (defun erc-cmd-WINDOW (window)
   "..."
   (let* ((number 0)
@@ -989,9 +994,11 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;;(yas--initialize)
   ;;(yas-reload-all)
   ;;(yas-load-directory "~/.emacs.d/elpa/yasnippet-20130505.2115/snippets/")
-  (yas-load-directory "~/.emacs.d/snippets/")
+  (yas-load-directory "~/.emacs.d/snippets/" t) ;; NOTE: use just-in-time
 
-  (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
+  ;; (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
+  (yas-global-mode)
+  
   ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
   )
 
@@ -1020,8 +1027,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;;; IMPORTANT: smart completion
 ;; TODO: this guy probably needs to be generalised a bit more (though, he works for now)
 (defalias 'smart-completion '(lambda () (if (fboundp 'auto-complete)
-                                            (auto-complete nil)
-                                          (dabbrev-expand nil))))
+				       (auto-complete nil)
+				     (dabbrev-expand nil))))
 
 ;;; IMPORTANT: smart tab
 (defun smart-tab () ;; NOTE: implement a smarter TAB
@@ -1158,10 +1165,17 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
     (add-hook 'w3m-mode-hook 'w3m-register-desktop-save)) ;; NOTE: add w3m-buffers to desktop-save
 
   ;; NOTE: w3m mode hooks
-  (add-hook 'w3m-display-hook
-            (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
-              (let ((buffer-read-only nil))
-                (delete-trailing-whitespace))))
+  (defun desktop-display (url)
+    "Remove trailing whitespace is w3m buffers."
+    (let ((buffer-read-only nil))
+      (delete-trailing-whitespace)))
+
+  (add-hook 'w3m-display-hook 'desktop-display)
+  
+  ;; (add-hook 'w3m-display-hook
+  ;;           (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
+  ;;             (let ((buffer-read-only nil))
+  ;;               (delete-trailing-whitespace))))
 
   ;; IMPORTANT: w3m search
   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
@@ -1339,6 +1353,15 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;;; IMPORTANT: iedit
 ;; SOURCE: `http://www.emacswiki.org/emacs/Iedit'
 (autoload 'iedit-mode "iedit" "Interactive editing." t)
+
+;;; IMPORTANT: adaptive text wrap
+(autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
+
+(defun turn-on-adaptive-wrap-prefix-mode ()
+  "Enable `adaptive-wrap-prefix-mode'."
+  (adaptive-wrap-prefix-mode t))
+
+(add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
 
 (provide 'user-config)
 ;;; user-config.el ends here
