@@ -730,6 +730,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; 1. use that information (i.e. start gnus)
 ;; 2. re-write the file to disk (i.e. something has changed)
 
+(defun create-authinfo ()
+  "...")
+
+
 (after "gnus"
   (require 'smtpmail)
   ;; (require 'nnimap)
@@ -1244,15 +1248,15 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
   (if (get-buffer "*w3m*")
       (switch-to-buffer
        (ido-completing-read "w3m session: "
-			(save-excursion
-			  (delq
-			   nil
-			   (mapcar (lambda (buf)
-				     (when (buffer-live-p buf)
-				       (with-current-buffer buf
-					 (and (eq major-mode 'w3m-mode)
-					      (buffer-name buf)))))
-				   (buffer-list))))))
+			    (save-excursion
+			      (delq
+			       nil
+			       (mapcar (lambda (buf)
+					 (when (buffer-live-p buf)
+					   (with-current-buffer buf
+					     (and (eq major-mode 'w3m-mode)
+						  (buffer-name buf)))))
+				       (buffer-list))))))
     (w3m w3m-home-page)))
 
 ;;; IMPORTANT: highlight custom comment tags
@@ -1362,6 +1366,35 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
   (adaptive-wrap-prefix-mode t))
 
 (add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
+
+;;; IMPORTANT: projectile
+;; SOURCE: `http://www.emacswiki.org/emacs/Projectile'
+(require 'projectile)
+
+(after "projectile"
+  (projectile-global-mode))
+
+;;; IMPORTANT: smart mode line
+;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
+(require 'smart-mode-line)
+
+(after "smart-mode-line"
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/" ":config:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/" ":public:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/" ":scratch:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/" ":documents:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/" ":anu:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/" ":reading:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/" ":writing:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/" ":mail:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/" ":news:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
+  
+  (setq sml/name-width 45
+	sml/shorten-directory t
+	;;sml/mode-width nil
+	sml/theme 'light)
+  (sml/setup))
 
 (provide 'user-config)
 ;;; user-config.el ends here

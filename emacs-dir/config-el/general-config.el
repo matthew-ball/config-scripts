@@ -28,6 +28,7 @@
 (setq inhibit-startup-message t ;; NOTE: turn off startup message
       inhibit-startup-echo-area-message t ;; NOTE: turn off startup echo area message
       pop-up-windows nil
+      mouse-yank-at-point t ;; NOTE: middle click with the mouse yanks at point
       initial-scratch-message (concat ";; For information about "
       				      (substring (emacs-version) 0 16)
       				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
@@ -49,6 +50,12 @@
 (setq-default scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
 	      scroll-down-aggressively 0) ;; NOTE: local variables for smooth scrolling
 
+;;; IMPORTANT: file encoding
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
+
 ;;; IMPORTANT: default auto-mode list
 (add-to-list 'auto-mode-alist '("README$" . org-mode)) ;; NOTE: open `README' files in `org-mode'
 (add-to-list 'auto-mode-alist '("NEWS$" . org-mode)) ;; NOTE: open `NEWS' files in `org-mode'
@@ -64,6 +71,14 @@
 ;; (add-to-list 'auto-mode-alist '("bashrc" . shell-script-mode)) ;; NOTE: open `.bashrc' file in `shell-script-mode'
 ;; (add-to-list 'auto-mode-alist '("stumpwmrc" . common-lisp-mode)) ;; NOTE: open `.stumpwmrc' file in `common-lisp-mode'
 ;; (add-to-list 'auto-mode-alist '("stumpwmrc" . stumpwm-mode)) ;; NOTE: open `.stumpwmrc' file in `stumpwm-mode'
+
+;;; IMPORTANT: default major mode
+(defun major-mode-from-name ()
+  "Choose proper mode for buffers created by `switch-to-buffer'."
+  (let ((buffer-file-name (or buffer-file-name (buffer-name))))
+    (set-auto-mode)))
+
+(setq-default major-mode 'major-mode-from-name)
 
 ;;;IMPORTANT: uniquify (unique buffer names)
 ;; SOURCE: `http://emacswiki.org/emacs/uniquify'
@@ -117,6 +132,7 @@
 	ido-max-prospects 7 ;; NOTE: don't spam the mini buffer
 	ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
 	confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
+	read-buffer-completion-ignore-case t ;; NOTE: ignore case when reading a buffer name
 	))
 
 (defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
@@ -172,7 +188,7 @@
   ;; 	  (expand-file-name "~/Programming" . "Programming")))
 
   ;; TODO: need to look at how the regexp is handled here
-  (defvar *never-show-regexp* '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
+  (defvar never-show-regexp '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
 
   (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*")
   (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*")
@@ -394,7 +410,6 @@
 ;;; IMPORTANT: mini-buffer
 (file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
 (fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
-(setq read-buffer-completion-ignore-case t) ;; NOTE: ignore case when reading a buffer name
 
 ;; NOTE: don't let the cursor go into minibuffer prompt
 ;;(setq minibuffer-prompt-properties '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
@@ -478,6 +493,8 @@
   ;;(desktop-save)
   (desktop-save-in-desktop-dir))
 
+;; TODO: could add `save-desktop-session' to `kill-emacs-hook'
+
 (defun emacs-process-p (pid) ;; NOTE: over-ride stale lock
   "If PID is the process ID of an emacs process, return t, else nil. Also returns nil if PID is nil."
   (when pid
@@ -508,6 +525,7 @@
 (after "eshell"
   (require 'esh-mode)
   (require 'esh-util)
+  (require 'dired) ;; NOTE: ...
 
   (setq eshell-prompt-function 'eshell-prompt
 	;;eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
@@ -656,7 +674,8 @@
   (require 'dired-x)
 
   ;; (dired-hide-details-mode t)
-  (define-key dired-mode-map (kbd "C-c o") 'dired-open-file)
+  ;; ERROR: the following function requires that `dired' is loaded
+  ;; (define-key dired-mode-map (kbd "C-c o") 'dired-open-file)
 
   (defun turn-on-custom-dired ()
     "Modify the default `dired' behaviour slightly."

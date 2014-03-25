@@ -163,7 +163,9 @@ Return a list of installed packages or nil for every skipped package."
  'pcache
  'pkg-info
  'popup
+ 'projectile
  'rainbow-delimiters
+ 'smart-mode-line
  'smex
  'sr-speedbar
  's

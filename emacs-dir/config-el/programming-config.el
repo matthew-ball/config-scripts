@@ -309,6 +309,13 @@ Enable the following minor modes:
 
   (add-hook 'c-mode-hook 'custom-c-mode))
 
+;;; IMPORTANT: gdb
+(autoload 'gdb "gdb-mi" "Front-end to the GNU Debugger." t)
+
+(after "gdb"
+  (setq ;;gdb-many-windows t
+	gdb-show-main t))
+
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
 (autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)

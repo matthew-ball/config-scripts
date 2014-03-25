@@ -31,8 +31,7 @@
   (set-face-attribute 'default nil :height 90)
   (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  ;;(load-theme 'tango)
-  )
+  (load-theme 'tango))
 
 ;; NOTE: apply `load-frame' to a graphical emacs instance
 (when (display-graphic-p)
@@ -220,6 +219,41 @@
 (eval-after-load "haskell-indentation" '(diminish 'haskell-indentation-mode ""))
 (eval-after-load "eproject" '(diminish 'eproject-mode ""))
 (eval-after-load "magit" '(diminish 'magit-auto-revert-mode ""))
+(eval-after-load "projectile" '(diminish 'projectile-mode ""))
+(eval-after-load "slime" '(diminish 'slime-mode "")) ;; TODO: still not entirely sure about this
+
+;; NOTE: this is unofficially `diminish' for major modes
+(defvar mode-line-cleaner-alist '((lisp-interaction-mode . "λ")
+				  (lisp-mode . "λ")
+				  (emacs-lisp-mode . "λ")
+				  (c-mode . "c")
+				  (c++-mode . "c++")
+				  (python-mode . "python")
+				  (haskell-mode . "haskell")
+				  (eshell-mode . "λ-shell")
+				  (org-mode . "org")
+				  (erc-mode . "erc")
+				  (dired-mode . "dired"))
+  "Alist for `clean-mode-line'.
+ 
+When you add a new element to the alist, keep in mind that you
+must pass the correct minor/major mode symbol and a string you
+want to use in the modeline *in lieu of* the original.")
+ 
+ 
+(defun clean-mode-line ()
+  (interactive)
+  (loop for cleaner in mode-line-cleaner-alist
+        do (let* ((mode (car cleaner))
+		  (mode-str (cdr cleaner))
+		  (old-mode-str (cdr (assq mode minor-mode-alist))))
+             (when old-mode-str
+	       (setcar old-mode-str mode-str))
+	     ;; major mode
+             (when (eq mode major-mode)
+               (setq mode-name mode-str)))))
+ 
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
 
 ;;; IMPORTANT: hide the mode-line
 ;; SOURCE: `http://bzg.fr/emacs-hide-mode-line.html'
