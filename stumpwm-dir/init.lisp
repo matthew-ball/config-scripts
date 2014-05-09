@@ -91,24 +91,13 @@
 ;; 	    (expand-file-name (concat dir path))))
 ;;      (t (concat home-dir path)))))
 
-;;; IMPORTANT: user variables and default applications
+;;; IMPORTANT: user variables
 ;; NOTE: get from shell environment
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
 (defvar *user-slime-directory* (getenv "SLIME_DIR") "Slime directory.")
 (defvar *user-projects-directory* (getenv "USER_PROJECTS_DIR") "User's projects directory.")
-;; 
-(defvar *browser* (getenv "BROWSER") "Default web browser.")
-(defvar *terminal* (getenv "TERMINAL") "Default terminal emulator.")
-(defvar *editor* (getenv "EDITOR") "Default editor.")
-(defvar *file-manager* (getenv "FILE_MANAGER") "Default file manager.")
-(defvar *package-manager* (getenv "PACKAGE_MANAGER") "Default package manager.")
-(defvar *system-monitor* (getenv "SYSTEM_MONITOR") "Default system monitor.")
-(defvar *document-viewer* (getenv "DOCUMENT_VIEWER") "Default document reader.")
-(defvar *office-suite* (getenv "OFFICE_SUITE") "Default office suite.")
-(defvar *audio-player* (getenv "AUDIO_PLAYER") "Default audio player.")
-(defvar *video-player* (getenv "VIDEO_PLAYER") "Default video player.")
 
 ;;; IMPORTANT: (zenburn-inspired) color theme
 ;; TODO: set *colors* so that I can use the `zenburn' face colours in the mode-line format
@@ -121,7 +110,6 @@
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
 (load (format nil "~A/swank-loader.lisp" *user-slime-directory*))
-;; (load (concat *user-quicklisp-directory* "/slime-20130720-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
 
 (swank-loader:init)
 
@@ -144,8 +132,8 @@
 (set-normal-gravity :top)
 (set-maxsize-gravity :top-right)
 (set-transient-gravity :top-right)
-;; NOTE: window border colours
 (set-msg-border-width 0)
+;; NOTE: window border colours
 ;; (set-focus-color *focus-colour*)
 ;; (set-unfocus-color *unfocus-colour*)
 ;; NOTE: input box colours
@@ -176,9 +164,6 @@
       )
 
 ;;; IMPORTANT: contribution scripts
-;; TODO: new versions of StumpWM no longer come with a contrib/ directory
-;; TODO: so it has to be pulled in as a separate project
-;; (set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
 (set-contrib-dir (format nil "~A/Public/contrib/" *user-home-directory*)) ;; NOTE: set contrib directory
 
 ;; NOTE: load selected modules
@@ -546,66 +531,75 @@
 ;; TODO: too much hard-coding
 (defun define-window-placement-rules ()
   "Define placement rules for windows."
-  (group-frame-preference *file-manager* "default" :instance)
-  (group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
-  (group-frame-preference "stumpish" "default" :title)
-  ;; (group-frame-preference *browser* "internet" :instance)
+  (group-frame-preference "Thunar"   "default"  :instance)
+  (group-frame-preference "emacs"    "default"  :instance)
   (group-frame-preference "chromium" "internet" :instance)
-  (group-frame-preference "terminal" "misc" :title)
-  (group-frame-preference "system-monitor" "misc" :title)
-  (group-frame-preference "user-monitor" "misc" :title)
-  (group-frame-preference "package-manager" "misc" :title)
-  (group-frame-preference "screen" "misc" :title)
+  ;; ...
+  (group-frame-preference "stumpish"        "default" :title)
+  (group-frame-preference "screen"          "default" :title)
+  (group-frame-preference "terminal"        "misc"    :title)
+  (group-frame-preference "system-monitor"  "misc"    :title)
+  (group-frame-preference "user-monitor"    "misc"    :title)
+  (group-frame-preference "package-manager" "misc"    :title)
   ;; (group-frame-preference "xfdesktop" ".trash" :instance) ;; TODO: group frame preference for XFCE
   )
 
 ;;; IMPORTANT: run applications
-(defun make-keyword (name)
-  "Turn string `NAME' into a Common Lisp keyword."
-  (values (intern name "STUMPWM")))
+(defun make-stumpwm-keyword (name)
+  "Turn `name' into a keyword in the StumpWM package."
+  (values (intern (string-upcase name) "STUMPWM")))
 
 (defmacro create-application (name command &optional (property `(list :instance ,name)) (group "default"))
-  "Create a general framework for the running (raising) of applications."
-  `(define-frame-preference ,group (0 t t ,key ,name))
-  `(defcommand ,(make-keyword (format nil "run-~a" `,name)) () ()
+  "Create a general framework for the creation, and running (raising) of applications."
+  `(defvar ,(make-stumpwm-keyword (format nil "*~a*" `,name)) "Default application.")
+  ;; `(define-frame-preference ,group (0 t t ,property)) ;; ERROR: doesn't work :(
+  `(defcommand ,(make-stumpwm-keyword (format nil "run-~a" `,name)) () ()
      "Run (or raise) application."
      (run-or-raise ,command ,property)))
 
-(defun terminal-command (command title)
-  (format nil "~S -T ~S -e ~S" (getenv "TERMINAL") title command))
+(defun terminal (title &optional command)
+  (if command
+      (format nil "~S -T ~S -e ~S" (getenv "TERMINAL") title command)
+      (format nil "~S -T ~S" (getenv "TERMINAL") title)))
 
-(create-application "editor" (getenv "EDITOR") (list :instance "emacs"))
-(create-application "browser" (getenv "BROWSER") (list :instance "chromium"))
-(create-application "file-manager" (getenv "FILE_MANAGER"))
+;; TODO: unfortunately, this is hard coded
+(create-application "editor" (getenv "EDITOR") '(:instance "emacs"))
+(create-application "browser" (getenv "BROWSER") '(:instance "chromium"))
+(create-application "file-manager" (getenv "FILE_MANAGER") '(:instance "Thunar"))
 (create-application "document-viewer" (getenv "DOCUMENT_VIEWER"))
 (create-application "office-suite" (getenv "OFFICE_SUITE"))
-(create-application "terminal" (format nil "~S -T ~S" (getenv "TERMINAL") "terminal") (list :title "terminal"))
-(create-application "screen" (terminal-command "screen -D -R" "screen"))
-(create-application "system-monitor" (terminal-command (getenv "SYSTEM_MONITOR") "system-monitor"))
-(create-application "user-monitor" (terminal-command (format nil "~A -u ~A" (getenv "SYSTEM_MONITOR") (getenv "USER")) "user-monitor"))
-(create-application "package-manager" (terminal-command (getenv "PACKAGE_MANAGER") "package-manager"))
-;; (create-application "audio-player" (terminal-command (getenv "AUDIO_PLAYER") "audio-player"))
+(create-application "terminal" (terminal "terminal") '(:title "terminal"))
+(create-application "screen" (terminal "screen" "screen -D -R") '(:title "screen"))
+(create-application "system-monitor" (terminal "system-monitor" (getenv "SYSTEM_MONITOR")) '(:title "system-monitor"))
+(create-application "user-monitor" (terminal "user-monitor" (format nil "~A -u ~A" (getenv "SYSTEM_MONITOR") (getenv "USER"))) '(:title "user-monitor"))
+(create-application "package-manager" (terminal "package-manager" (getenv "PACKAGE_MANAGER")) '(:title "package-manager"))
+;; (create-application "audio-player" (terminal "audio-player" (getenv "AUDIO_PLAYER")))
 ;; (create-application "media-player" (getenv "MEDIA_PLAYER"))
 ;; (create-application "video-player" (getenv "VIDEO_PLAYER"))
-;; (create-application "stumpish" (terminal-command "stumpish" "stumpish")) ;; FIX: set up `stumpish'
+(create-application "stumpish" (terminal "stumpish" (format nil "~autil/stumpish/stumpish" *contrib-dir*)) (list :title "stumpish"))
 
 ;;; IMPORTANT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-host-name () () "Show the host name." (echo-string (current-screen) (concat "Host name: " (host-name))))
-(defcommand show-system-name () () "Show the system name." (echo-string (current-screen) (concat "System name: " (string-downcase (symbol-name (system-name))))))
+(defcommand show-system-name () () "Show the system name." (echo-string (current-screen)
+									(concat "System name: "
+										(string-downcase (symbol-name (system-name))))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."
   (run-shell-command (concat "import -window root \"" filename "\" &")))
 
-(defcommand run-ssh (connection) ((:string "Enter connection address: "))
-  "Connect via ssh to CONNECTION."
-  (run-or-raise-terminal-app (format nil "ssh ~A" connection) "ssh"))
+;; TODO: ...
+;; (defcommand run-ssh (connection) ((:string "Enter connection address: "))
+;;   "Connect via ssh to CONNECTION."
+;;   (run-or-raise (format nil "ssh ~A" connection) "ssh"))
 
 (defcommand logout () ()
-  (run-shell-command "xfce4-session-logout"))
+  "Logout of an XFCE4 session."
+  ;;(run-shell-command "xfce4-session-logout")
+  (launch-xfce-logout))
 
 (defcommand safe-quit () ()
   "Checks if any windows are open before quitting."
@@ -698,6 +692,10 @@
 (defun launch-xfce-panel ()
   "Start an instance of `xfce4-panel'."
   (run-shell-command "xfce4-panel --disable-wm-check"))
+
+(defun launch-xfce-logout ()
+  "Log-out of an XFCE session with `xfce4-session-logout'."
+  (run-shell-command "xfce4-session-logout"))
 
 ;; (defun launch-nm-applet ()
 ;;   "Start nm-applet instance with ConsoleKit."
