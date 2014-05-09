@@ -96,6 +96,7 @@
 (defvar *user-home-directory* (getenv "HOME") "User's home directory.")
 (defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
 (defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
+(defvar *user-slime-directory* (getenv "SLIME_DIR") "Slime directory.")
 (defvar *user-projects-directory* (getenv "USER_PROJECTS_DIR") "User's projects directory.")
 ;; 
 (defvar *browser* (getenv "BROWSER") "Default web browser.")
@@ -119,7 +120,8 @@
 
 ;;; IMPORTANT: slime and swank
 ;; NOTE: requires `quicklisp'
-(load (concat *user-quicklisp-directory* "/slime-20130720-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
+(load (format nil "~A/swank-loader.lisp" *user-slime-directory*))
+;; (load (concat *user-quicklisp-directory* "/slime-20130720-cvs/swank-loader.lisp")) ;; ERROR: hardcoded
 
 (swank-loader:init)
 
@@ -174,7 +176,10 @@
       )
 
 ;;; IMPORTANT: contribution scripts
-(set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
+;; TODO: new versions of StumpWM no longer come with a contrib/ directory
+;; TODO: so it has to be pulled in as a separate project
+;; (set-contrib-dir (concat *user-source-directory* "/contrib")) ;; NOTE: set contrib directory
+(set-contrib-dir (format nil "~A/Public/contrib/" *user-home-directory*)) ;; NOTE: set contrib directory
 
 ;; NOTE: load selected modules
 (mapcar #'load-module '(;; "amixer"
@@ -290,6 +295,7 @@
 
 (defkeys-root ;; NOTE: define root-map keys
     ("s-q" "safe-quit")
+    ("s-Q" "logout")
     ("s-d" "trash-window")
   ("s-s" "trash-show")
   ("s-R" "reinit") ;; NOTE: reload run-time configuartion file
@@ -530,73 +536,7 @@
 	  (frame-raise-window group (window-frame window) window)
 	  (return))))))
 
-;;; IMPORTANT: run applications
-(defclass application ()
-  ((name :accessor application-name
-         :initarg :name)
-   (group :accessor application-group
-          :initform nil
-          :initarg :group)
-   (instance :accessor application-instance
-             :initform nil
-             :initarg :instance)
-   ;; NOTE: title only needed for terminal applications (???)
-   (title :accessor application-title
-          :initform nil
-          :initarg :title)
-   (terminal :accessor application-terminal
-             :initform nil
-             :initarg :terminal-p)))
-
-(defclass terminal-application (application)
-  ((terminal :initform t)))
-
-(defun make-application (name &optional instance title terminal)
-  "Create an instance of application NAME passing arguments."
-  (when (eq instance nil)
-    (setf instance name))
-  (make-instance 'application :name name :instance instance :title title :terminal-p terminal))
-
-(defun run-application (application)
-  "Run (or raise) argument."
-  (with-slots (name instance title terminal)
-      application
-    (if (eq terminal t)
-        (run-or-raise (format nil "~A -T ~A -e ~A" *terminal* title name) `(:title ,title))
-      (run-or-raise name `(:instance ,instance)))))
-
-(defun make-keyword (name)
-  "Turn string NAME into Common Lisp keyword."
-  (values (intern name "KEYWORD")))
-
-;; (defmacro create-application (name command &optional instance title terminal)
-;;   "Create a general framework for the running (raising) of applications."
-;;   ;; NOTE: make application ...
-;;   (let ((var (make-keyword `(concat "*" ,name "*")))
-;; 	(key (if (eq terminal t) :title :instance)))
-;;     (setf var (make-application command instance title terminal))
-;;     ;; NOTE: define frame preference for application
-;;     `(define-frame-preference ,group `(0 t t ,key ,name))
-;;     ;; NOTE: make command for application
-;;     `(defcommand ,(make-symbol (concat (string-upcase "run-") (string `,name))) () ()
-;;        ""
-;;        (run-application ,var))))
-
-;;(create-application editor (getenv "EDITOR") "emacs") ;; => two functions; (def-frame-pref ...) and (run-editor)
-;;(create-application "browser" "x-www-browser")
-;;(create-application "file-manager" (getenv "FILE_MANAGER"))
-;;(create-application "terminal" (format nil "~S -t ~S" "x-terminal-emulator" "terminal") "terminal")
-
-;; (defun initialise-applications ()
-;;   "Create applications."
-;;     ;; NOTE: this makes `run-or-raise' work (unfortunately have to do some hard-coding)
-;;     (setf *editor* (make-application (getenv "EDITOR") "emacs")) 
-;;     (setf *browser* (make-application "x-www-browser"))
-;;     (setf *terminal* (make-application (format nil "~A -t ~A" *terminal* "terminal") "terminal"))
-;;     (setf *file-manager* (make-application (getenv "FILE_MANAGER")))
-;;     (setf *system-monitor* (make-application (getenv "SYSTEM_MONITOR") *terminal* (getenv "SYSTEM_MONITOR") t))
-;;     (setf *package-manager* (make-application (getenv "PACKAGE_MANAGER") *terminal* (getenv "PACKAGE_MANAGER") t)))
-
+;;; IMPORTANT: frame preferences
 (defmacro group-frame-preference (application group key)
   (let ((app (eval application)))
     `(define-frame-preference ,group (0 t t ,key ,app))))
@@ -610,42 +550,44 @@
   (group-frame-preference "emacs" "default" :instance) ;; NOTE: unfortunately, `*editor*' won't work
   (group-frame-preference "stumpish" "default" :title)
   ;; (group-frame-preference *browser* "internet" :instance)
-  (group-frame-preference "chromium" "internet" :instance) ;; :(
+  (group-frame-preference "chromium" "internet" :instance)
   (group-frame-preference "terminal" "misc" :title)
-  ;; (group-frame-preference *terminal* "misc" :title)
-  (group-frame-preference "htop" "misc" :title)
-  (group-frame-preference "utop" "misc" :title)
-  (group-frame-preference "aptitude" "misc" :title)
+  (group-frame-preference "system-monitor" "misc" :title)
+  (group-frame-preference "user-monitor" "misc" :title)
+  (group-frame-preference "package-manager" "misc" :title)
+  (group-frame-preference "screen" "misc" :title)
   ;; (group-frame-preference "xfdesktop" ".trash" :instance) ;; TODO: group frame preference for XFCE
   )
 
-(defun run-or-raise-app (app)
-  "Run (or raise) an instance of APP with `instance' property."
-  (run-or-raise app `(:instance ,app)))
+;;; IMPORTANT: run applications
+(defun make-keyword (name)
+  "Turn string `NAME' into a Common Lisp keyword."
+  (values (intern name "STUMPWM")))
 
-(defun run-or-raise-terminal-app (cmd ttl)
-  "Run an instance of CMD in `*terminal*'."
-  (run-or-raise (format nil "~A -T ~A -e ~A" *terminal* ttl cmd) (list :title ttl)))
+(defmacro create-application (name command &optional (property `(list :instance ,name)) (group "default"))
+  "Create a general framework for the running (raising) of applications."
+  `(define-frame-preference ,group (0 t t ,key ,name))
+  `(defcommand ,(make-keyword (format nil "run-~a" `,name)) () ()
+     "Run (or raise) application."
+     (run-or-raise ,command ,property)))
 
-;; NOTE: ...
-(defcommand run-terminal () () "Run terminal emulator." (run-or-raise (format nil "~A -T ~A" *terminal* "terminal") (list :title *terminal*)))
+(defun terminal-command (command title)
+  (format nil "~S -T ~S -e ~S" (getenv "TERMINAL") title command))
 
-;; NOTE: application run commands
-;; TODO: need to find some generic abstraction which says whether or not an application uses the terminal
-(defcommand run-editor () () "Run `*editor*'." (run-or-raise *editor* (list :instance "emacs"))) ;; FIX: ...
-(defcommand run-browser () () "Run `*browser*'."(run-or-raise-app *browser*))
-(defcommand run-file-manager () () "Run `*file-manager*'." (run-or-raise-app *file-manager*))
-(defcommand run-document-viewer () () "Run `*document-viewer*'." (run-or-raise-app *document-viewer*))
-(defcommand run-office-suite () () "Run `*office-suite*'." (run-or-raise-app *office-suite*))
-(defcommand run-video-player () () "Run `*video-player*'." (run-or-raise-app *video-player*))
-;; NOTE: terminal apps
-(defcommand run-system-monitor () () "Run `*system-monitor*'." (run-or-raise-terminal-app *system-monitor* "htop"))
-(defcommand run-package-manager () () "Run `*package-manager*'." (run-or-raise-terminal-app *package-manager* "aptitude"))
-(defcommand run-audio-player () () "Run `*audio-player*'." (run-or-raise-terminal-app *audio-player* "ncmpcpp"))
-
-(defcommand run-stumpish () () "Run stumpish shell." (run-or-raise-terminal-app "stumpish" "stumpish"))
-(defcommand run-screen () () "Connect to existing screen session." (run-or-raise-terminal-app "screen -D -R" "screen"))
-(defcommand run-user-monitor () () "Run user monitor." (run-or-raise-terminal-app (concat *system-monitor* " -u " (getenv "USER")) "utop"))
+(create-application "editor" (getenv "EDITOR") (list :instance "emacs"))
+(create-application "browser" (getenv "BROWSER") (list :instance "chromium"))
+(create-application "file-manager" (getenv "FILE_MANAGER"))
+(create-application "document-viewer" (getenv "DOCUMENT_VIEWER"))
+(create-application "office-suite" (getenv "OFFICE_SUITE"))
+(create-application "terminal" (format nil "~S -T ~S" (getenv "TERMINAL") "terminal") (list :title "terminal"))
+(create-application "screen" (terminal-command "screen -D -R" "screen"))
+(create-application "system-monitor" (terminal-command (getenv "SYSTEM_MONITOR") "system-monitor"))
+(create-application "user-monitor" (terminal-command (format nil "~A -u ~A" (getenv "SYSTEM_MONITOR") (getenv "USER")) "user-monitor"))
+(create-application "package-manager" (terminal-command (getenv "PACKAGE_MANAGER") "package-manager"))
+;; (create-application "audio-player" (terminal-command (getenv "AUDIO_PLAYER") "audio-player"))
+;; (create-application "media-player" (getenv "MEDIA_PLAYER"))
+;; (create-application "video-player" (getenv "VIDEO_PLAYER"))
+;; (create-application "stumpish" (terminal-command "stumpish" "stumpish")) ;; FIX: set up `stumpish'
 
 ;;; IMPORTANT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
@@ -661,6 +603,9 @@
 (defcommand run-ssh (connection) ((:string "Enter connection address: "))
   "Connect via ssh to CONNECTION."
   (run-or-raise-terminal-app (format nil "ssh ~A" connection) "ssh"))
+
+(defcommand logout () ()
+  (run-shell-command "xfce4-session-logout"))
 
 (defcommand safe-quit () ()
   "Checks if any windows are open before quitting."

@@ -42,9 +42,10 @@
 ;;; IMPORTANT: improve `ido's flex matching
 ;; SOURCE: `https://github.com/lewang/flx'
 ;; ERROR: there's a bug with flx, such that it doesn't refresh/redisplay the `frame-title' - minor issue
-(after "ido"
-  (require 'flx)
-  (flx-ido-mode t))
+;; (after "ido"
+;;   (require 'flx)
+;;   (setq ido-use-faces nil)
+;;   (flx-ido-mode t))
 
 ;;; IMPORTANT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
@@ -240,14 +241,14 @@
         erc-autojoin-channels-alist '((".*\\.freenode.net"
                                        "#emacs"
                                        "#stumpwm"
-                                       ;; "#lisp"
+                                       "#lisp"
 				       ;; "#gnus"
 				       ;; "#org-mode"
-				       ;; "#ubuntu-fr-offtopic"
                                        ;; "#debian-offtopic"
-				       ;; ---
+				       "##outcasts"
                                        "#ubuntu-offtopic"
-				       "#ubuntu-irc"
+				       ;; "#ubuntu-fr-offtopic"				       
+				       ;; "#ubuntu-irc"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
                                        )))
@@ -313,6 +314,39 @@
   (setq erc-hide-list nil)
   (setq erc-minibuffer-ignored nil)
   (message "Now showing everything"))
+
+;;; IMPORTANT: custom inserts
+(defun surrounded-by-p (char)
+  "Returns t if word is surrounded by given char."
+  (save-excursion
+    (and (forward-word -1)
+         (equal char (char-before))
+         (forward-word 1)
+         (equal char (char-after)))))
+
+(defun surround-word (char &optional force)
+  "Surrounds word with given character.  If force is nil and word is already surrounded by given character remoevs them."
+  (save-excursion
+    (if (not (surrounded-by-p char))
+        (progn
+          (forward-word 1)
+          (insert char)
+          (forward-word -1)
+          (insert char)
+          t)
+      (forward-word 1)
+      (delete-char 1)
+      (forward-word -1)
+      (delete-char -1)
+      nil)))
+
+(defun erc-bold-word (&optional force)
+  (interactive "p")
+  (surround-word ? force))
+
+(defun erc-underline-word (&optional force)
+  (interactive "p")
+  (surround-word ? force))
 
 ;;; IMPORTANT: erc commands
 (defun erc-cmd-ACCESSLIST ()
@@ -1376,25 +1410,26 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
-(require 'smart-mode-line)
+;; (require 'smart-mode-line)
 
-(after "smart-mode-line"
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/" ":config:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/" ":public:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/" ":scratch:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/" ":documents:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/" ":anu:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/" ":reading:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/" ":writing:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/" ":mail:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/" ":news:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
+;; (after "smart-mode-line"
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/" ":config:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Public/" ":public:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/" ":scratch:"))  
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/" ":documents:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/" ":anu:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/" ":reading:"))  
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/" ":writing:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/" ":mail:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/" ":news:"))
+;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
   
-  (setq sml/name-width 45
-	sml/shorten-directory t
-	;;sml/mode-width nil
-	sml/theme 'light)
-  (sml/setup))
+;;   (setq sml/name-width 45
+;; 	sml/shorten-directory t
+;; 	;; sml/mode-width t ;; ERROR: Error during redisplay: (eval (sml/generate-minor-modes)) signaled (wrong-type-argument number-or-marker-p t)
+;; 	sml/theme 'light)
+
+;;   (sml/setup))
 
 (provide 'user-config)
 ;;; user-config.el ends here

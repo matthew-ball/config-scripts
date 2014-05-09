@@ -87,3 +87,4 @@ ncmpcpp-dir/error.log
 /emacs-dir/info/onlisp.texi
 /stumpwm-dir/start-stumpwm.sh
 /emacs-dir/projectile-bookmarks.eld
+/emacs-dir/extras-el/apt-mode.el

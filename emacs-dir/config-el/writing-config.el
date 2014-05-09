@@ -61,114 +61,28 @@
 
 ;;; IMPORTANT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-;; (autoload 'flyspell-mode "flyspell" "On-the-fly spell checking" t)
-;; (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-;; (autoload 'flyspell-prog-mode "flyspell" "On-the-fly spell checking." t)
-;; (autoload 'tex-mode-flyspell-verify "flyspell" "..." t)
 (require 'flyspell)
 
 (after "flyspell"
+  (setq flyspell-issue-welcome-flag nil)
   (add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
 ;;; IMPORTANT: ispell
+(require 'ispell)
+
 (after "ispell"
   (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
 	ispell-parser 'tex
+	ispell-dictionary "british"
+	;; ispell-local-dictionary 'british
 	ispell-extra-args '("--sug-mode=ultra")))
-
-;;; IMPORTANT: dictem
-;; SOURCE: ...
-(autoload 'dictem-run-search "dictem" "" t)
-
-(after "dictem"
-  (setq dictem-server "dict.org"
-	dictem-port "2628"
-	dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra")
-	dictem-default-database "*"
-	dictem-default-strategy ".")
-
-  ;; TODO: move to key-bindings!!!
-  (defconst dictem-prefix-key (kbd "C-c d") "Key map for `dictem'.")
-  (defvar dictem-map (lookup-key global-map dictem-prefix-key) "...")
-
-  (unless (keymapp dictem-map)
-    (setq dictem-map (make-sparse-keymap)))
-
-  (define-key global-map dictem-prefix-key dictem-map)
-  (define-key dictem-map (kbd "s") 'dictem-run-search) ;; NOTE: SEARCH = MATCH + DEFINE : ask for word, database and search strategy and show definitions found
-  (define-key dictem-map (kbd "m") 'dictem-run-match) ;; NOTE: MATCH : ask for word, database and search strategy and show matches found
-  (define-key dictem-map (kbd "d") 'dictem-run-define);; NOTE: DEFINE : ask for word and database name and show definitions found
-  (define-key dictem-map (kbd "C-c M-r") 'dictem-run-show-server) ;; NOTE: SHOW SERVER : show information about DICT server
-  (define-key dictem-map (kbd "C-c M-i") 'dictem-run-show-info) ;; NOTE: SHOW INFO : show information about the database
-  (define-key dictem-map (kbd "C-c M-b") 'dictem-run-show-databases) ;; NOTE: SHOW DB : show a list of databases provided by DICT server
-
-  ;; TODO: ...
-  ;; (add-hook 'c-mode-common-hook
-  ;; 	  '(lambda ()
-  ;; 	     (interactive)
-  ;; 	     (make-local-variable 'dictem-default-database)
-  ;; 	     (setq dictem-default-database "man")))
-
-  ;; the code above sets default database to "man" in C buffers
-
-  (dictem-initialize)
-
-  ;; NOTE: for creating hyperlinks on database names and found matches (click on them with mouse-2)
-  (add-hook 'dictem-postprocess-match-hook 'dictem-postprocess-match)
-
-  ;; NOTE: for highlighting the separator between the definitions found, this also creates hyperlink on database names
-  (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-separator)
-
-  ;; NOTE: for creating hyperlinks in `dictem' buffer that contains definitions
-  (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-definition-hyperlinks)
-
-  ;; NOTE: for creating hyperlinks in dictem buffer that contains information about a database
-  (add-hook 'dictem-postprocess-show-info-hook 'dictem-postprocess-definition-hyperlinks)
-
-  ;; NOTE: "virtual" dictionary
-  (setq dictem-user-databases-alist '(("_en-en"  . ("foldoc" "gcide" "wn"))
-				      ("en-en" . ("dict://dict.org:2628/english")) 
-				      ("_unidoc" . ("susv3" "man" "info" "howto" "rfc"))))
-
-  ;; NOTE: ...
-  (setq dictem-use-user-databases-only t)
-
-  ;; NOTE: all functions from dictem-postprocess-each-definition-hook will be run for each definition which in turn will be narrowed
-  ;; NOTE: current database name is kept in dictem-current-dbname variable
-  ;; NOTE: the following code demonstrates how to highlight SUSV3 and ROFF definitions
-  (add-hook 'dictem-postprocess-definition-hook 'dictem-postprocess-each-definition)
-
-  ;; NOTE: function for highlighting definition from the database "susv3"
-  ;; (defun dictem-highlight-susv3-definition ()
-  ;;   (cond ((string= "susv3" dictem-current-dbname)
-  ;; 	 (goto-char (point-min))
-  ;; 	 (while (search-forward-regexp
-  ;; 		 "^ *[QWERTYUIOPASDFGHJKLZXCVBNM ]+$" nil t)
-  ;; 	   (put-text-property
-  ;; 	    (match-beginning 0) (match-end 0) 'face 'bold)))))
-
-  ;; ;; NOTE: function to show roff-formatted text from the database "man"
-  ;; (require 'woman)
-
-  ;; (defun dictem-highlight-man-definition ()
-  ;;   (cond ((string= "man" dictem-current-dbname)
-  ;; 	 (goto-char (point-min))
-  ;; 	 (while (search-forward-regexp "^  " nil t)
-  ;; 	   (replace-match ""))
-  ;; 	 (goto-char (point-min))
-  ;; 	 (forward-line 2)
-  ;; 	 (woman-decode-region (point) (point-max)))))
-
-  ;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-susv3-definition)
-  ;; (add-hook 'dictem-postprocess-each-definition-hook 'dictem-highlight-man-definition)
-  )
 
 ;;; IMPORTANT: thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
-(autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
+;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
 
-(after "thesaurus"
-  (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6"))  ;; NOTE: from registration
+;; (after "thesaurus"
+;;   (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6"))  ;; NOTE: from registration
 
 ;;; IMPORTANT: bibtex
 ;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
@@ -212,8 +126,7 @@
 				      ) ;; default bibliography file(s)
 	reftex-cite-prompt-optional-args nil
 	reftex-cite-cleanup-optional-args t
-	reftex-extra-bindings t ;; enable extra reftex bindings
-	))
+	reftex-extra-bindings t))
 
 (defun org-mode-reftex-setup ()
   "Set up `reftex' integration with `org-mode'."

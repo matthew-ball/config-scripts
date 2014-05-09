@@ -70,7 +70,7 @@ Enable the following minor modes:
 4. `auto-insert-mode' - Insert a template into new files."
   (modify-syntax-entry ?- "w") ;; NOTE: treat '-' as part of the word
   ;; (flymake-mode) ;; NOTE: turn on flymake mode
-  ;; (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings
+  (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   ;; (longlines-mode) ;; NOTE: enable long lines
   ;; (hl-line-mode) ;; NOTE: turn on line highlight mode
@@ -165,7 +165,8 @@ Enable the following minor modes:
 
 ;;; IMPORTANT: slime/swank
 ;; WARNING: this is not ideal
-(add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130720-cvs"))
+(add-to-list 'load-path (expand-file-name "~/Public/slime"))
+;; (add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130720-cvs"))
 
 (require 'slime-autoloads)
 ;; (when (member slime-autoloads features)

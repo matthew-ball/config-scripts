@@ -108,6 +108,7 @@
   (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
 	ido-enable-regexp t ;; NOTE: enable regexp
 	ido-use-virtual-buffers t ;; NOTE: keep buffers around
+	ido-auto-merge-work-directories-length -1 ;; TODO: we'll see...
 	ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
 	ido-everywhere nil ;; NOTE: disable ido everywhere
 	ido-use-filename-at-point 'ffap-guesser

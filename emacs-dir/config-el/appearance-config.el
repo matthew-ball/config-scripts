@@ -31,7 +31,8 @@
   (set-face-attribute 'default nil :height 90)
   (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  (load-theme 'tango))
+  ;;(load-theme 'tango)
+  )
 
 ;; NOTE: apply `load-frame' to a graphical emacs instance
 (when (display-graphic-p)

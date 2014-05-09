@@ -54,7 +54,7 @@
       (month year)))))
  '(org-agenda-files
    (quote
-    ("~/Documents/Organisation/europe-trip.org" "~/Documents/Organisation/thailand-trip.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/birthday.org"))))
+    ("~/Documents/Organisation/thailand-trip.org" "~/Documents/Organisation/europe-trip.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/birthday.org"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

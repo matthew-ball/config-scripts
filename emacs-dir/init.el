@@ -39,7 +39,7 @@
 (defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
 (defcustom user-audio-directory (format "%s/Music/" user-home-directory) "Directory for user's music." :group 'user-directories :type 'string)
 (defcustom user-video-directory (format "%s/Videos/" user-home-directory) "Directory for user's videos." :group 'user-directories :type 'string)
-(defcustom user-programming-directory (format "%s/Programming/" user-home-directory) "Directory for user's programming files." :group 'user-directories :type 'string)
+(defcustom user-programming-directory (format "%s/Public/" user-home-directory) "Directory for user's programming files." :group 'user-directories :type 'string)
 (defcustom user-projects-directory (format "%s/Projects/" user-home-directory) "Directory for user's projects." :group 'user-directories :type 'string)
 (defcustom user-reading-directory (format "%s/Reading/" user-documents-directory) "Directory for user's reading material." :group 'user-directories :type 'string)
 (defcustom user-writing-directory (format "%s/Writing/" user-documents-directory) "Directory for user's writing material." :group 'user-directories :type 'string)
@@ -117,6 +117,26 @@
 			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")
 			   )))
 
+;; (defun check-package-upgrades ()
+;;   "Check if there are package updates."
+;;   (interactive)
+;;   (cl-flet ((check ()
+;; 		   (package-menu-mark-upgrades)
+;; 		   (let ((pkgs (mapcar #'car (package-menu--find-upgrades))))
+;; 		     (when pkgs
+;; 		       (message "There are %s packages available for upgrade: %s" (length pkgs) pkgs)
+;; 		       ;; (require 'notifications)
+;; 		       ;; (notifications-notify :title (format "There are %s packages available for upgrade:" (length pkgs))
+;; 		       ;; 			     :body (format "%s" pkgs))
+;; 		       ))))
+;;     (if (get-buffer "*Packages*")
+;;         (with-current-buffer (get-buffer "*Packages*")
+;;           (package-menu-refresh)
+;;           (funcall #'check))
+;;       (save-window-excursion (list-packages))
+;;       (with-current-buffer (get-buffer "*Packages*")
+;;         (funcall #'check)))))
+
 ;; SOURCE: `http://hastebin.com/yidodunufo.lisp'
 (defun ensure-package-installed (&rest packages)
   "Assure every package is installed, ask for installation if it's not.
@@ -165,7 +185,6 @@ Return a list of installed packages or nil for every skipped package."
  'popup
  'projectile
  'rainbow-delimiters
- 'smart-mode-line
  'smex
  'sr-speedbar
  's

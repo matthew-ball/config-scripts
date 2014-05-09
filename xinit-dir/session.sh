@@ -25,6 +25,7 @@ export USER_UNI="anu.edu.au"
 export PRIMARY_EMAIL="mathew.ball@gmail.com"
 # --- IMPORTANT: default path variables
 export STUMPWM_SRC_DIR="/home/chu/Public/stumpwm"
+export SLIME_DIR="/home/chu/Public/slime"
 export QUICKLISP_DIR="/home/chu/quicklisp/dists/quicklisp/software"
 export USER_PROJECTS_DIR="/home/chu/Public/"
 export CONFIG_SCRIPTS_DIR="/home/chu/config-scripts/"
