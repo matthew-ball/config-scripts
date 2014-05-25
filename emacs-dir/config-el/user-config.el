@@ -24,6 +24,16 @@
 
 ;;; Code:
 
+;;; IMPORTANT: ace-jump-mode
+;; SOURCE: `http://www.emacswiki.org/emacs/AceJump'
+;; (require 'ace-jump-mode)
+
+;; (after "ace-jump-mode"
+;;   (ace-jump-mode)
+
+;;   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+;;   (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode-pop-mark))
+
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
 ;; (autoload 'bbdb "bbdb" "" t)
@@ -239,19 +249,19 @@
                      (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
         erc-join-buffer 'bury
         erc-autojoin-channels-alist '((".*\\.freenode.net"
-                                       "#emacs"
-                                       "#stumpwm"
-                                       "#lisp"
 				       ;; "#gnus"
 				       ;; "#org-mode"
                                        ;; "#debian-offtopic"
-				       "##outcasts"
-                                       "#ubuntu-offtopic"
-				       ;; "#ubuntu-fr-offtopic"				       
+				       ;; "##outcasts"
+				       ;; "#ubuntu-fr-offtopic"
 				       ;; "#ubuntu-irc"
                                        "#ubuntu-ops"
                                        "#ubuntu-ops-team"
-                                       )))
+                                       "#ubuntu-offtopic"
+				       ;; "#ubuntu-programming"
+                                       "#stumpwm"
+                                       "#lisp"
+				       "#emacs")))
 
   ;; (defun erc-disable-auto-fill-mode ()
   ;;   ""
@@ -767,7 +777,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (defun create-authinfo ()
   "...")
 
-
 (after "gnus"
   (require 'smtpmail)
   ;; (require 'nnimap)
@@ -1022,6 +1031,17 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 			     ac-source-words-in-buffer
 			     ac-source-words-in-same-mode-buffers
 			     ac-source-words-in-all-buffer)))
+
+;;; IMPORTANT: auto-complete `ispell' source
+;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
+;; (require 'ac-ispell)
+
+;; (after "ac-ispell"
+;;   (setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
+;;   (ac-ispell-setup)
+;;   (add-hook 'text-mode-hook 'ac-ispell-ac-setup)
+;;   ;;(add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
+;;   )
 
 ;;; IMPORTANT: emacs snippets
 ;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
@@ -1330,23 +1350,23 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: window configuration
 ;; SOURCE: `http://www.emacswiki.org/emacs/TransposeWindows'
-(defun swap-window-positions ()
-   "*Swap the positions of this window and the next one."
-   (interactive)
-   (let ((other-window (next-window (selected-window) 'no-minibuf)))
-     (let ((other-window-buffer (window-buffer other-window))
-           (other-window-hscroll (window-hscroll other-window))
-           (other-window-point (window-point other-window))
-           (other-window-start (window-start other-window)))
-       (set-window-buffer other-window (current-buffer))
-       (set-window-hscroll other-window (window-hscroll (selected-window)))
-       (set-window-point other-window (point))
-       (set-window-start other-window (window-start (selected-window)))
-       (set-window-buffer (selected-window) other-window-buffer)
-       (set-window-hscroll (selected-window) other-window-hscroll)
-       (set-window-point (selected-window) other-window-point)
-       (set-window-start (selected-window) other-window-start))
-     (select-window other-window)))
+;; (defun swap-window-positions ()
+;;    "*Swap the positions of this window and the next one."
+;;    (interactive)
+;;    (let ((other-window (next-window (selected-window) 'no-minibuf)))
+;;      (let ((other-window-buffer (window-buffer other-window))
+;;            (other-window-hscroll (window-hscroll other-window))
+;;            (other-window-point (window-point other-window))
+;;            (other-window-start (window-start other-window)))
+;;        (set-window-buffer other-window (current-buffer))
+;;        (set-window-hscroll other-window (window-hscroll (selected-window)))
+;;        (set-window-point other-window (point))
+;;        (set-window-start other-window (window-start (selected-window)))
+;;        (set-window-buffer (selected-window) other-window-buffer)
+;;        (set-window-hscroll (selected-window) other-window-hscroll)
+;;        (set-window-point (selected-window) other-window-point)
+;;        (set-window-start (selected-window) other-window-start))
+;;      (select-window other-window)))
 
 ;; IMPORTANT: google translate
 ;; SOURCE: `https://github.com/manzyuk/google-translate'
@@ -1405,31 +1425,39 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;; SOURCE: `http://www.emacswiki.org/emacs/Projectile'
 (require 'projectile)
 
-(after "projectile"
+(after "projectile"  
   (projectile-global-mode))
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
-;; (require 'smart-mode-line)
+(require 'smart-mode-line)
 
-;; (after "smart-mode-line"
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/" ":config:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Public/" ":public:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/" ":scratch:"))  
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/" ":documents:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/" ":anu:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/" ":reading:"))  
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/" ":writing:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/" ":mail:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/" ":news:"))
-;;   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
+(after "smart-mode-line"
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/" ":config:"))
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/emacs-dir/" ":emacs:"))
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/stumpwm-dir" ":stumpwm:"))
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/bash-dir/" ":bash:"))
+  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/xinit-dir/" ":xinit:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/" ":public:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/" ":scratch:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/" ":documents:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/" ":anu:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/" ":reading:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/" ":writing:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/" ":mail:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/" ":news:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
   
-;;   (setq sml/name-width 45
-;; 	sml/shorten-directory t
-;; 	;; sml/mode-width t ;; ERROR: Error during redisplay: (eval (sml/generate-minor-modes)) signaled (wrong-type-argument number-or-marker-p t)
-;; 	sml/theme 'light)
+  (setq sml/name-width 1
+	sml/mode-width 1
+	sml/shorten-directory t
+	sml/theme 'light)
 
-;;   (sml/setup))
+  (sml/setup))
+
+;;; IMPORTANT: expand region
+;; SOURCE: `https://github.com/magnars/expand-region.el'
+(require 'expand-region)
 
 (provide 'user-config)
 ;;; user-config.el ends here

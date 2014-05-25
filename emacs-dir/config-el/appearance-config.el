@@ -38,6 +38,9 @@
 (when (display-graphic-p)
   (decorate-frame))
 
+;; SOURCE: `http://ubuntuforums.org/archive/index.php/t-183638.html'
+(modify-frame-parameters nil '((wait-for-wm . nil)))
+
 ;; NOTE: apply `load-frame' to an emacsclient frame
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
 (defun turn-on-frame-decorations (frame)
@@ -150,8 +153,17 @@
   ;;     (java-mode "{" "}" "/[*/]" nil nil)
   ;;     (js-mode "{" "}" "/[*/]" nil))))
 
-  (setq hs-hide-comments nil) ;; NOTE: hide the comments too when you do a 'hs-hide-all'
-  (setq hs-isearch-open 't) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
+  (setq hs-hide-comments-when-hiding-all nil) ;; NOTE: don't hide the comments when launching `hs-hide-all'
+  (setq hs-isearch-open t) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
+
+  (defvar hs-modes-hooks-list '(lisp-mode-hook
+				emacs-lisp-mode-hook
+				shell-script-mode-hook
+				haskell-mode-hook
+				latex-mode-hook))
+
+  ;; (dolist (hook hs-modes-hooks-list)
+  ;;   (add-hook hook 'hs-minor-mode))
 
   ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
   ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
@@ -193,54 +205,50 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
 (autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
 
+(eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
+(eval-after-load "auto-complete" '(diminish 'auto-complete-mode ""))
+(eval-after-load "cwarn" '(diminish 'cwarn-mode ""))
+;;(eval-after-load "dired-x" '(diminish 'dired-omit-mode ""))
+(eval-after-load "eldoc" '(diminish 'eldoc-mode ""))
+(eval-after-load "elisp-slime-nav" '(diminish 'elisp-slime-nav-mode ""))
+(eval-after-load "eproject" '(diminish 'eproject-mode ""))
+(eval-after-load "face-remap" '(diminish 'buffer-face-mode ""))
 (eval-after-load "flyspell" '(diminish 'flyspell-mode ""))
 (eval-after-load "flymake" '(diminish 'flymake-mode ""))
-(eval-after-load "auto-complete" '(diminish 'auto-complete-mode ""))
-(eval-after-load "simple" '(diminish 'visual-line-mode ""))
-;;(eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
-(eval-after-load "eldoc" '(diminish 'eldoc-mode ""))
-(eval-after-load "hideshow" '(diminish 'hs-minor-mode ""))
-(eval-after-load "paredit" '(diminish 'paredit-mode ""))
+(eval-after-load "glasses" '(diminish 'glasses-mode ""))
+;; (eval-after-load "gnus-group" '(diminish 'gnus-group-mode ""))
+;; (eval-after-load "gnus-group" '(diminish 'gnus-agent-group-mode ""))
 (eval-after-load "haskell-doc" '(diminish 'haskell-doc-mode ""))
 (eval-after-load "haskell-indent" '(diminish 'haskell-indent-mode ""))
-(eval-after-load "reftex" '(diminish 'reftex-mode ""))
-(eval-after-load "glasses" '(diminish 'glasses-mode ""))
-(eval-after-load "face-remap" '(diminish 'buffer-face-mode ""))
-;;(eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
-(eval-after-load "hilit-chg" '(diminish 'highlight-changes-mode ""))
-(eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
-(eval-after-load "longlines" '(diminish 'longlines-mode ""))
-(eval-after-load "org-indent" '(diminish 'org-indent-mode ""))
-(eval-after-load "w3m-lnum" '(diminish 'w3m-lnum-mode ""))
-(eval-after-load "cwarn" '(diminish 'cwarn-mode ""))
-(eval-after-load "yasnippet" '(diminish 'yas-minor-mode ""))
-(eval-after-load "elisp-slime-nav" '(diminish 'elisp-slime-nav-mode ""))
-(eval-after-load "abbrev" '(diminish 'abbrev-mode ""))
-;;(eval-after-load "workgroups" '(diminish 'workgroups-mode ""))
 (eval-after-load "haskell-indentation" '(diminish 'haskell-indentation-mode ""))
-(eval-after-load "eproject" '(diminish 'eproject-mode ""))
+(eval-after-load "hideshow" '(diminish 'hs-minor-mode ""))
+(eval-after-load "hilit-chg" '(diminish 'highlight-changes-mode ""))
+(eval-after-load "longlines" '(diminish 'longlines-mode ""))
 (eval-after-load "magit" '(diminish 'magit-auto-revert-mode ""))
+(eval-after-load "org-indent" '(diminish 'org-indent-mode ""))
+(eval-after-load "paredit" '(diminish 'paredit-mode ""))
 (eval-after-load "projectile" '(diminish 'projectile-mode ""))
-(eval-after-load "slime" '(diminish 'slime-mode "")) ;; TODO: still not entirely sure about this
+(eval-after-load "reftex" '(diminish 'reftex-mode ""))
+;;(eval-after-load "simple" '(diminish 'global-visual-line-mode ""))
+(eval-after-load "simple" '(diminish 'visual-line-mode ""))
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
+(eval-after-load "w3m-lnum" '(diminish 'w3m-lnum-mode ""))
+(eval-after-load "yasnippet" '(diminish 'yas-minor-mode ""))
 
 ;; NOTE: this is unofficially `diminish' for major modes
-(defvar mode-line-cleaner-alist '((lisp-interaction-mode . "λ")
-				  (lisp-mode . "λ")
-				  (emacs-lisp-mode . "λ")
-				  (c-mode . "c")
-				  (c++-mode . "c++")
-				  (python-mode . "python")
-				  (haskell-mode . "haskell")
-				  (eshell-mode . "λ-shell")
-				  (org-mode . "org")
-				  (erc-mode . "erc")
-				  (dired-mode . "dired"))
-  "Alist for `clean-mode-line'.
- 
-When you add a new element to the alist, keep in mind that you
-must pass the correct minor/major mode symbol and a string you
-want to use in the modeline *in lieu of* the original.")
- 
+(defvar mode-line-cleaner-alist '((c-mode	   . "C")
+				  (c++-mode	   . "C++")
+				  (dired-mode	   . "Dired")
+				  (lisp-mode	   . "Common Lisp")
+				  (emacs-lisp-mode . "Emacs Lisp")
+				  (gnus-group-mode . "Email")
+				  (eshell-mode     . "Eshell")
+				  (erc-mode        . "ERC")
+				  (haskell-mode	   . "Haskell")
+				  (help-mode	   . "Help")
+				  (org-mode	   . "Organisation")
+				  (python-mode	   . "Python"))
+  "Alist for `clean-mode-line'.")
  
 (defun clean-mode-line ()
   (interactive)
@@ -250,7 +258,7 @@ want to use in the modeline *in lieu of* the original.")
 		  (old-mode-str (cdr (assq mode minor-mode-alist))))
              (when old-mode-str
 	       (setcar old-mode-str mode-str))
-	     ;; major mode
+	     ;; NOTE: major mode
              (when (eq mode major-mode)
                (setq mode-name mode-str)))))
  

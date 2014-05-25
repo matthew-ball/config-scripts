@@ -74,7 +74,7 @@
   (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
 	ispell-parser 'tex
 	ispell-dictionary "british"
-	;; ispell-local-dictionary 'british
+	;; ispell-alternate-dictionary "/usr/share/dict/american-english" ;; FIX: ...
 	ispell-extra-args '("--sug-mode=ultra")))
 
 ;;; IMPORTANT: thesaurus

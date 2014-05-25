@@ -21,7 +21,7 @@
 ;;; Commentary:
 
 ;;; This is the main point of entry for the StumpWM environment.
-;;; This configuration sets user-defined variables, and modifies the default settings.
+;;; This configuration sets user-defined variables, and modifies the default settings, introducing custom functionality.
 
 ;;; Code:
 
@@ -65,31 +65,38 @@
   "Cut a sequence beyond a specified length (because `subseq' is fickle)"
   (if (> (length sequence) max-length)
       (subseq sequence 0 max-length)
-    sequence))
+      sequence))
+
+(defun make-stumpwm-keyword (name)
+  "Turn `name' into a keyword in the StumpWM package."
+  (values (intern (string-upcase name) "STUMPWM")))
+
+(defun terminal-application (title &optional (command (getenv "SHELL")))
+  "Return a string for a command to run a shell, or with optional arguments run a terminal command."
+  (format nil "~S -T ~S -e ~S" (getenv "TERMINAL") title command))
 
 (defmacro replace-hook (hook fn)
   `(remove-hook, hook, fn)
   `(add-hook, hook, fn))
 
 ;; SOURCE: `http://deftsp-dotfiles.googlecode.com/svn/trunk/.stumpwmrc'
-;; TODO: use functions `user-homedir-pathname' and `merge-pathnames' to update it.
-;; (defun expand-file-name (path &optional default-directory)
-;;   "Expand file-name."
-;;   (let ((first-char (subseq path 0 1))
-;;         (home-dir ;;(user-homedir-pathname)
-;; 		  (concat (getenv "HOME") "/"))
-;;         (dir (if default-directory
-;;                  (if (string= (subseq (reverse default-directory) 0 1) "/")
-;;                      default-directory
-;; 		   (concat default-directory "/")))))
-;;     (cond
-;;      ((string= first-char "~") (concat home-dir (subseq path 2)))
-;;      ((string= first-char "/") path)
-;;      ;; TODO: maybe should ask for root password here (?)
-;;      (dir (if (string= (subseq dir 0 1) "/")
-;; 	      (concat dir path)
-;; 	    (expand-file-name (concat dir path))))
-;;      (t (concat home-dir path)))))
+;; TODO: use function `merge-pathnames' to update
+(defun expand-file-name (path &optional default-directory)
+  "Expand file-name."
+  (let ((first-char (subseq path 0 1))
+        (home-dir (user-homedir-pathname))
+        (dir (if default-directory
+                 (if (string= (subseq (reverse default-directory) 0 1) "/")
+                     default-directory
+		     (concat default-directory "/")))))
+    (cond
+      ((string= first-char "~") (concat home-dir (subseq path 2)))
+      ((string= first-char "/") path)
+      ;; TODO: maybe should ask for root password here (?)
+      (dir (if (string= (subseq dir 0 1) "/")
+	       (concat dir path)
+	       (expand-file-name (concat dir path))))
+      (t (concat home-dir path)))))
 
 ;;; IMPORTANT: user variables
 ;; NOTE: get from shell environment
@@ -99,16 +106,8 @@
 (defvar *user-slime-directory* (getenv "SLIME_DIR") "Slime directory.")
 (defvar *user-projects-directory* (getenv "USER_PROJECTS_DIR") "User's projects directory.")
 
-;;; IMPORTANT: (zenburn-inspired) color theme
-;; TODO: set *colors* so that I can use the `zenburn' face colours in the mode-line format
-;; (defparameter *foreground-colour* "darkseagreen4" "Set the foreground colour.")
-;; (defparameter *background-colour* "grey25" "Set the background colour.")
-;; (defparameter *border-colour* "grey25" "Set the border colour.")
-;; (defparameter *focus-colour* "darkseagreen1" "Set the focus colour.")
-;; (defparameter *unfocus-colour* "grey25" "Set the unfocus colour.")
-
 ;;; IMPORTANT: slime and swank
-;; NOTE: requires `quicklisp'
+;; SOURCE: `https://github.com/slime/slime'
 (load (format nil "~A/swank-loader.lisp" *user-slime-directory*))
 
 (swank-loader:init)
@@ -120,9 +119,7 @@
   (setf *top-level-error-action* :break)
   (unless *swank-p*
     (progn
-      (swank:create-server :port 4005
-			   :style swank:*communication-style*
-			   :dont-close t)
+      (swank:create-server :port 4005 :style swank:*communication-style* :dont-close t)
       (setf *swank-p* t))))
 
 ;; NOTE: use `xfontsel' to discover fonts
@@ -193,26 +190,26 @@
 ;; (setf *prefer-sysfs* nil)
 
 ;; (setf *disk-usage-paths* '("/"
-;; 			   "/home")) ;; NOTE: see ../contrib/disk.lisp
+;; 			   "/home")) ;; NOTE: see contrib/disk.lisp
 
-(defun mode-line-battery-details ()
-  "Return string of battery details."
-  (format nil "^[^~A*%B^]" (cond
-			    ((string-equal (battery-state) " Discharging ") 1) ;; NOTE: red string
-			    ((string-equal (battery-state) " Charging ") 4) ;; NOTE: blue string
-			    (t 7) ;; NOTE: default string
-			    )))
+;; (defun mode-line-battery-details ()
+;;   "Return string of battery details."
+;;   (format nil "^[^~A*%B^]" (cond
+;; 			    ((string-equal (battery-state) " Discharging ") 1) ;; NOTE: red string
+;; 			    ((string-equal (battery-state) " Charging ") 4) ;; NOTE: blue string
+;; 			    (t 7) ;; NOTE: default string
+;; 			    )))
 
 ;; TODO: this can be cleaned up quite substantially
-(defun mode-line-wireless-details ()
-  "Return string of wireless details."
-  (let* ((name (run-shell-command "nmcli con status" t))
-	 (wireless (run-shell-command "cat /proc/net/wireless" t))
-	 (start-wireless (+ (search "wlan0:" wireless) 14))
-	 (start-name (+ (search "MASTER-PATH" name) 44)))
-    (format nil "~A: ~A%%"
-	    (remove #\Newline (subseq name start-name (+ start-name 10)))
-	    (subseq wireless start-wireless (+ start-wireless 2)))))
+;; (defun mode-line-wireless-details ()
+;;   "Return string of wireless details."
+;;   (let* ((name (run-shell-command "nmcli con status" t))
+;; 	 (wireless (run-shell-command "cat /proc/net/wireless" t))
+;; 	 (start-wireless (+ (search "wlan0:" wireless) 14))
+;; 	 (start-name (+ (search "MASTER-PATH" name) 44)))
+;;     (format nil "~A: ~A%"
+;; 	    (remove #\Newline (subseq name start-name (+ start-name 10)))
+;; 	    (subseq wireless start-wireless (+ start-wireless 2)))))
 
 ;;; IMPORTANT: mode line
 (setf *screen-mode-line-format*
@@ -281,7 +278,7 @@
 (defkeys-root ;; NOTE: define root-map keys
     ("s-q" "safe-quit")
     ("s-Q" "logout")
-    ("s-d" "trash-window")
+  ("s-d" "trash-window")
   ("s-s" "trash-show")
   ("s-R" "reinit") ;; NOTE: reload run-time configuartion file
   ("C-m" "mode-line") ;; NOTE: (de)active the `mode-line'
@@ -293,11 +290,11 @@
   ("M-i" "show-window-properties")) ;; NOTE: show current window's properties
 
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
-    ("s-S" '*sudo-map*)
-    ("s-V" '*volume-map*)
+    ("s-B" "global-select")
+    ("s-G" "vgroups")
   ("s-M" '*mpd-map*)
-  ("s-G" "vgroups")
-  ("s-B" "global-select")
+  ("s-S" '*sudo-map*)
+  ;; ("s-V" '*volume-map*)
   ("s-:" "eval")
   ("s-x" "colon")
   ("s-b" "run-browser") ;; NOTE: open (or switch to an existing instance of) *browser*
@@ -311,17 +308,17 @@
   ("s-v" "run-video-player")) ;; NOTE: open (or switch to an existing instance of) *video-player*
 
 (defvar *sudo-map* nil "Super-user specific key-bindings.")
-(defvar *volume-map* nil "Control volume key-bindings.")
+;;(defvar *volume-map* nil "Control volume key-bindings.")
 
 (fill-keymap *sudo-map*
              (kbd "r") "reboot"
 	     (kbd "s") "shutdown"
              (kbd "h") "hibernate")
 
-(fill-keymap *volume-map*
-	     (kbd "u") "volume-up"
-	     (kbd "d") "volume-down"
-	     (kbd "m") "volume-toggle-mute")
+;; (fill-keymap *volume-map*
+;; 	     (kbd "u") "volume-up"
+;; 	     (kbd "d") "volume-down"
+;; 	     (kbd "m") "volume-toggle-mute")
 
 ;; IMPORTANT: hidden (trash) group
 ;; SOURCE: `https://github.com/stumpwm/stumpwm/wiki/StumpPatches'
@@ -522,70 +519,60 @@
 	  (return))))))
 
 ;;; IMPORTANT: frame preferences
+;; NOTE: this just simplifies the call to `define-frame-preference'
 (defmacro group-frame-preference (application group key)
-  (let ((app (eval application)))
-    `(define-frame-preference ,group (0 t t ,key ,app))))
+  `(define-frame-preference ,group (0 t t ,key ,application)))
 
 ;;(clear-window-placement-rules) ;; NOTE: clear rules
 
 ;; TODO: too much hard-coding
 (defun define-window-placement-rules ()
   "Define placement rules for windows."
-  (group-frame-preference "Thunar"   "default"  :instance)
-  (group-frame-preference "emacs"    "default"  :instance)
-  (group-frame-preference "chromium" "internet" :instance)
-  ;; ...
-  (group-frame-preference "stumpish"        "default" :title)
-  (group-frame-preference "screen"          "default" :title)
-  (group-frame-preference "terminal"        "misc"    :title)
-  (group-frame-preference "system-monitor"  "misc"    :title)
-  (group-frame-preference "user-monitor"    "misc"    :title)
-  (group-frame-preference "package-manager" "misc"    :title)
-  ;; (group-frame-preference "xfdesktop" ".trash" :instance) ;; TODO: group frame preference for XFCE
+  (group-frame-preference "Thunar"          "default"  :instance)
+  (group-frame-preference "emacs"           "default"  :instance)
+  (group-frame-preference "chromium"        "internet" :instance)
+  (group-frame-preference "stumpish"        "default"  :title)
+  (group-frame-preference "screen"          "default"  :title)
+  (group-frame-preference "terminal"        "misc"     :title)
+  (group-frame-preference "system-monitor"  "misc"     :title)
+  (group-frame-preference "user-monitor"    "misc"     :title)
+  (group-frame-preference "package-manager" "misc"     :title)
+  ;; (group-frame-preference "xfdesktop"       ".trash"   :instance) ;; NOTE: group frame preference for XFCE
   )
 
 ;;; IMPORTANT: run applications
-(defun make-stumpwm-keyword (name)
-  "Turn `name' into a keyword in the StumpWM package."
-  (values (intern (string-upcase name) "STUMPWM")))
-
-(defmacro create-application (name command &optional (property `(list :instance ,name)) (group "default"))
+(defmacro create-application (name command &optional (key :instance) (key-arg `,name) (group "default"))  
   "Create a general framework for the creation, and running (raising) of applications."
-  `(defvar ,(make-stumpwm-keyword (format nil "*~a*" `,name)) "Default application.")
-  ;; `(define-frame-preference ,group (0 t t ,property)) ;; ERROR: doesn't work :(
-  `(defcommand ,(make-stumpwm-keyword (format nil "run-~a" `,name)) () ()
-     "Run (or raise) application."
-     (run-or-raise ,command ,property)))
-
-(defun terminal (title &optional command)
-  (if command
-      (format nil "~S -T ~S -e ~S" (getenv "TERMINAL") title command)
-      (format nil "~S -T ~S" (getenv "TERMINAL") title)))
+  `(progn
+     (defvar ,(make-stumpwm-keyword (format nil "*~a*" `,name)) (format nil "Default application (~a)." ,name))
+     ;; (define-frame-preference ,group (0 t t ,key ,key-arg))
+     (defcommand ,(make-stumpwm-keyword (format nil "run-~a" `,name)) () ()
+       "Run (or raise) application."
+       (run-or-raise ,command ,key ,key-arg))))
 
 ;; TODO: unfortunately, this is hard coded
 (create-application "editor" (getenv "EDITOR") '(:instance "emacs"))
 (create-application "browser" (getenv "BROWSER") '(:instance "chromium"))
 (create-application "file-manager" (getenv "FILE_MANAGER") '(:instance "Thunar"))
+;; ...
 (create-application "document-viewer" (getenv "DOCUMENT_VIEWER"))
 (create-application "office-suite" (getenv "OFFICE_SUITE"))
-(create-application "terminal" (terminal "terminal") '(:title "terminal"))
-(create-application "screen" (terminal "screen" "screen -D -R") '(:title "screen"))
-(create-application "system-monitor" (terminal "system-monitor" (getenv "SYSTEM_MONITOR")) '(:title "system-monitor"))
-(create-application "user-monitor" (terminal "user-monitor" (format nil "~A -u ~A" (getenv "SYSTEM_MONITOR") (getenv "USER"))) '(:title "user-monitor"))
-(create-application "package-manager" (terminal "package-manager" (getenv "PACKAGE_MANAGER")) '(:title "package-manager"))
-;; (create-application "audio-player" (terminal "audio-player" (getenv "AUDIO_PLAYER")))
+(create-application "terminal" (terminal-application "terminal") '(:title "terminal"))
+(create-application "screen" (terminal-application "screen" "screen -D -R") '(:title "screen"))
+(create-application "system-monitor" (terminal-application "system-monitor" (getenv "SYSTEM_MONITOR")) '(:title "system-monitor"))
+(create-application "user-monitor" (terminal-application "user-monitor" (format nil "~A -u ~A" (getenv "SYSTEM_MONITOR") (getenv "USER"))) '(:title "user-monitor"))
+(create-application "package-manager" (terminal-application "package-manager" (getenv "PACKAGE_MANAGER")) '(:title "package-manager"))
+;; (create-application "audio-player" (terminal-application "audio-player" (getenv "AUDIO_PLAYER")))
 ;; (create-application "media-player" (getenv "MEDIA_PLAYER"))
 ;; (create-application "video-player" (getenv "VIDEO_PLAYER"))
-(create-application "stumpish" (terminal "stumpish" (format nil "~autil/stumpish/stumpish" *contrib-dir*)) (list :title "stumpish"))
+(create-application "stumpish" (terminal-application "stumpish" (format nil "~autil/stumpish/stumpish" *contrib-dir*)) (list :title "stumpish"))
 
 ;;; IMPORTANT: user commands
 (defcommand reinit () () "Reload the stumpwm configuration file." (run-commands "reload" "loadrc"))
 (defcommand show-battery () () "Show current battery status." (echo-string (current-screen) (run-shell-command "acpi" t)))
 (defcommand show-uptime () () "Show current uptime." (echo-string (current-screen) (run-shell-command "uptime" t)))
 (defcommand show-host-name () () "Show the host name." (echo-string (current-screen) (concat "Host name: " (host-name))))
-(defcommand show-system-name () () "Show the system name." (echo-string (current-screen)
-									(concat "System name: "
-										(string-downcase (symbol-name (system-name))))))
+(defcommand show-system-name () () "Show the system name." (echo-string (current-screen) (concat "System name: " (string-downcase (symbol-name (system-name))))))
 
 (defcommand run-screenshot (filename) ((:string "Enter filename: "))
   "Capture current desktop with a screenshot."
@@ -624,12 +611,10 @@
 		 (lambda (screen prompt input)
                    (let ((i (copy-structure input)))
                      (setf (input-line-string i)
-                           (make-string (length (input-line-string i))
-                                        :initial-element #\*))
+			   (make-string (length (input-line-string i)) :initial-element #\*))
                      (funcall fn screen prompt i)))
                  arg (read-one-line (current-screen) prompt))
-        (setf (symbol-function 'draw-input-bucket) fn
-              *input-history* history))
+        (setf (symbol-function 'draw-input-bucket) fn *input-history* history))
       arg)))
 
 (defmacro sudo-command (name command &key output)
@@ -666,19 +651,19 @@
 ;;       *mpd-modeline-fmt* "%S: %a - %t (%n/%p)") ;; NOTE: mode-line format for mpd
 
 ;;; IMPORTANT: volume control
-(defcommand volume-up () ()
-  "Increase volume level."
-  (dotimes (n 10)
-    (run-commands "amixer-Master-1+"))) ;; NOTE: increase master volume +10
+;; (defcommand volume-up () ()
+;;   "Increase volume level."
+;;   (dotimes (n 10)
+;;     (run-commands "amixer-Master-1+"))) ;; NOTE: increase master volume +10
 
-(defcommand volume-down () ()
-  "Decrease volume level."
-  (dotimes (n 10)
-    (run-commands "amixer-Master-1-"))) ;; NOTE: decrease master volume -10
+;; (defcommand volume-down () ()
+;;   "Decrease volume level."
+;;   (dotimes (n 10)
+;;     (run-commands "amixer-Master-1-"))) ;; NOTE: decrease master volume -10
 
-(defcommand volume-toggle-mute () ()
-  "Toggle between mute/unmute volume level."
-  (run-commands "amixer-Master-toggle")) ;; NOTE: toggle master between mute/unmute
+;; (defcommand volume-toggle-mute () ()
+;;   "Toggle between mute/unmute volume level."
+;;   (run-commands "amixer-Master-toggle")) ;; NOTE: toggle master between mute/unmute
 
 ;;; IMPORTANT: startup applications (should be called during initialization)
 ;; (defun launch-mpd ()
@@ -701,8 +686,9 @@
 ;;   "Start nm-applet instance with ConsoleKit."
 ;;   (run-shell-command "ck-launch-session nm-applet"))
 
+;; WARNING: the command `restart-hard' won't work with this hook
 (defun mwsb-start-hook ()
-  "Launch initiation process. Start the user environment; launch anything which is user-specific here (such as panels, music servers, etc).
+  "Launch initiation process. Launch anything which is user-specific here (such as panels, music servers, etc).
 
 This function is only called the first time StumpWM is launched."
   (run-swank) ;; NOTE: start the swank server

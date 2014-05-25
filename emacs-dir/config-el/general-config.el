@@ -44,6 +44,7 @@
       auto-save-interval 1000 ;; NOTE: change auto-save interval from 300 to 1000 keystrokes
       sentence-end-double-space 'nil ;; NOTE: sentences end with a single space
       echo-keystrokes 0.1 ;; NOTE: see what you are typing
+      tab-always-indent 'complete ;; ...
       use-dialog-box nil ;; NOTE: do not use mouse
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings when using M-x to run a command
 
@@ -117,7 +118,7 @@
 	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
 	;; ido-ignore-directories '("~/.emacs.d/snippets") ;; NOTE: ignore snippets
 	;; ido-ignore-files '()
-	ido-file-extensions-order '(".org" ".el" ".lisp" ".c" ".h" ".sh")
+	ido-file-extensions-order '(".org" ".el" ".lisp" ".c" ".h" ".sh" ".hs" ".py")
 	ido-ignore-extensions t ;; NOTE: ignore extentions
 	;; TODO: can clean up the following ...
 	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\#[#]?"
@@ -421,7 +422,7 @@
 ;;; IMPORTANT: save mini-buffer history
 ;; SOURCE: `http://emacswiki.org/emacs/SaveHist'
 (require 'savehist)
-
+  
 (savehist-mode t) ;; NOTE: keep mini buffer history between session
 
 (setq savehist-file (concat (expand-file-name user-emacs-directory) "minibuffer-history"))
@@ -820,6 +821,16 @@
 
 (after "epa-file"
   (epa-file-enable))
+
+;;; IMPORTANT: windmove
+;; SOURCE: `http://www.emacswiki.org/emacs/WindMove'
+(require 'windmove)
+
+(after "windmove"
+  (windmove-default-keybindings 'super)) ;; NOTE: not sure how I feel about this, but it's better than relying on C-x o
+
+;;; IMPORTANT: version control
+(setq vc-follow-symlinks t)
 
 (provide 'general-config)
 ;;; general-config.el ends here

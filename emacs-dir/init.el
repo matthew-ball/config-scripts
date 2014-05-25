@@ -83,7 +83,6 @@
 ;; SOURCE: `http://emacswiki.org/emacs/LoadPath'
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add `config-el/' to `load-path' variable
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el")) ;; NOTE: add `extras-el/' to `load-path' variable
-;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "apt-el")) ;; NOTE: add `apt-el/' to `load-path' variable
 ;;(add-to-list 'load-path (expand-file-name "~/Programming/lisp/common-lisp/stumpwm/contrib")) ;; TODO: this is for `stumpwm-mode'
 ;;(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "dictem-1.0.4")) ;; TODO: move to `../extras-el/dictem-el/'
 ;;(add-to-list 'load-path "/home/chu/Programming/lisp/elisp/wireless/wireless") ;; TODO: move to `../extras-el/wireless-el/'
@@ -99,9 +98,12 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
 (after "info"
   (add-to-list 'Info-default-directory-list (expand-file-name "~/.emacs.d/info"))
-  ;; TODO: update ...
-  (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/")))
-  (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "slime-20130720-cvs/doc/"))))
+  ;; (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "stumpwm-20120107-git/")))
+  ;; (add-to-list 'Info-default-directory-list (expand-file-name (concat quicklisp-directory "slime-20130720-cvs/doc/")))
+  ;; TODO: ...
+  (add-to-list 'Info-default-directory-list (expand-file-name (concat user-projects-directory "stumpwm/")))
+  (add-to-list 'Info-default-directory-list (expand-file-name (concat user-projects-directory "slime/doc/")))
+  )
 
 ;;; IMPORTANT: package manager
 ;; SOURCE: `http://emacswiki.org/emacs/ELPA'
@@ -109,33 +111,15 @@
 
 (after "package"
   (package-initialize)
-  (setq package-enable-at-startup nil)
+  (setq package-enable-at-startup nil
+	load-prefer-newer t)
 
   ;; NOTE: set download repositories
   (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-			   ("gnu" . "http://elpa.gnu.org/packages/")
-			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")
-			   )))
-
-;; (defun check-package-upgrades ()
-;;   "Check if there are package updates."
-;;   (interactive)
-;;   (cl-flet ((check ()
-;; 		   (package-menu-mark-upgrades)
-;; 		   (let ((pkgs (mapcar #'car (package-menu--find-upgrades))))
-;; 		     (when pkgs
-;; 		       (message "There are %s packages available for upgrade: %s" (length pkgs) pkgs)
-;; 		       ;; (require 'notifications)
-;; 		       ;; (notifications-notify :title (format "There are %s packages available for upgrade:" (length pkgs))
-;; 		       ;; 			     :body (format "%s" pkgs))
-;; 		       ))))
-;;     (if (get-buffer "*Packages*")
-;;         (with-current-buffer (get-buffer "*Packages*")
-;;           (package-menu-refresh)
-;;           (funcall #'check))
-;;       (save-window-excursion (list-packages))
-;;       (with-current-buffer (get-buffer "*Packages*")
-;;         (funcall #'check)))))
+			   ;; ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+			   ;; ("melpa-unstable" . "http://melpa-unstable.milkbox.net/packages/")
+			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")			   
+			   ("gnu" . "http://elpa.gnu.org/packages/"))))
 
 ;; SOURCE: `http://hastebin.com/yidodunufo.lisp'
 (defun ensure-package-installed (&rest packages)
@@ -162,9 +146,11 @@ Return a list of installed packages or nil for every skipped package."
  'dash
  'diminish
  'ebib
+ 'ac-slime
  'elisp-slime-nav
  'epl
  'erc-hl-nicks
+ 'expand-region
  'flx
  'flx-ido
  'geiser
@@ -198,7 +184,7 @@ Return a list of installed packages or nil for every skipped package."
 (defun use-config-file (name)
   "Print a loading message and call `require' on configuration file referred to by \"NAME-config\"."
   (let ((config-file (concat name "-config")))
-    ;;(message "Loading %s configuration" name)
+    ;; (message "Loading %s configuration" name)
     (funcall 'require (intern config-file))))
 
 (use-config-file "appearance")
@@ -220,3 +206,7 @@ Return a list of installed packages or nil for every skipped package."
 ;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'
 (setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
 (load custom-file 'noerror)
+
+;; WARNING: I am not sure about this
+;; (defvar *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")
+;; (setq initial-buffer-choice *home-file*)

@@ -80,6 +80,9 @@ Enable the following minor modes:
   (yas-minor-mode t)
   (auto-insert-mode))
 
+;; TODO: should just:
+;;(add-hook 'prog-mode-hook 'turn-on-general-programming-mode)
+
 ;;; IMPORTANT: available modes for the which function mode-line tag
 ;; SOURCE: `http://www.emacswiki.org/emacs/WhichFuncMode'
 ;; SOURCE: `http://emacs-fu.blogspot.com.au/2009/01/which-function-is-this.html'
@@ -105,7 +108,7 @@ Enable the following minor modes:
 (after "lisp-mode"
   (defun custom-emacs-lisp-mode ()
     ""
-    (turn-on-general-programming-mode)
+    ;; (turn-on-general-programming-mode)
     (turn-on-eldoc-mode)
     (paredit-mode t)
     ;; NOTE: some key-bindings
@@ -125,6 +128,16 @@ Enable the following minor modes:
 ;;; IMPORTANT: common lisp programming
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
 (after "lisp-mode"
+  (defun scratch-lisp-file ()
+    "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into the current buffer."
+    (interactive)
+    (goto-char 0)
+    (let* ((file (file-name-nondirectory (buffer-file-name)))
+	   (package (file-name-sans-extension file)))
+      (insert ";;;; " file "\n")
+      (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
+      (insert "(in-package #:" package ")\n\n")))
+  
   (add-hook 'lisp-mode-hook '(lambda ()
                                (turn-on-general-programming-mode)
                                (paredit-mode t)
@@ -164,15 +177,18 @@ Enable the following minor modes:
     (add-hook hook 'elisp-slime-nav-mode)))
 
 ;;; IMPORTANT: slime/swank
-;; WARNING: this is not ideal
 (add-to-list 'load-path (expand-file-name "~/Public/slime"))
-;; (add-to-list 'load-path (expand-file-name "~/quicklisp/dists/quicklisp/software/slime-20130720-cvs"))
 
 (require 'slime-autoloads)
 ;; (when (member slime-autoloads features)
 ;;   (require 'slime-autoloads))
 
 (after "slime"
+
+  ;;IMPORTANT: ac-slime
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  
   ;; (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq inferior-lisp-program "/usr/bin/sbcl --noinform --userinit=\"$HOME/.sbclrc\"") ;; NOTE: suppress the printing of any banner or other informational message at startup
 
@@ -236,7 +252,7 @@ Enable the following minor modes:
 (after "clojure-mode"
   (defun custom-clojure-mode ()
     ""
-    (turn-on-general-programming-mode)
+    ;; (turn-on-general-programming-mode)
     (paredit-mode t))
   
   (add-hook 'clojure-mode-hook 'custom-clojure-mode))
@@ -251,7 +267,7 @@ Enable the following minor modes:
 
 (defun custom-scheme-mode ()
   ""
-  (turn-on-general-programming-mode)
+  ;; (turn-on-general-programming-mode)
   (paredit-mode t))
 
 (after "scheme"
@@ -262,7 +278,7 @@ Enable the following minor modes:
 (autoload 'haskell-mode "haskell-mode" "Major mode for editing haskell source code." t)
 
 (defun custom-turn-on-haskell-modes ()
-  (turn-on-general-programming-mode)
+  ;; (turn-on-general-programming-mode)
   (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
   (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
 
@@ -275,15 +291,16 @@ Enable the following minor modes:
 ;; SOURCE: `http://emacswiki.org/emacs/ShMode'
 (autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
 
-(after "sh-mode"
-  (add-hook 'shell-script-mode 'turn-on-general-programming-mode))
+;; (after "sh-mode"
+;;   ;;(add-hook 'shell-script-mode 'turn-on-general-programming-mode)
+;;   )
 
 ;;; IMPORTANT: python programming
 ;; SOURCE: `http://emacswiki.org/emacs/PythonProgrammingInEmacs'
 (autoload 'python-mode "python" "Major mode for editing python source code." t)
 
-(after "python"
-  (add-hook 'python-mode-hook 'turn-on-general-programming-mode))
+;; (after "python"
+;;   (add-hook 'python-mode-hook 'turn-on-general-programming-mode))
 
 ;;; IMPORTANT: javascript programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/JavaScriptMode'
@@ -304,7 +321,7 @@ Enable the following minor modes:
 
   (defun custom-c-mode ()
     ""
-    (turn-on-general-programming-mode)
+    ;; (turn-on-general-programming-mode)
     (turn-on-cwarn-mode)
     (c-mode-settings))
 
@@ -315,7 +332,10 @@ Enable the following minor modes:
 
 (after "gdb"
   (setq ;;gdb-many-windows t
-	gdb-show-main t))
+   gdb-show-main t))
+
+;;; IMPORTANT: prolog
+(autoload 'run-prolog "prolog" "Prolog in GNU Emacs." t)
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
@@ -329,12 +349,14 @@ Enable the following minor modes:
 
 ;;; IMPORTANT: speedbar
 ;; SOURCE: `'
-;; (autoload 'speedbar "speedbar" "" t)
+(autoload 'speedbar "speedbar" "" t)
 
-;; (after "speedbar"
-;;   (setq speedbar-mode-hook '(lambda () (interactive) (other-frame 0)))
+(after "speedbar"
+  ;; (setq speedbar-mode-hook '(lambda () (interactive) (other-frame 0)))
+  (speedbar-add-supported-extension ".hs")
 
-;;   (add-hook 'speedbar-mode-hook '(lambda () (set-face-attribute 'default nil :height 90))))
+  ;; (add-hook 'speedbar-mode-hook '(lambda () (set-face-attribute 'default nil :height 90)))
+  )
 
 (require 'sr-speedbar)
 
