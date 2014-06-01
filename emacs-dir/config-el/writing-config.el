@@ -37,6 +37,7 @@
   (insert (format-time-string "%c")))
 
 ;;; IMPORTANT: deft
+;; TODO: move this to `user-config.el'
 ;; SOURCE: `http://jblevins.org/projects/deft/'
 (autoload 'deft "deft" "Note taking with deft." t)
 
@@ -48,26 +49,33 @@
 ;;; IMPORTANT: diary and calendar mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
+;; TODO: move this to `general-config.el'
 ;; (autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
 
-;; (setq view-diary-entries-initially t
-;;       mark-diary-entries-in-calendar t
-;;       diary-file "/home/chu/Documents/Organisation/diary"
+;; (setq calendar-view-diary-initially-flag t
+;;       calendar-view-holidays-initially-flag t
+;;       ;;calendar-mark-diary-entries-flag t
+;;       ;;calendar-mark-holidays-flag t
+;;       ;;diary-file "/home/chu/Documents/Organisation/diary"
 ;;       number-of-diary-entries 7)
 
 ;; (eval-after-load "calendar"
-;;   (add-hook 'diary-display-hook 'fancy-diary-display)
-;;   (add-hook 'today-visible-calendar-hook 'calendar-mark-today))
+;;   ;; (add-hook 'diary-display-hook 'fancy-diary-display)
+;;   ;; (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+;;   )
 
 ;;; IMPORTANT: flyspell
+;; TODO: move this to `general-config.el'
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-(require 'flyspell)
+;;(require 'flyspell)
+(autoload 'flyspell-mode "flyspell" "..." t)
 
 (after "flyspell"
   (setq flyspell-issue-welcome-flag nil)
   (add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
 
 ;;; IMPORTANT: ispell
+;; TODO: move this to `general-config.el'
 (require 'ispell)
 
 (after "ispell"
@@ -214,6 +222,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
 
 (after "org"
+  ;; TODO: split these up - move them earlier in the config (if possible)
   (setq org-return-follows-link t ;; NOTE: use RETURN to follow links
 	org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
 	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
@@ -256,8 +265,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	  ("COMPUTER SCIENCE" . ?c)
 	  ("GENERAL"          . ?g)
 	  ("HOLIDAY"          . ?h)
-	  ("LIBRARY"          . ?l)
-	  ;; ("IDEAS"            . ?i)
 	  ("JOURNAL"          . ?j)
 	  ("NOTES"            . ?n)
 	  ("MATHEMATICS"      . ?m)
@@ -268,7 +275,8 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	  ("TRAVEL"           . ?t)
 	  ("WRITING"          . ?T)
 	  ("UNIVERSITY"       . ?u)
-	  ("WEBSITE"          . ?w))))
+	  ;;("WEBSITE"          . ?w)
+	  )))
 
 ;;; IMPORTANT: `org-link'
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
@@ -280,6 +288,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 		     (lambda (path desc format)
 		       (cond ((eq format 'latex)
 			      (format "\\cite{%s}" path)))))
+
+  ;; TODO: create an ebib entry which links to ERC logs
+  ;; NOTE: this would require `erc-log-mode' from MELPA
 
   ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
   ;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
@@ -567,6 +578,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; IMPORTANT: `org-entities'
 ;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
+;; TODO: make `org-entities+.el'
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
 
 ;; TODO: the fact these are all automatically put inside a math environment is a bit problematic
@@ -669,6 +681,16 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   "Insert symbol from `org-entities-user' list."
   (interactive)
   (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
+    (insert (format "\\%s" entity))))
+
+(defun org-insert-entity ()
+  "Insert symbol from `org-entities' list."
+  (interactive)
+  (let ((entity	(ido-completing-read "Insert entity: "
+				     (remove-if #'null (mapcar #'(lambda (element)
+								   (unless (stringp element)
+								     (format "%s" (car element))))
+							       org-entities)))))
     (insert (format "\\%s" entity))))
 
 ;; IMPORTANT: ...
@@ -844,7 +866,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
          (equal char (char-after)))))
 
 (defun surround-word (char &optional force)
-  "Surrounds word with given character.  If force is nil and word is already surrounded by given character remoevs them."
+  "Surrounds word with given character.  If force is nil and word is already surrounded by given character removes them."
   (save-excursion
     (if (not (surrounded-by-p char))
         (progn
@@ -859,41 +881,20 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
       (delete-char -1)
       nil)))
 
-;; TODO: this unfortunately doesn't work
-;; (defmacro propertize-word (prop char)
-;;   "..."
-;;   `(defun (intern (concat ,prop "-word")) (&optional force)
-;;      "Insert a PROPERTY character before (and after) an input string."
-;;      (interactive "p")
-;;      (surround-word ,char ,force)))
+(defmacro propertize-word (property character)
+  "Define functions for propertizing words with PROPERTY using CHARACTER."
+  `(defun ,(intern (format "%s-word" property)) (&optional force)
+     ,(format "Insert a %s character (%c) before (and after) an input string." property character)
+     (interactive "p")
+     (surround-word ,character force)))
 
-;; (propertize-word 'bold ?*) => (bold-word)
-;; (propertize-word 'italic ?/) => (italic-word)
+(propertize-word bold ?*) ;; => (bold-word)
+(propertize-word italic ?/) ;; => (italic-word)
+(propertize-word underline ?_) ;; => (underline-word)
+(propertize-word verbatim ?~) ;; => (verbatim-word)
+(propertize-word teletype ?=) ;; => (teletype-word)
 
-(defun my-bold-word (&optional force) ;; NOTE: C-c b should be `org-insert-text-bolded'
-  "Insert a bold character (*) before (and after) an input string."
-  (interactive "p")
-  (surround-word ?* force))
-
-(defun my-italic-word (&optional force) ;; NOTE: C-c i should be `org-insert-text-italicised'
-  "Insert an italicise character (/) before (and after) an input string."
-  (interactive "p")
-  (surround-word ?/ force))
-
-(defun my-underline-word (&optional force) ;; NOTE: C-c u should be `org-insert-text-underlined'
-  "Insert an underline character (_) before (and after) an input string."
-  (interactive "p")
-  (surround-word ?_ force))
-
-(defun my-verbatim-word (&optional force) ;; NOTE: C-c v should be ...
-  "Insert a verbatim character (~) before (and after) an input string."
-  (interactive "p")
-  (surround-word ?~ force))
-
-(defun my-teletyped-word (&optional force) ;; NOTE: C-c t should be ...
-  "Insert a teletype character (=) before (and after) an input string."
-  (interactive "p")
-  (surround-word ?= force))
+;;(define-key org-mode-map (kbd "C-c b") '(propertize-word bold ?*))
 
 ;;; IMPORTANT: customisations
 (defun turn-on-custom-org-bindings ()
@@ -905,11 +906,11 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ;;(define-key org-mode-map (kbd "C-c c") 'org-insert-citation) ;; NOTE: insert a citation clause
   (define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
   (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote) ;; NOTE: insert a footnote with C-c f
-  (define-key org-mode-map (kbd "C-c b") 'my-bold-word)
-  (define-key org-mode-map (kbd "C-c i") 'my-italic-word)
-  (define-key org-mode-map (kbd "C-c u") 'my-underline-word)
-  (define-key org-mode-map (kbd "C-c v") 'my-verbatim-word)
-  (define-key org-mode-map (kbd "C-c t") 'my-teletyped-word))
+  (define-key org-mode-map (kbd "C-c b") 'bold-word)
+  (define-key org-mode-map (kbd "C-c i") 'italic-word)
+  (define-key org-mode-map (kbd "C-c u") 'underline-word)
+  (define-key org-mode-map (kbd "C-c v") 'verbatim-word)
+  (define-key org-mode-map (kbd "C-c t") 'teletype-word))
 
 (defun turn-on-custom-org ()
   "Activate custom `org-mode' functionality."
@@ -926,104 +927,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 (add-hook 'org-mode-hook 'turn-on-custom-org)
 (add-hook 'org-agenda-mode-hook 'turn-on-hl-mode 'append)
-
-;;; IMPORTANT: journal entries with `org-mode'
-;; TODO: move this to `user-config.el'
-;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
-(require 'org-journal)
-
-(after "org-journal"
-  (setq org-journal-dir
-	(expand-file-name (concat user-organisation-directory "/journal/"))))
-
-;;; IMPORTANT: word count
-;; SOURCE: `http://orgmode.org/worg/org-hacks.html'
-;; (defun org-word-count (beg end
-;;                            &optional count-latex-macro-args?
-;;                            count-footnotes?)
-;;   "Report the number of words in the Org mode buffer or selected region.
-;; Ignores:
-;; - comments
-;; - tables
-;; - source code blocks (#+BEGIN_SRC ... #+END_SRC, and inline blocks)
-;; - hyperlinks (but does count words in hyperlink descriptions)
-;; - tags, priorities, and TODO keywords in headers
-;; - sections tagged as 'not for export'.
-
-;; The text of footnote definitions is ignored, unless the optional argument
-;; COUNT-FOOTNOTES? is non-nil.
-
-;; If the optional argument COUNT-LATEX-MACRO-ARGS? is non-nil, the word count
-;; includes LaTeX macro arguments (the material between {curly braces}).
-;; Otherwise, and by default, every LaTeX macro counts as 1 word regardless
-;; of its arguments."
-;;   (interactive "r")
-;;   (unless mark-active
-;;     (setf beg (point-min)
-;;           end (point-max)))
-;;   (let ((wc 0)
-;;         (latex-macro-regexp "\\\\[A-Za-z]+\\(\\[[^]]*\\]\\|\\){\\([^}]*\\)}"))
-;;     (save-excursion
-;;       (goto-char beg)
-;;       (while (< (point) end)
-;;         (cond
-;;          ;; Ignore comments.
-;;          ((or (org-in-commented-line) (org-at-table-p))
-;;           nil)
-;;          ;; Ignore hyperlinks. But if link has a description, count
-;;          ;; the words within the description.
-;;          ((looking-at org-bracket-link-analytic-regexp)
-;;           (when (match-string-no-properties 5)
-;;             (let ((desc (match-string-no-properties 5)))
-;;               (save-match-data
-;;                 (incf wc (length (remove "" (org-split-string
-;;                                              desc "\\W")))))))
-;;           (goto-char (match-end 0)))
-;;          ((looking-at org-any-link-re)
-;;           (goto-char (match-end 0)))
-;;          ;; Ignore source code blocks.
-;;          ((org-in-regexps-block-p "^#\\+BEGIN_SRC\\W" "^#\\+END_SRC\\W")
-;;           nil)
-;;          ;; Ignore inline source blocks, counting them as 1 word.
-;;          ((save-excursion
-;;             (backward-char)
-;;             (looking-at org-babel-inline-src-block-regexp))
-;;           (goto-char (match-end 0))
-;;           (setf wc (+ 2 wc)))
-;;          ;; Count latex macros as 1 word, ignoring their arguments.
-;;          ((save-excursion
-;;             (backward-char)
-;;             (looking-at latex-macro-regexp))
-;;           (goto-char (if count-latex-macro-args?
-;;                          (match-beginning 2)
-;;                        (match-end 0)))
-;;           (setf wc (+ 2 wc)))
-;;          ;; Ignore footnotes.
-;;          ((and (not count-footnotes?)
-;;                (or (org-footnote-at-definition-p)
-;;                    (org-footnote-at-reference-p)))
-;;           nil)
-;;          (t
-;;           (let ((contexts (org-context)))
-;;             (cond
-;;              ;; Ignore tags and TODO keywords, etc.
-;;              ((or (assoc :todo-keyword contexts)
-;;                   (assoc :priority contexts)
-;;                   (assoc :keyword contexts)
-;;                   (assoc :checkbox contexts))
-;;               nil)
-;;              ;; Ignore sections marked with tags that are
-;;              ;; excluded from export.
-;;              ((assoc :tags contexts)
-;;               (if (intersection (org-get-tags-at) org-export-exclude-tags
-;;                                 :test 'equal)
-;;                   (org-forward-same-level 1)
-;;                 nil))
-;;              (t
-;;               (incf wc))))))
-;;         (re-search-forward "\\w+\\W*")))
-;;     (message (format "%d words in %s." wc
-;;                      (if mark-active "region" "buffer")))))
 
 (provide 'writing-config)
 ;;; writing-config.el ends here

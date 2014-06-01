@@ -422,10 +422,9 @@
 ;;; IMPORTANT: save mini-buffer history
 ;; SOURCE: `http://emacswiki.org/emacs/SaveHist'
 (require 'savehist)
-  
-(savehist-mode t) ;; NOTE: keep mini buffer history between session
 
 (setq savehist-file (concat (expand-file-name user-emacs-directory) "minibuffer-history"))
+(savehist-mode t) ;; NOTE: keep mini buffer history between session
 
 ;;; IMPORTANT: save place
 ;; SOURCE: `http://www.emacswiki.org/emacs/SavePlace'
@@ -451,7 +450,7 @@
 
 ;;; IMPORTANT: desktop save mode
 ;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
-(require 'desktop)
+;;(require 'desktop)
 
 (after "desktop"
   ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
@@ -527,11 +526,13 @@
 (after "eshell"
   (require 'esh-mode)
   (require 'esh-util)
+  (require 'em-term)
   (require 'dired) ;; NOTE: ...
 
   (setq eshell-prompt-function 'eshell-prompt
 	;;eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
 	eshell-highlight-prompt nil
+	eshell-banner-message ""
 	eshell-prompt-regexp "^[^#$\n]*[#$] " ;; NOTE: fix shell auto-complete
 	eshell-cmpl-cycle-completions nil ;; NOTE: avoid cycle-completion
 	eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\|\\.elc\\)/\\'" ;; NOTE: ignore file prefixes
@@ -556,6 +557,11 @@
 			      eshell-unix))
 
   (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply))
+
+
+(after "em-term"
+  (add-to-list 'eshell-visual-commands "htop")
+  (add-to-list 'eshell-visual-commands "aptitude"))
 
 (defun eshell/git-branch (&rest junk)
   "Return the current git branch, if applicable."
@@ -754,7 +760,8 @@
   (interactive)
   (if (buffer-file-name)
       (progn
-        (setq file (concat "/sudo:root@localhost:" (buffer-file-name)))
+        ;; (setq file (concat "/sudo:root@localhost:" (buffer-file-name)))
+        (setq file (concat "/sudo::" (buffer-file-name)))	
         (find-file file))
     (message "Current buffer does not have an associated file.")))
 
@@ -831,6 +838,11 @@
 
 ;;; IMPORTANT: version control
 (setq vc-follow-symlinks t)
+
+;;; IMPORTANT: time
+;; TODO: this should probably be in `writing-config.el'
+
+;; TODO: investigate `display-time-world-list'
 
 (provide 'general-config)
 ;;; general-config.el ends here

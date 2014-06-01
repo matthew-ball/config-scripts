@@ -77,7 +77,6 @@ Enable the following minor modes:
   ;; (which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   (electric-pair-mode)
-  (yas-minor-mode t)
   (auto-insert-mode))
 
 ;; TODO: should just:

@@ -530,7 +530,7 @@
   "Define placement rules for windows."
   (group-frame-preference "Thunar"          "default"  :instance)
   (group-frame-preference "emacs"           "default"  :instance)
-  (group-frame-preference "chromium"        "internet" :instance)
+  (group-frame-preference "Chromium"        "internet" :instance)
   (group-frame-preference "stumpish"        "default"  :title)
   (group-frame-preference "screen"          "default"  :title)
   (group-frame-preference "terminal"        "misc"     :title)
@@ -541,6 +541,7 @@
   )
 
 ;;; IMPORTANT: run applications
+;; TODO: should I also pass a key-binding here? optional top-map instead of root-map?
 (defmacro create-application (name command &optional (key :instance) (key-arg `,name) (group "default"))  
   "Create a general framework for the creation, and running (raising) of applications."
   `(progn
@@ -552,7 +553,7 @@
 
 ;; TODO: unfortunately, this is hard coded
 (create-application "editor" (getenv "EDITOR") '(:instance "emacs"))
-(create-application "browser" (getenv "BROWSER") '(:instance "chromium"))
+(create-application "browser" (getenv "BROWSER") '(:instance "Chromium"))
 (create-application "file-manager" (getenv "FILE_MANAGER") '(:instance "Thunar"))
 ;; ...
 (create-application "document-viewer" (getenv "DOCUMENT_VIEWER"))

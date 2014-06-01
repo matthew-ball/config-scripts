@@ -144,9 +144,12 @@ Return a list of installed packages or nil for every skipped package."
  'auto-complete
  'browse-kill-ring
  'dash
+ 'deft
  'diminish
  'ebib
+ 'ac-ispell
  'ac-slime
+ 'ace-jump-mode
  'elisp-slime-nav
  'epl
  'erc-hl-nicks
@@ -189,8 +192,8 @@ Return a list of installed packages or nil for every skipped package."
 
 (use-config-file "appearance")
 (use-config-file "general")
-(use-config-file "user")
 (use-config-file "writing")
+(use-config-file "user")
 (use-config-file "programming")
 (use-config-file "key-bindings")
 
@@ -210,3 +213,4 @@ Return a list of installed packages or nil for every skipped package."
 ;; WARNING: I am not sure about this
 ;; (defvar *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")
 ;; (setq initial-buffer-choice *home-file*)
+

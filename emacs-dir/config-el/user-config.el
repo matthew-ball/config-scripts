@@ -27,12 +27,14 @@
 ;;; IMPORTANT: ace-jump-mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/AceJump'
 ;; (require 'ace-jump-mode)
+(autoload 'ace-jump-mode "ace-jump-mode" "..." t)
 
-;; (after "ace-jump-mode"
-;;   (ace-jump-mode)
+(after "ace-jump-mode"
+  ;; (ace-jump-mode)
 
-;;   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-;;   (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode-pop-mark))
+  (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+  ;; (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode-pop-mark)
+  )
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
@@ -45,16 +47,16 @@
 
 ;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
+;; TODO: I think this is replaced by `ido-hacks' by scottj
 (after "ido"
   (require 'ido-ubiquitous)
   (ido-ubiquitous-mode t))
 
 ;;; IMPORTANT: improve `ido's flex matching
 ;; SOURCE: `https://github.com/lewang/flx'
-;; ERROR: there's a bug with flx, such that it doesn't refresh/redisplay the `frame-title' - minor issue
 ;; (after "ido"
 ;;   (require 'flx)
-;;   (setq ido-use-faces nil)
+;;   (setq ido-use-faces t)
 ;;   (flx-ido-mode t))
 
 ;;; IMPORTANT: smex mode
@@ -326,37 +328,8 @@
   (message "Now showing everything"))
 
 ;;; IMPORTANT: custom inserts
-(defun surrounded-by-p (char)
-  "Returns t if word is surrounded by given char."
-  (save-excursion
-    (and (forward-word -1)
-         (equal char (char-before))
-         (forward-word 1)
-         (equal char (char-after)))))
-
-(defun surround-word (char &optional force)
-  "Surrounds word with given character.  If force is nil and word is already surrounded by given character remoevs them."
-  (save-excursion
-    (if (not (surrounded-by-p char))
-        (progn
-          (forward-word 1)
-          (insert char)
-          (forward-word -1)
-          (insert char)
-          t)
-      (forward-word 1)
-      (delete-char 1)
-      (forward-word -1)
-      (delete-char -1)
-      nil)))
-
-(defun erc-bold-word (&optional force)
-  (interactive "p")
-  (surround-word ? force))
-
-(defun erc-underline-word (&optional force)
-  (interactive "p")
-  (surround-word ? force))
+(propertize-word erc-bold ?)
+(propertize-word erc-underline ?)
 
 ;;; IMPORTANT: erc commands
 (defun erc-cmd-ACCESSLIST ()
@@ -420,7 +393,7 @@
 		(when (erc-channel-user-op-p k)
 		  (incf ops)))
 	      hash-table)
-     (format "There are %s users (%s ops) in the current channel" users ops))))
+     (format "There are %s users (%s ops) in the current channel." users ops))))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
 (defun erc-cmd-OPME ()
@@ -997,12 +970,11 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(require 'auto-complete)
-;;(autoload 'auto-complete "auto-complete" "..." t)
+;; (require 'auto-complete)
+(autoload 'auto-complete "auto-complete" "..." t)
 
 (after "auto-complete"
   (require 'auto-complete-config)
-  (ac-config-default)
 
   ;; (global-auto-complete-mode t)
 
@@ -1010,6 +982,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         ;;ac-ignore-case t ;; NOTE: always ignore case
 	ac-expand-on-auto-complete t ;; NOTE: expand common portions
 	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+	ac-fuzzy-enable t
         ;;ac-auto-show-menu t ;; NOTE: automatically show menu
   	;;ac-use-menu-map t ;; NOTE: use menu map
   	;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
@@ -1020,24 +993,22 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; (set-face-underline 'ac-candidate-face "darkgray")
   ;; (set-face-background 'ac-selection-face "steelblue")
 
-  (set-default 'ac-sources '(ac-source-features
-			     ac-source-functions
-			     ac-source-yasnippet
-			     ac-source-variables
-			     ac-source-symbols
-			     ac-source-abbrev
-			     ac-source-imenu
-			     ac-source-dictionary
-			     ac-source-words-in-buffer
-			     ac-source-words-in-same-mode-buffers
-			     ac-source-words-in-all-buffer)))
+  (defvar ac-user-sources '(ac-source-features ac-source-functions ac-source-yasnippet
+			    ac-source-variables ac-source-symbols ac-source-abbrev
+			    ac-source-imenu ac-source-dictionary ac-source-words-in-buffer
+			    ac-source-words-in-same-mode-buffers ac-source-words-in-all-buffer))
+
+  (dolist (source ac-user-sources)
+    (add-to-list 'ac-sources source))
+
+  (ac-config-default))
 
 ;;; IMPORTANT: auto-complete `ispell' source
 ;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
 ;; (require 'ac-ispell)
 
 ;; (after "ac-ispell"
-;;   (setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
+;;   ;;(setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
 ;;   (ac-ispell-setup)
 ;;   (add-hook 'text-mode-hook 'ac-ispell-ac-setup)
 ;;   ;;(add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
@@ -1055,6 +1026,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (yas-load-directory "~/.emacs.d/snippets/" t) ;; NOTE: use just-in-time
 
   ;; (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
+  (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode 1)))
   (yas-global-mode)
   
   ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
@@ -1348,26 +1320,6 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;;(custom-comment-mode t)
 (highlight-custom-comment-tags) ;; TEMP: call this until the mode works ...
 
-;;; IMPORTANT: window configuration
-;; SOURCE: `http://www.emacswiki.org/emacs/TransposeWindows'
-;; (defun swap-window-positions ()
-;;    "*Swap the positions of this window and the next one."
-;;    (interactive)
-;;    (let ((other-window (next-window (selected-window) 'no-minibuf)))
-;;      (let ((other-window-buffer (window-buffer other-window))
-;;            (other-window-hscroll (window-hscroll other-window))
-;;            (other-window-point (window-point other-window))
-;;            (other-window-start (window-start other-window)))
-;;        (set-window-buffer other-window (current-buffer))
-;;        (set-window-hscroll other-window (window-hscroll (selected-window)))
-;;        (set-window-point other-window (point))
-;;        (set-window-start other-window (window-start (selected-window)))
-;;        (set-window-buffer (selected-window) other-window-buffer)
-;;        (set-window-hscroll (selected-window) other-window-hscroll)
-;;        (set-window-point (selected-window) other-window-point)
-;;        (set-window-start (selected-window) other-window-start))
-;;      (select-window other-window)))
-
 ;; IMPORTANT: google translate
 ;; SOURCE: `https://github.com/manzyuk/google-translate'
 (require 'google-translate)
@@ -1385,6 +1337,7 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
 (require 'rainbow-delimiters)
+;;(autoload 'rainbow-delimiters-mode "rainbow-delimiters" "..." t)
 
 (after "rainbow-delimiters"
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
@@ -1457,7 +1410,16 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: expand region
 ;; SOURCE: `https://github.com/magnars/expand-region.el'
-(require 'expand-region)
+;;(require 'expand-region)
+(autoload 'er/expand-region "expand-region" "..." t)
+
+;;; IMPORTANT: journal entries with `org-mode'
+;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
+;; (require 'org-journal)
+(autoload 'org-journal-new-entry "org-journal" "..." t)
+
+(after "org-journal"
+  (setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/"))))
 
 (provide 'user-config)
 ;;; user-config.el ends here

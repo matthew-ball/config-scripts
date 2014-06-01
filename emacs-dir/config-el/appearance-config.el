@@ -107,13 +107,13 @@
 ;; (display-time-mode t) ;; NOTE: display time status in the mode line
 
 ;; TODO: check if laptop
-(defun laptop ()
-  (require 'wireless)
-  ;; (require 'battery)
-  (display-battery-mode t)
-  (after "wireless"
-    (setq wireless-mode-line-format "[%k%%]")
-    (display-wireless-mode t)))
+;; (defun laptop ()
+;;   (require 'wireless)
+;;   ;; (require 'battery)
+;;   (display-battery-mode t)
+;;   (after "wireless"
+;;     (setq wireless-mode-line-format "[%k%%]")
+;;     (display-wireless-mode t)))
 
 ;;(laptop)
 
@@ -234,6 +234,8 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
 (eval-after-load "w3m-lnum" '(diminish 'w3m-lnum-mode ""))
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode ""))
+(eval-after-load "geiser-mode" '(diminish 'geiser-mode ""))
+(eval-after-load "geiser-autodoc" '(diminish 'geiser-autodoc-mode ""))
 
 ;; NOTE: this is unofficially `diminish' for major modes
 (defvar mode-line-cleaner-alist '((c-mode	   . "C")

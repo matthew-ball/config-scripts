@@ -88,3 +88,4 @@ ncmpcpp-dir/error.log
 /stumpwm-dir/start-stumpwm.sh
 /emacs-dir/projectile-bookmarks.eld
 /emacs-dir/extras-el/apt-mode.el
+/emacs-dir/extras-el/org-entities-user+.el
