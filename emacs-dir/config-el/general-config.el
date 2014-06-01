@@ -173,7 +173,7 @@
 		       "cookies"
 		       "emacs-desktop"))
 
-  (mapc '(lambda (exclude) (add-to-list 'recentf-exclude exclude)) exclude-list)
+  (mapc #'(lambda (exclude) (add-to-list 'recentf-exclude exclude)) exclude-list)
 
   (recentf-mode t))
 
@@ -721,8 +721,8 @@
 
 (defun turn-on-dired-find-alternate-file (&rest junk)
   "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
-  (define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
-  (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
+  (define-key dired-mode-map (kbd "<return>") #'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
+  (define-key dired-mode-map (kbd "^") #'(lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
 
 ;;; IMPORTANT: general functions
 (defun eval-and-replace ()

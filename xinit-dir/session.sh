@@ -1,7 +1,7 @@
 ## FILE: /home/chu/config-scripts/xinit-dir/session.sh
 ## AUTHOR: Matthew Ball (copyleft 2014)
 
-# export environment variables for stumpwm
+# export environment variables for stumpwm and emacs
 
 # --- IMPORTANT: environment settings
 export LOCALE=UTF-8
@@ -24,11 +24,11 @@ export USER_UNI_ID="u4537508"
 export USER_UNI="anu.edu.au"
 export PRIMARY_EMAIL="mathew.ball@gmail.com"
 # --- IMPORTANT: default path variables
-export STUMPWM_SRC_DIR="/home/chu/Public/stumpwm"
-export SLIME_DIR="/home/chu/Public/slime"
-export QUICKLISP_DIR="/home/chu/quicklisp/dists/quicklisp/software"
-export USER_PROJECTS_DIR="/home/chu/Public/"
-export CONFIG_SCRIPTS_DIR="/home/chu/config-scripts/"
+export STUMPWM_SRC_DIR="$HOME/Public/stumpwm"
+export SLIME_DIR="$HOME/Public/slime"
+export QUICKLISP_DIR="$HOME/quicklisp/dists/quicklisp/software"
+export USER_PROJECTS_DIR="$HOME/Public/"
+export CONFIG_SCRIPTS_DIR="$HOME/config-scripts/"
 # NOTE: add clojure's lein to $PATH
-#export PATH=/home/chu/Programming/lisp/clojure/leiningen/:$PATH
+#export PATH=$HOME/Programming/lisp/clojure/leiningen/:$PATH
 #export LEIN_JVM_OPTS=

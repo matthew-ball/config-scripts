@@ -190,6 +190,8 @@ Return a list of installed packages or nil for every skipped package."
     ;; (message "Loading %s configuration" name)
     (funcall 'require (intern config-file))))
 
+;;(switch-to-buffer "*Messages*")
+
 (use-config-file "appearance")
 (use-config-file "general")
 (use-config-file "writing")

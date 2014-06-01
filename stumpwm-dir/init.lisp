@@ -292,7 +292,7 @@
 (defkeys-top ;; NOTE: define top-map keys (these don't require prefix key)
     ("s-B" "global-select")
     ("s-G" "vgroups")
-  ("s-M" '*mpd-map*)
+  ;; ("s-M" '*mpd-map*) ;; NOTE: assume defined in `contrib/mpd.lisp'
   ("s-S" '*sudo-map*)
   ;; ("s-V" '*volume-map*)
   ("s-:" "eval")
@@ -325,7 +325,7 @@
 (defvar *trash-group* '() "Group containing the trashed windows")
 
 (defcommand trash-window () ()
-  "Put the current window in the trash group. If it doesn't exist, create it"
+  "Put the current window in the trash group. If it doesn't exist, create it."
   (unless (or (eq (current-group) *trash-group*)
               (not (current-window)))
     (unless *trash-group*
@@ -341,7 +341,7 @@
         (switch-to-group *trash-group*))))
 
 (defun clean-trash (window)
-  "Called when a window is destroyed. If it was the last window of the trash group, destroy it"
+  "Called when a window is destroyed. If it was the last window of the trash group, destroy it."
   (let ((current-group (window-group window)))
     (when *trash-group*
       (when (and (eq current-group *trash-group*)
@@ -526,6 +526,7 @@
 ;;(clear-window-placement-rules) ;; NOTE: clear rules
 
 ;; TODO: too much hard-coding
+;; TODO: would be ideal to be able to capture this in the `create-application' macro
 (defun define-window-placement-rules ()
   "Define placement rules for windows."
   (group-frame-preference "Thunar"          "default"  :instance)

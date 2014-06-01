@@ -42,6 +42,10 @@
 
 ;;; Code:
 
+;;; IMPORTANT: custom comment group
+(defgroup custom-comment-group nil "Custom comments for `prog-mode' buffers."
+  :group 'font-lock :group 'programming)
+
 ;;; IMPORTANT: highlight custom comment tags
 (defvar custom-comment-tags-list '() "All custom tags.")
 
@@ -55,6 +59,7 @@
         (defface ,tag-face ,face "Font lock face to highlight custom tags category." :group (quote font-lock-faces))
         (add-to-list (quote custom-comment-tags-list) (quote ,tag-name)))))
 
+;; TODO: this is unnecessarily a macro
 (defmacro add-tag-to-category (category tag)
   "Add comment TAG to CATEGORY."
   (let ((tag-name (intern (format "custom-comment-tags-%s" category))))
@@ -73,9 +78,11 @@
    custom-comment-tags-list))
 
 ;; FIX: this doesn't work
+;; NOTE: when turning the mode off remove all instances of `custom-comment-tags-*-face' from `font-lock-keywords' variable
 ;;;###autoload
-;; (define-minor-mode custom-comment-mode
+;; (define-minor-mode custom-comment-highlight-mode
 ;;   "A minor-mode which toggles highlighting of custom comment strings in `prog-mode' buffers."
+;;   :group 'custom-comment-group
 ;;   ;; the initial value
 ;;   :init-value nil
 ;;   ;; the indicator for the mode-line
