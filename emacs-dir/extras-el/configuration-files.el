@@ -36,7 +36,7 @@
 ;; TODO: include `README' files
 
 ;; NOTE: an alist is technically (key . value) in this case we could do (title . file) or something
-(defvar config-files-alist '() "Stores a list of the names of the configuration files.")
+;; (defvar config-files-alist '() "Stores a list of the names of the configuration files.")
 
 ;; (setq config-dir-and-ext '((concat user-emacs-directory "config-el/")
 ;; 			   (concat user-emacs-directory "my-modes/")
@@ -59,30 +59,31 @@
 ;;                            (user-bash-directory . ".sh")
 ;;                            (user-stumpwm-directory . ".lisp")))
 
+;; ...
 
-(defun reset-config-files (&rest junk)
-  "Reset the variable `config-files-alist' to nil."
-  (setq config-files-alist '()))
+;; (defun reset-config-files (&rest junk)
+;;   "Reset the variable `config-files-alist' to nil."
+;;   (setq config-files-alist '()))
 
-(defun add-config-file (file &rest junk)
-  "Add FILE to the list `config-files-alist'."
-  (push file config-files-alist))
+;; (defun add-config-file (file &rest junk)
+;;   "Add FILE to the list `config-files-alist'."
+;;   (push file config-files-alist))
 
-(defun add-config-directory (directory extension &rest junk)
-  "Add all files in DIRECTORY matching EXTENSION to the `config-file-alist' list."
-  (save-excursion
-    (if (file-exists-p directory)
-	(let (files result)
-	  (setq files (directory-files directory t extension t))
-	  (dolist (file files)
-	    (when (and (file-readable-p file) (not (file-directory-p file)))
-	      (add-config-file file)))))))
+;; (defun add-config-directory (directory extension &rest junk)
+;;   "Add all files in DIRECTORY matching EXTENSION to the `config-file-alist' list."
+;;   (save-excursion
+;;     (if (file-exists-p directory)
+;; 	(let (files result)
+;; 	  (setq files (directory-files directory t extension t))
+;; 	  (dolist (file files)
+;; 	    (when (and (file-readable-p file) (not (file-directory-p file)))
+;; 	      (add-config-file file)))))))
 
-(defun open-config-files (&rest junk)
-  "Opens all configuration files."
-  (interactive)
-  (save-excursion
-    (dolist (file config-files-alist) ;; NOTE: open files listed in `config-files-alist'
-      (find-file file))))
+;; (defun open-config-files (&rest junk)
+;;   "Opens all configuration files."
+;;   (interactive)
+;;   (save-excursion
+;;     (dolist (file config-files-alist) ;; NOTE: open files listed in `config-files-alist'
+;;       (find-file file))))
 
-(provide 'configuration-files)
+;; (provide 'configuration-files)

@@ -26,28 +26,23 @@
 
 ;;; IMPORTANT: ace-jump-mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/AceJump'
-;; (require 'ace-jump-mode)
 (autoload 'ace-jump-mode "ace-jump-mode" "..." t)
 
-(after "ace-jump-mode"
-  ;; (ace-jump-mode)
-
-  (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-  ;; (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode-pop-mark)
-  )
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+;; (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode-pop-mark)
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-;; (autoload 'bbdb "bbdb" "" t)
+(autoload 'bbdb "bbdb" "" t)
 
-;; (after "bbdb"
-;;  (bbdb-initialize 'gnus 'message)
+(after "bbdb"
+ (bbdb-initialize 'gnus 'message)
 
-;;  (setq bbdb-file "~/.emacs.d/contacts-file.el"))
+ ;; (setq bbdb-file "~/.emacs.d/contacts-file.el")
+ )
 
 ;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
-;; TODO: I think this is replaced by `ido-hacks' by scottj
 (after "ido"
   (require 'ido-ubiquitous)
   (ido-ubiquitous-mode t))
@@ -1322,17 +1317,17 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;; IMPORTANT: google translate
 ;; SOURCE: `https://github.com/manzyuk/google-translate'
-(require 'google-translate)
+;; (require 'google-translate)
 
-(after "google-translate"
-  (setq google-translate-enable-ido-completion t
-	google-translate-show-phonetic t
-	;; google-translate-default-source-language "auto"
-	;; google-translate-default-target-language "en"
-	)
+;; (after "google-translate"
+;;   (setq google-translate-enable-ido-completion t
+;; 	google-translate-show-phonetic t
+;; 	;; google-translate-default-source-language "auto"
+;; 	;; google-translate-default-target-language "en"
+;; 	)
 
-  (global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
-  (global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse))
+;;   (global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
+;;   (global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse))
 
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
@@ -1376,10 +1371,10 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: projectile
 ;; SOURCE: `http://www.emacswiki.org/emacs/Projectile'
-(require 'projectile)
+;; (require 'projectile)
 
-(after "projectile"  
-  (projectile-global-mode))
+;; (after "projectile"  
+;;   (projectile-global-mode))
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'

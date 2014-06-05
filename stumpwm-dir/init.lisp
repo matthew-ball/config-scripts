@@ -41,6 +41,14 @@
 
 (set-prefix-key (kbd "s-z")) ;; NOTE: set stumpwm prefix key (super+z)
 
+;;; IMPORTANT: user variables
+;; NOTE: get from shell environment
+(defvar *user-home-directory* (getenv "HOME") "User's home directory.")
+(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
+(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
+(defvar *user-slime-directory* (getenv "SLIME_DIR") "Slime directory.")
+(defvar *user-projects-directory* (getenv "USER_PROJECTS_DIR") "User's projects directory.")
+
 ;;; IMPORTANT: general functions
 (defun host-name ()
   "Return a string representing the hostname."
@@ -97,14 +105,6 @@
 	       (concat dir path)
 	       (expand-file-name (concat dir path))))
       (t (concat home-dir path)))))
-
-;;; IMPORTANT: user variables
-;; NOTE: get from shell environment
-(defvar *user-home-directory* (getenv "HOME") "User's home directory.")
-(defvar *user-source-directory* (getenv "STUMPWM_SRC_DIR") "StumpWM source directory path.")
-(defvar *user-quicklisp-directory* (getenv "QUICKLISP_DIR") "Quicklisp directory path.")
-(defvar *user-slime-directory* (getenv "SLIME_DIR") "Slime directory.")
-(defvar *user-projects-directory* (getenv "USER_PROJECTS_DIR") "User's projects directory.")
 
 ;;; IMPORTANT: slime and swank
 ;; SOURCE: `https://github.com/slime/slime'
@@ -269,11 +269,11 @@
 (undefine-key *root-map* (kbd "C-e"))
 (undefine-key *root-map* (kbd "C-b"))
 (undefine-key *root-map* (kbd "C-a"))
-;;(undefine-key *root-map* (kbd "C-n")) ;; ERROR: does not work
-;;(undefine-key *root-map* (kbd "C-p")) ;; ERROR: does not work
-;;(undefine-key *root-map* (kbd "C-l")) ;; ERROR: does not work
-;;(undefine-key *root-map* (kbd "C-w")) ;; ERROR: does not work
-;;(undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
+;; (undefine-key *root-map* (kbd "C-n")) ;; ERROR: does not work
+;; (undefine-key *root-map* (kbd "C-p")) ;; ERROR: does not work
+;; (undefine-key *root-map* (kbd "C-l")) ;; ERROR: does not work
+;; (undefine-key *root-map* (kbd "C-w")) ;; ERROR: does not work
+;; (undefine-key *root-map* (kbd "C-k")) ;; ERROR: does not work
 
 (defkeys-root ;; NOTE: define root-map keys
     ("s-q" "safe-quit")

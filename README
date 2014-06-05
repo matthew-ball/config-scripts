@@ -122,6 +122,12 @@ The system =startx= command is launched with the [[file:xinit-dir/rc.sh][xinit/i
 *** [[file:restore-script.sh][Restore Script]]
 - the restore script ...
 
+** Default Applications
+The following applications are assumed /default/ for this configuration to take effect:
+1. GNU Emacs 24
+2. Chromium
+3. SBCL
+
 ** TODO Create a =mailconfig= file for handling the email configuration
 - symlink to ~/.authinfo
    #+BEGIN_SRC shell-script
