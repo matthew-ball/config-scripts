@@ -117,36 +117,9 @@
 (after "erc"
   (require 'tls)
   (require 'erc-spelling)
-  ;; (require 'erc-hl-nicks)
-  ;; (require 'erc-stamp)
-  ;; (require 'erc-join)
-  ;; (require 'erc-netsplit)
-  ;; (require 'erc-ring)
-  ;; (require 'erc-goodies)
-  ;; (require 'erc-track)
-  ;; (require 'erc-button)
-  ;; (require 'erc-match)
-  ;; (require 'erc-fill)
-  ;; (require 'erc-log)
-  ;; (require 'erc-pcomplete)
-  ;; (require 'erc-notify)
-  ;; (require 'erc-capab) ;; TODO: investigate `capab-identity'
-  ;; (require 'erc-goodies)
 
   ;; IMPORTANT: erc modules
   (erc-spelling-enable)
-  ;; (erc-button-enable)
-  ;; (erc-ring-enable)
-  ;; (erc-netsplit-enable)
-  ;; (erc-match-enable)
-  ;; (erc-autojoin-enable)
-  ;; (erc-scrolltobottom-enable)
-  ;; (erc-hl-nicks-enable)
-  ;; (erc-timestamp-mode t)
-  ;; (erc-fill-disable)
-
-  ;; IMPORTANT: erc capab
-  ;; (eval-after-load "erc-capab" '(erc-capab-identify-mode t))
 
   ;; IMPORTANT: erc match
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
@@ -175,14 +148,6 @@
 
   (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
-  ;;; IMPORTANT: erc autoaway
-  ;; (require 'erc-autoaway)
-
-  ;; IMPORTANT: erc notify
-  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcNotify'
-  ;;(setq erc-notify-list erc-pals)
-  ;;(erc-notify-mode t)
-
   ;; IMPORTANT: erc logging
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
   (require 'erc-log)
@@ -200,12 +165,6 @@
   ;; IMPORTANT: erc ignore
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcIgnoring'
   ;; (setq-default erc-ignore-list '())
-
-  ;; IMPORTANT: erc completion
-  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcCompletion'
-  ;; (require 'erc-pcomplete)
-
-  ;; (erc-pcomplete-enable)
 
   ;; IMPORTANT: erc user variables
   ;; TODO: use variables in here ...
@@ -271,15 +230,6 @@
 
   (setq erc-remove-parsed-property nil))
 
-;;; IMPORTANT: irssi-like /window command
-;; TODO: this is horrible
-(defun erc-cmd-WINDOW (window)
-  "..."
-  (let* ((number 0)
-	 (channels (mapcar #'(lambda (element) `(,(incf number) . ,element))
-			   (reverse (cdr (car erc-autojoin-channels-alist))))))
-    (switch-to-buffer (cdr (assoc window channels)))))
-
 (after "erc-goodies"
   (erc-scrolltobottom-enable)
 
@@ -310,29 +260,23 @@
 ;;         (erc-display-line (erc-make-notice "Conference mode enabled.") 'active)))
 ;;     t))
 
-(defun erc-enable-conference-mode ()
-  (interactive)
-  (setq erc-hide-list (quote ("JOIN" "QUIT" "MODE")))
-  (setq erc-minibuffer-ignored t)
-  (message "Now ignoring JOINs, QUITs, and MODEs"))
+;; (defun erc-enable-conference-mode ()
+;;   (interactive)
+;;   (setq erc-hide-list (quote ("JOIN" "QUIT" "MODE")))
+;;   (setq erc-minibuffer-ignored t)
+;;   (message "Now ignoring JOINs, QUITs, and MODEs"))
 
-(defun erc-disable-conference-mode ()
-  (interactive)
-  (setq erc-hide-list nil)
-  (setq erc-minibuffer-ignored nil)
-  (message "Now showing everything"))
+;; (defun erc-disable-conference-mode ()
+;;   (interactive)
+;;   (setq erc-hide-list nil)
+;;   (setq erc-minibuffer-ignored nil)
+;;   (message "Now showing everything"))
 
 ;;; IMPORTANT: custom inserts
 (propertize-word erc-bold ?)
 (propertize-word erc-underline ?)
 
-;;; IMPORTANT: erc commands
-(defun erc-cmd-ACCESSLIST ()
-  "Display the `access-list' for the current channel."
-  (erc-message "PRIVMSG"
-	       (format "ChanServ ACCESS %s LIST"
-		       (erc-default-target))))
-
+;;; IMPORTANT: erc user commands
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcUname'
 (defun erc-cmd-UNAME (&rest ignore)
   "Display the result of running `uname -a' to the current ERC buffer."
@@ -341,22 +285,6 @@
           "[ \n]+$" "" (shell-command-to-string "uname -a"))))
     (erc-send-message
      (concat "{uname -a} [" uname-output "]"))))
-
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcUptime'
-(defun erc-cmd-UPTIME (&rest ignore)
-  "Display the uptime of the system, as well as some load-related information, to the current ERC buffer."
-  (let ((uname-output
-         (replace-regexp-in-string
-	  ", load average: " "] {Load average} ["
-	  ;; NOTE: collapse spaces, remove
-	  (replace-regexp-in-string
-	   " +" " "
-	   ;; NOTE: remove beginning and trailing whitespace
-	   (replace-regexp-in-string
-	    "^ +\\|[ \n]+$" ""
-	    (shell-command-to-string "uptime"))))))
-    (erc-send-message
-     (concat "{Uptime} [" uname-output "]"))))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcShow'
 (defun erc-cmd-SHOW (&rest form)
@@ -377,20 +305,20 @@
 
 (defun erc-cmd-HOWMANY (&rest ignore)
   "Display how many users (and ops) the current channel has."
-  (erc-display-message
-   nil 'notice (current-buffer)
-   (let ((hash-table (with-current-buffer (erc-server-buffer) erc-server-users))
-	 (users 0)
-	 (ops 0))
-     (maphash (lambda (k v)
-		(when (member (current-buffer) (erc-server-user-buffers v))
-		  (incf users))
-		(when (erc-channel-user-op-p k)
-		  (incf ops)))
-	      hash-table)
-     (format "There are %s users (%s ops) in the current channel." users ops))))
+  (erc-display-message nil 'notice (current-buffer)
+		       (let ((hash-table (with-current-buffer (erc-server-buffer) erc-server-users))
+			     (users 0)
+			     (ops 0))
+			 (maphash (lambda (k v)
+				    (when (member (current-buffer) (erc-server-user-buffers v))
+				      (incf users))
+				    (when (erc-channel-user-op-p k)
+				      (incf ops)))
+				  hash-table)
+			 (format "There are %s users (%s ops) in the current channel." users ops))))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
+;; SOURCE: `http://www.emacswiki.org/emacs/EmacsChannelMaintenance'
 (defun erc-cmd-OPME ()
   "Request ChanServ to put me into operator status."
   (erc-message "PRIVMSG"
@@ -398,57 +326,30 @@
 		       (erc-default-target)
 		       (erc-current-nick)) nil))
 
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
 (defun erc-cmd-DEOPME ()
   "Deop myself from current channel."
-  (erc-cmd-DEOP
-   (format "%s"
-	   (erc-current-nick))))
+  (erc-cmd-DEOP (format "%s" (erc-current-nick))))
 
-;; SOURCE: `http://www.emacswiki.org/emacs/EmacsChannelMaintenance'
-;; (defun erc-cmd-BAN (nick)
-;;   "..."
-;;   (let* ((chan (erc-default-target))
-;;          (who (erc-get-server-user nick))
-;;          (host (erc-server-user-host who))
-;;          (user (erc-server-user-login who)))
-;;     (erc-send-command (format "MODE %s +b *!%s@%s" chan user host))))
+(defun erc-cmd-VOICE (nick &optional devoice)
+  "Apply (de)voice to user."
+  (let ((chan (erc-default-target)))
+    (erc-message "PRIVMSG" (format "chanserv %s %s %s" (if devoice "devoice" "voice") chan nick))))
 
-;; (defun erc-cmd-UNBAN (nick)
-;;   "..."
-;;   (let* ((chan (erc-default-target))
-;; 	 (who (erc-get-server-user nick))
-;; 	 (host (erc-server-user-host who))
-;; 	 (user (erc-server-user-login who)))
-;;     (erc-send-command (format "MODE %s -b *!%s@%s" chan user host))))
+(defun erc-cmd-QUIET (nick &optional unquiet)
+  "Apply (un)quiet to user."
+  (let* ((chan (erc-default-target))
+	 (who (erc-get-server-user nick))
+	 (host (erc-server-user-host who)))
+    (erc-cmd-OPME)
+    (erc-send-command (format "MODE %s %sq *!*@%s" chan (if unquiet "-" "+") host))
+    (erc-cmd-DEOPME)))
 
-(defun erc-cmd-BAN (nick)
+(defun erc-cmd-BAN (nick &optional unban)
   "Ban user NICK from channel specified by `erc-default-target'."
   (let* ((chan (erc-default-target))
 	 (who (erc-get-server-user nick))
-	 (host (erc-server-user-host who))
-	 ;(user (erc-server-user-login who))
-	 )
-    (erc-send-command (format "MODE %s +b *!*@%s" chan host))))
-
-(defun erc-cmd-UNBAN (nick)
-  "Unban user NICK from channel specified by `erc-default-target'."
-  (let* ((chan (erc-default-target))
-	 (who (erc-get-server-user nick))
-	 (host (erc-server-user-host who))
-	 ;(user (erc-server-user-login who))
-	 )
-    (erc-send-command (format "MODE %s -b *!*@%s" chan host))))
-
-;; (defun erc-cmd-MUTE (nick)
-;;   (let ((chan (erc-default-target))
-;; 	(host (erc-get-server-user nick)))
-;;     (erc-send-command (format "QUIET %s *!*@%s" chan host))))
-
-;; (defun erc-cmd-UNMUTE (nick)
-;;   (let ((chan (erc-default-target))
-;; 	(who (erc-get-server-user nick)))
-;;     (erc-send-command (format "UNQUIET %s *!*@%s" chan host))))
+	 (host (erc-server-user-host who)))
+    (erc-send-command (format "MODE %s %sb *!*@%s" chan (if unban "-" "+") host))))
 
 (defun erc-cmd-KICK (nick)
   "Kick NICK from channel."
@@ -473,6 +374,7 @@
     ;;(erc-cmd-DEOPME)
     ))
 
+;; IMPORTANT: screwing around ...
 (defvar *greetings-list* nil "List of welcoming greetings.")
 
 (setq *greetings-list* '("Hello"
@@ -511,14 +413,14 @@
        (erc-send-action (erc-default-target)
 			(concat ,verb " " name " " ,string)))))
 
-(erc-user-message "NICKSERV" "Freenode's NickServ allows a user to register a nickname. See: /msg NickServ help")
-(erc-user-message "MEMOSERV" "Freenode's MemoServ allows a user to send messages to registered users. See: /msg MemoServ help")
-(erc-user-message "CHANSERV" "Freenode's ChanServ gives normal users the ability to maintain control of a channel. See: /msg ChanServ help")
+;; (erc-user-message "NICKSERV" "Freenode's NickServ allows a user to register a nickname. See: /msg NickServ help")
+;; (erc-user-message "MEMOSERV" "Freenode's MemoServ allows a user to send messages to registered users. See: /msg MemoServ help")
+;; (erc-user-message "CHANSERV" "Freenode's ChanServ gives normal users the ability to maintain control of a channel. See: /msg ChanServ help")
+;;
 (erc-user-message "GUIDELINES" "The guidelines for using the Ubuntu channels can be found here: http://wiki.ubuntu.com/IRC/Guidelines")
 (erc-user-message "LANGUAGE" "Please watch your language in this channel, thank you.")
 (erc-user-message "EMACS" "GNU Emacs is a powerful lisp environment and text editor. See: http://www.gnu.org/software/emacs/")
 (erc-user-message "STUMPWM" "StumpWM is a tiling window manager for X11 written in common lisp. See: http://www.nongnu.org/stumpwm/")
-;;(erc-user-message "CONKEROR" "Conkeror is a highly extensible web browser based on Firefox. See: http://conkeror.org/")
 (erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
 
 (defun erc-cmd-GENTLEMEN ()
@@ -528,101 +430,14 @@
 ;; SOURCE: `fsbot' in #emacs
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
 
-;; IMPORTANT: freenode <*>Serv interaction commands
-;; SOURCE: `http://keramida.wordpress.com/2008/11/04/extending-erc-with-emacs-lisp/'
-(defun erc-cmd-CS (&rest args)
-  "Short alias for `/chanserv ARGS'."
-  (let ((command-args (append (list "CHANSERV") args)))
-    (let ((chanserv-command (mapconcat #'identity command-args " ")))
-      (erc-send-command chanserv-command))))
-
-(defun erc-cmd-MS (&rest args)
-  "Short alias for `/memoserv ARGS'."
-  (let ((command-args (append (list "MEMOSERV") args)))
-    (let ((memoserv-command (mapconcat #'identity command-args " ")))
-      (erc-send-command memoserv-command))))
-
-(defun erc-cmd-NS (&rest args)
-  "Short alias for `/nickserv ARGS'."
-  (let ((command-args (append (list "NICKSERV") args)))
-    (let ((nickserv-command (mapconcat #'identity command-args " ")))
-      (erc-send-command nickserv-command))))
-
-;; NOTE: Freenode `NickServ' commands:
-;; GHOST           Reclaims use of a nickname.
-;; GROUP           Adds a nickname to your account.
-;; IDENTIFY        Identifies to services for a nickname.
-;; INFO            Displays information on registrations.
-;; LISTCHANS       Lists channels that you have access to.
-;; REGISTER        Registers a nickname.
-;; RELEASE         Releases a services enforcer.
-;; SET             Sets various control flags.
-;; UNGROUP         Removes a nickname from your account.
-;;  
-;; Other commands: ACC, ACCESS, CERT, DROP, HELP, LISTOWNMAIL, 
-;;                 LOGOUT, REGAIN, SETPASS, STATUS, TAXONOMY, 
-;;                 VACATION, VERIFY
-
-(defvar nickserv-commands-list (list "GHOST" "GROUP" "IDENTIFY" "INFO" "LISTCHANS" "REGISTER" "RELEASE" "SET" "UNGROUP" "ACC" "ACCESS" "CERT" "DROP" "HELP" "LISTOWNMAIL" "LOGOUT" "REGAIN" "SETPASS" "STATUS" "TAXONOMY" "VACATION" "VERIFY") "List of Freenode's `NickServ' commands.")
-
-;; (defmacro erc-user-cmd (command)
-;;   "..."
-;;   (let ((func (insert (concat "erc-cmd-" command)))
-;; 	(doc (format "Send the command \"%s\" to a server process in an `erc-mode' buffer." command)))
-;;     `(defun ,func (&rest junk)
-;;        ,doc
-;;        (erc-message "PRIVMSG" (format "%s help" ,command)))))
-
-;;(erc-user-cmd "NICKSERV")
-
-;; (defun erc-cmd-NS ()
-;;   ""
-;;   (let ((choice (ido-completing-read "Select command: " nickserv-commands-list)))
-;;     (erc-message "PRIVMSG"
-;;                  (format "NickServ help %s"
-;;                          choice))))
-
-;; IMPORTANT: freenode user and channel modes
-;; (defvar freenode-user-modes-list (list "D" "g" "i" "Q" "R" "w" "z"))
-;; (defvar freenode-channel-modes-list (list "b" "C" "c" "e" "f" "F" "g" "i" "I" "j" "k" "l" "L" "m" "n" "p" "P" "q" "Q" "r" "s" "t" "z"))
-
-;; (defun user-mode-command (user-flag)
-;;   "..."
-;;   )
-
-;; (defun channel-mode-command (mode-flag &optional user)
-;;   "..."
-;;   (let ((channel (erc-default-target)))
-;;     (erc-server-send (concat "MODE " channel mode-flag user))
-;;     ))
-
-;; NOTE: Freenode `MemoServ' commands:
-;; DEL             Alias for DELETE
-;; DELETE          Deletes memos.
-;; FORWARD         Forwards a memo.
-;; HELP            Displays contextual help information.
-;; IGNORE          Ignores memos.
-;; LIST            Lists all of your memos.
-;; READ            Reads a memo.
-;; SEND            Sends a memo to a user.
-;; SENDOPS         Sends a memo to all ops on a channel.
-
-(defvar memoserv-commands-list (list "DEL" "DELETE" "FORWARD" "HELP" "IGNORE" "LIST" "READ" "SEND" "SENDOPS") "List of Freenode's `MemoServ' commands.")
-
-;; (defun erc-cmd-MS (&rest junk)
-;;   "Send `MemoServ' command to server process in an `erc-mode' buffer."
-;;   (let ((choice (ido-completing-read "Select command: " memoserv-commands-list)))
-;;     (erc-message "PRIVMSG" (concat "MemoServ " choice " help") nil)))
-
-;; TODO: add a bunch of commands to automagically handle ChanServ stuff
-;; ...
-;; (defun erc-cmd-CS (&rest junk)
-;;   )
+;; IMPORTANT: freenode server services
+(after "erc"
+  (require 'erc-star-serv))
 
 ;;; IMPORTANT: "Custom" `erc-mode' interactions with outside environment
 (defun erc-cmd-MAN (program &rest args)
   "Open the `man' page for PROGRAM."
-  (man program))
+  (1man program))
 
 (defun erc-cmd-WOMAN (program &rest args)
   "Open the `woman' page for PROGRAM."

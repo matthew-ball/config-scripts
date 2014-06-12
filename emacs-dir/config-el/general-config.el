@@ -195,15 +195,14 @@
   ;; TODO: need to look at how the regexp is handled here
   (defvar never-show-regexp '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
 
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*")
-;;  (add-to-list 'ibuffer-never-show-predicates "^\\*Completions")
-  (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer*")
-  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
-  ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt *never-show-regexp*))
-  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$")
-  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
-  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Messages")
+  (defun ibuffer-never-show ()
+    ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt *never-show-regexp*))
+    (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*")
+    (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*")
+    ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Completions")
+    ;; (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
+    ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Messages")
+    (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer*"))
 
   (setq ibuffer-saved-filter-groups
 	`(("default"
@@ -393,7 +392,8 @@
   (defun turn-on-custom-ibuffer ()
     "Modify `ibuffer' behaviour slightly."
     (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
-    (ibuffer-switch-to-saved-filter-groups "default"))
+    (ibuffer-switch-to-saved-filter-groups "default")
+    (ibuffer-never-show))
 
   (add-hook 'ibuffer-mode-hook 'turn-on-custom-ibuffer))
 
