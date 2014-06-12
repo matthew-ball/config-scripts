@@ -36,10 +36,10 @@
 (autoload 'bbdb "bbdb" "" t)
 
 (after "bbdb"
- (bbdb-initialize 'gnus 'message)
+  (bbdb-initialize 'gnus 'message)
 
- ;; (setq bbdb-file "~/.emacs.d/contacts-file.el")
- )
+  ;; (setq bbdb-file "~/.emacs.d/contacts-file.el")
+  )
 
 ;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
@@ -201,8 +201,8 @@
         erc-truncate-buffer-on-save t
         erc-prompt ;; NOTE: channel specific prompt ...
         (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
-                       (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
-                     (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
+		  (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
+		(erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
         erc-join-buffer 'bury
         erc-autojoin-channels-alist '((".*\\.freenode.net"
 				       ;; "#gnus"
@@ -364,10 +364,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; 1. use that information (i.e. start gnus)
 ;; 2. re-write the file to disk (i.e. something has changed)
 
-(defun create-authinfo ()
-  "Create an authinfo file, if none exists.
+;; (defun create-authinfo ()
+;;   "Create an authinfo file, if none exists.
 
-This requires collecting user input - including user password.")
+;; This requires collecting user input - including user password.")
 
 (after "gnus"
   (require 'smtpmail)
@@ -376,81 +376,84 @@ This requires collecting user input - including user password.")
 
   ;; IMPORTANT: encryption
   ;; SOURCE: `http://emacswiki.org/emacs/EasyPG'
-  ;; TODO: configuration encryption
+  ;; TODO: configure encryption
 
   ;; IMPORTANT: personal settings
-  (setq user-mail-address user-primary-email-address ;; NOTE: user primary email address
-        ;; user-mail-address "mathew.ball@gmail.com" ;; NOTE: user mail address
-        ;; user-full-name "Matthew Ball" ;; NOTE: user full-name
-	gnus-use-full-window nil ;; NOTE: don't ruin my frame!
-        mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file'
-        auth-source-save-behavior nil
-        gnus-inhibit-startup-message t
-        gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
-        gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
+  (setq user-mail-address user-primary-email-address
+        ;; user-mail-address "mathew.ball@gmail.com"
+        ;; user-full-name "Matthew Ball"
+        ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; NOTE: change directory where authentication information is found	
         ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; NOTE: change directory where mail aliases are located
-        ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; NOTE: change directory where authentication information is found
-        message-from-style 'angles ;; NOTE: specifies how the "From" header appears
+	mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file')	
+	auth-source-save-behavior nil
         read-mail-command 'gnus
-        message-send-mail-function 'smtpmail-send-it ;; NOTE: for gnus (message-mode)
-        send-mail-function 'smtpmail-send-it) ;; NOTE: not for gnus (mail-mode)
+	send-mail-function 'smtpmail-send-it ;; NOTE: not for gnus (mail-mode)
+	message-kill-buffer-on-exit t ;; NOTE: kill the mail buffer after sending message
+	message-from-style 'angles ;; NOTE: specifies how the "From" header appears
+        message-send-mail-function 'smtpmail-send-it) ;; NOTE: for gnus (message-mode)
 
-  ;; TODO: can these be set in `general-config.el' (???)
+  ;; TODO: should these be set in `general-config.el' or even `init.el' ???
   (setq custom-mail-dir (expand-file-name user-mail-directory)) ;; NOTE: set directory for mail
   (setq custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
-  ;; (setq custom-mail-dir "~/Mail/") ;; NOTE: set directory for mail
-  ;; (setq custom-news-dir "~/News/") ;; NOTE: set directory for news
-
   ;; IMPORTANT: gnus settings
-  (setq gnus-select-method '(nnml "")
+  (setq gnus-use-full-window nil ;; NOTE: don't ruin my frame!
+	gnus-adaptive-pretty-print t
+        gnus-inhibit-startup-message t
+        gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
+        gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
+	gnus-select-method '(nnml "")
+	gnus-check-new-newsgroups nil ;; NOTE: suppress checking for new groups
+        gnus-save-newsrc-file nil ;; NOTE: turn off writing the `.newsrc' file
+        gnus-read-newsrc-file nil ;; NOTE: ignore the `.newsrc' file
+        gnus-interactive-exit nil
+        gnus-save-killed-list nil ;; NOTE: do not save a list of killed groups to startup file
         gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
         gnus-invalid-group-regexp "[:`'\"]\\|^$"
         gnus-permanently-visible-groups "mail"
         gnus-thread-hide-subtree t
         gnus-fetch-old-headers t
+	;; gnus-summary-mode-line-format "Gnus: %g [%A] %Z"
+	;; gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n"
         gnus-thread-ignore-subject t
         gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
         gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
+	gnus-visible-headers (concat "^From:\\|^Subject:\\|^Newsgroups:" "\\|^To:\\|^Cc:\\|^Date:")
         gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: change email addresses
                               ("gmail" (address "mathew.ball@gmail.com"))
-                              ("anumail" (address "u4537508@anu.edu.au"))))
+                              ;;("anumail" (address "u4537508@anu.edu.au"))
+			      ))
 
-  (setq gnus-check-new-newsgroups nil ;; NOTE: suppress checking for new groups
-        gnus-save-newsrc-file nil ;; NOTE: turn off writing the `.newsrc' file
-        gnus-read-newsrc-file nil ;; NOTE: ignore the `.newsrc' file
-        gnus-interactive-exit nil
-        gnus-save-killed-list nil ;; NOTE: do not save a list of killed groups to startup file
-        )
+  ;; NOTE: html display
+  (setq mm-text-html-renderer 'w3m)
+  (setq mm-inline-text-html-with-images t)
+  (setq mm-inline-text-html-with-w3m-keymap nil)
 
-  (setq message-kill-buffer-on-exit t) ;; NOTE: kill the mail buffer after sending message
+  ;; NOTE: rss config
+  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
 
-  ;; IMPORTANT: visible headers
-  (setq gnus-visible-headers
-        (concat "^From:\\|^Subject:\\|^Newsgroups:"
-                "\\|^Organization:"
-                "\\|^To:\\|^Cc:\\|^Date:"))
+  ;; NOTE: display 'text/html' parts in nnrss groups
+  (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
   ;; IMPORTANT: imap setup
   (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
         imap-log t ;; NOTE: log the imap session
         imap-store-password t ;; NOTE: store the session password
-        gnus-secondary-select-methods
-        '((nnimap "gmail" ;; NOTE: gmail login
-                  (nnimap-address "imap.gmail.com") ;; NOTE: being the "gmail" account, this hard-coding is ok?
-                  (nnimap-server-port 993)
-                  (nnimap-authinfo-file "~/.authinfo")
-                  (nnimap-authenticator login)
-                  (nnimap-expunge-on-close 'never)
-                  (nnimap-stream ssl))
-          ;; (nnimap "anumail" ;; NOTE: anumail login (ERROR: this does not work)
-          ;; 	(nnimap-address "anumail.anu.edu.au")
-          ;; 	(nnimap-server-port 993)
-          ;; 	;; (nnimap-authinfo-file "~/.authinfo")
-          ;; 	;; (nnimap-authenticator login)
-          ;; 	;; (nnimap-expunge-on-close 'never)
-          ;; 	(nnimap-stream ssl))
-          ))
+        gnus-secondary-select-methods '((nnimap "gmail" ;; NOTE: gmail login
+						(nnimap-address "imap.gmail.com")
+						(nnimap-server-port 993)
+						(nnimap-authinfo-file "~/.authinfo")
+						(nnimap-authenticator login)
+						(nnimap-expunge-on-close 'never)
+						(nnimap-stream ssl))
+					;; (nnimap "anumail" ;; NOTE: anumail login (ERROR: this does not work)
+					;; 	(nnimap-address "anumail.anu.edu.au")
+					;; 	(nnimap-server-port 993)
+					;; 	;; (nnimap-authinfo-file "~/.authinfo")
+					;; 	;; (nnimap-authenticator login)
+					;; 	;; (nnimap-expunge-on-close 'never)
+					;; 	(nnimap-stream ssl))
+					))
 
 
   ;; IMPORTANT: smtp setup (single account)
@@ -458,12 +461,11 @@ This requires collecting user input - including user password.")
         smtpmail-smtp-server "smtp.gmail.com"
         smtpmail-default-smtp-server "smtp.gmail.com"
         smtpmail-smtp-service 587
-        smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))) ;; TODO: replace email address
+        smtpmail-auth-credentials '(("smtp.gmail.com" 587 user-primary-email-address nil))) ;; TODO: replace email address
 
   ;; IMPORTANT: smtp setup (multiple accounts) (ERROR: this does not work)
-  ;; (defvar smtp-accounts ;; available smtp accounts
-  ;;   '((ssl "mathew.ball@gmail.com" "smtp.gmail.com" 587 "key" nil)
-  ;;     (ssl "u4537508@anu.edu.au.com" "smtphost.anu.edu.au" 465 "key" nil)))
+  ;; (defcustom smtp-accounts '((ssl user-primary-email-address "smtp.gmail.com" 587 "key" nil)
+  ;; 			     (ssl user-secondary-email-address "smtphost.anu.edu.au" 465 "key" nil)) "Available smtp accounts.")
 
   ;; (setq starttls-use-gnutls t
   ;;       starttls-gnutls-program "gnutls-cli"
@@ -515,76 +517,6 @@ This requires collecting user input - including user password.")
   ;; 	       (return (apply 'set-smtp-ssl auth-spec)))
   ;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
   ;; 	  finally (error "Cannot interfere SMTP information."))))
-
-  ;; IMPORTANT: email config
-  ;; (add-hook 'message-send-hook 'change-smtp) ;; change smtp server appropriately
-  ;; (add-hook 'message-mode-hook (function (lambda () (local-set-key (kbd "<tab>") 'bbdb-complete-name)))) ;; NOTE: add tab completion to name in the "To:" field
-
-  ;; (remove-hook 'gnus-summary-prepare-exit-hook
-  ;; 	     'gnus-summary-expire-articles)
-
-  ;; IMPORTANT: html display
-  (setq mm-text-html-renderer 'w3m)
-  (setq mm-inline-text-html-with-images t)
-  (setq mm-inline-text-html-with-w3m-keymap nil)
-
-  ;; IMPORTANT: mode-line
-  ;; (setq gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n") ;; NOTE: set mode-line
-
-  ;; IMPORTANT: rss config
-  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
-
-  ;; (eval-after-load "gnus-sum" ;; NOTE: set the default value of mm-discouraged-alternatives
-  ;;   '(add-to-list 'gnus-newsgroup-variables '(mm-discouraged-alternatives . '("text/html" "image/.*"))))
-
-  ;; NOTE: display 'text/html' parts in nnrss groups
-  ;; (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
-
-  ;; IMPORTANT: gnus parameters
-  ;; (setq gnus-parameters
-  ;;       '(("mail\\..*"
-  ;; 	 (gnus-show-threads nil)
-  ;; 	 (gnus-use-scoring nil)
-  ;; 	 (gnus-summary-line-format "%U%R%z%I%(%[%d:%ub%-23,23f%]%) %s\n")
-  ;; 	 (gcc-self . t)
-  ;; 	 (display . all))
-
-  ;; 	("^nnimap:\\(foo.bar\\)$"
-  ;; 	 (to-group . "\\1"))
-
-  ;; 	("mail\\.me"
-  ;; 	 (gnus-use-scoring t))
-
-  ;; 	("list\\..*"
-  ;; 	 (total-expire . t)
-  ;; 	 (broken-reply-to . t))))
-
-  ;; (add-hook 'gnus-summary-mode-hook
-  ;;           (lambda () (when (string-match "^nnrss:.*" gnus-newsgroup-name)
-  ;; 		  (progn
-  ;; 		    (make-local-variable 'gnus-show-threads)
-  ;; 		    (make-local-variable 'gnus-article-sort-functions)
-  ;; 		    (make-local-variable 'gnus-use-adaptive-scoring)
-  ;; 		    (make-local-variable 'gnus-use-scoring)
-  ;; 		    (make-local-variable 'gnus-score-find-score-files-function)
-  ;; 		    (make-local-variable 'gnus-summary-line-format)
-  ;; 		    (setq gnus-show-threads nil
-  ;; 			  gnus-article-sort-functions 'gnus-article-sort-by-date
-  ;; 			  gnus-use-adaptive-scoring nil
-  ;; 			  gnus-use-scoring t
-  ;; 			  gnus-score-find-score-files-function 'gnus-score-find-single)))))
-
-  ;; (defun browse-nnrss-url (arg)
-  ;;   "Browse RSS url."
-  ;;   (interactive "p")
-  ;;   (let ((url (assq nnrss-url-field (mail-header-extra (gnus-data-header (assq (gnus-summary-article-number) gnus-newsgroup-data))))))
-  ;;     (if url
-  ;; 	(browse-url (cdr url))
-  ;;       (gnus-summary-scroll-up arg))))
-
-  ;; (add-hook 'gnus-summary-mode-hook (lambda () (define-key gnus-summary-mode-map (kbd "C-<return>") 'browse-nnrss-url)))
-
-  ;; (add-to-list 'nnmail-extra-headers nnrss-url-field)
   )
 
 ;;; IMPORTANT: auto-complete mode
@@ -598,24 +530,24 @@ This requires collecting user input - including user password.")
   ;; (global-auto-complete-mode t)
 
   (setq ;;ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-        ;;ac-ignore-case t ;; NOTE: always ignore case
-	ac-expand-on-auto-complete t ;; NOTE: expand common portions
-	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
-	ac-fuzzy-enable t
-        ;;ac-auto-show-menu t ;; NOTE: automatically show menu
-  	;;ac-use-menu-map t ;; NOTE: use menu map
-  	;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
-        ;;ac-source-yasnippet t
-	)
+   ;;ac-ignore-case t ;; NOTE: always ignore case
+   ac-expand-on-auto-complete t ;; NOTE: expand common portions
+   ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+   ac-fuzzy-enable t
+   ;;ac-auto-show-menu t ;; NOTE: automatically show menu
+   ;;ac-use-menu-map t ;; NOTE: use menu map
+   ;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+   ;;ac-source-yasnippet t
+   )
 
   ;; (set-face-background 'ac-candidate-face "lightgray")
   ;; (set-face-underline 'ac-candidate-face "darkgray")
   ;; (set-face-background 'ac-selection-face "steelblue")
 
   (defvar ac-user-sources '(ac-source-features ac-source-functions ac-source-yasnippet
-			    ac-source-variables ac-source-symbols ac-source-abbrev
-			    ac-source-imenu ac-source-dictionary ac-source-words-in-buffer
-			    ac-source-words-in-same-mode-buffers ac-source-words-in-all-buffer))
+					       ac-source-variables ac-source-symbols ac-source-abbrev
+					       ac-source-imenu ac-source-dictionary ac-source-words-in-buffer
+					       ac-source-words-in-same-mode-buffers ac-source-words-in-all-buffer))
 
   (dolist (source ac-user-sources)
     (add-to-list 'ac-sources source))
@@ -886,7 +818,6 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
           (w3m-goto-url-new-session url))
         (current-buffer)))))
 
-;; ERROR: I don't think this works ...
 (defun switch-to-w3m-buffer ()
   "Switch to an existing w3m buffer."
   (interactive)
@@ -905,7 +836,6 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
     (w3m w3m-home-page)))
 
 ;;; IMPORTANT: highlight custom comment tags
-;; NOTE: i suppose technically this should be in the `appearance-config.el' file
 (require 'custom-comments)
 
 (custom-comment-create-new-tag "heading" '((t (:foreground "Blue" :weight bold))))
@@ -941,22 +871,21 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;; IMPORTANT: google translate
 ;; SOURCE: `https://github.com/manzyuk/google-translate'
-;; (require 'google-translate)
+(require 'google-translate)
 
-;; (after "google-translate"
-;;   (setq google-translate-enable-ido-completion t
-;; 	google-translate-show-phonetic t
-;; 	;; google-translate-default-source-language "auto"
-;; 	;; google-translate-default-target-language "en"
-;; 	)
+(after "google-translate"
+  (setq google-translate-enable-ido-completion t
+	google-translate-show-phonetic t
+	;; google-translate-default-source-language "auto"
+	;; google-translate-default-target-language "en"
+	)
 
-;;   (global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
-;;   (global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse))
+  (global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
+  (global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse))
 
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
 (require 'rainbow-delimiters)
-;;(autoload 'rainbow-delimiters-mode "rainbow-delimiters" "..." t)
 
 (after "rainbow-delimiters"
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
@@ -964,21 +893,11 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: ibuffer version control
 ;; SOURCE: `https://github.com/purcell/ibuffer-vc'
-;; NOTE: since this package relies on `ibuffer'
 (after "ibuffer"
   (require 'ibuffer-vc))
 
 (after "ibuffer-vc"
-  (setq ibuffer-formats	'((mark modified read-only vc-status-mini " "
-				(name 18 18 :left :elide)
-				" "
-				;;(size 9 -1 :right)
-				;;" "
-				;; (mode 14 14 :left :elide)
-				;; " "
-				;; (vc-status 12 12 :left)
-				;; " "
-				filename-and-process))))
+  (setq ibuffer-formats	'((mark modified read-only vc-status-mini " " (name 18 18 :left :elide) " " filename-and-process))))
 
 ;;; IMPORTANT: iedit
 ;; SOURCE: `http://www.emacswiki.org/emacs/Iedit'
@@ -995,30 +914,30 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: projectile
 ;; SOURCE: `http://www.emacswiki.org/emacs/Projectile'
-;; (require 'projectile)
+(require 'projectile)
 
-;; (after "projectile"  
-;;   (projectile-global-mode))
+(after "projectile"  
+  (projectile-global-mode))
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
 (require 'smart-mode-line)
 
 (after "smart-mode-line"
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/" ":config:"))
-  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/emacs-dir/" ":emacs:"))
-  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/stumpwm-dir" ":stumpwm:"))
-  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/bash-dir/" ":bash:"))
-  ;; (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/xinit-dir/" ":xinit:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/" ":public:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/" ":scratch:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/" ":documents:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/" ":anu:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/" ":reading:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/" ":writing:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/" ":mail:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/" ":news:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/"            ":config:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/emacs-dir/"  ":emacs:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/stumpwm-dir" ":stumpwm:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/bash-dir/"   ":bash:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/xinit-dir/"  ":xinit:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/"                    ":public:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"            ":scratch:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/"                 ":docs:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"             ":anu:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"         ":reading:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"         ":writing:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"            ":mail:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"            ":news:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/"    ":org:"))
   
   (setq sml/name-width 1
 	sml/mode-width 1
