@@ -112,7 +112,7 @@
 ;;; IMPORTANT: emacs relay chat
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcSSL'
-(autoload 'erc-tls "erc" "" t) ;; NOTE: this is to use SSL
+(autoload 'erc-tls "erc" "Internet Relay Chat in GNU Emacs with SSL." t)
 
 (after "erc"
   (require 'tls)
@@ -230,226 +230,33 @@
 
   (setq erc-remove-parsed-property nil))
 
-(after "erc-goodies"
-  (erc-scrolltobottom-enable)
-
-  (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
-  (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
-  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN)
-  ;;(add-to-list 'erc-noncommands-list 'erc-cmd-WINDOW)
-  )
-
-;;; IMPORTANT: conference mode
-;; ERROR: this doesn't work
-;; (after "erc"
-;;   (defvar erc-conference-p nil "If non-nil disable conference mode. If nil enable conference mode.")
-;;   ;; (setq erc-conference-p nil)
-
-;;   (defun erc-cmd-CONFERENCE (&optional force)
-;;     "Function for enabling/disabling user JOIN, PART and QUIT messages."
-;;     (if (and (boundp 'erc-conference-p) erc-conference-p)
-;; 	(progn
-;; 	  (setq erc-conference-p nil
-;; 		erc-hide-list (default-value 'erc-hide-list))
-;; 	  (erc-display-line (erc-make-notice "Conference mode disabled.") 'active))
-;;       (progn
-;;         (make-local-variable 'erc-hide-list)
-;;         (make-local-variable 'erc-conference-p) 
-;;         (setq erc-conference-p t
-;;               erc-hide-list '("JOIN" "PART" "QUIT"))
-;;         (erc-display-line (erc-make-notice "Conference mode enabled.") 'active)))
-;;     t))
-
-;; (defun erc-enable-conference-mode ()
-;;   (interactive)
-;;   (setq erc-hide-list (quote ("JOIN" "QUIT" "MODE")))
-;;   (setq erc-minibuffer-ignored t)
-;;   (message "Now ignoring JOINs, QUITs, and MODEs"))
-
-;; (defun erc-disable-conference-mode ()
-;;   (interactive)
-;;   (setq erc-hide-list nil)
-;;   (setq erc-minibuffer-ignored nil)
-;;   (message "Now showing everything"))
-
-;;; IMPORTANT: custom inserts
+;;; IMPORTANT: erc custom inserts
+;; TODO: bindings?
 (propertize-word erc-bold ?)
 (propertize-word erc-underline ?)
 
 ;;; IMPORTANT: erc user commands
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcUname'
-(defun erc-cmd-UNAME (&rest ignore)
-  "Display the result of running `uname -a' to the current ERC buffer."
-  (let ((uname-output
-         (replace-regexp-in-string
-          "[ \n]+$" "" (shell-command-to-string "uname -a"))))
-    (erc-send-message
-     (concat "{uname -a} [" uname-output "]"))))
-
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcShow'
-(defun erc-cmd-SHOW (&rest form)
-  "Evaluate FORM and send the result and the original form as: FORM => (eval FORM)."
-  (let ((string
-         (with-temp-buffer
-           (mapc #'(lambda (f) (insert f " ")) form)
-           (goto-char (point-min))
-           (setq form (read (current-buffer)))
-           (let ((res (condition-case err
-                          (eval form)
-                        (error
-                         (format "Error: %s" err)))))
-             (insert (format " => %s" res)))
-           (buffer-substring-no-properties
-            (point-min) (1- (point-max))))))
-    (erc-send-message string)))
-
-(defun erc-cmd-HOWMANY (&rest ignore)
-  "Display how many users (and ops) the current channel has."
-  (erc-display-message nil 'notice (current-buffer)
-		       (let ((hash-table (with-current-buffer (erc-server-buffer) erc-server-users))
-			     (users 0)
-			     (ops 0))
-			 (maphash (lambda (k v)
-				    (when (member (current-buffer) (erc-server-user-buffers v))
-				      (incf users))
-				    (when (erc-channel-user-op-p k)
-				      (incf ops)))
-				  hash-table)
-			 (format "There are %s users (%s ops) in the current channel." users ops))))
-
-;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
-;; SOURCE: `http://www.emacswiki.org/emacs/EmacsChannelMaintenance'
-(defun erc-cmd-OPME ()
-  "Request ChanServ to put me into operator status."
-  (erc-message "PRIVMSG"
-	       (format "ChanServ OP %s %s"
-		       (erc-default-target)
-		       (erc-current-nick)) nil))
-
-(defun erc-cmd-DEOPME ()
-  "Deop myself from current channel."
-  (erc-cmd-DEOP (format "%s" (erc-current-nick))))
-
-(defun erc-cmd-VOICE (nick &optional devoice)
-  "Apply (de)voice to user."
-  (let ((chan (erc-default-target)))
-    (erc-message "PRIVMSG" (format "chanserv %s %s %s" (if devoice "devoice" "voice") chan nick))))
-
-(defun erc-cmd-QUIET (nick &optional unquiet)
-  "Apply (un)quiet to user."
-  (let* ((chan (erc-default-target))
-	 (who (erc-get-server-user nick))
-	 (host (erc-server-user-host who)))
-    (erc-cmd-OPME)
-    (erc-send-command (format "MODE %s %sq *!*@%s" chan (if unquiet "-" "+") host))
-    (erc-cmd-DEOPME)))
-
-(defun erc-cmd-BAN (nick &optional unban)
-  "Ban user NICK from channel specified by `erc-default-target'."
-  (let* ((chan (erc-default-target))
-	 (who (erc-get-server-user nick))
-	 (host (erc-server-user-host who)))
-    (erc-send-command (format "MODE %s %sb *!*@%s" chan (if unban "-" "+") host))))
-
-(defun erc-cmd-KICK (nick)
-  "Kick NICK from channel."
-  (let* ((chan (erc-default-target))
-	 (who (erc-get-server-user nick)))
-    (erc-send-command (format "KICK %s %s (Kicked)" chan nick))))
-
-(defun erc-cmd-REMOVE (nick)
-  "Remove user NICK from current ERC channel."
-  (let* ((chan (erc-default-target))
-	 (who (erc-get-server-user nick)))
-    (erc-send-command (format "REMOVE %s %s Removed" chan nick))))
-
-(defun erc-cmd-BANREMOVE (nick)
-  "Remove and ban user NICK from current ERC channel."
-  (let* ((chan (erc-default-target))
-	 (who (erc-get-server-user nick)))
-    ;;(erc-cmd-OPME)
-    ;;(sit-for 1)
-    (erc-cmd-REMOVE nick)
-    (erc-cmd-BAN nick)
-    ;;(erc-cmd-DEOPME)
-    ))
-
-;; IMPORTANT: screwing around ...
-(defvar *greetings-list* nil "List of welcoming greetings.")
-
-(setq *greetings-list* '("Hello"
-			 "Hi"
-			 "Howdy"
-			 "Greetings"
-			 "G'day"
-			 "Hey"
-			 "Sup"
-			 "Good morning"
-			 "Good afternoon"
-			 "Good evening"))
-
-(defun erc-cmd-GREETING (nick)
-  "Welcome user NICK with a random greeting."
-  (let ((greet (nth (random (length *greetings-list*)) *greetings-list*)))
-    (erc-send-message (format "%s %s" greet nick))))
-
-;;; IMPORTANT: macros for "custom" ERC commands
-(defmacro erc-user-message (command message)
-  "Macro to create \"custom\" messages to an IRC user in an `erc-mode' session."
-  (let ((func (intern (concat "erc-cmd-" command)))
-	(doc (format "Send the command \"%s\" in an `erc-mode' buffer." command))
-	(string message))
-    `(defun ,func (name &rest junk)
-       ,doc
-       (erc-send-message (concat name ": " ,string)))))
-
-(defmacro erc-user-action (action verb message)
-  "Macro to create \"custom\" actions to an IRC user in an `erc-mode' session."
-  (let ((func (intern (concat "erc-cmd-" action)))
-	(doc (format "Send the action \"%s\" in an `erc-mode' buffer." action))
-	(string message))
-    `(defun ,func (name &rest junk)
-       ,doc
-       (erc-send-action (erc-default-target)
-			(concat ,verb " " name " " ,string)))))
-
-;; (erc-user-message "NICKSERV" "Freenode's NickServ allows a user to register a nickname. See: /msg NickServ help")
-;; (erc-user-message "MEMOSERV" "Freenode's MemoServ allows a user to send messages to registered users. See: /msg MemoServ help")
-;; (erc-user-message "CHANSERV" "Freenode's ChanServ gives normal users the ability to maintain control of a channel. See: /msg ChanServ help")
-;;
-(erc-user-message "GUIDELINES" "The guidelines for using the Ubuntu channels can be found here: http://wiki.ubuntu.com/IRC/Guidelines")
-(erc-user-message "LANGUAGE" "Please watch your language in this channel, thank you.")
-(erc-user-message "EMACS" "GNU Emacs is a powerful lisp environment and text editor. See: http://www.gnu.org/software/emacs/")
-(erc-user-message "STUMPWM" "StumpWM is a tiling window manager for X11 written in common lisp. See: http://www.nongnu.org/stumpwm/")
-(erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
-
-(defun erc-cmd-GENTLEMEN ()
-  "Send calm down message."
-  (erc-send-message "Gentlemen, you can't fight here. This is the war room!"))
-
-;; SOURCE: `fsbot' in #emacs
-(erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
+(after "erc"
+  (require 'erc-extensions))
 
 ;; IMPORTANT: freenode server services
-(after "erc"
-  (require 'erc-star-serv))
+;; (after "erc"
+;;   (require 'erc-star-serv))
 
-;;; IMPORTANT: "Custom" `erc-mode' interactions with outside environment
-(defun erc-cmd-MAN (program &rest args)
-  "Open the `man' page for PROGRAM."
-  (1man program))
+;; TODO: (require 'erc-goodies) ;; ???
+(after "erc-goodies"
+  (erc-scrolltobottom-enable)
 
-(defun erc-cmd-WOMAN (program &rest args)
-  "Open the `woman' page for PROGRAM."
-  (woman program))
+  ;; The following "noncommands" are all defined in `erc-extensions'
+  (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
+  (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
+  (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN))
 
-;; IMPORTANT: when connecting ask me for a password
 (defun erc-tls-connect-server (server &rest junk)
   "Ask for a password before connecting to SERVER."
   (let ((password (read-passwd "Enter IRC Password: ")))
     (erc-tls :server server :port erc-port :nick erc-nick :password password)))
 
-;; IMPORTANT: this is where the ERC settings are activated
 (defun erc-start-or-switch (&rest junk)
   "Connect to ERC, or switch to last active buffer"
   (interactive)
@@ -520,8 +327,8 @@
 NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.net\"."
   (interactive)
   (let ((channel (ido-completing-read "Enter channel: " custom-erc-channel-list)))
-    (if (get-buffer channel) ;; TODO: check to see if channel is already a open channel ...
-	(switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
+    (when (get-buffer channel) ;; TODO: check to see if channel is already a open channel ...
+      (switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
     (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
 
 (defun custom-erc-switch-buffer (&rest junk)
@@ -558,7 +365,9 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; 2. re-write the file to disk (i.e. something has changed)
 
 (defun create-authinfo ()
-  "...")
+  "Create an authinfo file, if none exists.
+
+This requires collecting user input - including user password.")
 
 (after "gnus"
   (require 'smtpmail)
