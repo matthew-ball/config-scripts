@@ -76,14 +76,13 @@
 
 ;;; IMPORTANT: load path
 ;; SOURCE: `http://emacswiki.org/emacs/LoadPath'
-(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el")) ;; NOTE: add `config-el/' to `load-path' variable
-(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el")) ;; NOTE: add `extras-el/' to `load-path' variable
+(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el"))
+(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el"))
 (add-to-list 'load-path (concat (expand-file-name user-public-directory) "contrib/utils/swm-emacs/"))
 
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
-  (if (file-exists-p default-directory) ;; NOTE: if the directory `~/.emacs.d/elpa/' exists ...
-      (normal-top-level-add-subdirs-to-load-path) ;; NOTE: ... then recursively add sub-directories to `load-path' variable
-    (make-directory (concat (expand-file-name user-emacs-directory) "elpa/")))) ;; NOTE: ... else create directory
+  (when (file-exists-p default-directory) ;; NOTE: if the directory `~/.emacs.d/elpa/' exists ...
+    (normal-top-level-add-subdirs-to-load-path))) ;; NOTE: ... then recursively add sub-directories to `load-path' variable
 
 ;;; IMPORTANT: info path
 ;; SOURCE: `http://www.emacswiki.org/emacs/InfoPath'
@@ -115,61 +114,26 @@
 
 Return a list of installed packages or nil for every skipped package."
   (mapcar
-   (lambda (package)
-     (if (package-installed-p package)
-	 nil
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-	   (package-install package)
-	 package)))
+   #'(lambda (package)
+       (if (package-installed-p package)
+	   nil
+	 (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+	     (package-install package)
+	   package)))
    packages))
 
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
-(ensure-package-installed
- 'adaptive-wrap
- 'auto-complete
- 'browse-kill-ring
- 'dash
- 'deft
- 'diminish
- 'ebib
- 'ac-ispell
- 'ac-slime
- 'ace-jump-mode
- 'bbdb
- 'elisp-slime-nav
- 'epl
- 'erc-hl-nicks
- 'expand-region
- 'flx
- 'flx-ido
- 'geiser
- 'gh
- 'gist
- 'git-commit-mode
- 'git-rebase-mode
- 'google-translate
- 'haskell-mode
- 'ibuffer-vc
- 'ido-ubiquitous
- 'logito
- 'magit
- 'org-journal
- 'paredit
- 'pcache
- 'pkg-info
- 'popup
- 'projectile
- 'rainbow-delimiters
- 'smex
- 'sr-speedbar
- 's
- 'tabulated-list
- 'undo-tree
- 'w3m
- 'yasnippet)
+(ensure-package-installed 'ac-ispell 'ac-slime 'ace-jump-mode 'adaptive-wrap 'auto-complete 'bbdb
+			  'browse-kill-ring 'dash 'deft 'diminish 'dired+ 'ebib 'elisp-slime-nav
+			  'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido
+			  'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode 'google-translate
+			  'haskell-mode 'highlight-indentation 'ibuffer-vc 'ido-ubiquitous 'idomenu
+			  'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup
+			  'projectile 'rainbow-delimiters 's 'smart-mode-line 'smex 'sr-speedbar
+			  'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
@@ -202,6 +166,7 @@ Return a list of installed packages or nil for every skipped package."
 (load custom-file 'noerror)
 
 ;; WARNING: I am not sure about this
-;; (defvar *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")
+;; (defcustom *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")
+
 ;; (setq initial-buffer-choice *home-file*)
 

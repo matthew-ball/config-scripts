@@ -33,13 +33,16 @@
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-(autoload 'bbdb "bbdb" "" t)
+;;(autoload 'bbdb "bbdb" "" t)
+(require 'bbdb)
 
 (after "bbdb"
-  (bbdb-initialize 'gnus 'message)
+  (bbdb-initialize 'gnus 'message 'reportmail)
 
-  ;; (setq bbdb-file "~/.emacs.d/contacts-file.el")
-  )
+  (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+
+  (setq bbdb-file "~/.emacs.d/contacts-file.el"
+	bbdb-default-country "Australia"))
 
 ;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
