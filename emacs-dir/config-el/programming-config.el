@@ -73,14 +73,14 @@ Enable the following minor modes:
   (flyspell-prog-mode) ;; NOTE: turn on spell checking of comments and strings
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
   ;; (longlines-mode) ;; NOTE: enable long lines
-  ;; (hl-line-mode) ;; NOTE: turn on line highlight mode
+  ;;(hl-line-mode) ;; NOTE: turn on line highlight mode
   ;; (which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   (electric-pair-mode)
   (auto-insert-mode))
 
 ;; TODO: should just:
-;;(add-hook 'prog-mode-hook 'turn-on-general-programming-mode)
+(add-hook 'prog-mode-hook 'turn-on-general-programming-mode)
 
 ;;; IMPORTANT: available modes for the which function mode-line tag
 ;; SOURCE: `http://www.emacswiki.org/emacs/WhichFuncMode'

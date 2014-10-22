@@ -141,7 +141,8 @@
 
 ;;; IMPORTANT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
-(autoload 'hs-minor-mode "hideshow" "Fold code with GNU Emacs." t)
+;;(autoload 'hs-minor-mode "hideshow" "Fold code with GNU Emacs." t)
+(require 'hideshow)
 
 (after "hideshow"
   ;; TODO: add custom modes
@@ -156,11 +157,11 @@
   (setq hs-hide-comments-when-hiding-all nil) ;; NOTE: don't hide the comments when launching `hs-hide-all'
   (setq hs-isearch-open t) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
 
-  (defvar hs-modes-hooks-list '(lisp-mode-hook
-				emacs-lisp-mode-hook
-				shell-script-mode-hook
-				haskell-mode-hook
-				latex-mode-hook))
+  ;; (defvar hs-modes-hooks-list '(lisp-mode-hook
+  ;; 				emacs-lisp-mode-hook
+  ;; 				shell-script-mode-hook
+  ;; 				haskell-mode-hook
+  ;; 				latex-mode-hook))
 
   ;; (dolist (hook hs-modes-hooks-list)
   ;;   (add-hook hook 'hs-minor-mode))
@@ -198,6 +199,15 @@
 
 ;;; IMPORTANT: prettyify symbols
 ;; SOURCE: `http://ergoemacs.org/emacs/emacs_pretty_lambda.html'
+
+;; (defconst lisp--prettify-symbols-alist
+;;   '(("lambda"  . ?λ)
+;;     (">=" . ?≥)
+;;     ("<=" . ?≤)
+;;     ("member" . ?∈)
+;;     ("forall" . ?∀)
+;;     ("exists" . ?∃)))
+
 (global-prettify-symbols-mode 1)
 
 ;;; IMPORTANT: diminish
@@ -265,41 +275,41 @@
 
 ;;; IMPORTANT: hide the mode-line
 ;; SOURCE: `http://bzg.fr/emacs-hide-mode-line.html'
-(defvar-local hidden-mode-line-mode nil)
+;; (defvar-local hidden-mode-line-mode nil)
 
 ;; TODO: rename
-(define-minor-mode hidden-mode-line-mode
-  "Minor mode to hide the mode-line in the current buffer."
-  :init-value nil
-  :global t
-  :variable hidden-mode-line-mode
-  :group 'editing-basics
-  (if hidden-mode-line-mode
-      (setq hide-mode-line mode-line-format
-            mode-line-format nil)
-    (setq mode-line-format hide-mode-line
-          hide-mode-line nil))
-  (force-mode-line-update)
-  ;; NOTE: apparently force-mode-line-update is not always enough to redisplay the mode-line
-  (redraw-display)
-  (when (and (called-interactively-p 'interactive)
-             hidden-mode-line-mode)
-    (run-with-idle-timer
-     0 nil 'message
-     (concat "Hidden Mode Line Mode enabled.  "
-             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+;; (define-minor-mode hidden-mode-line-mode
+;;   "Minor mode to hide the mode-line in the current buffer."
+;;   :init-value nil
+;;   :global t
+;;   :variable hidden-mode-line-mode
+;;   :group 'editing-basics
+;;   (if hidden-mode-line-mode
+;;       (setq hide-mode-line mode-line-format
+;;             mode-line-format nil)
+;;     (setq mode-line-format hide-mode-line
+;;           hide-mode-line nil))
+;;   (force-mode-line-update)
+;;   ;; NOTE: apparently force-mode-line-update is not always enough to redisplay the mode-line
+;;   (redraw-display)
+;;   (when (and (called-interactively-p 'interactive)
+;;              hidden-mode-line-mode)
+;;     (run-with-idle-timer
+;;      0 nil 'message
+;;      (concat "Hidden Mode Line Mode enabled.  "
+;;              "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
-(defun hide-mode-line ()
-  "Hide the mode-line in every buffer."
-  (interactive)
-  (hidden-mode-line-mode)
-  (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode))
+;; (defun hide-mode-line ()
+;;   "Hide the mode-line in every buffer."
+;;   (interactive)
+;;   (hidden-mode-line-mode)
+;;   (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode))
 
-(defun show-mode-line ()
-  "Show the mode-line in every buffer."
-  (interactive)
-  (remove-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-  (hidden-mode-line-mode))
+;; (defun show-mode-line ()
+;;   "Show the mode-line in every buffer."
+;;   (interactive)
+;;   (remove-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
+;;   (hidden-mode-line-mode))
 
 (provide 'appearance-config)
 ;;; appearance-config.el ends here

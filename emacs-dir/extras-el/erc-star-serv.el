@@ -73,15 +73,26 @@
 ;;   (let ((choice (ido-completing-read "Select command: " memoserv-commands-list)))
 ;;     (erc-message "PRIVMSG" (concat "MemoServ " choice " help") nil)))
 
-(defcustom memoserv-commands-alist '(("DEL" . "Alias for DELETE.")
-				     ("DELETE" . "Deletes memos.")
-				     ("FORWARD" . "Forwards a memo.")
-				     ("HELP" . "Displays contextual help information.")
-				     ("IGNORE" . "Ignores memos.")
-				     ("LIST" . "List of all user memos.")
-				     ("READ" . "Reads a memo.")
-				     ("SEND" . "Sends a memo to a user.")
-				     ("SENDOPS" . "Sends a memo to all ops on a channel.")) "List of Freenode's `MemoServ' commands.")
+;; (defcustom memoserv-commands-alist '(("DEL" . "Alias for DELETE.")
+;; 				     ("DELETE" . "Deletes memos.")
+;; 				     ("FORWARD" . "Forwards a memo.")
+;; 				     ("HELP" . "Displays contextual help information.")
+;; 				     ("IGNORE" . "Ignores memos.")
+;; 				     ("LIST" . "List of all user memos.")
+;; 				     ("READ" . "Reads a memo.")
+;; 				     ("SEND" . "Sends a memo to a user.")
+;; 				     ("SENDOPS" . "Sends a memo to all ops on a channel.")) "List of Freenode's `MemoServ' commands.")
+
+
+(defcustom memoserv-commands-alist '((d . delete)
+				     (f . forward)
+				     (h . help)
+				     (i . ignore)
+				     (l . list-memos)
+				     (r . read-memo)
+				     (s . send-memo)
+				     (S . send-ops-memo)))
+
 
 ;; NOTE: Freenode `NickServ' commands:
 ;; GHOST           Reclaims use of a nickname.

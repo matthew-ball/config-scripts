@@ -106,22 +106,23 @@
 
 (after "ido"
   (ido-mode 'both) ;; NOTE: turn on interactive mode (files and buffers)
-  ;; (ido-mode 'buffer)
+  ;; (ido-mode 'buffer)  
+  (ido-everywhere)
 
   (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
 	ido-enable-regexp t ;; NOTE: enable regexp
 	ido-use-virtual-buffers t ;; NOTE: keep buffers around
 	;;ido-auto-merge-work-directories-length -1 ;; TODO: we'll see...
 	ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
-	ido-everywhere nil ;; NOTE: disable ido everywhere
+	;; ido-everywhere nil ;; NOTE: disable ido everywhere
 	ido-use-filename-at-point 'ffap-guesser
 	ido-use-url-at-point t
 	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
 	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
 	;; ido-ignore-directories '("~/.emacs.d/snippets") ;; NOTE: ignore snippets
 	;; ido-ignore-files '()
-	ido-file-extensions-order '(".org" ".el" ".lisp" ".c" ".h" ".sh" ".hs" ".py")
-	ido-ignore-extensions t ;; NOTE: ignore extentions
+	ido-file-extensions-order '(".org" ".el" ".lisp" ".scm" ".c" ".h" ".sh" ".hs" ".py")
+	ido-ignore-extensions t ;; NOTE: ignore extensions
 	;; TODO: can clean up the following ...
 	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\#[#]?"
 			     "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
@@ -187,6 +188,23 @@
 (after "ibuffer"
   (require 'ibuf-ext)
 
+  ;; NOTE: collapsing groups by default
+  ;; SOURCE: http://www.emacswiki.org/emacs/IbufferMode#toc13
+  (defcustom ibuffer-collapsed-groups '("Miscellaneous") "Collapse groups by default.")
+
+  (defadvice ibuffer (after collapse-helm)
+    (dolist (group ibuffer-collapsed-groups)
+      (progn
+  	(goto-char 1)
+  	(when (search-forward (concat "[ " group " ]") (point-max) t)
+  	  (progn
+  	    (move-beginning-of-line nil)
+  	    (ibuffer-toggle-filter-group)))))
+    (goto-char 1)
+    (search-forward "[ " (point-max) t))
+
+  (ad-activate 'ibuffer)
+  
   ;; TODO: investigate `ibuffer-directory-abbrev-list'
   ;; (setq ibuffer-directory-abbrev-alist
   ;; 	'((expand-file-name "~/Documents/" . "Documents")

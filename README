@@ -34,6 +34,26 @@ The environment variables are:
 
 After a user logs in from LightDM, which is the default login manager for XFCE distributions, the shell executes the user's [[file:~/.xsessionrc][~/.xsessionrc]] file. This configuration is included in the file ~session.sh~ which exports a number of environment variables. These variables are used both by the StumpWM window manager process, the GNU Emacs process, and a terminal with a BASH shell process.
 
+The following applications must be installed separately:
+- emacs24
+- build-essential
+- gcc
+- gdb
+- ghc
+- sbcl
+- strace
+- ltrace
+- chromium
+- sudo
+- screen
+- htop
+- bison
+- flex
+- git
+- prolog
+- guile-2.0
+- texlive
+
 ** TODO Git Branches
 *** Main Branch
 Creates a configuration.

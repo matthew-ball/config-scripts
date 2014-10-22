@@ -24,6 +24,11 @@
 
 ;;; Code:
 
+;;; IMPORTANT: customize configuration file
+;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'
+(setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
+(load custom-file 'noerror)
+
 ;;; IMPORTANT: user variables
 (defgroup user-variables nil "User variables.")
 
@@ -98,7 +103,7 @@
 
 (after "package"
   (package-initialize)
-  (setq package-enable-at-startup nil
+  (setq ;;package-enable-at-startup nil
 	load-prefer-newer t)
 
   ;; NOTE: set download repositories
@@ -133,7 +138,7 @@ Return a list of installed packages or nil for every skipped package."
 			  'haskell-mode 'highlight-indentation 'ibuffer-vc 'ido-ubiquitous 'idomenu
 			  'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup
 			  'projectile 'rainbow-delimiters 's 'smart-mode-line 'smex 'sr-speedbar
-			  'tabulated-list 'undo-tree 'w3m 'yasnippet)
+			  'switch-window 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
@@ -159,11 +164,6 @@ Return a list of installed packages or nil for every skipped package."
   (interactive)
   (when (y-or-n-p "Kill emacs daemon? ")
     (kill-emacs)))
-
-;;; IMPORTANT: customize configuration file
-;; SOURCE: `http://www.emacswiki.org/emacs/CustomFile'
-(setq custom-file (concat (expand-file-name user-emacs-directory) "custom.el"))
-(load custom-file 'noerror)
 
 ;; WARNING: I am not sure about this
 ;; (defcustom *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")

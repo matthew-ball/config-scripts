@@ -34,6 +34,7 @@
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
 ;;(autoload 'bbdb "bbdb" "" t)
+;; TODO: investigate `erc-bbdb.el'
 (require 'bbdb)
 
 (after "bbdb"
@@ -41,7 +42,7 @@
 
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
 
-  (setq bbdb-file "~/.emacs.d/contacts-file.el"
+  (setq ;;bbdb-file "~/.emacs.d/contacts-file.el"
 	bbdb-default-country "Australia"))
 
 ;;; IMPORTANT: make `ido' available everywhere
@@ -522,40 +523,62 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; 	  finally (error "Cannot interfere SMTP information."))))
   )
 
+;;; IMPORTANT: newsticker
+;; SOURCE: `...'
+;; (autoload 'newsticker-treeview "newsticker" "Rss feed reader.")
+
+;; (after "newsticker"
+;;   (setq newsticker-html-renderer 'w3m-region
+;; 	;;newsticker-retrieval-interval 600 ;; check every 10 minutes
+;; 	newsticker-url-list-defaults nil
+;; 	newsticker-url-list '("..."))
+
+;;   (global-set-key (kbd "C-c t") 'newsticker-treeview)
+
+;;   (newsticker-start))
+
+;;; IMPORTANT: abbreviations
+;; SOURCE: `http://www.emacswiki.org/emacs/AbbrevMode'
+;; (require 'abbrev)
+
+;; (after "abbrev"
+;;   (setq abbrev-file-name "~/.emacs.d/abbreviations"
+;; 	save-abbrevs t))
+
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
 ;; (require 'auto-complete)
-(autoload 'auto-complete "auto-complete" "..." t)
+;; (autoload 'auto-complete "auto-complete" "..." t)
 
-(after "auto-complete"
-  (require 'auto-complete-config)
+;; (after "auto-complete"
+;;   (require 'auto-complete-config)
 
-  ;; (global-auto-complete-mode t)
+;;   ;; (global-auto-complete-mode t)
 
-  (setq ;;ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-   ;;ac-ignore-case t ;; NOTE: always ignore case
-   ac-expand-on-auto-complete t ;; NOTE: expand common portions
-   ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
-   ac-fuzzy-enable t
-   ;;ac-auto-show-menu t ;; NOTE: automatically show menu
-   ;;ac-use-menu-map t ;; NOTE: use menu map
-   ;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
-   ;;ac-source-yasnippet t
-   )
+;;   (setq ;;ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
+;;    ;;ac-ignore-case t ;; NOTE: always ignore case
+;;    ac-expand-on-auto-complete t ;; NOTE: expand common portions
+;;    ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+;;    ac-fuzzy-enable t
+;;    ;;ac-auto-show-menu t ;; NOTE: automatically show menu
+;;    ;;ac-use-menu-map t ;; NOTE: use menu map
+;;    ;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+;;    ;;ac-source-yasnippet t
+;;    )
 
-  ;; (set-face-background 'ac-candidate-face "lightgray")
-  ;; (set-face-underline 'ac-candidate-face "darkgray")
-  ;; (set-face-background 'ac-selection-face "steelblue")
+;;   ;; (set-face-background 'ac-candidate-face "lightgray")
+;;   ;; (set-face-underline 'ac-candidate-face "darkgray")
+;;   ;; (set-face-background 'ac-selection-face "steelblue")
 
-  (defvar ac-user-sources '(ac-source-features ac-source-functions ac-source-yasnippet
-					       ac-source-variables ac-source-symbols ac-source-abbrev
-					       ac-source-imenu ac-source-dictionary ac-source-words-in-buffer
-					       ac-source-words-in-same-mode-buffers ac-source-words-in-all-buffer))
+;;   (defvar ac-user-sources '(ac-source-features ac-source-functions ac-source-yasnippet
+;; 					       ac-source-variables ac-source-symbols ac-source-abbrev
+;; 					       ac-source-imenu ac-source-dictionary ac-source-words-in-buffer
+;; 					       ac-source-words-in-same-mode-buffers ac-source-words-in-all-buffer))
 
-  (dolist (source ac-user-sources)
-    (add-to-list 'ac-sources source))
+;;   (dolist (source ac-user-sources)
+;;     (add-to-list 'ac-sources source))
 
-  (ac-config-default))
+;;   (ac-config-default))
 
 ;;; IMPORTANT: auto-complete `ispell' source
 ;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
@@ -570,49 +593,22 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: emacs snippets
 ;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
-(autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
-;;(require 'yasnippet)
+;;(autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
+(require 'yasnippet)
 
 (after "yasnippet"
-  ;;(yas--initialize)
-  ;;(yas-reload-all)
-  ;;(yas-load-directory "~/.emacs.d/elpa/yasnippet-20130505.2115/snippets/")
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
   (yas-load-directory "~/.emacs.d/snippets/" t) ;; NOTE: use just-in-time
 
-  ;; (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode)))
-  (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode 1)))
-  (yas-global-mode)
-  
-  ;;(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
-  )
-
-;; (defun yas-ido-expand () ;; NOTE: Completing point by some yasnippet key
-;;   "Lets you select (and expand) a yasnippet key"
-;;   (interactive)
-;;   (let ((original-point (point)))
-;;     (while (and
-;;             (not (= (point) (point-min) ))
-;;             (not
-;;              (string-match "[[:space:]\n]" (char-to-string (char-before)))))
-;;       (backward-word 1))
-;;     (let* ((init-word (point))
-;;            (word (buffer-substring init-word original-point))
-;;            (list (yas-active-keys)))
-;;       (goto-char original-point)
-;;       (let ((key (remove-if-not
-;;                   (lambda (s) (string-match (concat "^" word) s)) list)))
-;;         (if (= (length key) 1)
-;;             (setq key (pop key))
-;;           (setq key (ido-completing-read "key: " list nil nil word)))
-;;         (delete-char (- init-word original-point))
-;;         (insert key)
-;;         (yas-expand)))))
+  (add-hook 'prog-mode-hook 'yas-minor-mode-on))
 
 ;;; IMPORTANT: smart completion
 ;; TODO: this guy probably needs to be generalised a bit more (though, he works for now)
-(defalias 'smart-completion '(lambda () (if (fboundp 'auto-complete)
-				       (auto-complete nil)
-				     (dabbrev-expand nil))))
+;; (defalias 'smart-completion '(lambda () (if (fboundp 'auto-complete)
+;; 				       (auto-complete nil)
+;; 				     (dabbrev-expand nil))))
+
+(defalias 'smart-completion '(lambda () (hippie-expand nil)))
 
 ;;; IMPORTANT: smart tab
 (defun smart-tab () ;; NOTE: implement a smarter TAB
@@ -624,8 +620,7 @@ If mark is active, indents region. Else if point is at the end ofa symbol, expan
       (unless (minibuffer-complete)
         (smart-completion))
     (if mark-active
-	(indent-region (region-beginning)
-		       (region-end))
+	(indent-region (region-beginning) (region-end))
       (if (looking-at "\\_>")
           (smart-completion)
 	(indent-for-tab-command)))))
@@ -683,101 +678,101 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;; SOURCE: `http://www.emacswiki.org/emacs/emacs-w3m'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMTabs'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMHintsAndTips'
-(setq w3m-key-binding 'info) ;; NOTE: this needs to be set before loading
+;; (setq w3m-key-binding 'info) ;; NOTE: this needs to be set before loading
 
-(autoload 'w3m "w3m" "Browse the internet with w3m." t)
+;; (autoload 'w3m "w3m" "Browse the internet with w3m." t)
 
-(after "w3m"
-  (require 'w3m-cookie)
-  (require 'w3m-lnum)
-  (require 'w3m-filter)
-  ;; (require 'w3m-antenna)
-  (require 'w3m-ccl)
+;; (after "w3m"
+;;   (require 'w3m-cookie)
+;;   (require 'w3m-lnum)
+;;   (require 'w3m-filter)
+;;   ;; (require 'w3m-antenna)
+;;   (require 'w3m-ccl)
 
-  ;; NOTE: w3m interface and cookies
-  (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
+;;   ;; NOTE: w3m interface and cookies
+;;   (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
 
-  ;; NOTE: w3m antenna
-  ;; (w3m-antenna-mode 1)
-  ;; (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
+;;   ;; NOTE: w3m antenna
+;;   ;; (w3m-antenna-mode 1)
+;;   ;; (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
 
-  ;; NOTE: w3m filter
-  ;; (w3m-filter-mode 1)
+;;   ;; NOTE: w3m filter
+;;   ;; (w3m-filter-mode 1)
 
-  (setq url-automatic-caching t
-        ;; w3m-key-binding 'info
-        w3m-home-page "www.emacswiki.org"
-        ;; w3m-default-display-inline-images t ;; NOTE: display images by default
-        w3m-use-toolbar nil
-        w3m-coding-system 'utf-8
-        w3m-file-coding-system 'utf-8
-        w3m-file-name-coding-system 'utf-8
-        w3m-input-coding-system 'utf-8
-        w3m-output-coding-system 'utf-8
-        w3m-terminal-coding-system 'utf-8
-        w3m-use-cookies t ;; NOTE: use cookies in w3m
-        ;; w3m-default-directory (concat (expand-file-name user-emacs-directory) "w3m")
-        ;; w3m-use-title-buffer-name t
-        w3m-default-save-directory (concat (expand-file-name user-emacs-directory) "w3m")
-        w3m-bookmark-file (concat (expand-file-name user-emacs-directory "w3m/bookmark.html"))
-        w3m-arrived-file (concat (expand-file-name user-emacs-directory) "w3m/arrived")
-        w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
-        w3m-cookie-accept-bad-cookies t
-        w3m-cookie-accept-domains '("www.emacswiki.org"
-                                    "www.google.com"
-                                    "www.wikipedia.org"
-                                    "www.github.com"
-                                    "http://plato.stanford.edu"))
+;;   (setq url-automatic-caching t
+;;         ;; w3m-key-binding 'info
+;;         w3m-home-page "www.emacswiki.org"
+;;         ;; w3m-default-display-inline-images t ;; NOTE: display images by default
+;;         w3m-use-toolbar nil
+;;         w3m-coding-system 'utf-8
+;;         w3m-file-coding-system 'utf-8
+;;         w3m-file-name-coding-system 'utf-8
+;;         w3m-input-coding-system 'utf-8
+;;         w3m-output-coding-system 'utf-8
+;;         w3m-terminal-coding-system 'utf-8
+;;         w3m-use-cookies t ;; NOTE: use cookies in w3m
+;;         ;; w3m-default-directory (concat (expand-file-name user-emacs-directory) "w3m")
+;;         ;; w3m-use-title-buffer-name t
+;;         w3m-default-save-directory (concat (expand-file-name user-emacs-directory) "w3m")
+;;         w3m-bookmark-file (concat (expand-file-name user-emacs-directory "w3m/bookmark.html"))
+;;         w3m-arrived-file (concat (expand-file-name user-emacs-directory) "w3m/arrived")
+;;         w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+;;         w3m-cookie-accept-bad-cookies t
+;;         w3m-cookie-accept-domains '("www.emacswiki.org"
+;;                                     "www.google.com"
+;;                                     "www.wikipedia.org"
+;;                                     "www.github.com"
+;;                                     "http://plato.stanford.edu"))
 
-  ;; NOTE: `youtube-dl' and `mplayer'
-  ;; TODO: this doesn't work just yet
-  (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
+;;   ;; NOTE: `youtube-dl' and `mplayer'
+;;   ;; TODO: this doesn't work just yet
+;;   (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
 
-  (setq youtube-videos-directory "~/Videos/youtube/")
+;;   (setq youtube-videos-directory "~/Videos/youtube/")
 
-  ;; IMPORTANT: w3m session
-  ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
-  ;; (require 'w3m-session)
+;;   ;; IMPORTANT: w3m session
+;;   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
+;;   ;; (require 'w3m-session)
 
-  ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
+;;   ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
 
-  (progn
-    (unless (fboundp 'desktop)
-      (require 'desktop))
-    (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+;;   (progn
+;;     (unless (fboundp 'desktop)
+;;       (require 'desktop))
+;;     (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
-    (add-hook 'w3m-mode-hook 'w3m-register-desktop-save)) ;; NOTE: add w3m-buffers to desktop-save
+;;     (add-hook 'w3m-mode-hook 'w3m-register-desktop-save)) ;; NOTE: add w3m-buffers to desktop-save
 
-  ;; NOTE: w3m mode hooks
-  (defun desktop-display (url)
-    "Remove trailing whitespace is w3m buffers."
-    (let ((buffer-read-only nil))
-      (delete-trailing-whitespace)))
+;;   ;; NOTE: w3m mode hooks
+;;   (defun desktop-display (url)
+;;     "Remove trailing whitespace is w3m buffers."
+;;     (let ((buffer-read-only nil))
+;;       (delete-trailing-whitespace)))
 
-  (add-hook 'w3m-display-hook 'desktop-display)
+;;   (add-hook 'w3m-display-hook 'desktop-display)
   
-  ;; (add-hook 'w3m-display-hook
-  ;;           (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
-  ;;             (let ((buffer-read-only nil))
-  ;;               (delete-trailing-whitespace))))
+;;   ;; (add-hook 'w3m-display-hook
+;;   ;;           (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
+;;   ;;             (let ((buffer-read-only nil))
+;;   ;;               (delete-trailing-whitespace))))
 
-  ;; IMPORTANT: w3m search
-  ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
-  (setq w3m-search-engine-alist
-        '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
-	  ("cliki" "http://www.cliki.net/site/search?query=%s" utf-8)
-          ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-          ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
-          ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
-          ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
+;;   ;; IMPORTANT: w3m search
+;;   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
+;;   (setq w3m-search-engine-alist
+;;         '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+;; 	  ("cliki" "http://www.cliki.net/site/search?query=%s" utf-8)
+;;           ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
+;;           ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
+;;           ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
+;;           ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
-(defun w3m-youtube-video ()
-  "..."
-  (interactive)
-  (let* ((video (browse-url-url-at-point))
-         (output (format "%s/%s.mp4" youtube-videos-directory video)))
-    (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" output video)
-    (emms-play-file output)))
+;; (defun w3m-youtube-video ()
+;;   "..."
+;;   (interactive)
+;;   (let* ((video (browse-url-url-at-point))
+;;          (output (format "%s/%s.mp4" youtube-videos-directory video)))
+;;     (call-process "youtube-dl" nil nil nil "-U" "-q" "-c" "-o" output video)
+;;     (emms-play-file output)))
 
 ;; (defun w3m-youtube-view ()
 ;;   "View a YouTube link with youtube-dl and mplayer."
@@ -806,37 +801,37 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;;       )))
 
 ;; NOTE: w3m and save desktop mode
-(defun w3m-register-desktop-save ()
-  "Set `desktop-save-buffer' to a function returning the current URL."
-  (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
+;; (defun w3m-register-desktop-save ()
+;;   "Set `desktop-save-buffer' to a function returning the current URL."
+;;   (setq desktop-save-buffer (lambda (desktop-dirname) w3m-current-url)))
 
-(defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
-  "Restore a `w3m' buffer on `save-desktop' load."
-  (when (eq 'w3m-mode desktop-buffer-major-mode)
-    (let ((url d-b-misc))
-      (when url
-        (require 'w3m)
-        (if (string-match "^file" url)
-            (w3m-find-file (substring url 7))
-          (w3m-goto-url-new-session url))
-        (current-buffer)))))
+;; (defun w3m-restore-desktop-buffer (d-b-file-name d-b-name d-b-misc)
+;;   "Restore a `w3m' buffer on `save-desktop' load."
+;;   (when (eq 'w3m-mode desktop-buffer-major-mode)
+;;     (let ((url d-b-misc))
+;;       (when url
+;;         (require 'w3m)
+;;         (if (string-match "^file" url)
+;;             (w3m-find-file (substring url 7))
+;;           (w3m-goto-url-new-session url))
+;;         (current-buffer)))))
 
-(defun switch-to-w3m-buffer ()
-  "Switch to an existing w3m buffer."
-  (interactive)
-  (if (get-buffer "*w3m*")
-      (switch-to-buffer
-       (ido-completing-read "w3m session: "
-			    (save-excursion
-			      (delq
-			       nil
-			       (mapcar (lambda (buf)
-					 (when (buffer-live-p buf)
-					   (with-current-buffer buf
-					     (and (eq major-mode 'w3m-mode)
-						  (buffer-name buf)))))
-				       (buffer-list))))))
-    (w3m w3m-home-page)))
+;; (defun switch-to-w3m-buffer ()
+;;   "Switch to an existing w3m buffer."
+;;   (interactive)
+;;   (if (get-buffer "*w3m*")
+;;       (switch-to-buffer
+;;        (ido-completing-read "w3m session: "
+;; 			    (save-excursion
+;; 			      (delq
+;; 			       nil
+;; 			       (mapcar (lambda (buf)
+;; 					 (when (buffer-live-p buf)
+;; 					   (with-current-buffer buf
+;; 					     (and (eq major-mode 'w3m-mode)
+;; 						  (buffer-name buf)))))
+;; 				       (buffer-list))))))
+;;     (w3m w3m-home-page)))
 
 ;;; IMPORTANT: highlight custom comment tags
 (require 'custom-comments)
@@ -888,11 +883,12 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
-(require 'rainbow-delimiters)
+;; ERROR: `https://github.com/jlr/rainbow-delimiters/issues/29'
+;; (require 'rainbow-delimiters)
 
-(after "rainbow-delimiters"
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
+;; (after "rainbow-delimiters"
+;;   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;;   (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
 
 ;;; IMPORTANT: ibuffer version control
 ;; SOURCE: `https://github.com/purcell/ibuffer-vc'
@@ -932,12 +928,13 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
   (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/stumpwm-dir" ":stumpwm:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/bash-dir/"   ":bash:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/xinit-dir/"  ":xinit:"))
+  ;; ---
   (add-to-list 'sml/replacer-regexp-list '("^~/Public/"                    ":public:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"            ":scratch:"))  
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/"                 ":docs:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"             ":anu:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"         ":reading:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"         ":writing:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"             ":uni:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"         ":read:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"         ":write:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"            ":mail:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"            ":news:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/"    ":org:"))
@@ -961,6 +958,13 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 (after "org-journal"
   (setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/"))))
+
+;;; IMPORTANT: switch window
+;; SOURCE: ...
+(require 'switch-window)
+
+(after "switch-window"
+  (global-set-key (kbd "C-x o") 'switch-window))
 
 (provide 'user-config)
 ;;; user-config.el ends here

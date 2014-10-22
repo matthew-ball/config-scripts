@@ -227,6 +227,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
 	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
 	org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
+	org-hide-emphasis-markers t ;; NOTE: hide emphasis markers in org-mode buffers
 	;; org-read-date-display-live nil ;; NOTE: disable the live date-display
 	;; org-insert-mode-line-in-empty-file t
 	;; --- appearance ---
@@ -824,6 +825,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ;;(org-indent-mode) ;; NOTE: indent with headings
   ;;(setq org-startup-indented t) ;; NOTE: indent with headings
   (auto-complete-mode t)
+  (hs-minor-mode)
   (imenu-add-to-menubar "Imenu")
   (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
 
