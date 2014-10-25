@@ -1,5 +1,7 @@
 
 * The ~configuration script~ project
+** GNOME
+** XFCE
 This configuration project /essentially/ replaces xfwm4 with StumpWM under an XFCE environment. The base system used in the development has been Debian Squeeze/Wheezy but presumably it should be independent of specific GNU/Linux distribution (and indeed, desktop environment); the configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
 # There are two separate branches associated with this configuration; one is designed for use with laptop (and portable) systems, the other for desktop systems. The differences are subtle and either branch can be used on the other system without hindrance - the separation simply provides convenience to the user.
