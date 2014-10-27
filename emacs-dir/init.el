@@ -107,7 +107,7 @@
 	load-prefer-newer t)
 
   ;; NOTE: set download repositories
-  (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+  (setq package-archives '(("melpa" . "http://melpa.org/packages/")
 			   ;; ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 			   ;; ("melpa-unstable" . "http://melpa-unstable.milkbox.net/packages/")
 			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")			   
