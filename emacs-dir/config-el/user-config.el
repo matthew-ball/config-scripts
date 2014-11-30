@@ -33,17 +33,17 @@
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-;; TODO: investigate `erc-bbdb.el'
-(require 'bbdb)
+;;(require 'bbdb)
 
-(after "bbdb"
+(after "gnus"
+  (require 'bbdb)
+
   (bbdb-initialize 'gnus 'message)
   (bbdb-mua-auto-update-init 'gnus 'message)
 
-  ;; (add-hook 'gnus-startup-hook #'bbdb-insinuate-gnus)
-
   (setq bbdb-mua-update-interactive-p '(query . create)
-	bbdb-file "~/.emacs.d/contacts-file.el"
+	bbdb-file (expand-file-name (concat user-emacs-directory "contacts-file.el"))
+	;; bbdb-file "~/.emacs.d/contacts-file.el"
 	;; bbdb-silent t
 	bbdb-default-country "Australia"))
 
@@ -92,21 +92,23 @@
 
 (after "magit"
   (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
-	magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
+	;; magit-process-popup-time -1 ;; NOTE: popup the process buffer if command takes too long
+	)
 
   ;; NOTE: full screen magit-status
-  (defadvice magit-status (around magit-fullscreen activate)
-    (window-configuration-to-register :magit-fullscreen)
-    ad-do-it
-    (delete-other-windows))
+  ;; (defadvice magit-status (around magit-fullscreen activate)
+  ;;   (window-configuration-to-register :magit-fullscreen)
+  ;;   ad-do-it
+  ;;   (delete-other-windows))
 
-  (defun magit-quit-session ()
-    "Restores the previous window configuration and kills the magit buffer"
-    (interactive)
-    (kill-buffer)
-    (jump-to-register :magit-fullscreen))
+  ;; (defun magit-quit-session ()
+  ;;   "Restores the previous window configuration and kills the magit buffer"
+  ;;   (interactive)
+  ;;   (kill-buffer)
+  ;;   (jump-to-register :magit-fullscreen))
 
-  (define-key magit-status-mode-map (kbd "q") #'magit-quit-session))
+  ;; (define-key magit-status-mode-map (kbd "q") #'magit-quit-session)
+  )
 
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
@@ -392,7 +394,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	gnus-summary-display-arrow t
         gnus-thread-ignore-subject t
         gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
-        gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
+        gnus-summary-thread-gathering-function #'gnus-gather-threads-by-subject
 	gnus-visible-headers (concat "^From:\\|^Subject:" "\\|^To:\\|^Cc:\\|^Date:")
         gnus-posting-styles '((".*" (name "Matthew Ball")) ("gmail" (address "mathew.ball@gmail.com"))))
 
@@ -439,20 +441,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         smtpmail-smtp-service 587
         smtpmail-auth-credentials '(("smtp.gmail.com" 587 user-primary-email-address nil))))
 
-;;; IMPORTANT: newsticker
-;; SOURCE: `...'
-;; (autoload 'newsticker-treeview "newsticker" "Rss feed reader.")
-
-;; (after "newsticker"
-;;   (setq newsticker-html-renderer 'w3m-region
-;; 	;;newsticker-retrieval-interval 600 ;; check every 10 minutes
-;; 	newsticker-url-list-defaults nil
-;; 	newsticker-url-list '("..."))
-
-;;   (global-set-key (kbd "C-c t") 'newsticker-treeview)
-
-;;   (newsticker-start))
-
 ;;; IMPORTANT: abbreviations
 ;; SOURCE: `http://www.emacswiki.org/emacs/AbbrevMode'
 ;; (require 'abbrev)
@@ -464,12 +452,9 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
 (require 'auto-complete)
-;; (autoload 'auto-complete "auto-complete" "..." t)
 
 (after "auto-complete"
   (require 'auto-complete-config)
-
-  ;; (global-auto-complete-mode t)
 
   (setq ac-expand-on-auto-complete t ;; NOTE: expand common portions
 	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
@@ -480,10 +465,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
 	ac-source-yasnippet '(action . #'yas-expand))
 
-  (ac-config-default)
-
-  (add-hook 'prog-mode-hook #'auto-complete-mode)
-  (add-hook 'text-mode-hook #'auto-complete-mode))
+  ;; NOTE: enables auto-complete globally
+  (ac-config-default))
 
 ;;; IMPORTANT: auto-complete `ispell' source
 ;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
@@ -508,18 +491,17 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
 ;;; IMPORTANT: smart completion
-;; TODO: this guy probably needs to be generalised a bit more (though, he works for now)
-(defalias 'smart-completion #'(lambda () (if (fboundp 'auto-complete)
-				       (auto-complete nil)
-				     (dabbrev-expand nil))))
-
-;; (defalias 'smart-completion #'(lambda () (dabbrev-expand nil)))
+(defun smart-completion ()
+  "Implement a way of selecting the completion system."
+  (cond
+   ((boundp 'auto-complete-mode) (auto-complete ac-sources))
+   (t (dabbrev-expand nil))))
 
 ;;; IMPORTANT: smart tab
-(defun smart-tab () ;; NOTE: implement a smarter TAB
-  "This smart tab is minibuffer compliant: it acts as usual in the minibuffer.
+(defun smart-tab ()
+  "This smart tab is minibuffer compliant: that is, it acts as usual in the minibuffer.
 
-If mark is active, indents region. Else if point is at the end ofa symbol, expands it. Else indents the current line."
+If mark is active, indents region. Else if point is at the end of a symbol, try to expand the symbol. Else indents the current line."
   (interactive)
   (if (minibufferp)
       (unless (minibuffer-complete)
@@ -532,7 +514,7 @@ If mark is active, indents region. Else if point is at the end ofa symbol, expan
 
 ;;; IMPORTANT: default browser
 (setq browse-url-new-window-flag t
-      browse-url-browser-function 'choose-browser ;; NOTE: ask which browser to use
+      browse-url-browser-function #'choose-browser ;; NOTE: ask which browser to use
       browse-url-generic-program (getenv "BROWSER")) ;; NOTE: use the system's $BROWSER environment variable
 
 (defun choose-browser (url &rest junk) ;; NOTE: select which browser to use (i.e. internal or external)
@@ -555,7 +537,7 @@ Although this is interactive, call this with \\[browse-url]."
 (after "w3m"
   (require 'w3m-cookie)
   (require 'w3m-lnum)
-  (require 'w3m-filter)
+  ;; (require 'w3m-filter)
   ;; (require 'w3m-antenna)
   (require 'w3m-ccl)
 
@@ -607,13 +589,13 @@ Although this is interactive, call this with \\[browse-url]."
 
   ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
 
-  (progn
-    (unless (fboundp 'desktop)
-      (require 'desktop))
-    ;;(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+  ;; (progn
+  ;;   (unless (fboundp 'desktop)
+  ;;     (require 'desktop))
+  ;;   ;;(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
-    ;;(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
-    )
+  ;;   ;;(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
+  ;;   )
 
   ;; NOTE: w3m mode hooks
   (defun desktop-display (url)
@@ -621,7 +603,7 @@ Although this is interactive, call this with \\[browse-url]."
     (let ((buffer-read-only nil))
       (delete-trailing-whitespace)))
 
-  (add-hook 'w3m-display-hook 'desktop-display)
+  (add-hook 'w3m-display-hook #'desktop-display)
 
   ;; IMPORTANT: w3m search
   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
@@ -753,8 +735,8 @@ Although this is interactive, call this with \\[browse-url]."
 (require 'rainbow-delimiters)
 
 (after "rainbow-delimiters"
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
+  ;; (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 ;;; IMPORTANT: ibuffer version control
 ;; SOURCE: `https://github.com/purcell/ibuffer-vc'
@@ -775,13 +757,13 @@ Although this is interactive, call this with \\[browse-url]."
   "Enable `adaptive-wrap-prefix-mode'."
   (adaptive-wrap-prefix-mode t))
 
-(add-hook 'text-mode-hook 'adaptive-wrap-prefix-mode)
+(add-hook 'text-mode-hook #'adaptive-wrap-prefix-mode)
 
 ;;; IMPORTANT: projectile
 ;; SOURCE: `http://www.emacswiki.org/emacs/Projectile'
 (require 'projectile)
 
-(after "projectile"  
+(after "projectile"
   (projectile-global-mode))
 
 ;;; IMPORTANT: smart mode line
@@ -796,15 +778,15 @@ Although this is interactive, call this with \\[browse-url]."
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/xinit-dir/"  ":xinit:"))
   ;; ---
   (add-to-list 'sml/replacer-regexp-list '("^~/Public/"                 ":public:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"         ":scratch:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"         ":scratch:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/"              ":docs:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"          ":uni:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"      ":read:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"      ":read:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"      ":write:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"         ":mail:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"         ":news:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
-  
+
   (setq sml/name-width 1
 	sml/mode-width 1
 	sml/shorten-directory t
@@ -845,16 +827,13 @@ Although this is interactive, call this with \\[browse-url]."
 (autoload 'ecb-minor-mode "ecb" "..." t)
 
 (after "ecb"
-  (setf ;ecb-layout-name 'left1
-	ecb-show-sources-in-directories-buffer 'always
-	;ecb-compile-window-height 12
+  (setf ecb-show-sources-in-directories-buffer 'always
+	;; ecb-layout-name 'left1
+	;; ecb-compile-window-height 12
 	))
 
 ;;; IMPORTANT: `inf-ruby'
 (autoload 'inf-ruby "inf-ruby" "..." t)
-
-(after "inf-ruby")
-;; TODO: set key-binding
 
 (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
 (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
@@ -863,8 +842,8 @@ Although this is interactive, call this with \\[browse-url]."
   (setq ruby-programming-map (make-sparse-keymap)))
 
 (define-key global-map ruby-programming-prefix-key ruby-programming-map)
-(define-key ruby-programming-map (kbd "r") 'inf-ruby)
-(define-key ruby-programming-map (kbd "a") 'rvm-activate-corresponding-ruby)
+(define-key ruby-programming-map (kbd "r") #'inf-ruby)
+(define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby)
 
 ;;; IMPORTANT: rvm
 

@@ -26,9 +26,9 @@ alias start_gdm='sudo /etc/init.d/gdm start'
 
 # COMMENT: emacs related aliases
 alias le='emacs --daemon'
-alias et='emacsclient -t' # NOTE: open emacs in a terminal session
-alias ec='emacsclient -c -n' # NOTE: open emacs in an X session
-alias ff='emacsclient -n'
+alias et='emacsclient -t -c' # NOTE: open emacs in a terminal session
+alias ec='emacsclient -n -c' # NOTE: open emacs in an X session
+#alias ff='emacsclient -n'
 
 ## WARNING: these don't really work ...
 # alias sudo_et='emacsclient -t "/sudo::$*"'
