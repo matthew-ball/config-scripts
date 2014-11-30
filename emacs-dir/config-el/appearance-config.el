@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
-;; Keywords: 
+;; Keywords: aesthetics
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -74,7 +74,9 @@
 ;;; IMPORTANT: show matching parenthesis
 ;; SOURCE: `http://emacswiki.org/emacs/ShowParenMode'
 (show-paren-mode t)
-(setq show-paren-style 'parenthesis
+
+(setq show-paren-style 'mixed
+      ;;show-paren-style 'parenthesis
       show-paren-delay 0.0)
 
 ;;; IMPORTANT: line numbers
@@ -102,43 +104,48 @@
       column-number-mode t ;; NOTE: turn on column numbers in the mode line
       size-indication-mode nil) ;; NOTE: do not show file size in mode line
 
+;; IMPORTANT: laptop
+(defun laptop-p ()
+  ;; TODO: check if laptop
+  nil)
+
+(when (laptop-p)
+  (require 'battery)
+  (require 'wireless))
+
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
-;; (require 'time)
+(require 'time)
 
-;; (display-time-mode t) ;; NOTE: display time status in the mode line
+(defcustom custom-cities '(("Australia/Canberra" "Canberra")
+			   ("America/Montreal" "Montreal")
+			   ("Europe/Amsterdam" "Amsterdam")
+			   ("Asia/Bangkok" "Chiang Mai")) "Custom cities.")
 
-;; TODO: check if laptop
-;; (defun laptop ()
-;;   (require 'wireless)
-;;   ;; (require 'battery)
-;;   (display-battery-mode t)
-;;   (after "wireless"
-;;     (setq wireless-mode-line-format "[%k%%]")
-;;     (display-wireless-mode t)))
+(after "time"
+  (setq display-time-default-load-average nil
+	display-time-day-and-date nil
+	display-time-24hr-format nil
+	display-time-format "%I:%M%p"
+	display-time-world-buffer-name "*world-clock*")
 
-;;(laptop)
+  (defun add-world-city (city) (push city display-time-world-list))
+  (defun custom-world-cities () (mapc #'add-world-city custom-cities))
+
+  (custom-world-cities)
+  (display-time-mode t)) ;; NOTE: display time status in the mode line
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
-;;(require 'battery)
+(after "battery"
+  (setq battery-mode-line-format "[%b%p%\%]" ;; NOTE: default
+	battery-mode-line-limit 60)
 
-;;(after "battery"
-;;   (setq battery-mode-line-format "[%b%p%%]" ;; NOTE: default
-;; 	;;battery-echo-area-format "Power %L, battery %B (%p%% load, remaining time %t)"
-;; 	;;battery-load-critical 10
-;; 	;;battery-load-low 25
-;; 	;;battery-update-interval 60
-;; 	;;battery-status-function 'battery-linux-sysfs ;; NOTE: default
-;; 	;;battery-status-function 'battery-linux-proc-acpi
-;; 	;;battery-status-function 'battery-linux-proc-apm
-;; 	;;battery-mode-line-limit 60 ;; NOTE: display battery status when battery has less than 60% charge
-;; 	)
-;; (display-battery-mode t)) ;; NOTE: display battery status in the mode line
+  (display-battery-mode t)) ;; NOTE: display battery status in the mode line
 
 ;; SOURCE: `https://github.com/hh/emacs/blob/master/.emacs.d/wireless.el'
-;;(require 'wireless)
+(after "wireless"
+  (setq wireless-mode-line-format " [%k%\%]")
 
-;; (after "wireless"
-;;   (display-wireless-mode t))
+  (display-wireless-mode t)) ;; NOTE: display wireless status in the mode line
 
 ;;; IMPORTANT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
@@ -176,7 +183,7 @@
   ;; (add-hook 'haskell-mode-hook    #'hs-minor-mode)
   (add-hook 'latex-mode-hook #'hs-minor-mode)
 
-  (setq hs-set-up-overlay 'display-code-line-counts))
+  (setq hs-set-up-overlay #'display-code-line-counts))
 
 (defun toggle-selective-display (column)
   (interactive "P")
@@ -196,21 +203,17 @@
 
 (defun display-code-line-counts (ov)
   (when (eq 'code (overlay-get ov 'hs))
-    (overlay-put ov 'display
-		 (format "... / %d"
-			 (count-lines (overlay-start ov)
-				      (overlay-end ov))))))
+    (overlay-put ov 'display (format "... / %d" (count-lines (overlay-start ov) (overlay-end ov))))))
 
 ;;; IMPORTANT: prettyify symbols
 ;; SOURCE: `http://ergoemacs.org/emacs/emacs_pretty_lambda.html'
 
-;; (defconst lisp--prettify-symbols-alist
-;;   '(("lambda"  . ?λ)
-;;     (">=" . ?≥)
-;;     ("<=" . ?≤)
-;;     ("member" . ?∈)
-;;     ("forall" . ?∀)
-;;     ("exists" . ?∃)))
+(setq lisp--prettify-symbols-alist '(("lambda"  . ?λ)
+				     (">=" . ?≥)
+				     ("<=" . ?≤)
+				     ("member" . ?∈)
+				     ("forall" . ?∀)
+				     ("exists" . ?∃)))
 
 (global-prettify-symbols-mode 1)
 
@@ -219,36 +222,74 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
 (autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
 
-(after "abbrev" (diminish 'abbrev-mode))
-(after "eldoc" (diminish 'eldoc-mode))
-(after "auto-complete" (diminish 'auto-complete-mode))
-(after "cwarn" (diminish 'cwarn-mode))
-(after "elisp-slime-nav" (diminish 'elisp-slime-nav-mode))
-(after "eproject" (diminish 'eproject-mode))
-(after "face-remap" (diminish 'buffer-face-mode))
-(after "flyspell" (diminish 'flyspell-mode))
-(after "flymake" (diminish 'flymake-mode))
-(after "glasses" (diminish 'glasses-mode))
-(after "haskell-doc" (diminish 'haskell-doc-mode))
-(after "haskell-indent" (diminish 'haskell-indent-mode))
-(after "haskell-indentation" (diminish 'haskell-indentation-mode))
-(after "hideshow" (diminish 'hs-minor-mode))
-(after "hilit-chg" (diminish 'highlight-changes-mode))
-(after "longlines" (diminish 'longlines-mode))
-(after "magit" (diminish 'magit-auto-revert-mode))
-(after "org-indent" (diminish 'org-indent-mode))
-(after "paredit" (diminish 'paredit-mode))
-(after "projectile" (diminish 'projectile-mode))
-(after "reftex" (diminish 'reftex-mode))
-(after "simple" (diminish 'visual-line-mode))
-(after "undo-tree" (diminish 'undo-tree-mode))
-(after "w3m-lnum" (diminish 'w3m-lnum-mode))
-(after "yasnippet" (diminish 'yas-minor-mode))
-(after "geiser-mode" (diminish 'geiser-mode))
-(after "geiser-autodoc" (diminish 'geiser-autodoc-mode))
+(defmacro diminish-minor-mode (package-name &optional mode-name)
+  (let ((name (if (eq mode-name nil)
+		   `',(intern (concat package-name "-mode"))
+		 mode-name)))
+    `(after ,package-name (diminish ,name))))
+
+(diminish-minor-mode "abbrev")
+(diminish-minor-mode "eldoc")
+(diminish-minor-mode "auto-complete")
+(diminish-minor-mode "cwarn")
+(diminish-minor-mode "elisp-slime-nav")
+(diminish-minor-mode "eproject")
+(diminish-minor-mode "flyspell")
+(diminish-minor-mode "flymake")
+(diminish-minor-mode "glasses")
+(diminish-minor-mode "haskell-doc")
+(diminish-minor-mode "haskell-indent")
+(diminish-minor-mode "haskell-indentation")
+(diminish-minor-mode "longlines")
+(diminish-minor-mode "org-indent")
+(diminish-minor-mode "paredit")
+(diminish-minor-mode "projectile")
+(diminish-minor-mode "reftex")
+(diminish-minor-mode "undo-tree")
+(diminish-minor-mode "face-remap" 'buffer-face-mode)
+(diminish-minor-mode "hideshow" 'hs-minor-mode)
+(diminish-minor-mode "hilit-chg" 'highlight-changes-mode)
+;;(diminish-minor-mode "magit" 'magit-auto-revert)
+(diminish-minor-mode "simple" 'visual-line-mode)
+(diminish-minor-mode "yasnippet" 'yas-minor-mode)
+;; (diminish-minor-mode "w3m-lnum")
+;; (diminish-minor-mode "geiser")
+;; (diminish-minor-mode "geiser-autodoc")
+;; ---
+;; (after "abbrev" (diminish 'abbrev-mode))
+;; (after "eldoc" (diminish 'eldoc-mode))
+;; (after "auto-complete" (diminish 'auto-complete-mode))
+;; (after "cwarn" (diminish 'cwarn-mode))
+;; (after "elisp-slime-nav" (diminish 'elisp-slime-nav-mode))
+;; (after "eproject" (diminish 'eproject-mode))
+;; (after "face-remap" (diminish 'buffer-face-mode))
+;; (after "flyspell" (diminish 'flyspell-mode))
+;; (after "flymake" (diminish 'flymake-mode))
+;; (after "glasses" (diminish 'glasses-mode))
+;; (after "haskell-doc" (diminish 'haskell-doc-mode))
+;; (after "haskell-indent" (diminish 'haskell-indent-mode))
+;; (after "haskell-indentation" (diminish 'haskell-indentation-mode))
+;; (after "hideshow" (diminish 'hs-minor-mode))
+;; (after "hilit-chg" (diminish 'highlight-changes-mode))
+;; (after "longlines" (diminish 'longlines-mode))
+;; (after "magit" (diminish 'magit-auto-revert-mode))
+;; (after "org-indent" (diminish 'org-indent-mode))
+;; (after "paredit" (diminish 'paredit-mode))
+;; (after "projectile" (diminish 'projectile-mode))
+;; (after "reftex" (diminish 'reftex-mode))
+;; (after "simple" (diminish 'visual-line-mode))
+;; (after "undo-tree" (diminish 'undo-tree-mode))
+;; (after "w3m-lnum" (diminish 'w3m-lnum-mode))
+;; (after "yasnippet" (diminish 'yas-minor-mode))
+;; (after "geiser-mode" (diminish 'geiser-mode))
+;; (after "geiser-autodoc" (diminish 'geiser-autodoc-mode))
 ;; TODO: ...
 ;;(after "gnus-sum" (diminish 'gnus-agent-mode))
 ;;(after "gnus-topic" (diminish 'gnus-topic-mode))
+
+;; TODO: ...
+(defmacro diminish-major-mode (package-name &optional mode-name)
+  `(,package-name ,mode-name))
 
 ;; NOTE: this is unofficially `diminish' for major modes
 (defvar mode-line-cleaner-alist '((c-mode	   . "C")

@@ -869,22 +869,5 @@
 	;; ispell-alternate-dictionary "/usr/share/dict/american-english" ;; FIX: ...
 	ispell-extra-args '("--sug-mode=ultra")))
 
-;;; IMPORTANT: `http://www.emacswiki.org/emacs/DisplayTime'
-(require 'time)
-
-(defcustom custom-cities '(("Australia/Canberra" "Canberra")
-			   ("America/Montreal" "Montreal")
-			   ("Europe/Amsterdam" "Amsterdam")
-			   ("Asia/Bangkok" "Chiang Mai")) "Custom cities.")
-
-(after "time"
-  (defun add-world-city (city)
-    (push city display-time-world-list))
-
-  (defun custom-world-cities ()
-    (mapc #'add-world-city custom-cities))
-
-  (custom-world-cities))
-
 (provide 'general-config)
 ;;; general-config.el ends here

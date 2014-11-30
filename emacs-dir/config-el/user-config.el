@@ -33,18 +33,13 @@
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-;;(require 'bbdb)
-
 (after "gnus"
   (require 'bbdb)
-
   (bbdb-initialize 'gnus 'message)
   (bbdb-mua-auto-update-init 'gnus 'message)
 
   (setq bbdb-mua-update-interactive-p '(query . create)
 	bbdb-file (expand-file-name (concat user-emacs-directory "contacts-file.el"))
-	;; bbdb-file "~/.emacs.d/contacts-file.el"
-	;; bbdb-silent t
 	bbdb-default-country "Australia"))
 
 ;;; IMPORTANT: make `ido' available everywhere
@@ -86,29 +81,16 @@
 ;; SOURCE: `https://github.com/defunkt/gist.el'
 (autoload 'gist-buffer "gist" "Integrate with Github." t)
 
+;;(define-key programming-map (kbd "g") #'gist-buffer)
+
 ;;; IMPORTANT: git integration
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
 (autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
 
-(after "magit"
-  (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
-	;; magit-process-popup-time -1 ;; NOTE: popup the process buffer if command takes too long
-	)
+;; (after "magit"
+;;   (setq magit-save-some-buffers t))
 
-  ;; NOTE: full screen magit-status
-  ;; (defadvice magit-status (around magit-fullscreen activate)
-  ;;   (window-configuration-to-register :magit-fullscreen)
-  ;;   ad-do-it
-  ;;   (delete-other-windows))
-
-  ;; (defun magit-quit-session ()
-  ;;   "Restores the previous window configuration and kills the magit buffer"
-  ;;   (interactive)
-  ;;   (kill-buffer)
-  ;;   (jump-to-register :magit-fullscreen))
-
-  ;; (define-key magit-status-mode-map (kbd "q") #'magit-quit-session)
-  )
+;;(define-key programming-map (kbd "m") #'magit-status)
 
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
@@ -753,9 +735,9 @@ Although this is interactive, call this with \\[browse-url]."
 ;;; IMPORTANT: adaptive text wrap
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
 
-(defun turn-on-adaptive-wrap-prefix-mode ()
-  "Enable `adaptive-wrap-prefix-mode'."
-  (adaptive-wrap-prefix-mode t))
+;; (defun turn-on-adaptive-wrap-prefix-mode ()
+;;   "Enable `adaptive-wrap-prefix-mode'."
+;;   (adaptive-wrap-prefix-mode t))
 
 (add-hook 'text-mode-hook #'adaptive-wrap-prefix-mode)
 
@@ -846,9 +828,10 @@ Although this is interactive, call this with \\[browse-url]."
 (define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby)
 
 ;;; IMPORTANT: rvm
+;;(autoload 'rvm-activate-corresponding-ruby "rvm" "Ruby virtual machine." t)
 
 ;;; IMPORTANT: rinari
-(autoload 'rinari-minor-mode "rinari" "Ruby on Rails environment" t)
+;;(autoload 'rinari-minor-mode "rinari" "Ruby on Rails environment" t)
 
 (provide 'user-config)
 ;;; user-config.el ends here

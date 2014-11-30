@@ -70,6 +70,8 @@
 (defcustom user-primary-email-address (getenv "PRIMARY_EMAIL") "Primary email address for the user." :group 'user-variables :type 'string)
 (defcustom user-secondary-email-address (format "%s@%s" user-university-id (getenv "USER_UNI")) "Secondary email address for the user." :group 'user-variables :type 'string)
 
+;; TODO: define `programming-map' and `writing-map'
+
 ;;; IMPORTANT: common lisp
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'
 (eval-when-compile (require 'cl-lib))
@@ -122,42 +124,47 @@
 			   ("gnu" . "http://elpa.gnu.org/packages/"))))
 
 ;; SOURCE: `http://hastebin.com/yidodunufo.lisp'
-(defun ensure-package-installed (&rest packages)
+(defun ensure-package-installed-p (package)
+  "Assure PACKAGE is installed."
+  (if (package-installed-p package)
+      nil
+    (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+	(package-install package)
+      package)))
+
+(defun ensure-packages-installed-p (&rest packages)
   "Assure every package is installed, ask for installation if it's not.
 
 Return a list of installed packages or nil for every skipped package."
-  (mapcar
-   #'(lambda (package)
-       (if (package-installed-p package)
-	   nil
-	 (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-	     (package-install package)
-	   package)))
-   packages))
+  (mapcar #'ensure-package-installed-p packages))
 
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
 (or (file-exists-p package-user-dir) (package-refresh-contents))
 
-(ensure-package-installed 'ac-ispell 'ac-slime 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'ebib 'ecb
-			  'elisp-slime-nav 'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist
-			  'git-commit-mode 'git-rebase-mode 'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'ido-ubiquitous
-			  'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile 'rainbow-delimiters
-			  's 'smart-mode-line 'smex 'switch-window 'tabulated-list 'undo-tree 'w3m 'yasnippet)
+(ensure-packages-installed-p 'ac-ispell 'ac-slime 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'ebib 'ecb
+			     'elisp-slime-nav 'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist
+			     'git-commit-mode 'git-rebase-mode 'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc
+			     'ido-ubiquitous 'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile
+			     'rainbow-delimiters 's 'smart-mode-line 'smex 'switch-window 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
+(defcustom user-config-files '("appearance" "general" "writing" "programming" "user" "key-bindings") "User configuration files.")
+
 (defun use-config-file (name)
   "Print a loading message and call `require' on configuration file referred to by \"NAME-config\"."
   (let ((config-file (concat name "-config")))
-    ;; (message "Loading %s configuration" name)
-    (funcall 'require (intern config-file))))
+    (message "Loading %s configuration" name)
+    (funcall #'require (intern config-file))))
 
-(use-config-file "appearance")
-(use-config-file "general")
-(use-config-file "writing")
-(use-config-file "user")
-(use-config-file "programming")
-(use-config-file "key-bindings")
+(mapc #'use-config-file user-config-files)
+
+;; (use-config-file "appearance")
+;; (use-config-file "general")
+;; (use-config-file "writing")
+;; (use-config-file "user")
+;; (use-config-file "programming")
+;; (use-config-file "key-bindings")
 
 ;;; IMPORTANT: shutdown emacs server
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsAsDaemon'
@@ -171,4 +178,3 @@ Return a list of installed packages or nil for every skipped package."
 ;; (defcustom *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")
 
 ;; (setq initial-buffer-choice *home-file*)
-

@@ -3,7 +3,7 @@
 ;; Copyright (C) 2014  Matthew Ball
 
 ;; Author: Matthew Ball <chu@lispux>
-;; Keywords: 
+;; Keywords: erc
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,11 +28,8 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcUname'
 (defun erc-cmd-UNAME (&rest ignore)
   "Display the result of running `uname -a' to the current ERC buffer."
-  (let ((uname-output
-         (replace-regexp-in-string
-          "[ \n]+$" "" (shell-command-to-string "uname -a"))))
-    (erc-send-message
-     (concat "{uname -a} [" uname-output "]"))))
+  (let ((uname-output (replace-regexp-in-string "[ \n]+$" "" (shell-command-to-string "uname -a"))))
+    (erc-send-message (concat "{uname -a} [" uname-output "]"))))
 
 (defun erc-cmd-HOWMANY (&rest ignore)
   "Display how many users (and ops) the current channel has."
@@ -64,18 +61,13 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcShow'
 (defun erc-cmd-SHOW (&rest form)
   "Evaluate FORM and send the result and the original form as: FORM => (eval FORM)."
-  (let ((string
-         (with-temp-buffer
-           (mapc #'(lambda (f) (insert f " ")) form)
-           (goto-char (point-min))
-           (setq form (read (current-buffer)))
-           (let ((res (condition-case err
-                          (eval form)
-                        (error
-                         (format "Error: %s" err)))))
-             (insert (format " => %s" res)))
-           (buffer-substring-no-properties
-            (point-min) (1- (point-max))))))
+  (let ((string (with-temp-buffer
+		  (mapc #'(lambda (f) (insert f " ")) form)
+		  (goto-char (point-min))
+		  (setq form (read (current-buffer)))
+		  (let ((res (condition-case err (eval form) (error (format "Error: %s" err)))))
+		    (insert (format " => %s" res)))
+		  (buffer-substring-no-properties (point-min) (1- (point-max))))))
     (erc-send-message string)))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcChanop'
@@ -139,6 +131,8 @@
     `(defun ,func (name &rest junk)
        ,doc
        (erc-send-message (concat name ": " ,string)))))
+
+;; TODO: (defmacro erc-user-command (command string))
 
 (defmacro erc-user-action (action verb message)
   "Macro to create \"custom\" actions to an IRC user in an `erc-mode' session."
