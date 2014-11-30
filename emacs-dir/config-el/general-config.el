@@ -37,7 +37,6 @@
       ;; enable-recursive-minibuffer t ;; NOTE: ...
       auto-compression-mode t ;; NOTE: automatically parse an archive
       message-log-max 1000 ;; NOTE: maximum number of lines to keep in the message log buffer (default is 100)
-      show-trailing-whitespace t ;; NOTE: show trailing whitespace
       scroll-margin 0 ;; NOTE: use ...
       scroll-conservatively 10000 ;; NOTE: ... smooth scrolling
       scroll-preserve-screen-position t ;; NOTE: preserve screen position with C-v/M-v
@@ -48,7 +47,8 @@
       use-dialog-box nil ;; NOTE: do not use mouse
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings when using M-x to run a command
 
-(setq-default scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
+(setq-default show-trailing-whitespace t
+	      scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
 	      scroll-down-aggressively 0) ;; NOTE: local variables for smooth scrolling
 
 ;;; IMPORTANT: file encoding
@@ -158,26 +158,26 @@
 	recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
 	recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
-  (defcustom exclude-list '() "Files to exclude from `recentf' history.")
+  (defcustom recentf-exclude-list '() "Files to exclude from `recentf' history.")
 
-  (setq exclude-list '("\\.yasnippet"
-		       "\\.snippet"
-		       "\\-autoloads.el"
-		       "\\.el.gz"
-		       "COMMIT_EDITMSG"
-		       ".newsrc.eld"
-		       "ido.last"
-		       "smex-items"
-		       "recent-files"
-		       "save-place"
-		       "ac-comphist.dat"
-		       "archive-contents"
-		       "minibuffer-history"
-		       "cookies"
-		       "bbdb"
-		       "emacs-desktop"))
+  (setq recentf-exclude-list '("\\.yasnippet"
+			       "\\.snippet"
+			       "\\-autoloads.el"
+			       "\\.el.gz"
+			       "COMMIT_EDITMSG"
+			       ".newsrc.eld"
+			       "ido.last"
+			       "smex-items"
+			       "recent-files"
+			       "save-place"
+			       "ac-comphist.dat"
+			       "archive-contents"
+			       "minibuffer-history"
+			       "cookies"
+			       "bbdb"
+			       "emacs-desktop"))
 
-  (mapc #'(lambda (exclude) (add-to-list 'recentf-exclude exclude)) exclude-list)
+  (mapc #'(lambda (exclude) (add-to-list 'recentf-exclude exclude)) recentf-exclude-list)
 
   (recentf-mode t))
 
@@ -211,16 +211,16 @@
   ;; 	  (expand-file-name "~/Programming" . "Programming")))
 
   ;; TODO: need to look at how the regexp is handled here
-  (defvar never-show-regexp '("^ \\*Minibuf-0\\*$" "^ \\*Minibuf-1\\*$" "^\\*Ibuffer\\*$" "^\\*AgendaCommands\\*$"))
+  ;; (defcustom ibuffer-never-show-regexp '("^ \\*Minibuf-0\\*$"
+  ;; 					 "^ \\*Minibuf-1\\*$"
+  ;; 					 "^\\*Ibuffer\\*$"
+  ;; 					 "^\\*AgendaCommands\\*$") "Hide buffers whose name matches the regular expressions.")
 
   (defun ibuffer-never-show ()
-    ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt *never-show-regexp*))
-    (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-0\\*")
-    (add-to-list 'ibuffer-never-show-predicates "^\\*Minibuf-1\\*")
-    ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Completions")
-    ;; (add-to-list 'ibuffer-never-show-predicates "^\\*AgendaCommands\\*$")
-    ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Messages")
-    (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer*"))
+    ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt ibuffer-never-show-regexp))
+    (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-0\\*$")
+    (add-to-list 'ibuffer-never-show-predicates "^ \\*Minibuf-1\\*$")
+    (add-to-list 'ibuffer-never-show-predicates "^\\*Ibuffer\\*$"))
 
   (setq ibuffer-saved-filter-groups
 	`(("default"
@@ -413,7 +413,7 @@
     (ibuffer-switch-to-saved-filter-groups "default")
     (ibuffer-never-show))
 
-  (add-hook 'ibuffer-mode-hook 'turn-on-custom-ibuffer))
+  (add-hook 'ibuffer-mode-hook #'turn-on-custom-ibuffer))
 
 ;;; IMPORTANT: find file at point
 ;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
@@ -432,7 +432,7 @@
 
 ;;; IMPORTANT: mini-buffer
 (file-name-shadow-mode t) ;; NOTE: be smart about filenames in the mini-buffer
-(fset 'yes-or-no-p 'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
+(fset 'yes-or-no-p #'y-or-n-p) ;; NOTE: changes all "yes/no" questions to "y/n"
 
 ;; NOTE: don't let the cursor go into minibuffer prompt
 ;;(setq minibuffer-prompt-properties '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
@@ -550,7 +550,7 @@
   (require 'em-term)
   (require 'dired) ;; NOTE: ...
 
-  (setq eshell-prompt-function 'eshell-prompt
+  (setq eshell-prompt-function #'eshell-prompt
 	;;eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
 	eshell-highlight-prompt nil
 	eshell-banner-message ""
@@ -577,7 +577,7 @@
 			      eshell-tramp
 			      eshell-unix))
 
-  (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply))
+  (add-hook 'eshell-preoutput-filter-functions #'ansi-color-filter-apply))
 
 
 (after "em-term"
@@ -596,34 +596,34 @@
   (let ((inhibit-read-only t))
     (erase-buffer)))
 
-(defun eshell/deb (&rest args)
-  "Interface with a debian apt system."
-  (eshell-eval-using-options
-   "deb" args
-   '((?f "find" t find "list available packages matching a pattern")
-     (?i "installed" t installed "list installed debs matching a pattern")
-     (?l "list-files" t list-files "list files of a package")
-     (?s "show" t show "show an available package")
-     (?v "version" t version "show the version of an installed package")
-     (?w "where" t where "find the package containing the given file")
-     (nil "help" nil nil "show this usage information")
-     :show-usage)
-   (eshell-do-eval
-    (eshell-parse-command
-     (cond
-      (find
-       (format "apt-cache search %s" find))
-      (installed
-       (format "dlocate -l %s | grep '^.i'" installed))
-      (list-files
-       (format "dlocate -L %s | sort" list-files))
-      (show
-       (format "apt-cache show %s" show))
-      (version
-       (format "dlocate -s %s | egrep '^(Package|Status|Version):'" version))
-      (where
-       (format "dlocate %s" where))))
-    t)))
+;; (defun eshell/deb (&rest args)
+;;   "Interface with a debian apt system."
+;;   (eshell-eval-using-options
+;;    "deb" args
+;;    '((?f "find" t find "list available packages matching a pattern")
+;;      (?i "installed" t installed "list installed debs matching a pattern")
+;;      (?l "list-files" t list-files "list files of a package")
+;;      (?s "show" t show "show an available package")
+;;      (?v "version" t version "show the version of an installed package")
+;;      (?w "where" t where "find the package containing the given file")
+;;      (nil "help" nil nil "show this usage information")
+;;      :show-usage)
+;;    (eshell-do-eval
+;;     (eshell-parse-command
+;;      (cond
+;;       (find
+;;        (format "apt-cache search %s" find))
+;;       (installed
+;;        (format "dlocate -l %s | grep '^.i'" installed))
+;;       (list-files
+;;        (format "dlocate -L %s | sort" list-files))
+;;       (show
+;;        (format "apt-cache show %s" show))
+;;       (version
+;;        (format "dlocate -s %s | egrep '^(Package|Status|Version):'" version))
+;;       (where
+;;        (format "dlocate %s" where))))
+;;     t)))
 
 (defmacro with-face (str &rest properties)
   `(propertize ,str 'face (list ,@properties)))
@@ -644,57 +644,6 @@
      "$")
    " "))
 
-(defun pcmpl-git-commands ()
-  "Return the most common git commands by parsing the git output."
-  (with-temp-buffer
-    (call-process-shell-command "git" nil (current-buffer) nil "help" "--all")
-    (goto-char 0)
-    (search-forward "available git commands in")
-    (let (commands)
-      (while (re-search-forward
-	      "^[[:blank:]]+\\([[:word:]-.]+\\)[[:blank:]]*\\([[:word:]-.]+\\)?"
-	      nil t)
-	(push (match-string 1) commands)
-	(when (match-string 2)
-	  (push (match-string 2) commands)))
-      (sort commands #'string<))))
-
-(defconst pcmpl-git-commands (pcmpl-git-commands)
-  "List of `git' commands.")
-
-(defvar pcmpl-git-ref-list-cmd "git for-each-ref refs/ --format='%(refname)'"
-  "The `git' command to run to get a list of refs.")
-
-(defun pcmpl-git-get-refs (type)
-  "Return a list of `git' refs filtered by TYPE."
-  (with-temp-buffer
-    (insert (shell-command-to-string pcmpl-git-ref-list-cmd))
-    (goto-char (point-min))
-    (let (refs)
-      (while (re-search-forward (concat "^refs/" type "/\\(.+\\)$") nil t)
-	(push (match-string 1) refs))
-      (nreverse refs))))
-
-(defun pcmpl-git-remotes ()
-  "Return a list of remote repositories."
-  (split-string (shell-command-to-string "git remote")))
-
-(defun pcomplete/git ()
-  "Completion for `git'."
-  ;; Completion for the command argument.
-  (pcomplete-here* pcmpl-git-commands)
-  (cond
-   ((pcomplete-match "help" 1)
-    (pcomplete-here* pcmpl-git-commands))
-   ((pcomplete-match (regexp-opt '("pull" "push")) 1)
-    (pcomplete-here (pcmpl-git-remotes)))
-   ;; provide branch completion for the command `checkout'.
-   ((pcomplete-match "checkout" 1)
-    (pcomplete-here* (append (pcmpl-git-get-refs "heads")
-			     (pcmpl-git-get-refs "tags"))))
-   (t
-    (while (pcomplete-here (pcomplete-entries))))))
-
 ;;; IMPORTANT: directory editor (extensions)
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
 (autoload 'dired "dired" "File manager in Emacs." t)
@@ -702,9 +651,8 @@
 (after "dired"
   (require 'dired-x)
 
-  ;; (dired-hide-details-mode t)
   ;; ERROR: the following function requires that `dired' is loaded
-  ;; (define-key dired-mode-map (kbd "C-c o") 'dired-open-file)
+  ;; (define-key dired-mode-map (kbd "C-c o") #'dired-open-file)
 
   (defun turn-on-custom-dired ()
     "Modify the default `dired' behaviour slightly."
@@ -713,7 +661,7 @@
     ;; NOTE: set `dired-x' buffer-local variables here
     (dired-omit-mode))
 
-  (add-hook 'dired-mode-hook 'turn-on-custom-dired)
+  (add-hook 'dired-mode-hook #'turn-on-custom-dired)
 
   ;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
   (setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
@@ -746,25 +694,25 @@
   (define-key dired-mode-map (kbd "^") #'(lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
 
 ;;; IMPORTANT: general functions
-(defun eval-and-replace ()
-  "Replace the preceding s-expression with its value."
-  (interactive)
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
+;; (defun eval-and-replace ()
+;;   "Replace the preceding s-expression with its value."
+;;   (interactive)
+;;   (backward-kill-sexp)
+;;   (condition-case nil
+;;       (prin1 (eval (read (current-kill 0)))
+;;              (current-buffer))
+;;     (error (message "Invalid expression")
+;;            (insert (current-kill 0)))))
 
 (defun switch-to-scratch (&rest junk)
   "Switch to scratch buffer."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-(defun select-previous-window ()
-  "Switch to the previous window"
-  (interactive)
-  (select-window (previous-window)))
+;; (defun select-previous-window ()
+;;   "Switch to the previous window"
+;;   (interactive)
+;;   (select-window (previous-window)))
 
 ;; (defun flip-windows ()
 ;;   "Flip windows."
@@ -787,11 +735,11 @@
     (message "Current buffer does not have an associated file.")))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/UnfillParagraph'
-(defun unfill-paragraph ()
-  "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
+;; (defun unfill-paragraph ()
+;;   "Takes a multi-line paragraph and makes it into a single line of text."
+;;   (interactive)
+;;   (let ((fill-column (point-max)))
+;;     (fill-paragraph nil)))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/ImenuMode'
 (defun ido-goto-symbol (&optional symbol-list)
@@ -852,18 +800,85 @@
 
 ;;; IMPORTANT: windmove
 ;; SOURCE: `http://www.emacswiki.org/emacs/WindMove'
-(require 'windmove)
+;; (require 'windmove)
 
-(after "windmove"
-  (windmove-default-keybindings 'super)) ;; NOTE: not sure how I feel about this, but it's better than relying on C-x o
+;; (after "windmove"
+;;   (windmove-default-keybindings 'super)) ;; NOTE: not sure how I feel about this, but it's better than relying on C-x o
 
 ;;; IMPORTANT: version control
 (setq vc-follow-symlinks t)
 
-;;; IMPORTANT: time
-;; TODO: this should probably be in `writing-config.el'
+;;; IMPORTANT: auto-insert mode
+;; SOURCE: `http://www.emacswiki.org/AutoInsertMode'
+(autoload 'auto-insert-mode "autoinsert" "Insert templates." t)
 
-;; TODO: investigate `display-time-world-list'
+(after "autoinsert"
+  (setq auto-insert-directory "~/.emacs.d/templates/"
+  	auto-insert-query t)
+
+  (define-auto-insert '("\\.sh\\'" . "Shell scripts") '(nil "#!/bin/bash"))
+  (define-auto-insert '("\\.rb\\'" . "Ruby scripts") '(nil "#!/usr/bin/ruby"))
+
+  (define-auto-insert '("\\.yasnippet" . "Yasnippet expansions.")
+    '("Name: " "# name: " str \n "# key: " str \n "# --" \n \n))
+
+  (define-auto-insert '("\\README\\'" . "README file")
+    '("Title: " "#+TITLE: " str \n "#+AUTHOR: " (user-login-name) \n \n "* Introduction" \n \n "* Footnotes" \n \n))
+
+  ;; TODO: investigate whether this can be a major mode ...
+  (define-auto-insert '("\\.org\\'" . "Org skeleton")
+    '("Title: " "#+TITLE: " str \n "#+AUTHOR: " (user-full-name) \n \n))
+
+  (define-auto-insert '("\\.asd\\'" . "ASD package definition skeleton")
+    '("System name: "
+      "(defpackage #:" str "-asd" \n
+      "(:use :common-lisp))" \n \n
+      "(in-package :asdf-user)" \n \n
+      "(defsystem :" str \n
+      ":name \"" str "\"" \n
+      ":version 0.0.1" \n
+      ":components ())"))
+  
+  (define-auto-insert '("\\.lisp\\'" . "Lisp skeleton")
+    '("Description: " ";; " (file-name-nondirectory (buffer-file-name)) " -- " str \n \n)))
+
+(add-hook 'find-file-hook 'auto-insert)
+
+;;; IMPORTANT: flyspell
+;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
+;;(require 'flyspell)
+(autoload 'flyspell-mode "flyspell" "..." t)
+
+(after "flyspell"
+  (setq flyspell-issue-welcome-flag nil)
+  (add-hook 'text-mode-hook #'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
+
+;;; IMPORTANT: ispell
+(require 'ispell)
+
+(after "ispell"
+  (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
+	ispell-parser 'tex
+	ispell-dictionary "british"
+	;; ispell-alternate-dictionary "/usr/share/dict/american-english" ;; FIX: ...
+	ispell-extra-args '("--sug-mode=ultra")))
+
+;;; IMPORTANT: `http://www.emacswiki.org/emacs/DisplayTime'
+(require 'time)
+
+(defcustom custom-cities '(("Australia/Canberra" "Canberra")
+			   ("America/Montreal" "Montreal")
+			   ("Europe/Amsterdam" "Amsterdam")
+			   ("Asia/Bangkok" "Chiang Mai")) "Custom cities.")
+
+(after "time"
+  (defun add-world-city (city)
+    (push city display-time-world-list))
+
+  (defun custom-world-cities ()
+    (mapc #'add-world-city custom-cities))
+
+  (custom-world-cities))
 
 (provide 'general-config)
 ;;; general-config.el ends here

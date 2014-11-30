@@ -48,8 +48,8 @@
 (require 'erc)
 (require 'bbdb)
 (require 'bbdb-com)
-(require 'bbdb-gui)
-(require 'bbdb-hooks)
+;;(require 'bbdb-gui)
+;;(require 'bbdb-hooks)
 
 (defgroup erc-bbdb nil
   "Variables related to BBDB usage."

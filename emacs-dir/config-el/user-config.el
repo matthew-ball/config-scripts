@@ -26,23 +26,25 @@
 
 ;;; IMPORTANT: ace-jump-mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/AceJump'
-(autoload 'ace-jump-mode "ace-jump-mode" "..." t)
+;; (autoload 'ace-jump-mode "ace-jump-mode" "..." t)
 
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-;; (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode-pop-mark)
+;; (global-set-key (kbd "C-c SPC") #'ace-jump-mode)
+;; (global-set-key (kbd "C-c C-SPC") #'ace-jump-mode-pop-mark)
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
-;;(autoload 'bbdb "bbdb" "" t)
 ;; TODO: investigate `erc-bbdb.el'
 (require 'bbdb)
 
 (after "bbdb"
-  (bbdb-initialize 'gnus 'message 'reportmail)
+  (bbdb-initialize 'gnus 'message)
+  (bbdb-mua-auto-update-init 'gnus 'message)
 
-  (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+  ;; (add-hook 'gnus-startup-hook #'bbdb-insinuate-gnus)
 
-  (setq ;;bbdb-file "~/.emacs.d/contacts-file.el"
+  (setq bbdb-mua-update-interactive-p '(query . create)
+	bbdb-file "~/.emacs.d/contacts-file.el"
+	;; bbdb-silent t
 	bbdb-default-country "Australia"))
 
 ;;; IMPORTANT: make `ido' available everywhere
@@ -53,10 +55,10 @@
 
 ;;; IMPORTANT: improve `ido's flex matching
 ;; SOURCE: `https://github.com/lewang/flx'
-;; (after "ido"
-;;   (require 'flx)
-;;   (setq ido-use-faces t)
-;;   (flx-ido-mode t))
+(after "ido"
+  (require 'flx)
+  (setq ido-use-faces t)
+  (flx-ido-mode t))
 
 ;;; IMPORTANT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
@@ -68,12 +70,17 @@
 
   (smex-initialize)) ;; NOTE: super-charge `ido-mode'
 
+(global-set-key (kbd "M-x") #'smex) ;; NOTE: smex improves default ido at the mini buffer
+(global-set-key	(kbd "M-X") #'smex-major-mode-commands) ;; NOTE: available major mode commands
+
 ;;; IMPORTANT: browse kill ring
 ;; SOURCE: `http://www.emacswiki.org/BrowseKillRing'
 (autoload 'browse-kill-ring "browse-kill-ring" "Browse the `kill-ring'." t)
 
 (after "browse-kill-ring"
   (browse-kill-ring-default-keybindings))
+
+(global-set-key (kbd "C-x R") #'browse-kill-ring)
 
 ;;; IMPORTANT: gist
 ;; SOURCE: `https://github.com/defunkt/gist.el'
@@ -85,7 +92,6 @@
 
 (after "magit"
   (setq magit-save-some-buffers t ;; NOTE: ask me to save buffers before running magit-status
-
 	magit-process-popup-time 4) ;; NOTE: popup the process buffer if command takes too long
 
   ;; NOTE: full screen magit-status
@@ -100,7 +106,7 @@
     (kill-buffer)
     (jump-to-register :magit-fullscreen))
 
-  (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
+  (define-key magit-status-mode-map (kbd "q") #'magit-quit-session))
 
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
@@ -113,6 +119,9 @@
 
 (global-undo-tree-mode) ;; NOTE: enable undo-tree mode
 
+(global-set-key (kbd "C-z") #'undo-tree-visualize)
+(global-set-key (kbd "M-Z") #'undo-tree-redo)
+
 ;;; IMPORTANT: emacs relay chat
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcSSL'
@@ -120,45 +129,38 @@
 
 (after "erc"
   (require 'tls)
-  (require 'erc-spelling)
+  (require 'erc-spelling) ;; spelling
+  (require 'erc-goodies)
+  ;; (require 'erc-ibuffer) ;; ibuffer
+  (require 'erc-log) ;; logging
 
-  ;; IMPORTANT: erc modules
+  ;; IMPORTANT: erc spelling
   (erc-spelling-enable)
+
+  ;; IMPORTANT: keep cursor at prompt
+  (erc-scrolltobottom-enable)
 
   ;; IMPORTANT: erc match
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
   (setq erc-keywords '() ;; NOTE: highlight specific keywords
         erc-current-nick-highlight-type 'nick ;; NOTE: ...
-        erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
+	erc-pal-highlight-type 'nick ;; NOTE: nicknames in a message
+        erc-pals '()
         erc-fool-highlight-type 'all ;; NOTE: highlight entire message
-        erc-pals '(;;"twb"
-                   ;;"k-man"
-                   ;;"macrobat"
-                   ;;"tali713"
-                   ;; "syrinx"
-                   ;;"sabetts"
-                   ;; "rww"
-                   ;;"dax"
-                   ;; "LjL"
-                   ;; "ldunn"
-                   ;;"moocow"
-                   ;; "mc44"
-                   ;; "IdleOne"
-                   ;;"jussi"
-                   ;;"topyli"
-                   ) ;; NOTE: highlight pals
-        erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu") ;; NOTE: highlight fools
+        erc-fools '("ubottu" "floodBot1" "floodBot2" "floodBot3" "fsbot" "rudybot" "birny" "lisppaste" "ubnotu")
         erc-dangerous-hosts '()) ;; NOTE: mark any dangerous hosts
+
+  (erc-lurker-initialize)
+
+  (setq-default erc-ignore-list '()) ;; SOURCE: `http://www.emacswiki.org/emacs/ErcIgnoring'
 
   (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
   ;; IMPORTANT: erc logging
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
-  (require 'erc-log)
-
-  (setq erc-log-channels-directory "~/.emacs.d/erc/logs/" ;; FIX: hard-coded ...
-        erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
+  (setq erc-save-buffer-on-part t ;; NOTE: save log file automatically when parting or quitting a channel
         erc-save-queries-on-quit t
+	erc-log-channels-directory (expand-file-name (format "%s/erc/logs/" user-emacs-directory))
         erc-log-write-after-send t
         erc-log-write-after-insert t
         ;;erc-log-insert-log-on-open t
@@ -166,96 +168,120 @@
 
   (erc-log-enable)
 
-  ;; IMPORTANT: erc ignore
-  ;; SOURCE: `http://www.emacswiki.org/emacs/ErcIgnoring'
-  ;; (setq-default erc-ignore-list '())
+  ;; TODO: `erc-button-alist'
+
+  ;; TODO: clean up multiple server handling
+  ;; (defcustom custom-erc-server-list nil "List of servers to connect to.")
+  ;; (defcustom custom-erc-channel-alist '() "List of server . channel pairs to connect to.")
+  ;; (defvar custom-erc-server-autojoin-channel-alist nil "List of server . channel pairs for auto-joining.")
+
+  ;; (defun custom-erc-server (server)
+  ;;   (push server custom-erc-server-list))
+
+  ;; ;; (custom-erc-server "irc.freenode.net")
+  ;; ;; (custom-erc-server "eu.undernet.org")
+
+  ;; (defun custom-erc-server-add-channel (server &rest channels)
+  ;;   (if (listp channels)
+  ;; 	(dolist (channel channels)
+  ;; 	  (setq custom-erc-channel-alist (push (cons server channel) custom-erc-channel-alist)))
+  ;;     (setq custom-erc-channel-alist (push (cons server channels) custom-erc-channel-alist))))
+
+  ;; (custom-erc-server-add-channel "irc-freenode.net" '("#ubuntu" "#ubuntu+1" "#ubuntu-server" "#ubuntu-au" "#ubuntu-au-chat" "#ubuntu-offtopic"
+  ;; 						      "#ubuntu-discuss" "#ubuntu-irc" "#ubuntu-programming" "#ubuntu-bots-devel" "#ubuntu-bots"
+  ;; 						      "#ubuntu-app-devel" "#ubuntu-devel" "#ubuntu-bugs" "#ubuntuforums" "#ubuntu-ops"
+  ;; 						      "#ubuntu-ops-team" "#ubuntu-release-party" "#ubuntu-classroom" "#ubuntu-classroom-chat"
+  ;; 						      "#ubuntu-fr" "#ubuntu-fr-offtopic" "#freenode" "#bash" "#gnus" "#hurd" "#sbcl" "#debian"
+  ;; 						      "#debian-offtopic" "#emacs" "#org-mode" "#stumpwm" "#conkeror" "#screen" "#irssi" "#lisp"
+  ;; 						      "#ruby" "#scheme" "#guile" "#clojure" "#haskell" "#latex" "#reddit" "#anucssa" "#defocus"
+  ;; 						      "##club-ubuntu" "##math" "##programming" "##economics" "##linguistics" "##philosophy"))
+
+  ;; ;; (defun custom-erc-server-add-autojoin (server &rest channels))
+  ;; ;; (custom-erc-server-add-autojoin "irc.freenode.net" '("#emacs" "#lisp" "#ubuntu-offtopic" "#ubuntu-mars" "#stumpwm" "#ubuntu-ops" "#ubuntu-ops-team" "#ruby"))
+
+  ;; NOTE: currently this is hard-coded for "freenode" convert this to an alist
+  (defcustom custom-erc-channel-list nil "List of channels ERC can connect to.")
+  (setq custom-erc-channel-list '("#ubuntu" "#ubuntu+1" "#ubuntu-server" "#ubuntu-au" "#ubuntu-au-chat" "#ubuntu-offtopic" "#ubuntu-discuss"
+				  "#ubuntu-irc" "#ubuntu-programming" "#ubuntu-bots-devel" "#ubuntu-bots" "#ubuntu-app-devel" "#ubuntu-devel"
+				  "#ubuntu-bugs" "#ubuntuforums" "#ubuntu-ops" "#ubuntu-ops-team" "#ubuntu-release-party" "#ubuntu-classroom"
+				  "#ubuntu-classroom-chat" "#ubuntu-fr" "#ubuntu-fr-offtopic" "#freenode" "#bash" "#gnus" "#hurd" "#sbcl"
+				  "#debian" "#debian-offtopic" "#emacs" "#org-mode" "#stumpwm" "#conkeror" "#screen" "#irssi" "#lisp" "#ruby"
+				  "#scheme" "#guile" "#clojure" "#haskell" "#latex" "#reddit" "#anucssa" "#defocus" "##club-ubuntu" "##math"
+				  "##programming" "##economics" "##linguistics" "##philosophy"))
+
+  ;; TODO: ...
+  (defmacro custom-erc-propertize (prompt)
+    `(erc-propertize (format "%s>" ,prompt) 'read-only t 'rear-nonsticky t 'front-nonsticky t))
+
+  (defun custom-erc-prompt ()
+    (if (and (boundp 'erc-default-recipients) (erc-default-target))
+  	(custom-erc-propertize (erc-default-target))
+      (custom-erc-propertize "ERC")))
 
   ;; IMPORTANT: erc user variables
-  ;; TODO: use variables in here ...
-  (setq erc-nick (getenv "USER")
+  (setq	erc-nick "chu"
+	;;erc-nick (getenv "USER")
         erc-nick-uniquifier "_"
-        erc-server "irc.freenode.net" ;; NOTE: freenode IRC server
-        ;; erc-user-full-name user-full-name
-        ;; erc-email-userid user-mail-address
-        ;; erc-fill-column 90
-        erc-format-nick-function 'erc-format-@nick
+        ;; erc-server "irc.freenode.net"
         erc-port 7000 ;; NOTE: `erc-tls' port (for ssl)
+        erc-user-full-name user-full-name
+        erc-email-userid user-mail-address
+        erc-format-nick-function 'erc-format-@nick
         erc-current-nick-highlight-type 'all ;; NOTE: highlight the entire message where current nickname occurs
         erc-button-google-url "http://www.google.com/search?q=%s"
-        erc-fill-prefix "       " ;; NOTE: ... prefix column on the left (same size as the `timestamp-format' variable above)
-        erc-fill-mode nil ;; NOTE: again, disable ERC fill (not sure why I have done it in multiple places)
         erc-timestamp-format "[%H:%M] " ;; NOTE: put timestamps on the left
         erc-timestamp-right-column 61
         erc-timestamp-only-if-changed-flag nil ;; NOTE: always show timestamp
-        erc-insert-timestamp-function 'erc-insert-timestamp-left ;; NOTE: insert timestamp in the left column
+	erc-insert-timestamp-function 'erc-insert-timestamp-left ;; NOTE: insert timestamp in the left column
         erc-track-showcount t ;; NOTE: show count of unseen messages
+	erc-track-exclude-server-buffer t
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "324" "329" "332" "333" "353" "477") ;; NOTE: do not track these messages
         erc-kill-buffer-on-part t ;; NOTE: kill buffers for channels after /part
         erc-kill-queries-on-quit t ;; NOTE: kill buffers for queries after quitting the server
         erc-kill-server-buffer-on-quit t ;; NOTE: kill buffers for server messages after quitting the server
         erc-interpret-mirc-color t ;; NOTE: interpret mIRC-style colour commands in IRC chats
-        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE" "324" "329" "332" "333" "353" "477") ;; NOTE: do not track these messages
-        erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
-        ;; erc-lurker-hide-list '("JOIN" "PART" "QUIT")
-        erc-mode-line-format "%t %a" ;; NOTE: display only the channel name on the mode-line
+        ;;erc-hide-list '("JOIN" "NICK" "PART" "QUIT") ;; NOTE: ignore JOIN, NICK, PART and QUIT messages
+        erc-lurker-hide-list '("JOIN" "NICK" "PART" "QUIT")
+        erc-mode-line-format "%t %a" ;; NOTE: display only the channel name in the mode-line
         erc-header-line-format nil ;; NOTE: turn off the topic (header) bar
-	;; erc-header-line-uses-tabbar-p t ;; TEST: ...
-        header-line-format nil ;; NOTE: turn off the topic (header) bar
         erc-input-line-position -1 ;; NOTE: keep input at the last line
         erc-max-buffer-size 20000 ;; NOTE: truncate buffers (so they don't hog core)
         erc-truncate-buffer-on-save t
-        erc-prompt ;; NOTE: channel specific prompt ...
-        (lambda () (if (and (boundp 'erc-default-recipients) (erc-default-target))
-		  (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
-		(erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t)))
+	erc-remove-parsed-property nil
+	erc-prompt #'custom-erc-prompt
         erc-join-buffer 'bury
-        erc-autojoin-channels-alist '((".*\\.freenode.net"
-				       ;; "#gnus"
-				       ;; "#org-mode"
-                                       ;; "#debian-offtopic"
-				       ;; "##outcasts"
-				       ;; "#ubuntu-fr-offtopic"
-				       ;; "#ubuntu-irc"
-                                       "#ubuntu-ops"
-                                       "#ubuntu-ops-team"
-                                       "#ubuntu-offtopic"
-				       ;; "#ubuntu-programming"
-                                       "#stumpwm"
-                                       "#lisp"
-				       "#emacs")))
+        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#lisp" "#ruby" "#ubuntu-offtopic" "#ubuntu-mars" "#ubuntu-ops" "#ubuntu-ops-team")))
 
-  ;; (defun erc-disable-auto-fill-mode ()
-  ;;   ""
-  ;;   (auto-fill-mode 0))
-
-  ;;(add-hook 'erc-mode-hook 'erc-disable-auto-fill-mode)
   (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
 
-  (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
+  ;;; IMPORTANT: erc custom inserts
+  (propertize-word erc-bold ?)
+  (propertize-word erc-underline ?)
 
-  (setq erc-remove-parsed-property nil))
+  ;; NOTE: `erc' key-bindings
+  (defun custom-erc-key-bindings ()
+    (define-key erc-mode-map (kbd "C-c C-b") #'custom-erc-join-channel)
+    (define-key erc-mode-map (kbd "C-c b") #'erc-bold-word)
+    (define-key erc-mode-map (kbd "C-c u") #'erc-underline-word))
 
-;;; IMPORTANT: erc custom inserts
-;; TODO: bindings?
-(propertize-word erc-bold ?)
-(propertize-word erc-underline ?)
+  (add-hook 'erc-insert-post-hook #'erc-truncate-buffer)
+  (add-hook 'erc-mode-hook #'turn-on-visual-line-mode)
+  (add-hook 'erc-mode-hook #'custom-erc-key-bindings)
 
-;;; IMPORTANT: erc user commands
-(after "erc"
+  ;; IMPORTANT: erc user commands
+  ;; (require 'erc-nicklist)
+  ;; (require 'erc-star-serv) ;; NOTE: freenode stuff (TODO: not finished)
+  ;; (require 'erc-bbdb)
   (require 'erc-extensions))
 
-;; IMPORTANT: freenode server services
-;; (after "erc"
-;;   (require 'erc-star-serv))
-
-;; TODO: (require 'erc-goodies) ;; ???
+;; IMPORTANT: erc goodies
 (after "erc-goodies"
-  (erc-scrolltobottom-enable)
-
-  ;; The following "noncommands" are all defined in `erc-extensions'
+  ;; the following "noncommands" are all defined in `erc-extensions'
   (add-to-list 'erc-noncommands-list 'erc-cmd-SHOW)
   (add-to-list 'erc-noncommands-list 'erc-cmd-MAN)
   (add-to-list 'erc-noncommands-list 'erc-cmd-WOMAN))
 
+;; NOTE: ...
 (defun erc-tls-connect-server (server &rest junk)
   "Ask for a password before connecting to SERVER."
   (let ((password (read-passwd "Enter IRC Password: ")))
@@ -269,61 +295,6 @@
 	;; TODO: if connected to IRC and there has been no activity, execute `custom-erc-switch-buffer'
 	(erc-track-switch-buffer 1) ;; NOTE: ... switch to last active buffer ...
       (erc-tls-connect-server "irc.freenode.net")))) ;; NOTE: ... else, start an `erc-tls' session on `irc.freenode.net'
-
-(defvar custom-erc-channel-list nil "List of channels to connect to.")
-
-(setq custom-erc-channel-list ;; NOTE: currently this is hard-coded for "freenode" convert this to an alist
-      (list "#ubuntu"
-	    "#ubuntu+1"
-	    "#ubuntu-server"
-	    "#ubuntu-au"
-	    "#ubuntu-au-chat"
-	    "#ubuntu-offtopic"
-	    "#ubuntu-discuss"
-	    "#ubuntu-irc"
-	    "#ubuntu-programming"
-	    "#ubuntu-bots-devel"
-	    "#ubuntu-bots"
-	    "#ubuntu-app-devel"
-	    "#ubuntu-devel"
-	    "#ubuntu-bugs"
-	    "#ubuntuforums"
-	    "#ubuntu-ops"
-	    "#ubuntu-ops-team"
-	    "#ubuntu-release-party"
-	    "#ubuntu-classroom"
-	    "#ubuntu-classroom-chat"
-	    "#ubuntu-fr"
-	    "#ubuntu-fr-offtopic"
-	    "#freenode"
-            "#bash"
-            "#gnus"
-	    "#hurd"
-            "#sbcl"
-	    "#debian"
-	    "#debian-offtopic"
-	    "#emacs"
-	    "#org-mode"
-	    "#stumpwm"
-	    "#conkeror"
-	    "#screen"
-	    "#irssi"
-	    "#lisp"
-	    "#scheme"
-	    "#guile"
-            "#clojure"
-	    "#haskell"
-	    "#latex"
-            ;; social channels ...
-	    "#reddit"
-            "#anucssa"
-	    "#defocus"
-	    "##club-ubuntu"
-	    "##math"
-	    "##programming"
-	    "##economics"
-            "##linguistics"
-	    "##philosophy"))
 
 (defun custom-erc-join-channel (&rest junk)
   "Select a channel from a list of channels to join.
@@ -341,7 +312,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (when (get-buffer "irc.freenode.net:7000")
     (switch-to-buffer
      (ido-completing-read
-      "Switch to ERC channel: " 
+      "Switch to ERC channel: "
       (save-excursion
 	(delq nil (mapcar (lambda (buf)
 			    (when (buffer-live-p buf)
@@ -349,10 +320,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 				(and (eq major-mode 'erc-mode)
 				     (buffer-name buf)))))
 			  (buffer-list))))))))
-
-;; NOTE: `erc' key-bindings
-(after "erc"
-  (define-key erc-mode-map (kbd "C-c b") 'custom-erc-join-channel))
 
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
@@ -364,7 +331,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; then: create new file ~/.authinfo generating the file:
 ;;  machine imap.gmail.com login user-primary-email-address port 993
 ;;  machine smtp.gmail.com login user-primary-email-address port 587
-;; else: 
+;; else:
 ;; 1. use that information (i.e. start gnus)
 ;; 2. re-write the file to disk (i.e. something has changed)
 
@@ -372,6 +339,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;;   "Create an authinfo file, if none exists.
 
 ;; This requires collecting user input - including user password.")
+
+(setq gnus-inhibit-startup-message t)
 
 (after "gnus"
   (require 'smtpmail)
@@ -384,26 +353,23 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
   ;; IMPORTANT: personal settings
   (setq user-mail-address user-primary-email-address
-        ;; user-mail-address "mathew.ball@gmail.com"
-        ;; user-full-name "Matthew Ball"
-        ;; nnimap-authinfo-file "~/.conf-scripts/passwords/authinfo" ;; NOTE: change directory where authentication information is found	
-        ;; mail-personal-alias-file "~/.conf-scripts/mailrc" ;; NOTE: change directory where mail aliases are located
-	mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file')	
+        mail-personal-alias-file "~/.mailrc"
+	mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file')
 	auth-source-save-behavior nil
-        read-mail-command 'gnus
-	send-mail-function 'smtpmail-send-it ;; NOTE: not for gnus (mail-mode)
+        read-mail-command #'gnus
+	send-mail-function #'smtpmail-send-it ;; NOTE: not for gnus (mail-mode)
 	message-kill-buffer-on-exit t ;; NOTE: kill the mail buffer after sending message
 	message-from-style 'angles ;; NOTE: specifies how the "From" header appears
-        message-send-mail-function 'smtpmail-send-it) ;; NOTE: for gnus (message-mode)
+        message-send-mail-function #'smtpmail-send-it) ;; NOTE: for gnus (message-mode)
 
   ;; TODO: should these be set in `general-config.el' or even `init.el' ???
-  (setq custom-mail-dir (expand-file-name user-mail-directory)) ;; NOTE: set directory for mail
-  (setq custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
+  (setq custom-mail-dir (expand-file-name user-mail-directory) ;; NOTE: set directory for mail
+	custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
   ;; IMPORTANT: gnus settings
   (setq gnus-use-full-window nil ;; NOTE: don't ruin my frame!
 	gnus-adaptive-pretty-print t
-        gnus-inhibit-startup-message t
+	gnus-agent-plugged nil
         gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
         gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
 	gnus-select-method '(nnml "")
@@ -417,47 +383,53 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         gnus-permanently-visible-groups "mail"
         gnus-thread-hide-subtree t
         gnus-fetch-old-headers t
-	;; gnus-summary-mode-line-format "Gnus: %g [%A] %Z"
-	;; gnus-summary-line-format "%U%R%z%d %I%(%[ %F %] %s %)\n"
+	gnus-show-all-headers nil
+	gnus-group-line-format "%M%S%p%P%y:%B%(%G%)\n"
+	gnus-group-mode-line-format "Gnus: %%b {%S}"
+	gnus-summary-mode-line-format "Gnus: %p %Z"
+	gnus-summary-line-format "%U%R%z%I%(%[ %-18,18f%]%) %s\n"
+	gnus-article-mode-line-format "Gnus: %S%m"
+	gnus-summary-display-arrow t
         gnus-thread-ignore-subject t
         gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
         gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject ;; NOTE: threads
-	gnus-visible-headers (concat "^From:\\|^Subject:\\|^Newsgroups:" "\\|^To:\\|^Cc:\\|^Date:")
-        gnus-posting-styles '((".*" (name "Matthew Ball")) ;; TODO: change email addresses
-                              ("gmail" (address "mathew.ball@gmail.com"))
-                              ;;("anumail" (address "u4537508@anu.edu.au"))
-			      ))
+	gnus-visible-headers (concat "^From:\\|^Subject:" "\\|^To:\\|^Cc:\\|^Date:")
+        gnus-posting-styles '((".*" (name "Matthew Ball")) ("gmail" (address "mathew.ball@gmail.com"))))
+
+  (add-hook 'gnus-group-mode-hook #'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
 
   ;; NOTE: html display
-  (setq mm-text-html-renderer 'w3m)
-  (setq mm-inline-text-html-with-images t)
-  (setq mm-inline-text-html-with-w3m-keymap nil)
-
-  ;; NOTE: rss config
-  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
+  (setq mm-text-html-renderer 'w3m
+	mm-inline-large-images 'resize
+	mm-inline-text-html-with-images t
+	mm-inline-text-html-with-w3m-keymap nil)
 
   ;; NOTE: display 'text/html' parts in nnrss groups
   (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
   ;; IMPORTANT: imap setup
+  (defmacro custom-imap-server (name address)
+    `(nnimap ,name
+	     (nnimap-address ,address)
+	     (nnimap-server-port 993)
+	     (nnimap-authinfo-file "~/.authinfo.gpg")
+	     (nnimap-authenticator login)
+	     (nnimao-expunge-on-close 'never)
+	     (nnimap-stream ssl)))
+
   (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
         imap-log t ;; NOTE: log the imap session
         imap-store-password t ;; NOTE: store the session password
-        gnus-secondary-select-methods '((nnimap "gmail" ;; NOTE: gmail login
+	gnus-secondary-select-methods `((nntp "news.gmane.org")
+					;; ,(custom-imap-server "anu" "anumail.anu.edu.au")
+					;; ,(custom-imap-server "gmail" "imap.gmail.com")
+					(nnimap "gmail"
 						(nnimap-address "imap.gmail.com")
 						(nnimap-server-port 993)
-						(nnimap-authinfo-file "~/.authinfo")
+						(nnimap-authinfo-file "~/.authinfo.gpg")
 						(nnimap-authenticator login)
 						(nnimap-expunge-on-close 'never)
-						(nnimap-stream ssl))
-					;; (nnimap "anumail" ;; NOTE: anumail login (ERROR: this does not work)
-					;; 	(nnimap-address "anumail.anu.edu.au")
-					;; 	(nnimap-server-port 993)
-					;; 	;; (nnimap-authinfo-file "~/.authinfo")
-					;; 	;; (nnimap-authenticator login)
-					;; 	;; (nnimap-expunge-on-close 'never)
-					;; 	(nnimap-stream ssl))
-					))
+						(nnimap-stream ssl))))
 
 
   ;; IMPORTANT: smtp setup (single account)
@@ -465,63 +437,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         smtpmail-smtp-server "smtp.gmail.com"
         smtpmail-default-smtp-server "smtp.gmail.com"
         smtpmail-smtp-service 587
-        smtpmail-auth-credentials '(("smtp.gmail.com" 587 user-primary-email-address nil))) ;; TODO: replace email address
-
-  ;; IMPORTANT: smtp setup (multiple accounts) (ERROR: this does not work)
-  ;; (defcustom smtp-accounts '((ssl user-primary-email-address "smtp.gmail.com" 587 "key" nil)
-  ;; 			     (ssl user-secondary-email-address "smtphost.anu.edu.au" 465 "key" nil)) "Available smtp accounts.")
-
-  ;; (setq starttls-use-gnutls t
-  ;;       starttls-gnutls-program "gnutls-cli"
-  ;;       starttls-extra-arguments '("--insecure"))
-
-  ;; (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-  ;;       smtpmail-auth-credentials '(("smtp.gmail.com" 587 "mathew.ball@gmail.com" nil))
-  ;;       smtpmail-default-smtp-server "smtp.gmail.com"
-  ;;       smtpmail-smtp-server "smtp.gmail.com"
-  ;;       smtpmail-smtp-service 587
-  ;;       ;; smtpmail-local-domain "mail.bigpond.com"
-  ;;       smtpmail-debug-verb t
-  ;;       smtpmail-debug-info t) ;; to debug
-
-  ;; (defun set-smtp-plain (server port)
-  ;;   "Set related SMTP variables for supplied parameters."
-  ;;   (setq smtpmail-smtp-server server
-  ;; 	smtpmail-smtp-service port
-  ;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
-  ;; 	smtpmail-starttls-credentials nil)
-  ;;   (message "Setting SMTP server to `%s:%s'."
-  ;; 	    server port address))
-
-  ;; (defun set-smtp-ssl (server port key cert)
-  ;;   "Set related SMTP and SSL variables for supplied parameters."
-  ;;   (setq starttls-use-gnutls t
-  ;; 	starttls-gnutls-program "gnutls-cli"
-  ;; 	starttls-extra-arguments nil
-  ;; 	smtpmail-smtp-server server
-  ;; 	smtpmail-smtp-service port
-  ;; 	smtpmail-starttls-credentials (list (list server port key cert))
-  ;; 	;; smtpmail-auth-credentials "~/.authinfo" ;; I have not set this up
-  ;; 	)
-  ;;   (message "Setting SMTP server to `%s:%s' (SSL enabled)."
-  ;; 	   server port address))
-
-  ;; (defun change-smtp ()
-  ;;   "Change the SMTP server according to the current from line."
-  ;;   (save-excursion
-  ;;     (loop with from = (save-restriction
-  ;; 			(message-narrow-to-headers)
-  ;; 			(message-fetch-field "from"))
-  ;; 	  for (acc-type address . auth-spec) in smtp-accounts
-  ;; 	  when (string-match address from)
-  ;; 	  do (cond
-  ;; 	      ((eql acc-type 'plain)
-  ;; 	       (return (apply 'set-smtp-plain auth-spec)))
-  ;; 	      ((eql acc-type 'ssl)
-  ;; 	       (return (apply 'set-smtp-ssl auth-spec)))
-  ;; 	      (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
-  ;; 	  finally (error "Cannot interfere SMTP information."))))
-  )
+        smtpmail-auth-credentials '(("smtp.gmail.com" 587 user-primary-email-address nil))))
 
 ;;; IMPORTANT: newsticker
 ;; SOURCE: `...'
@@ -547,68 +463,57 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-;; (require 'auto-complete)
+(require 'auto-complete)
 ;; (autoload 'auto-complete "auto-complete" "..." t)
 
-;; (after "auto-complete"
-;;   (require 'auto-complete-config)
+(after "auto-complete"
+  (require 'auto-complete-config)
 
-;;   ;; (global-auto-complete-mode t)
+  ;; (global-auto-complete-mode t)
 
-;;   (setq ;;ac-auto-start nil ;; NOTE: start auto-complete after five characters (modified)
-;;    ;;ac-ignore-case t ;; NOTE: always ignore case
-;;    ac-expand-on-auto-complete t ;; NOTE: expand common portions
-;;    ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
-;;    ac-fuzzy-enable t
-;;    ;;ac-auto-show-menu t ;; NOTE: automatically show menu
-;;    ;;ac-use-menu-map t ;; NOTE: use menu map
-;;    ;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
-;;    ;;ac-source-yasnippet t
-;;    )
+  (setq ac-expand-on-auto-complete t ;; NOTE: expand common portions
+	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+	ac-fuzzy-enable t
+	ac-auto-start nil ;; NOTE: never auto-start the auto-complete menu
+	;;ac-ignore-case t ;; NOTE: always ignore case
+	;;ac-auto-show-menu t ;; NOTE: automatically show menu
+	;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+	ac-source-yasnippet '(action . #'yas-expand))
 
-;;   ;; (set-face-background 'ac-candidate-face "lightgray")
-;;   ;; (set-face-underline 'ac-candidate-face "darkgray")
-;;   ;; (set-face-background 'ac-selection-face "steelblue")
+  (ac-config-default)
 
-;;   (defvar ac-user-sources '(ac-source-features ac-source-functions ac-source-yasnippet
-;; 					       ac-source-variables ac-source-symbols ac-source-abbrev
-;; 					       ac-source-imenu ac-source-dictionary ac-source-words-in-buffer
-;; 					       ac-source-words-in-same-mode-buffers ac-source-words-in-all-buffer))
-
-;;   (dolist (source ac-user-sources)
-;;     (add-to-list 'ac-sources source))
-
-;;   (ac-config-default))
+  (add-hook 'prog-mode-hook #'auto-complete-mode)
+  (add-hook 'text-mode-hook #'auto-complete-mode))
 
 ;;; IMPORTANT: auto-complete `ispell' source
 ;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
 ;; (require 'ac-ispell)
 
 ;; (after "ac-ispell"
-;;   ;;(setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
+;;   (setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
 ;;   (ac-ispell-setup)
-;;   (add-hook 'text-mode-hook 'ac-ispell-ac-setup)
-;;   ;;(add-hook 'prog-mode-hook 'ac-ispell-ac-setup)
-;;   )
+
+;;   ;;(add-hook 'prog-mode-hook #'ac-ispell-ac-setup)
+;;   (add-hook 'text-mode-hook #'ac-ispell-ac-setup))
 
 ;;; IMPORTANT: emacs snippets
 ;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
-;;(autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
+;;(autoload 'yas-minor-mode-on "yasnippet" "Emacs snippets." t)
 (require 'yasnippet)
 
 (after "yasnippet"
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
   (yas-load-directory "~/.emacs.d/snippets/" t) ;; NOTE: use just-in-time
 
-  (add-hook 'prog-mode-hook 'yas-minor-mode-on))
+  (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
 ;;; IMPORTANT: smart completion
 ;; TODO: this guy probably needs to be generalised a bit more (though, he works for now)
-;; (defalias 'smart-completion '(lambda () (if (fboundp 'auto-complete)
-;; 				       (auto-complete nil)
-;; 				     (dabbrev-expand nil))))
+(defalias 'smart-completion #'(lambda () (if (fboundp 'auto-complete)
+				       (auto-complete nil)
+				     (dabbrev-expand nil))))
 
-(defalias 'smart-completion '(lambda () (hippie-expand nil)))
+;; (defalias 'smart-completion #'(lambda () (dabbrev-expand nil)))
 
 ;;; IMPORTANT: smart tab
 (defun smart-tab () ;; NOTE: implement a smarter TAB
@@ -639,132 +544,94 @@ Although this is interactive, call this with \\[browse-url]."
       (w3m-browse-url url t)
     (browse-url-generic url)))
 
-(defvar *internet-search-urls* '("http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
-				 "http://en.wikipedia.org/wiki/Special:Search?search="))
-
-(defun search-internet (arg)
-  "Searches the internet using the ARGth custom URL for the marked text.
-
-If a region is not selected, prompts for the string to search on.
-
-The prefix number ARG indicates the Search URL to use. By default the search URL at position 1 will be used."
-  (interactive "p")
-
-  ;; NOTE: some sanity check
-  (if (> arg (length *internet-search-urls*))
-      (error "There is no search URL defined at position %s." arg))
-
-  (let ((query ;; NOTE: set the search query first
-	 (if (region-active-p)
-	     (buffer-substring (region-beginning) (region-end))
-	   (read-from-minibuffer "Search: ")))
-
-	;; NOTE: now get the base URL to use for the search
-	(base-url (nth (1- arg) *internet-search-urls*)))
-
-    ;; NOTE: add the query parameter
-    (let ((url
-	   (if (string-match "%s" base-url)
-	       ;; NOTE: if the base URL has a %s embedded, then replace it ...
-	       (replace-match query t t base-url)
-	     ;; NOTE: ... else just append the query string at end of the URL
-	     (concat base-url query))))
-      
-      (message "Search: %s @ %s" query url)
-      ;; NOTE: browse the URL
-      (browse-url url))))
-
 ;;; IMPORTANT: w3m
 ;; SOURCE: `http://www.emacswiki.org/emacs/emacs-w3m'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMTabs'
 ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMHintsAndTips'
-;; (setq w3m-key-binding 'info) ;; NOTE: this needs to be set before loading
+(setq w3m-key-binding 'info) ;; NOTE: this needs to be set before loading
 
-;; (autoload 'w3m "w3m" "Browse the internet with w3m." t)
+(autoload 'w3m "w3m" "Browse the internet with w3m." t)
 
-;; (after "w3m"
-;;   (require 'w3m-cookie)
-;;   (require 'w3m-lnum)
-;;   (require 'w3m-filter)
-;;   ;; (require 'w3m-antenna)
-;;   (require 'w3m-ccl)
+(after "w3m"
+  (require 'w3m-cookie)
+  (require 'w3m-lnum)
+  (require 'w3m-filter)
+  ;; (require 'w3m-antenna)
+  (require 'w3m-ccl)
 
-;;   ;; NOTE: w3m interface and cookies
-;;   (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
+  ;; NOTE: w3m interface and cookies
+  (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
 
-;;   ;; NOTE: w3m antenna
-;;   ;; (w3m-antenna-mode 1)
-;;   ;; (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
+  ;; NOTE: w3m antenna
+  ;; (w3m-antenna-mode 1)
+  ;; (setq w3m-antenna-file (concat (expand-file-name user-emacs-directory) "w3m/antenna"))
 
-;;   ;; NOTE: w3m filter
-;;   ;; (w3m-filter-mode 1)
+  ;; NOTE: w3m filter
+  ;; (w3m-filter-mode 1)
 
-;;   (setq url-automatic-caching t
-;;         ;; w3m-key-binding 'info
-;;         w3m-home-page "www.emacswiki.org"
-;;         ;; w3m-default-display-inline-images t ;; NOTE: display images by default
-;;         w3m-use-toolbar nil
-;;         w3m-coding-system 'utf-8
-;;         w3m-file-coding-system 'utf-8
-;;         w3m-file-name-coding-system 'utf-8
-;;         w3m-input-coding-system 'utf-8
-;;         w3m-output-coding-system 'utf-8
-;;         w3m-terminal-coding-system 'utf-8
-;;         w3m-use-cookies t ;; NOTE: use cookies in w3m
-;;         ;; w3m-default-directory (concat (expand-file-name user-emacs-directory) "w3m")
-;;         ;; w3m-use-title-buffer-name t
-;;         w3m-default-save-directory (concat (expand-file-name user-emacs-directory) "w3m")
-;;         w3m-bookmark-file (concat (expand-file-name user-emacs-directory "w3m/bookmark.html"))
-;;         w3m-arrived-file (concat (expand-file-name user-emacs-directory) "w3m/arrived")
-;;         w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
-;;         w3m-cookie-accept-bad-cookies t
-;;         w3m-cookie-accept-domains '("www.emacswiki.org"
-;;                                     "www.google.com"
-;;                                     "www.wikipedia.org"
-;;                                     "www.github.com"
-;;                                     "http://plato.stanford.edu"))
+  (setq url-automatic-caching t
+        ;; w3m-key-binding 'info
+	w3m-command-arguments '("-F")
+        w3m-home-page "www.emacswiki.org"
+        w3m-default-display-inline-images t ;; NOTE: display images by default
+        w3m-use-toolbar nil
+        w3m-coding-system 'utf-8
+        w3m-file-coding-system 'utf-8
+        w3m-file-name-coding-system 'utf-8
+        w3m-input-coding-system 'utf-8
+        w3m-output-coding-system 'utf-8
+        w3m-terminal-coding-system 'utf-8
+        w3m-use-cookies t ;; NOTE: use cookies in w3m
+        ;; w3m-default-directory (concat (expand-file-name user-emacs-directory) "w3m")
+        ;; w3m-use-title-buffer-name t
+        w3m-default-save-directory (concat (expand-file-name user-emacs-directory) "w3m")
+        w3m-bookmark-file (concat (expand-file-name user-emacs-directory "w3m/bookmark.html"))
+        w3m-arrived-file (concat (expand-file-name user-emacs-directory) "w3m/arrived")
+        w3m-cookie-file (concat (expand-file-name user-emacs-directory) "w3m/cookie") ;; NOTE: save cookies to ~/.emacs.d/w3m/cookie
+        w3m-cookie-accept-bad-cookies t
+        w3m-cookie-accept-domains '("www.emacswiki.org"
+                                    "www.google.com"
+                                    "www.wikipedia.org"
+                                    "www.github.com"
+                                    "http://plato.stanford.edu"))
 
-;;   ;; NOTE: `youtube-dl' and `mplayer'
-;;   ;; TODO: this doesn't work just yet
-;;   (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
+  ;; NOTE: `youtube-dl' and `mplayer'
+  ;; TODO: this doesn't work just yet
+  ;; (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
 
-;;   (setq youtube-videos-directory "~/Videos/youtube/")
+  ;; (setq youtube-videos-directory "~/Videos/youtube/")
 
-;;   ;; IMPORTANT: w3m session
-;;   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
-;;   ;; (require 'w3m-session)
+  ;; IMPORTANT: w3m session
+  ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
+  ;; (require 'w3m-session)
 
-;;   ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
+  ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
 
-;;   (progn
-;;     (unless (fboundp 'desktop)
-;;       (require 'desktop))
-;;     (add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
+  (progn
+    (unless (fboundp 'desktop)
+      (require 'desktop))
+    ;;(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
-;;     (add-hook 'w3m-mode-hook 'w3m-register-desktop-save)) ;; NOTE: add w3m-buffers to desktop-save
+    ;;(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
+    )
 
-;;   ;; NOTE: w3m mode hooks
-;;   (defun desktop-display (url)
-;;     "Remove trailing whitespace is w3m buffers."
-;;     (let ((buffer-read-only nil))
-;;       (delete-trailing-whitespace)))
+  ;; NOTE: w3m mode hooks
+  (defun desktop-display (url)
+    "Remove trailing whitespace is w3m buffers."
+    (let ((buffer-read-only nil))
+      (delete-trailing-whitespace)))
 
-;;   (add-hook 'w3m-display-hook 'desktop-display)
-  
-;;   ;; (add-hook 'w3m-display-hook
-;;   ;;           (lambda (url) ;; NOTE: remove trailing whitespace in w3m buffer
-;;   ;;             (let ((buffer-read-only nil))
-;;   ;;               (delete-trailing-whitespace))))
+  (add-hook 'w3m-display-hook 'desktop-display)
 
-;;   ;; IMPORTANT: w3m search
-;;   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
-;;   (setq w3m-search-engine-alist
-;;         '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
-;; 	  ("cliki" "http://www.cliki.net/site/search?query=%s" utf-8)
-;;           ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-;;           ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
-;;           ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
-;;           ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
+  ;; IMPORTANT: w3m search
+  ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSearch'
+  (setq w3m-search-engine-alist '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+				  ;; ("github" "http://www.github.com/search?q=%s&ie=utf-8")
+				  ("cliki" "http://www.cliki.net/site/search?query=%s" utf-8)
+				  ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
+				  ;; ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
+				  ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
+				  ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
 ;; (defun w3m-youtube-video ()
 ;;   "..."
@@ -816,22 +683,23 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;;           (w3m-goto-url-new-session url))
 ;;         (current-buffer)))))
 
-;; (defun switch-to-w3m-buffer ()
-;;   "Switch to an existing w3m buffer."
-;;   (interactive)
-;;   (if (get-buffer "*w3m*")
-;;       (switch-to-buffer
-;;        (ido-completing-read "w3m session: "
-;; 			    (save-excursion
-;; 			      (delq
-;; 			       nil
-;; 			       (mapcar (lambda (buf)
-;; 					 (when (buffer-live-p buf)
-;; 					   (with-current-buffer buf
-;; 					     (and (eq major-mode 'w3m-mode)
-;; 						  (buffer-name buf)))))
-;; 				       (buffer-list))))))
-;;     (w3m w3m-home-page)))
+(defun custom-w3m-switch-buffer (&optional url)
+  "Switch to an existing w3m buffer."
+  (interactive)
+  (let ((buffers (save-excursion
+		   (delq nil (mapcar
+			      (lambda (buf)
+				(when (buffer-live-p buf)
+				  (with-current-buffer buf
+				    (and (eq major-mode 'w3m-mode) (buffer-name buf)))))
+			      (buffer-list))))))
+    (if (get-buffer "*w3m*")
+	(if (= (length buffers) 1)
+	    (switch-to-buffer (first buffers))
+	  (switch-to-buffer (ido-completing-read "w3m session: " buffers)))
+      (if (null url)
+	  (w3m w3m-home-page)
+	(w3m url)))))
 
 ;;; IMPORTANT: highlight custom comment tags
 (require 'custom-comments)
@@ -873,22 +741,20 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 (after "google-translate"
   (setq google-translate-enable-ido-completion t
-	google-translate-show-phonetic t
 	;; google-translate-default-source-language "auto"
 	;; google-translate-default-target-language "en"
-	)
+	google-translate-show-phonetic t)
 
-  (global-set-key (kbd "C-c r") 'google-translate-at-point-reverse)
-  (global-set-key (kbd "C-c R") 'google-translate-query-translate-reverse))
+  (global-set-key (kbd "C-c r") #'google-translate-at-point-reverse)
+  (global-set-key (kbd "C-c R") #'google-translate-query-translate-reverse))
 
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
-;; ERROR: `https://github.com/jlr/rainbow-delimiters/issues/29'
-;; (require 'rainbow-delimiters)
+(require 'rainbow-delimiters)
 
-;; (after "rainbow-delimiters"
-;;   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;;   (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
+(after "rainbow-delimiters"
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'text-mode-hook 'rainbow-delimiters-mode))
 
 ;;; IMPORTANT: ibuffer version control
 ;; SOURCE: `https://github.com/purcell/ibuffer-vc'
@@ -923,21 +789,21 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 (require 'smart-mode-line)
 
 (after "smart-mode-line"
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/"            ":config:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/emacs-dir/"  ":emacs:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/stumpwm-dir" ":stumpwm:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/bash-dir/"   ":bash:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/config-scripts/xinit-dir/"  ":xinit:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/"            ":config:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/emacs-dir/"  ":emacs:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/stumpwm-dir" ":stumpwm:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/bash-dir/"   ":bash:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/xinit-dir/"  ":xinit:"))
   ;; ---
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/"                    ":public:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"            ":scratch:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/"                 ":docs:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"             ":uni:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"         ":read:"))  
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"         ":write:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"            ":mail:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"            ":news:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/"    ":org:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/"                 ":public:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"         ":scratch:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/"              ":docs:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"          ":uni:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"      ":read:"))  
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"      ":write:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"         ":mail:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"         ":news:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
   
   (setq sml/name-width 1
 	sml/mode-width 1
@@ -948,13 +814,14 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 
 ;;; IMPORTANT: expand region
 ;; SOURCE: `https://github.com/magnars/expand-region.el'
-;;(require 'expand-region)
-(autoload 'er/expand-region "expand-region" "..." t)
+(require 'expand-region)
+
+(global-set-key (kbd "C-x U") #'er/expand-region)
 
 ;;; IMPORTANT: journal entries with `org-mode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
 ;; (require 'org-journal)
-(autoload 'org-journal-new-entry "org-journal" "..." t)
+(autoload 'org-journal-new-entry "org-journal" "Manage journals with `org-mode'." t)
 
 (after "org-journal"
   (setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/"))))
@@ -963,8 +830,46 @@ The prefix number ARG indicates the Search URL to use. By default the search URL
 ;; SOURCE: ...
 (require 'switch-window)
 
-(after "switch-window"
-  (global-set-key (kbd "C-x o") 'switch-window))
+(global-set-key (kbd "C-x o") #'switch-window)
+
+;;; IMPORTANT: deft
+;; SOURCE: `http://jblevins.org/projects/deft/'
+(autoload 'deft "deft" "Note taking with deft." t)
+
+(after "deft"
+  (setq deft-extension "org"
+	deft-text-mode 'org-mode
+	deft-directory (format "%s.deft/" user-organisation-directory)))
+
+;;; IMPORTANT: ecb
+(autoload 'ecb-minor-mode "ecb" "..." t)
+
+(after "ecb"
+  (setf ;ecb-layout-name 'left1
+	ecb-show-sources-in-directories-buffer 'always
+	;ecb-compile-window-height 12
+	))
+
+;;; IMPORTANT: `inf-ruby'
+(autoload 'inf-ruby "inf-ruby" "..." t)
+
+(after "inf-ruby")
+;; TODO: set key-binding
+
+(defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
+(defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
+
+(unless (keymapp ruby-programming-map)
+  (setq ruby-programming-map (make-sparse-keymap)))
+
+(define-key global-map ruby-programming-prefix-key ruby-programming-map)
+(define-key ruby-programming-map (kbd "r") 'inf-ruby)
+(define-key ruby-programming-map (kbd "a") 'rvm-activate-corresponding-ruby)
+
+;;; IMPORTANT: rvm
+
+;;; IMPORTANT: rinari
+(autoload 'rinari-minor-mode "rinari" "Ruby on Rails environment" t)
 
 (provide 'user-config)
 ;;; user-config.el ends here

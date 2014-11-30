@@ -39,13 +39,13 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 ### COMMENT: bash aliases (sourced from ~/.conf-scripts/bash-dir/aliases.sh)
-if [ -f ~/config-scripts/bash-dir/aliases.sh ]; then
-    . ~/config-scripts/bash-dir/aliases.sh
+if [ -f ~/.config-scripts/bash-dir/aliases.sh ]; then
+    . ~/.config-scripts/bash-dir/aliases.sh
 fi
 
 ### COMMENT: bash functions (sourced from ~/.conf-scripts/bash-dir/functions.sh)
-if [ -f ~/config-scripts/bash-dir/functions.sh ]; then
-    . ~/config-scripts/bash-dir/functions.sh
+if [ -f ~/.config-scripts/bash-dir/functions.sh ]; then
+    . ~/.config-scripts/bash-dir/functions.sh
 fi
 
 # NOTE: prompt colours
@@ -73,7 +73,7 @@ SSH_ENV="$HOME/.ssh/environment"
 function start_agent {
     echo "Initializing new SSH agent..."
     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    echo succeeded
+    # echo succeeded
     chmod 600 "${SSH_ENV}"
     . "${SSH_ENV}" > /dev/null
     /usr/bin/ssh-add;

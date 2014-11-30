@@ -695,7 +695,7 @@
 This function is only called the first time StumpWM is launched."
   (run-swank) ;; NOTE: start the swank server
   (launch-emacs-daemon) ;; NOTE: start the emacs daemon service
-  (launch-xfce-panel) ;; NOTE: start panel
+  ;;(launch-xfce-panel) ;; NOTE: start panel
   ;; (launch-nm-applet) ;; NOTE: start nm-applet
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection

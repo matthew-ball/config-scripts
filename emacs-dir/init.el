@@ -38,7 +38,7 @@
 (defcustom user-shell (getenv "SHELL") "The user's $SHELL environment variable." :group 'user-directories :type 'string)
 (defcustom user-browser (getenv "BROWSER") "The user's $BROWSER environment variable." :group 'user-directories :type 'string)
 (defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable." :group 'user-directories :type 'string)
-(defcustom user-scripts-directory (format "%s/config-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
+(defcustom user-scripts-directory (format "%s/.config-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
 (defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents." :group 'user-directories :type 'string)
 (defcustom user-news-directory (format "%s/News/" user-home-directory) "Directory for user's news." :group 'user-directories :type 'string)
 (defcustom user-mail-directory (format "%s/Mail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
@@ -59,7 +59,8 @@
 
 (defcustom user-org-contacts-file (format "%s/contacts.org" user-organisation-directory) "File for user's contacts." :group 'user-files :type 'string)
 (defcustom user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation." :group 'user-files :type 'string)
-(defcustom user-org-notes-file (format "%s/journal.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
+(defcustom user-org-notes-file (format "%s/notes.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
+(defcustom user-org-journal-file (format "%s/journal.org" user-organisation-directory) "File for user's journal." :group 'user-riles :type 'string)
 (defcustom user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation." :group 'user-files :type 'string)
 (defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
 
@@ -73,17 +74,24 @@
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLispForEmacs'
 (eval-when-compile (require 'cl-lib))
 
-;;; IMPORTANT: after macro
+;;; IMPORTANT: after
 (defmacro after (mode &rest body)
   "A conveniant macro for defining user-settings and functions for major-modes."
   (declare (indent defun)) ;; NOTE: this is for the lisp reader ...
   `(eval-after-load ,mode '(progn ,@body)))
 
+;;; IMPORTANT: bind key
+;; NOTE: this would be nice and simple, but wouldn't save much (unless it did an `fboundp' search)
+;; ERROR: doesn't work
+(defmacro bind-key (key &rest body)
+  `(global-set-key (kbd ,key) ,@body))
+
 ;;; IMPORTANT: load path
 ;; SOURCE: `http://emacswiki.org/emacs/LoadPath'
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "config-el"))
 (add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el"))
-(add-to-list 'load-path (concat (expand-file-name user-public-directory) "contrib/utils/swm-emacs/"))
+(add-to-list 'load-path (concat (expand-file-name user-emacs-directory) "extras-el/erc-extras/"))
+(add-to-list 'load-path (concat (expand-file-name user-public-directory) "stumpwm-contrib/util/swm-emacs/"))
 
 (let ((default-directory (concat (expand-file-name user-emacs-directory) "elpa/")))
   (when (file-exists-p default-directory) ;; NOTE: if the directory `~/.emacs.d/elpa/' exists ...
@@ -110,7 +118,7 @@
   (setq package-archives '(("melpa" . "http://melpa.org/packages/")
 			   ;; ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
 			   ;; ("melpa-unstable" . "http://melpa-unstable.milkbox.net/packages/")
-			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")			   
+			   ;; ("marmalade" . "http://marmalade-repo.org/packages/")
 			   ("gnu" . "http://elpa.gnu.org/packages/"))))
 
 ;; SOURCE: `http://hastebin.com/yidodunufo.lisp'
@@ -128,17 +136,13 @@ Return a list of installed packages or nil for every skipped package."
    packages))
 
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
-(or (file-exists-p package-user-dir)
-    (package-refresh-contents))
+(or (file-exists-p package-user-dir) (package-refresh-contents))
 
-(ensure-package-installed 'ac-ispell 'ac-slime 'ace-jump-mode 'adaptive-wrap 'auto-complete 'bbdb
-			  'browse-kill-ring 'dash 'deft 'diminish 'dired+ 'ebib 'elisp-slime-nav
-			  'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido
-			  'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode 'google-translate
-			  'haskell-mode 'highlight-indentation 'ibuffer-vc 'ido-ubiquitous 'idomenu
-			  'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup
-			  'projectile 'rainbow-delimiters 's 'smart-mode-line 'smex 'sr-speedbar
-			  'switch-window 'tabulated-list 'undo-tree 'w3m 'yasnippet)
+(ensure-package-installed 'ac-ispell 'ac-slime 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'ebib 'ecb
+			  'elisp-slime-nav 'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist
+			  'git-commit-mode 'git-rebase-mode 'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'ido-ubiquitous
+			  'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile 'rainbow-delimiters
+			  's 'smart-mode-line 'smex 'switch-window 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
@@ -147,8 +151,6 @@ Return a list of installed packages or nil for every skipped package."
   (let ((config-file (concat name "-config")))
     ;; (message "Loading %s configuration" name)
     (funcall 'require (intern config-file))))
-
-;;(switch-to-buffer "*Messages*")
 
 (use-config-file "appearance")
 (use-config-file "general")

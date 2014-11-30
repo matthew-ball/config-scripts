@@ -55,9 +55,10 @@
      (unpublished
       (author title note)
       (month year)))))
+ '(ecb-options-version "2.40")
  '(org-agenda-files
    (quote
-    ("~/Documents/Organisation/thailand-trip.org" "~/Documents/Organisation/europe-trip.org" "/home/chu/Documents/Organisation/school.org" "/home/chu/Documents/Organisation/journal.org" "/home/chu/Documents/Organisation/projects.org" "/home/chu/Documents/Organisation/home.org" "/home/chu/Documents/Organisation/birthday.org"))))
+    ("~/Documents/Organisation/thailand-trip.org" "~/Documents/Organisation/europe-trip.org" "~/Documents/Organisation/school.org" "~/Documents/Organisation/journal.org" "~/Documents/Organisation/projects.org" "~/Documents/Organisation/home.org" "~/Documents/Organisation/birthday.org"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -25,10 +25,11 @@ export USER_UNI="anu.edu.au"
 export PRIMARY_EMAIL="mathew.ball@gmail.com"
 # --- IMPORTANT: default path variables
 export STUMPWM_SRC_DIR="$HOME/Public/stumpwm"
-export SLIME_DIR="$HOME/Public/slime"
+#export SLIME_DIR="$HOME/Public/slime"
+export SLIME_DIR="$HOME/.emacs.d/elpa/slime-20141024.937"
 export QUICKLISP_DIR="$HOME/quicklisp/dists/quicklisp/software"
 export USER_PROJECTS_DIR="$HOME/Public/"
-export CONFIG_SCRIPTS_DIR="$HOME/config-scripts/"
+export CONFIG_SCRIPTS_DIR="$HOME/.config-scripts/"
 # NOTE: add clojure's lein to $PATH
 #export PATH=$HOME/Programming/lisp/clojure/leiningen/:$PATH
 #export LEIN_JVM_OPTS=

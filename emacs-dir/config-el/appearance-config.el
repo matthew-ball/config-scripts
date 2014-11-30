@@ -31,7 +31,8 @@
   (set-face-attribute 'default nil :height 90)
   (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b")
-  ;;(load-theme 'tango)
+  (load-theme 'tango)
+  ;;(set-face-attribute 'mode-line nil :box nil) ;; TODO: this doesn't activate
   )
 
 ;; NOTE: apply `load-frame' to a graphical emacs instance
@@ -49,7 +50,7 @@
   (when (display-graphic-p)
     (decorate-frame)))
 
-(add-hook 'after-make-frame-functions 'turn-on-frame-decorations)
+(add-hook 'after-make-frame-functions #'turn-on-frame-decorations)
 
 ;; NOTE: minimal GUI elements ...
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
@@ -66,7 +67,7 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/VisualLineMode'
 ;;(global-visual-line-mode t) ;; NOTE: enable visual line mode for all buffers (i.e. globally)
 
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'text-mode-hook #'turn-on-visual-line-mode)
 
 (setq visual-line-fringe-indicators '(left-curly-arrow nil))
 
@@ -80,15 +81,15 @@
 ;; SOURCE: `http://www.emacswiki.org/emacs/line-num.el'
 ;; (autoload 'linum-mode "linum" "Display line numbers." t)
 
-;; (add-hook 'text-mode-hook 'linum-mode)
-;; (add-hook 'prog-mode-hook 'linum-mode)
+;; (add-hook 'text-mode-hook #'linum-mode)
+;; (add-hook 'prog-mode-hook #'linum-mode)
 
 ;;; IMPORTANT: truncate lines
 (defun turn-on-truncate-lines ()
   "..."
   (setq truncate-lines t))
 
-(add-hook 'prog-mode-hook 'turn-on-truncate-lines)
+(add-hook 'prog-mode-hook #'turn-on-truncate-lines)
 
 ;;; IMPORTANT: indicate empty lines
 ;; (toggle-indicate-empty-lines)
@@ -157,6 +158,9 @@
   (setq hs-hide-comments-when-hiding-all nil) ;; NOTE: don't hide the comments when launching `hs-hide-all'
   (setq hs-isearch-open t) ;; NOTE: set isearch opens folded comments; where x is code, comments, t (both), or nil (neither)
 
+  (add-to-list 'hs-special-modes-alist
+	       '(ruby-mode "\\(class\\|def\\|do\\|{\\)" "\\(end\\|end\\|}\\)" "#" (lambda (arg) (ruby-end-of-block)) nil))
+
   ;; (defvar hs-modes-hooks-list '(lisp-mode-hook
   ;; 				emacs-lisp-mode-hook
   ;; 				shell-script-mode-hook
@@ -164,13 +168,13 @@
   ;; 				latex-mode-hook))
 
   ;; (dolist (hook hs-modes-hooks-list)
-  ;;   (add-hook hook 'hs-minor-mode))
+  ;;   (add-hook hook #'hs-minor-mode))
 
-  ;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
-  ;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-  ;; (add-hook 'shell-script-mode    'hs-minor-mode)
-  ;; (add-hook 'haskell-mode-hook    'hs-minor-mode)
-  (add-hook 'latex-mode-hook 'hs-minor-mode)
+  ;; (add-hook 'lisp-mode-hook       #'hs-minor-mode)
+  ;; (add-hook 'emacs-lisp-mode-hook #'hs-minor-mode)
+  ;; (add-hook 'shell-script-mode    #'hs-minor-mode)
+  ;; (add-hook 'haskell-mode-hook    #'hs-minor-mode)
+  (add-hook 'latex-mode-hook #'hs-minor-mode)
 
   (setq hs-set-up-overlay 'display-code-line-counts))
 
@@ -242,6 +246,9 @@
 (after "yasnippet" (diminish 'yas-minor-mode))
 (after "geiser-mode" (diminish 'geiser-mode))
 (after "geiser-autodoc" (diminish 'geiser-autodoc-mode))
+;; TODO: ...
+;;(after "gnus-sum" (diminish 'gnus-agent-mode))
+;;(after "gnus-topic" (diminish 'gnus-topic-mode))
 
 ;; NOTE: this is unofficially `diminish' for major modes
 (defvar mode-line-cleaner-alist '((c-mode	   . "C")
@@ -258,7 +265,7 @@
 				  (org-mode	   . "Organisation")
 				  (python-mode	   . "Python"))
   "Alist for `clean-mode-line'.")
- 
+
 (defun clean-mode-line ()
   (interactive)
   (loop for cleaner in mode-line-cleaner-alist
@@ -270,8 +277,8 @@
 	     ;; NOTE: major mode
              (when (eq mode major-mode)
                (setq mode-name mode-str)))))
- 
-(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+(add-hook 'after-change-major-mode-hook #'clean-mode-line)
 
 ;;; IMPORTANT: hide the mode-line
 ;; SOURCE: `http://bzg.fr/emacs-hide-mode-line.html'
@@ -303,7 +310,7 @@
 ;;   "Hide the mode-line in every buffer."
 ;;   (interactive)
 ;;   (hidden-mode-line-mode)
-;;   (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode))
+;;   (add-hook 'after-change-major-mode-hook #'hidden-mode-line-mode))
 
 ;; (defun show-mode-line ()
 ;;   "Show the mode-line in every buffer."

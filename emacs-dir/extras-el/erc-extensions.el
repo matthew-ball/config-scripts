@@ -163,5 +163,57 @@
 ;; SOURCE: `fsbot' in #emacs
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
 
+;; doctor
+(autoload 'doctor-doc "doctor")
+(autoload 'make-doctor-variables "doctor")
+
+;;(defvar erc-doctor-id "")
+
+(defun erc-cmd-DOCTOR (&optional last-sender &rest ignore)
+  "Get the last message in the channel and doctor it."
+  (let ((limit (- (point) 1000))
+        (pos (point))
+        doctor-buffer
+        last-message
+        text)
+    ;; NOTE: make sure limit is not negative
+    (when (< limit 0) (setq limit 0))
+    ;; NOTE: search backwards for text from someone
+    (while (and pos (not (let ((data (get-text-property pos 'erc-parsed)))
+                           (and data
+                                (string= (aref data 3) "PRIVMSG")
+                                (or (not last-sender)
+                                    (string= (car (split-string (aref data 2) "!"))
+                                             last-sender))))))
+      (setq pos (previous-single-property-change pos 'erc-parsed nil limit))
+      (when (= pos limit)
+        (error "No appropriate previous message to doctor")))
+    (when pos
+      (setq last-sender (car (split-string (aref (get-text-property pos 'erc-parsed) 2) "!"))
+            doctor-buffer (concat "*ERC Doctor: " last-sender "*")
+            last-message (split-string
+                          ;; NOTE: remove punctuation from end of sentence
+                          (replace-regexp-in-string "[ .?!;,/]+$" "" (aref (get-text-property pos 'erc-parsed) 5)))
+            text (mapcar (lambda (s)
+                           (intern (downcase s)))
+                         ;; NOTE: remove salutation if it exists
+                         (if (string-match (concat "^" erc-valid-nick-regexp "[:,]*$\\|[:,]+$") (car last-message))
+                             (cdr last-message)
+                           last-message))))
+    (erc-send-message
+     (concat (if (not (erc-query-buffer-p))
+                 (concat last-sender ": "))
+	     ;; erc-doctor-id
+	     ""
+             (save-excursion
+               (if (get-buffer doctor-buffer)
+                   (set-buffer doctor-buffer)
+                 (set-buffer (get-buffer-create doctor-buffer))
+                 (make-doctor-variables))
+               (erase-buffer)
+	       (setq doctor-sent text)
+               (doctor-doc)
+               (buffer-string))))))
+
 (provide 'erc-extensions)
 ;;; erc-extensions.el ends here

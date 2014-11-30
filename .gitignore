@@ -16,6 +16,7 @@ emacs-dir/extras-el/logic-mode.el
 emacs-dir/extras-el/erc-highlight-nicknames.el
 
 # ignore unnecessary emacs-related files
+emacs-dir/custom.el.*
 emacs-dir/config-el/#*#
 emacs-dir/save-place
 emacs-dir/erc/
@@ -39,6 +40,9 @@ emacs-dir/eshell/lastdir
 emacs-dir/minibuffer-history
 emacs-dir/recent-files
 emacs-dir/smex-items
+emacs-dir/session.*
+emacs-dir/projectile.cache
+emacs-dir/contacts-file.el
 emacs-dir/tramp
 emacs-dir/eproject.lst
 emacs-dir/*.elc

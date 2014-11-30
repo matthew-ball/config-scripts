@@ -77,10 +77,11 @@ Enable the following minor modes:
   ;; (which-function-mode t) ;; NOTE: keep track of active function
   (hs-minor-mode) ;; NOTE: turn on hide/show mode
   (electric-pair-mode)
-  (auto-insert-mode))
+  ;;(auto-insert-mode)
+  )
 
 ;; TODO: should just:
-(add-hook 'prog-mode-hook 'turn-on-general-programming-mode)
+(add-hook 'prog-mode-hook #'turn-on-general-programming-mode)
 
 ;;; IMPORTANT: available modes for the which function mode-line tag
 ;; SOURCE: `http://www.emacswiki.org/emacs/WhichFuncMode'
@@ -96,7 +97,7 @@ Enable the following minor modes:
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
 ;;; IMPORTANT: emacs lisp programming
-;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLisp'
+;; SOURCE: `http://www.emacwswiki.org/emacs/EmacsLisp'
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
 (autoload 'eldoc-mode "eldoc" "GNU Emacs lisp documentation minor mode." t)
 
@@ -114,11 +115,11 @@ Enable the following minor modes:
     (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
     (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp))
 
-(add-hook 'emacs-lisp-mode-hook 'custom-emacs-lisp-mode))
+(add-hook 'emacs-lisp-mode-hook #'custom-emacs-lisp-mode))
 
 ;;; IMPORTANT: interactive emacs lisp
 (after "ielm"
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode))
+  (add-hook 'ielm-mode-hook #'turn-on-eldoc-mode))
 
 ;;; IMPORTANT: emacs byte-compiled code
 ;; SOURCE: `http://www.emacswiki.org/emacs/CompiledFile'
@@ -136,34 +137,34 @@ Enable the following minor modes:
       (insert ";;;; " file "\n")
       (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
       (insert "(in-package #:" package ")\n\n")))
-  
-  (add-hook 'lisp-mode-hook '(lambda ()
+
+  (add-hook 'lisp-mode-hook #'(lambda ()
                                (turn-on-general-programming-mode)
                                (paredit-mode t)
 			       ;; TODO: check for slime first?
 			       (slime-mode t)
                                ))
 
-  (add-hook 'lisp-interaction-mode-hook '(lambda ()
+  (add-hook 'lisp-interaction-mode-hook #'(lambda ()
                                            (turn-on-general-programming-mode)
                                            (turn-on-eldoc-mode)
                                            (paredit-mode t)))
 
-  (add-hook 'inferior-lisp-mode-hook '(lambda ()
+  (add-hook 'inferior-lisp-mode-hook #'(lambda ()
                                         ;;(inferior-slime-mode t)
                                         (paredit-mode t))))
 
 ;; SOURCE: `http://www.xach.com/lisp/scratch-lisp-file.el'
-(defun scratch-lisp-file ()
-  "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into
-  the current buffer."
-  (interactive)
-  (goto-char 0)
-  (let* ((file (file-name-nondirectory (buffer-file-name)))
-         (package (file-name-sans-extension file)))
-    (insert ";;;; " file "\n")
-    (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
-    (insert "(in-package #:" package ")\n\n")))
+;; (defun scratch-lisp-file ()
+;;   "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into
+;;   the current buffer."
+;;   (interactive)
+;;   (goto-char 0)
+;;   (let* ((file (file-name-nondirectory (buffer-file-name)))
+;;          (package (file-name-sans-extension file)))
+;;     (insert ";;;; " file "\n")
+;;     (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
+;;     (insert "(in-package #:" package ")\n\n")))
 
 ;;; IMPORTANT: elisp slime navigation
 ;; SOURCE: `https://github.com/purcell/elisp-slime-nav'
@@ -173,7 +174,7 @@ Enable the following minor modes:
 
 (after "elisp-slime-nav"
   (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-    (add-hook hook 'elisp-slime-nav-mode)))
+    (add-hook hook #'elisp-slime-nav-mode)))
 
 ;;; IMPORTANT: slime/swank
 (add-to-list 'load-path (expand-file-name "~/Public/slime"))
@@ -185,9 +186,9 @@ Enable the following minor modes:
 (after "slime"
 
   ;;IMPORTANT: ac-slime
-  (add-hook 'slime-mode-hook 'set-up-slime-ac)
-  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-  
+  ;; (add-hook 'slime-mode-hook #'set-up-slime-ac)
+  ;; (add-hook 'slime-repl-mode-hook #'set-up-slime-ac)
+
   ;; (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq inferior-lisp-program "/usr/bin/sbcl --noinform --userinit=\"$HOME/.sbclrc\"") ;; NOTE: suppress the printing of any banner or other informational message at startup
 
@@ -226,35 +227,35 @@ Enable the following minor modes:
   ;;                               ;; (paredit-mode t)
   ;;                               ))
 
-  (add-hook 'slime-repl-mode-hook 'paredit-mode t)
+  (add-hook 'slime-repl-mode-hook #'paredit-mode t)
 
-  ;;(define-key slime-repl-mode-map (kbd "<return>") 'slime-repl-return)
+  ;;(define-key slime-repl-mode-map (kbd "<return>") #'slime-repl-return)
 
   ;; NOTE: stop SLIME's REPL from grabbing DEL, which is annoying when backspacing over a '('
   (defun override-slime-repl-bindings-with-paredit (&rest junk)
     (define-key slime-repl-mode-map
       (read-kbd-macro paredit-backward-delete-key) nil))
 
-  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit))
+  (add-hook 'slime-repl-mode-hook #'override-slime-repl-bindings-with-paredit))
 
 ;;; IMPORTANT: clojure programming
 (autoload 'clojure-mode "clojure-mode" "Major mode for editing clojure source code files." t)
 (autoload 'nrepl-mode "nrepl" "Major mode for nREPL interactions." t)
 
 (after "nrepl"
-  (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+  (add-hook 'nrepl-interaction-mode-hook #'nrepl-turn-on-eldoc-mode)
 
   (setq nrepl-hide-special-buffers t)
 
-  (add-hook 'nrepl-mode-hook 'paredit-mode))
+  (add-hook 'nrepl-mode-hook #'paredit-mode))
 
 (after "clojure-mode"
   (defun custom-clojure-mode ()
     ""
     ;; (turn-on-general-programming-mode)
     (paredit-mode t))
-  
-  (add-hook 'clojure-mode-hook 'custom-clojure-mode))
+
+  (add-hook 'clojure-mode-hook #'custom-clojure-mode))
 
 ;;; IMPORTANT: scheme (guile) programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
@@ -270,7 +271,7 @@ Enable the following minor modes:
   (paredit-mode t))
 
 (after "scheme"
-  (add-hook 'scheme-mode-hook 'custom-scheme-mode))
+  (add-hook 'scheme-mode-hook #'custom-scheme-mode))
 
 ;;; IMPORTANT: haskell programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
@@ -284,14 +285,14 @@ Enable the following minor modes:
 (after "haskell-mode"
   (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
 
-  (add-hook 'haskell-mode-hook 'custom-turn-on-haskell-modes))
+  (add-hook 'haskell-mode-hook #'custom-turn-on-haskell-modes))
 
 ;;; IMPORTANT: shell script
 ;; SOURCE: `http://emacswiki.org/emacs/ShMode'
 (autoload 'shell-script-mode "sh-mode" "Major mode for editing shell script source code." t)
 
 ;; (after "sh-mode"
-;;   ;;(add-hook 'shell-script-mode 'turn-on-general-programming-mode)
+;;   ;;(add-hook 'shell-script-mode #'turn-on-general-programming-mode)
 ;;   )
 
 ;;; IMPORTANT: python programming
@@ -299,7 +300,7 @@ Enable the following minor modes:
 (autoload 'python-mode "python" "Major mode for editing python source code." t)
 
 ;; (after "python"
-;;   (add-hook 'python-mode-hook 'turn-on-general-programming-mode))
+;;   (add-hook 'python-mode-hook #'turn-on-general-programming-mode))
 
 ;;; IMPORTANT: javascript programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/JavaScriptMode'
@@ -324,7 +325,7 @@ Enable the following minor modes:
     (turn-on-cwarn-mode)
     (c-mode-settings))
 
-  (add-hook 'c-mode-hook 'custom-c-mode))
+  (add-hook 'c-mode-hook #'custom-c-mode))
 
 ;;; IMPORTANT: gdb
 (autoload 'gdb "gdb-mi" "Front-end to the GNU Debugger." t)
@@ -348,19 +349,19 @@ Enable the following minor modes:
 
 ;;; IMPORTANT: speedbar
 ;; SOURCE: `'
-(autoload 'speedbar "speedbar" "" t)
+;; (autoload 'speedbar "speedbar" "" t)
 
-(after "speedbar"
-  ;; (setq speedbar-mode-hook '(lambda () (interactive) (other-frame 0)))
-  (speedbar-add-supported-extension ".hs")
+;; (after "speedbar"
+;;   ;; (setq speedbar-mode-hook '(lambda () (interactive) (other-frame 0)))
+;;   (speedbar-add-supported-extension ".hs")
 
-  ;; (add-hook 'speedbar-mode-hook '(lambda () (set-face-attribute 'default nil :height 90)))
-  )
+;;   ;; (add-hook 'speedbar-mode-hook '(lambda () (set-face-attribute 'default nil :height 90)))
+;;   )
 
-(require 'sr-speedbar)
+;; (require 'sr-speedbar)
 
-(after "sr-speedbar"
-  (setq sr-speedbar-right-side nil))
+;; (after "sr-speedbar"
+;;   (setq sr-speedbar-right-side nil))
 
 (provide 'programming-config)
 ;;; programming-config.el ends here

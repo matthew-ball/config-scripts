@@ -26,25 +26,15 @@
 
 ;;; IMPORTANT: insert date and time
 ;; SOURCE: `http://www.emacswiki.org/emacs/InsertDate'
-(defun insert-date (format)
-  "Wrapper around `format-time-string'."
-  (interactive "MFormat: ")
-  (insert (format-time-string format)))
+;; (defun insert-date (format)
+;;   "Wrapper around `format-time-string'."
+;;   (interactive "MFormat: ")
+;;   (insert (format-time-string format)))
 
-(defun insert-standard-date ()
-  "Inserts standard date time string."
-  (interactive)
-  (insert (format-time-string "%c")))
-
-;;; IMPORTANT: deft
-;; TODO: move this to `user-config.el'
-;; SOURCE: `http://jblevins.org/projects/deft/'
-(autoload 'deft "deft" "Note taking with deft." t)
-
-(after "deft"
-  (setq deft-extension "org"
-	deft-text-mode 'org-mode
-	deft-directory (format "%s.deft/" user-organisation-directory)))
+;; (defun insert-standard-date ()
+;;   "Inserts standard date time string."
+;;   (interactive)
+;;   (insert (format-time-string "%c")))
 
 ;;; IMPORTANT: diary and calendar mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
@@ -63,27 +53,6 @@
 ;;   ;; (add-hook 'diary-display-hook 'fancy-diary-display)
 ;;   ;; (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
 ;;   )
-
-;;; IMPORTANT: flyspell
-;; TODO: move this to `general-config.el'
-;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-;;(require 'flyspell)
-(autoload 'flyspell-mode "flyspell" "..." t)
-
-(after "flyspell"
-  (setq flyspell-issue-welcome-flag nil)
-  (add-hook 'text-mode-hook 'turn-on-flyspell)) ;; NOTE: turn on automatic spell check if in a `text-mode'
-
-;;; IMPORTANT: ispell
-;; TODO: move this to `general-config.el'
-(require 'ispell)
-
-(after "ispell"
-  (setq ispell-program-name "aspell" ;; NOTE: use aspell for automatic spelling
-	ispell-parser 'tex
-	ispell-dictionary "british"
-	;; ispell-alternate-dictionary "/usr/share/dict/american-english" ;; FIX: ...
-	ispell-extra-args '("--sug-mode=ultra")))
 
 ;;; IMPORTANT: thesaurus
 ;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
@@ -261,11 +230,11 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
   ;; TODO: re-order AND add new tags
   (setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
-	'(("ASSIGNMENT"       . ?a)
+	'(;; ("ASSIGNMENT"       . ?a)
 	  ;; ("BOOKMARK"         . ?b)
 	  ("COMPUTER SCIENCE" . ?c)
 	  ("GENERAL"          . ?g)
-	  ("HOLIDAY"          . ?h)
+	  ;; ("HOLIDAY"          . ?h)
 	  ("JOURNAL"          . ?j)
 	  ("NOTES"            . ?n)
 	  ("MATHEMATICS"      . ?m)
@@ -294,10 +263,10 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ;; NOTE: this would require `erc-log-mode' from MELPA
 
   ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
-  ;; (setq org-link-abbrev-alist '(("google"   . "http://www.google.com/search?q=")))
-  )
+  (setq org-link-abbrev-alist '(("google" . "http://www.google.com/search?q=")
+				("wikipedia" . "http://www.en.wikipedia.org/wiki/Special:Search/"))))
 
-;;; IMPORTANT: blogging from emacs
+;;; IMPORTANT: blogging from emacs (org publishing)
 ;; SOURCE: `http://bzg.fr/blogging-from-emacs.html'
 ;; (after "ox-publish"
 ;;   (setq org-publish-project-alist
@@ -321,66 +290,49 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
 	org-agenda-span 'month) ;; NOTE: show a month of agendas
 
-  (setq org-agenda-files `(,(expand-file-name user-org-university-file)
-			   ,(expand-file-name user-org-notes-file) ;; IMPORTANT: this is "journal.org" 
+  (setq org-agenda-files `(,(expand-file-name user-org-journal-file)
+			   ,(expand-file-name user-org-notes-file) 
 			   ,(expand-file-name user-org-projects-file)
-			   ,(concat (expand-file-name user-organisation-directory) "home.org")
+			   ;;,(expand-file-name user-org-university-file)
+			   ;;,(concat (expand-file-name user-organisation-directory) "home.org")			   
 			   ;;,(concat (expand-file-name user-organisation-directory) "contacts.org")
-			   ,(concat (expand-file-name user-organisation-directory) "birthday.org")
+			   ;;,(concat (expand-file-name user-organisation-directory) "birthday.org")
 			   ;;,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
-			   ;; ,(concat (expand-file-name user-reading-directory) "readings.org")
-			   ;; ,(concat (expand-file-name user-writing-directory) "writings.org")
+			   ;;,(concat (expand-file-name user-reading-directory) "readings.org")
+			   ;;,(concat (expand-file-name user-writing-directory) "writings.org")
 			   ))
 
   ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
   (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
-	'(("A" "All" ((agenda "" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
-				  (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
-				  (org-agenda-repeating-timestamp-show-all t)
-				  (org-agenda-entry-types '(:timestamp :sexp))))
-		      (agenda "" ((org-agenda-ndays 1) ;; NOTE: daily agenda
-				  (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
-				  (org-agenda-todo-keyword-format "[ ]")
-				  (org-agenda-scheduled-leaders '("" ""))
-				  (org-agenda-prefix-format "%t%s")))
+	'(("A" "All" ((agenda "Weekly Agenda" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
+					       (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
+					       (org-agenda-repeating-timestamp-show-all t)
+					       (org-agenda-entry-types '(:timestamp :sexp))))
+		      (agenda "Daily Agenda" ((org-agenda-ndays 1) ;; NOTE: daily agenda
+					      (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
+					      (org-agenda-todo-keyword-format "[ ]")
+					      (org-agenda-scheduled-leaders '("" ""))
+					      (org-agenda-prefix-format "%t%s")))
 		      (todo "TODO" ;; NOTE: todos searched by context
-			    ((org-agenda-prefix-format "[ ] %T: ")
+			    ((org-agenda-prefix-format "- %T: ")
 			     (org-agenda-sorting-strategy '(tag-up priority-down))
 			     (org-agenda-todo-keyword-format "")
-			     (org-agenda-overriding-header "\n All Tasks \n"))))
-	   "ALL"
-	   ((org-agenda-compact-blocks t)
-	    (org-agenda-remove-tags t))
-	   ) ;; NOTE: `ALL' tasks
-	  ("u" "University"
-	   ((org-agenda-list nil nil 1)
-	    (tags "UNIVERSITY")
-	    (tags-todo "ASSIGNMENT"))
-	   "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
-	  ("p" "Project"
-	   ((tags-todo "PROJECT")
-	    (tags-todo "TRAVEL")
-	    (tags-todo "GENERAL")
-	    (tags-todo "WRITING")
-	    (tags-todo "UNIVERSITY")
-	    (tags-todo "NOTES"))
-	   "PROJECTS") ;; NOTE: `PROJECT' tasks
-	  ;; ("j" "Journal"
-	  ;;  ((tags "JOURNAL"))
-	  ;;  "JOURNAL")
-	  ("r" "Reading"
-	   ((tags "READING")
-	    (tags "WEBSITE"))
-	   "READING") ;; NOTE: `READING' tasks
+			     (org-agenda-overriding-header "All TODOs"))))
+	   "ALL" ((org-agenda-compact-blocks t) (org-agenda-remove-tags t))) ;; NOTE: `ALL' TODOs
+	  ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
+	  ("p" "Project" ((tags-todo "PROJECT") (tags-todo "TRAVEL") (tags-todo "GENERAL") (tags-todo "WRITING") (tags-todo "UNIVERSITY") (tags-todo "NOTES")) "PROJECTS") ;; NOTE: `PROJECT' tasks
+	  ;; ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
+	  ("r" "Reading" ((tags "READING") (tags "WEBSITE")) "READING") ;; NOTE: `READING' tasks
 	  )))
 
 ;;; IMPORTANT: org-export
 ;; SOURCE: `http://orgmode.org/manual/Exporting.html'
-(setq org-export-latex-default-class "article"
-      org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
-      org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
-      org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
-      org-export-with-todo-keywords nil) ;; NOTE: turn off `org-mode' exporting of TODO keywords
+(after "org-export"
+  (setq org-export-latex-default-class "article"
+	org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
+	org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
+	org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
+	org-export-with-todo-keywords nil)) ;; NOTE: turn off `org-mode' exporting of TODO keywords
 
 ;;; IMPORTANT: org-capture
 ;; SOURCE: `http://orgmode.org/manual/Capture.html'
@@ -393,15 +345,15 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   (setq org-capture-templates
 	'(;; ("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
 	  ;;  "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
-	   "%(add-course)" :empty-lines 1 :immediate-finish 1)
-	  ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
-	   "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
-	   "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
-	  ;; ("J" "Journal" entry (file+datetree (expand-file-name user-org-notes-file))
-	  ;;  "* %?\n Entered on %U\n  %i\n  %a")
-	  ("N" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
+	  ;; ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
+	  ;;  "%(add-course)" :empty-lines 1 :immediate-finish 1)
+	  ;; ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
+	  ;;  "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	  ;; ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
+	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
+	  ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
+	   "* %U\n%?\n%i\n")
+	  ("n" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
 	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 	  ("P" "Projects" plain (file+function (expand-file-name user-org-projects-file) project-capture)
 	   "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)
@@ -582,23 +534,23 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
 
 (after "org-entities"
-  (require 'org-entities-user+))
+  (require 'org-entities-user+)
 
-(defun org-insert-user-entity ()
-  "Insert symbol from `org-entities-user' list."
-  (interactive)
-  (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
-    (insert (format "\\%s" entity))))
+  (defun org-insert-user-entity ()
+    "Insert symbol from `org-entities-user' list."
+    (interactive)
+    (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
+      (insert (format "\\%s" entity))))
 
-(defun org-insert-entity ()
-  "Insert symbol from `org-entities' list."
-  (interactive)
-  (let ((entity	(ido-completing-read "Insert entity: "
-				     (remove-if #'null (mapcar #'(lambda (element)
-								   (unless (stringp element)
-								     (format "%s" (car element))))
-							       org-entities)))))
-    (insert (format "\\%s" entity))))
+  (defun org-insert-entity ()
+    "Insert symbol from `org-entities' list."
+    (interactive)
+    (let ((entity (ido-completing-read "Insert entity: "
+				       (remove-if #'null (mapcar #'(lambda (element)
+								     (unless (stringp element)
+								       (format "%s" (car element))))
+								 org-entities)))))
+      (insert (format "\\%s" entity)))))
 
 ;; IMPORTANT: ...
 (define-skeleton insert-org-latex-package
@@ -801,23 +753,23 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (propertize-word verbatim ?~) ;; => (verbatim-word)
 (propertize-word teletype ?=) ;; => (teletype-word)
 
-;;(define-key org-mode-map (kbd "C-c b") '(propertize-word bold ?*))
+;;(define-key org-mode-map (kbd "C-c b") #'(propertize-word bold ?*))
 
 ;;; IMPORTANT: customisations
 (defun turn-on-custom-org-bindings ()
   "Activate custom `org-mode' bindings."
   ;; TODO: add binding for `org-insert-custom-file' command
-  (define-key org-mode-map (kbd "C-M-j") 'org-insert-heading) ;; NOTE: M-RET inserts a new heading
-  ;;(define-key org-mode-map (kbd "C-c p") 'insert-org-paper) ;; NOTE: insert paper template with C-c p
-  ;;(define-key org-mode-map (kbd "C-c b") 'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
-  ;;(define-key org-mode-map (kbd "C-c c") 'org-insert-citation) ;; NOTE: insert a citation clause
-  (define-key org-mode-map (kbd "C-c i") 'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
-  (define-key org-mode-map (kbd "C-c f") 'custom-org-insert-footnote) ;; NOTE: insert a footnote with C-c f
-  (define-key org-mode-map (kbd "C-c b") 'bold-word)
-  (define-key org-mode-map (kbd "C-c i") 'italic-word)
-  (define-key org-mode-map (kbd "C-c u") 'underline-word)
-  (define-key org-mode-map (kbd "C-c v") 'verbatim-word)
-  (define-key org-mode-map (kbd "C-c t") 'teletype-word))
+  (define-key org-mode-map (kbd "C-M-j") #'org-insert-heading) ;; NOTE: M-RET inserts a new heading
+  ;;(define-key org-mode-map (kbd "C-c p") #'insert-org-paper) ;; NOTE: insert paper template with C-c p
+  ;;(define-key org-mode-map (kbd "C-c b") #'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
+  ;;(define-key org-mode-map (kbd "C-c c") #'org-insert-citation) ;; NOTE: insert a citation clause
+  (define-key org-mode-map (kbd "C-c i") #'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
+  (define-key org-mode-map (kbd "C-c f") #'custom-org-insert-footnote) ;; NOTE: insert a footnote with C-c f
+  (define-key org-mode-map (kbd "C-c b") #'bold-word)
+  (define-key org-mode-map (kbd "C-c i") #'italic-word)
+  (define-key org-mode-map (kbd "C-c u") #'underline-word)
+  (define-key org-mode-map (kbd "C-c v") #'verbatim-word)
+  (define-key org-mode-map (kbd "C-c t") #'teletype-word))
 
 (defun turn-on-custom-org ()
   "Activate custom `org-mode' functionality."
@@ -833,8 +785,8 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   ""
   (hl-line-mode t))
 
-(add-hook 'org-mode-hook 'turn-on-custom-org)
-(add-hook 'org-agenda-mode-hook 'turn-on-hl-mode 'append)
+(add-hook 'org-mode-hook #'turn-on-custom-org)
+(add-hook 'org-agenda-mode-hook #'turn-on-hl-mode #'append)
 
 (provide 'writing-config)
 ;;; writing-config.el ends here
