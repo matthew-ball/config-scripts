@@ -249,7 +249,7 @@
 (diminish-minor-mode "face-remap" 'buffer-face-mode)
 (diminish-minor-mode "hideshow" 'hs-minor-mode)
 (diminish-minor-mode "hilit-chg" 'highlight-changes-mode)
-;;(diminish-minor-mode "magit" 'magit-auto-revert)
+(diminish-minor-mode "magit" 'magit-auto-revert-mode)
 (diminish-minor-mode "simple" 'visual-line-mode)
 (diminish-minor-mode "yasnippet" 'yas-minor-mode)
 ;; (diminish-minor-mode "w3m-lnum")
