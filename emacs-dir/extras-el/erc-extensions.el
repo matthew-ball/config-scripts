@@ -153,6 +153,9 @@
 (erc-user-message "EMACS" "GNU Emacs is a powerful lisp environment and text editor. See: http://www.gnu.org/software/emacs/")
 (erc-user-message "STUMPWM" "StumpWM is a tiling window manager for X11 written in common lisp. See: http://www.nongnu.org/stumpwm/")
 (erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
+(erc-user-message "GNUS" "GNUS. See: ...")
+(erc-user-message "ERC" "ERC is an extensible IRC client written in emacs lisp. See: ...")
+(erc-user-message "DIRED" "Directory editor. See: ...")
 
 ;; SOURCE: `fsbot' in #emacs
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")

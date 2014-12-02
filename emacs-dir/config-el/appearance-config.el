@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(defgroup user-appearance nil "Custom appearance variables." :group 'user-variables)
+
 ;;; IMPORTANT: X frame specific
 (defun decorate-frame ()
   "Apply features to a new frame."
@@ -94,7 +96,7 @@
 (add-hook 'prog-mode-hook #'turn-on-truncate-lines)
 
 ;;; IMPORTANT: indicate empty lines
-;; (toggle-indicate-empty-lines)
+(toggle-indicate-empty-lines)
 
 ;;; IMPORTANT: mode line
 ;;(setq mode-line-format nil) ;; NOTE: removes the mode-line
@@ -104,22 +106,19 @@
       column-number-mode t ;; NOTE: turn on column numbers in the mode line
       size-indication-mode nil) ;; NOTE: do not show file size in mode line
 
-;; IMPORTANT: laptop
-(defun laptop-p ()
-  ;; TODO: check if laptop
-  nil)
-
-(when (laptop-p)
-  (require 'battery)
-  (require 'wireless))
-
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayTime'
 (require 'time)
 
-(defcustom custom-cities '(("Australia/Canberra" "Canberra")
-			   ("America/Montreal" "Montreal")
-			   ("Europe/Amsterdam" "Amsterdam")
-			   ("Asia/Bangkok" "Chiang Mai")) "Custom cities.")
+(defcustom custom-cities '(("Australia/Canberra"  "Canberra")
+			   ("America/Los_Angeles" "Los Angeles")
+			   ("America/New_York"    "New York")
+			   ("America/Montreal"    "Montreal")
+			   ("Europe/London"       "London")
+			   ("Europe/Amsterdam"    "Amsterdam")
+			   ("Europe/Helsinki"     "Helsinki")
+			   ("Europe/Moscow"       "Moscow")
+			   ("Asia/Bangkok"        "Chiang Mai"))
+  "Custom cities." :group 'user-appearance :type 'list)
 
 (after "time"
   (setq display-time-default-load-average nil
@@ -136,16 +135,28 @@
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
 (after "battery"
-  (setq battery-mode-line-format "[%b%p%\%]" ;; NOTE: default
-	battery-mode-line-limit 60)
-
-  (display-battery-mode t)) ;; NOTE: display battery status in the mode line
+  (setq battery-mode-line-format " [%b%p%\%]"
+	battery-mode-line-limit 60))
 
 ;; SOURCE: `https://github.com/hh/emacs/blob/master/.emacs.d/wireless.el'
 (after "wireless"
-  (setq wireless-mode-line-format " [%k%\%]")
+  (setq wireless-mode-line-format " [%k%\%]"))
 
-  (display-wireless-mode t)) ;; NOTE: display wireless status in the mode line
+;; IMPORTANT: laptop
+(defcustom custom-laptop nil "This system is (or isn't) a laptop." :group 'user-appearance :type 'boolean)
+
+(defun laptop ()
+  (interactive)
+  (require 'battery)
+  (require 'wireless)
+
+  (display-battery-mode t) ;; NOTE: display battery status in the mode line
+  (display-wireless-mode t)  ;; NOTE: display wireless status in the mode line
+
+  (message "Activating `battery' and `wireless' display."))
+
+(when custom-laptop
+  (laptop))
 
 ;;; IMPORTANT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
@@ -252,9 +263,9 @@
 (diminish-minor-mode "magit" 'magit-auto-revert-mode)
 (diminish-minor-mode "simple" 'visual-line-mode)
 (diminish-minor-mode "yasnippet" 'yas-minor-mode)
-;; (diminish-minor-mode "w3m-lnum")
-;; (diminish-minor-mode "geiser")
-;; (diminish-minor-mode "geiser-autodoc")
+(diminish-minor-mode "w3m-lnum")
+(diminish-minor-mode "geiser-mode" 'geiser-mode)
+(diminish-minor-mode "geiser-autodoc")
 ;; ---
 ;; (after "abbrev" (diminish 'abbrev-mode))
 ;; (after "eldoc" (diminish 'eldoc-mode))
@@ -292,32 +303,32 @@
   `(,package-name ,mode-name))
 
 ;; NOTE: this is unofficially `diminish' for major modes
-(defvar mode-line-cleaner-alist '((c-mode	   . "C")
-				  (c++-mode	   . "C++")
-				  (dired-mode	   . "Dired")
-				  (lisp-mode	   . "Common Lisp")
-				  (emacs-lisp-mode . "Emacs Lisp")
-				  (gnus-group-mode . "Email")
-				  (eshell-mode     . "Eshell")
-				  (erc-mode        . "ERC")
-				  (haskell-mode	   . "Haskell")
-				  (help-mode	   . "Help")
-				  (ibuffer-mode    . "iBuffer")
-				  (org-mode	   . "Organisation")
-				  (python-mode	   . "Python"))
-  "Alist for `clean-mode-line'.")
+(defcustom mode-line-cleaner-alist '((c-mode	   . "C")
+				     (c++-mode	   . "C++")
+				     (dired-mode	   . "Dired")
+				     (lisp-mode	   . "Common Lisp")
+				     (emacs-lisp-mode . "Emacs Lisp")
+				     (gnus-group-mode . "Email")
+				     (eshell-mode     . "Eshell")
+				     (erc-mode        . "ERC")
+				     (haskell-mode	   . "Haskell")
+				     (help-mode	   . "Help")
+				     (ibuffer-mode    . "iBuffer")
+				     (org-mode	   . "Organisation")
+				     (python-mode	   . "Python"))
+  "Alist for `clean-mode-line'." :group 'user-appearance :type 'list)
 
 (defun clean-mode-line ()
   (interactive)
-  (loop for cleaner in mode-line-cleaner-alist
-        do (let* ((mode (car cleaner))
-		  (mode-str (cdr cleaner))
-		  (old-mode-str (cdr (assq mode minor-mode-alist))))
-             (when old-mode-str
-	       (setcar old-mode-str mode-str))
-	     ;; NOTE: major mode
-             (when (eq mode major-mode)
-               (setq mode-name mode-str)))))
+  (cl-loop for cleaner in mode-line-cleaner-alist
+	   do (let* ((mode (car cleaner))
+		     (mode-str (cdr cleaner))
+		     (old-mode-str (cdr (assq mode minor-mode-alist))))
+		(when old-mode-str
+		  (setcar old-mode-str mode-str))
+		;; NOTE: major mode
+		(when (eq mode major-mode)
+		  (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook #'clean-mode-line)
 

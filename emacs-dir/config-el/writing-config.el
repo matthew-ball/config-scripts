@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(defgroup user-writing nil "Custom writing variables." :group 'user-variables)
+
 ;;; IMPORTANT: insert date and time
 ;; SOURCE: `http://www.emacswiki.org/emacs/InsertDate'
 ;; (defun insert-date (format)
@@ -559,38 +561,39 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   "#+LATEX_HEADER: \\usepackage{" str "}")
 
 ;; IMPORTANT: `org-mode' custom file templates
-(defvar org-template-list (list "beamer" "paper" "assignment") "List of custom template types.")
+(defcustom org-template-list '("beamer" "paper" "assignment") "List of custom template types." :group 'user-writing :type 'list)
 
 ;;; IMPORTANT: org-beamer
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html'
 ;; SOURCE: `http://orgmode.org/manual/Beamer-class-export.html'
 (autoload 'org-beamer "org-beamer" "Presentations with org-beamer." t)
 
-(defvar org-beamer-themes-list (list "Atnibes"
-				     "Bergen"
-				     "Berkeley"
-				     "Berlin"
-				     "Copenhagen"
-				     "Darmstadt"
-				     "Dresden"
-				     "Frankfurt"
-				     "Goettingen"
-				     "Hannover"
-				     "Ilmenau"
-				     "JuanLesPins"
-				     "Luebeck"
-				     "Madrid"
-				     "Malmoe"
-				     "Marburg"
-				     "Montpellier"
-				     "PaloAlto"
-				     "Pittsburgh"
-				     "Rochester"`
-				     "Singapore"
-				     "Szeged"
-				     "Warsaw"
-				     "boxes"
-				     "default") "List of beamer available themes.")
+(defcustom org-beamer-themes-list '("Atnibes"
+				    "Bergen"
+				    "Berkeley"
+				    "Berlin"
+				    "Copenhagen"
+				    "Darmstadt"
+				    "Dresden"
+				    "Frankfurt"
+				    "Goettingen"
+				    "Hannover"
+				    "Ilmenau"
+				    "JuanLesPins"
+				    "Luebeck"
+				    "Madrid"
+				    "Malmoe"
+				    "Marburg"
+				    "Montpellier"
+				    "PaloAlto"
+				    "Pittsburgh"
+				    "Rochester"`
+				    "Singapore"
+				    "Szeged"
+				    "Warsaw"
+				    "boxes"
+				    "default")
+  "List of available beamer themes." :group 'user-writing :type 'list)
 
 ;; NOTE: inserting a `reading-notes' template is not part of this function
 (defun insert-org-template (&rest junk)
@@ -656,7 +659,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
   "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
 
 ;;; IMPORTANT: Insert a custom file template
-(defvar org-custom-file-alist (list "paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents.")
+(defcustom org-custom-file-alist '("paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents." :group 'user-writing :type 'list)
 
 (defun org-insert-custom-file (&rest junk)
   "Insert custom `org-mode' file template."
@@ -666,7 +669,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
 ;;; IMPORTANT: custom footnotes
 ;; TODO: get user input from the keyboard
-(defvar org-custom-footnote-types (list "book" "paper" "article" "default") "The list of availables types for footnotes.")
+(defcustom org-custom-footnote-types '("book" "paper" "article" "default") "The list of availables types for footnotes." :group 'user-writing :type 'list)
 
 (defun org-custom-insert-footnote-book ()
   "Insert a book footnote template."

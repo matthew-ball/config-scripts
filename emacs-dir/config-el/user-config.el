@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(defgroup user-custom nil "Custom variables for user-specific settings (and packages)." :group 'user-variables)
+
 ;;; IMPORTANT: ace-jump-mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/AceJump'
 ;; (autoload 'ace-jump-mode "ace-jump-mode" "..." t)
@@ -40,6 +42,7 @@
 
   (setq bbdb-mua-update-interactive-p '(query . create)
 	bbdb-file (expand-file-name (concat user-emacs-directory "contacts-file.el"))
+	bbdb-mua-pop-up nil
 	bbdb-default-country "Australia"))
 
 ;;; IMPORTANT: make `ido' available everywhere
@@ -124,6 +127,9 @@
   ;; IMPORTANT: keep cursor at prompt
   (erc-scrolltobottom-enable)
 
+  ;; IMPORTANT: netsplit
+  (setq erc-netsplit-show-server-mode-changes-flag t)
+
   ;; IMPORTANT: erc match
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcMatch'
   (setq erc-keywords '() ;; NOTE: highlight specific keywords
@@ -155,45 +161,41 @@
   ;; TODO: `erc-button-alist'
 
   ;; TODO: clean up multiple server handling
-  ;; (defcustom custom-erc-server-list nil "List of servers to connect to.")
-  ;; (defcustom custom-erc-channel-alist '() "List of server . channel pairs to connect to.")
-  ;; (defvar custom-erc-server-autojoin-channel-alist nil "List of server . channel pairs for auto-joining.")
+  ;; (defcustom custom-erc-server-list nil "List of servers to connect to." :group 'user-custom :type 'list)
+  ;; (defcustom custom-erc-channel-alist nil "List of (server . channel) for available channels on server." :group 'user-custom :type 'list)
+  ;; (defcustom custom-erc-autojoin-alist nil "List of (server . channel) pairs for auto-joining." :group 'user-custom :type 'list)
 
   ;; (defun custom-erc-server (server)
-  ;;   (push server custom-erc-server-list))
+  ;;   (pushnew server custom-erc-server-list))
 
-  ;; ;; (custom-erc-server "irc.freenode.net")
-  ;; ;; (custom-erc-server "eu.undernet.org")
+  ;; (custom-erc-server "irc.freenode.net")
+  ;; (custom-erc-server "eu.undernet.org")
 
-  ;; (defun custom-erc-server-add-channel (server &rest channels)
+  ;; (defun custom-erc-server-channel (server &rest channels)
   ;;   (if (listp channels)
   ;; 	(dolist (channel channels)
-  ;; 	  (setq custom-erc-channel-alist (push (cons server channel) custom-erc-channel-alist)))
-  ;;     (setq custom-erc-channel-alist (push (cons server channels) custom-erc-channel-alist))))
+  ;; 	  (pushnew (cons server channel) custom-erc-channel-alist :test #'equal))
+  ;;     (pushnew (cons server channels) custom-erc-channel-alist :test #'equal)))
 
-  ;; (custom-erc-server-add-channel "irc-freenode.net" '("#ubuntu" "#ubuntu+1" "#ubuntu-server" "#ubuntu-au" "#ubuntu-au-chat" "#ubuntu-offtopic"
-  ;; 						      "#ubuntu-discuss" "#ubuntu-irc" "#ubuntu-programming" "#ubuntu-bots-devel" "#ubuntu-bots"
-  ;; 						      "#ubuntu-app-devel" "#ubuntu-devel" "#ubuntu-bugs" "#ubuntuforums" "#ubuntu-ops"
-  ;; 						      "#ubuntu-ops-team" "#ubuntu-release-party" "#ubuntu-classroom" "#ubuntu-classroom-chat"
-  ;; 						      "#ubuntu-fr" "#ubuntu-fr-offtopic" "#freenode" "#bash" "#gnus" "#hurd" "#sbcl" "#debian"
-  ;; 						      "#debian-offtopic" "#emacs" "#org-mode" "#stumpwm" "#conkeror" "#screen" "#irssi" "#lisp"
-  ;; 						      "#ruby" "#scheme" "#guile" "#clojure" "#haskell" "#latex" "#reddit" "#anucssa" "#defocus"
-  ;; 						      "##club-ubuntu" "##math" "##programming" "##economics" "##linguistics" "##philosophy"))
+  ;; (defun custom-erc-server-autojoin (server &rest channels)
+  ;;   (if (listp channels)
+  ;; 	(dolist (channel channels)
+  ;; 	  (pushnew (cons server channel) custom-erc-autojoin-alist :test #'equal))
+  ;;     (pushnew (cons server channels) custom-erc-autojoin-alist :test #'equal)))
 
-  ;; ;; (defun custom-erc-server-add-autojoin (server &rest channels))
-  ;; ;; (custom-erc-server-add-autojoin "irc.freenode.net" '("#emacs" "#lisp" "#ubuntu-offtopic" "#ubuntu-mars" "#stumpwm" "#ubuntu-ops" "#ubuntu-ops-team" "#ruby"))
+  ;; (custom-erc-server-channel "irc.freenode.net" '("#emacs" "#screen" "#org-mode" "#stumpwm" "#irssi" "#gnus" "#sbcl" "#hurd" "#lisp" "#bash" "#scheme" "#clojure" "#guile" "#haskell" "#latex" "#ruby" "#ubuntu" "#ubuntu-offtopic" "#ubuntu-mars""#ubuntu+1" "#ubuntu-server" "#ubuntu-au" "#ubuntu-au-chat" "#ubuntu-discuss" "#ubuntu-irc" "#ubuntu-programming" "#ubuntu-bots-devel" "#ubuntu-bots" "#ubuntu-app-devel" "#ubuntu-devel" "#ubuntu-bugs" "#ubuntuforums" "#ubuntu-ops" "#ubuntu-ops-team" "#ubuntu-release-party" "#ubuntu-classroom" "#ubuntu-classroom-chat" "#ubuntu-fr" "#ubuntu-fr-offtopic" "#debian" "#debian-offtopic" "#reddit" "#anucssa" "#defocus" "##club-ubuntu" "##math" "##programming" "##economics" "##linguistics" "##philosophy"))
+  ;; (custom-erc-server-autojoin "irc.freenode.net" '("#emacs" "#lisp" "#ubuntu-offtopic" "#ubuntu-mars" "#stumpwm" "#ubuntu-ops" "#ubuntu-ops-team" "#ruby"))
 
-  ;; NOTE: currently this is hard-coded for "freenode" convert this to an alist
-  (defcustom custom-erc-channel-list nil "List of channels ERC can connect to.")
-  (setq custom-erc-channel-list '("#ubuntu" "#ubuntu+1" "#ubuntu-server" "#ubuntu-au" "#ubuntu-au-chat" "#ubuntu-offtopic" "#ubuntu-discuss"
-				  "#ubuntu-irc" "#ubuntu-programming" "#ubuntu-bots-devel" "#ubuntu-bots" "#ubuntu-app-devel" "#ubuntu-devel"
-				  "#ubuntu-bugs" "#ubuntuforums" "#ubuntu-ops" "#ubuntu-ops-team" "#ubuntu-release-party" "#ubuntu-classroom"
-				  "#ubuntu-classroom-chat" "#ubuntu-fr" "#ubuntu-fr-offtopic" "#freenode" "#bash" "#gnus" "#hurd" "#sbcl"
-				  "#debian" "#debian-offtopic" "#emacs" "#org-mode" "#stumpwm" "#conkeror" "#screen" "#irssi" "#lisp" "#ruby"
-				  "#scheme" "#guile" "#clojure" "#haskell" "#latex" "#reddit" "#anucssa" "#defocus" "##club-ubuntu" "##math"
-				  "##programming" "##economics" "##linguistics" "##philosophy"))
+  ;; NOTE: currently this is hard-coded for "freenode" (TODO: convert this to an alist)
+  (defcustom custom-erc-channel-list '("#ubuntu" "#ubuntu+1" "#ubuntu-server" "#ubuntu-au" "#ubuntu-au-chat" "#ubuntu-offtopic" "#ubuntu-discuss"
+				       "#ubuntu-irc" "#ubuntu-programming" "#ubuntu-bots-devel" "#ubuntu-bots" "#ubuntu-app-devel" "#ubuntu-devel"
+				       "#ubuntu-bugs" "#ubuntuforums" "#ubuntu-ops" "#ubuntu-ops-team" "#ubuntu-release-party" "#ubuntu-classroom"
+				       "#ubuntu-classroom-chat" "#ubuntu-fr" "#ubuntu-fr-offtopic" "#freenode" "#bash" "#gnus" "#hurd" "#sbcl"
+				       "#debian" "#debian-offtopic" "#emacs" "#org-mode" "#stumpwm" "#conkeror" "#screen" "#irssi" "#lisp" "#ruby"
+				       "#scheme" "#guile" "#clojure" "#haskell" "#latex" "#reddit" "#anucssa" "#defocus" "##club-ubuntu" "##math"
+				       "##programming" "##economics" "##linguistics" "##philosophy")
+    "List of channels ERC can connect to (this should be replaced with the alist matching to server)." :group 'user-custom :type 'list)
 
-  ;; TODO: ...
   (defmacro custom-erc-propertize (prompt)
     `(erc-propertize (format "%s>" ,prompt) 'read-only t 'rear-nonsticky t 'front-nonsticky t))
 
@@ -271,25 +273,6 @@
   (let ((password (read-passwd "Enter IRC Password: ")))
     (erc-tls :server server :port erc-port :nick erc-nick :password password)))
 
-(defun erc-start-or-switch (&rest junk)
-  "Connect to ERC, or switch to last active buffer"
-  (interactive)
-  (save-excursion
-    (if (get-buffer "irc.freenode.net:7000") ;; NOTE: if ERC is already active ...
-	;; TODO: if connected to IRC and there has been no activity, execute `custom-erc-switch-buffer'
-	(erc-track-switch-buffer 1) ;; NOTE: ... switch to last active buffer ...
-      (erc-tls-connect-server "irc.freenode.net")))) ;; NOTE: ... else, start an `erc-tls' session on `irc.freenode.net'
-
-(defun custom-erc-join-channel (&rest junk)
-  "Select a channel from a list of channels to join.
-
-NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.net\"."
-  (interactive)
-  (let ((channel (ido-completing-read "Enter channel: " custom-erc-channel-list)))
-    (when (get-buffer channel) ;; TODO: check to see if channel is already a open channel ...
-      (switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
-    (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
-
 (defun custom-erc-switch-buffer (&rest junk)
   "Switch to an existing `erc-mode' buffer."
   (interactive)
@@ -304,6 +287,27 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 				(and (eq major-mode 'erc-mode)
 				     (buffer-name buf)))))
 			  (buffer-list))))))))
+
+(defun erc-start-or-switch (&rest junk)
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (save-excursion
+    (if (get-buffer "irc.freenode.net:7000") ;; NOTE: if ERC is already active ...
+	;; TODO: if connected to IRC and there has been no activity, execute `custom-erc-switch-buffer'
+	;; (when (equal (erc-track-switch-buffer 1) erc-track-last-non-erc-buffer)
+	;;   (custom-erc-switch-buffer))
+	(erc-track-switch-buffer 1)
+      (erc-tls-connect-server "irc.freenode.net")))) ;; NOTE: ... else, start an `erc-tls' session on `irc.freenode.net'
+
+(defun custom-erc-join-channel (&rest junk)
+  "Select a channel from a list of channels to join.
+
+NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.net\"."
+  (interactive)
+  (let ((channel (ido-completing-read "Enter channel: " custom-erc-channel-list)))
+    (when (get-buffer channel) ;; TODO: check to see if channel is already a open channel ...
+      (switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
+    (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
 
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
@@ -337,6 +341,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
   ;; IMPORTANT: personal settings
   (setq user-mail-address user-primary-email-address
+	;; gnus-startup-file (expand-file-name (concat user-emacs-directory "newsrc"))
+	;; gnus-init-file (expand-file-name (concat user-emacs-directory "gnus.el"))
         mail-personal-alias-file "~/.mailrc"
 	mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file')
 	auth-source-save-behavior nil
@@ -374,7 +380,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	gnus-summary-line-format "%U%R%z%I%(%[ %-18,18f%]%) %s\n"
 	gnus-article-mode-line-format "Gnus: %S%m"
 	gnus-summary-display-arrow t
+	;; gnus-use-trees t
         gnus-thread-ignore-subject t
+	;; gnus-use-dribble-file t
+	;; gnus-dribble-directory (concat user-emacs-directory "gnus/")
         gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
         gnus-summary-thread-gathering-function #'gnus-gather-threads-by-subject
 	gnus-visible-headers (concat "^From:\\|^Subject:" "\\|^To:\\|^Cc:\\|^Date:")
@@ -392,14 +401,15 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (add-to-list 'gnus-parameters '("\\`nnrss:" (mm-discouraged-alternatives nil)))
 
   ;; IMPORTANT: imap setup
-  (defmacro custom-imap-server (name address)
-    `(nnimap ,name
-	     (nnimap-address ,address)
-	     (nnimap-server-port 993)
-	     (nnimap-authinfo-file "~/.authinfo.gpg")
-	     (nnimap-authenticator login)
-	     (nnimao-expunge-on-close 'never)
-	     (nnimap-stream ssl)))
+  ;; TODO: ...
+  ;; (defmacro custom-imap-server (name address)
+  ;;   `(nnimap ,name
+  ;; 	     (nnimap-address ,address)
+  ;; 	     (nnimap-server-port 993)
+  ;; 	     (nnimap-authinfo-file "~/.authinfo.gpg")
+  ;; 	     (nnimap-authenticator login)
+  ;; 	     (nnimao-expunge-on-close 'never)
+  ;; 	     (nnimap-stream ssl)))
 
   (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
         imap-log t ;; NOTE: log the imap session
@@ -750,7 +760,8 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
-(require 'smart-mode-line)
+(when (display-graphic-p)
+  (require 'smart-mode-line))
 
 (after "smart-mode-line"
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/"            ":config:"))
@@ -770,7 +781,7 @@ Although this is interactive, call this with \\[browse-url]."
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
 
   (setq sml/name-width 1
-	sml/mode-width 1
+	sml/mode-width 0
 	sml/shorten-directory t
 	sml/theme 'light)
 
@@ -814,14 +825,15 @@ Although this is interactive, call this with \\[browse-url]."
 	;; ecb-compile-window-height 12
 	))
 
+;; TODO: write `ecb-toggle'
+
 ;;; IMPORTANT: `inf-ruby'
-(autoload 'inf-ruby "inf-ruby" "..." t)
+(autoload 'inf-ruby "inf-ruby" "Inferior Ruby process." t)
 
 (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
 (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
 
-(unless (keymapp ruby-programming-map)
-  (setq ruby-programming-map (make-sparse-keymap)))
+(unless (keymapp ruby-programming-map) (setq ruby-programming-map (make-sparse-keymap)))
 
 (define-key global-map ruby-programming-prefix-key ruby-programming-map)
 (define-key ruby-programming-map (kbd "r") #'inf-ruby)
@@ -831,7 +843,12 @@ Although this is interactive, call this with \\[browse-url]."
 ;;(autoload 'rvm-activate-corresponding-ruby "rvm" "Ruby virtual machine." t)
 
 ;;; IMPORTANT: rinari
-;;(autoload 'rinari-minor-mode "rinari" "Ruby on Rails environment" t)
+;;(autoload 'rinari-minor-mode "rinari" "Ruby on Rails environment." t)
+
+;;; IMPORTANT: dictionary
+(autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
+
+(global-set-key (kbd "C-c d") #'dictionary-search)
 
 (provide 'user-config)
 ;;; user-config.el ends here

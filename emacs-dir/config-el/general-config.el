@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(defgroup user-general nil "Custom general variables." :group 'user-config)
+
 ;; IMPORTANT: default variable values
 (setq inhibit-startup-message t ;; NOTE: turn off startup message
       inhibit-startup-echo-area-message t ;; NOTE: turn off startup echo area message
@@ -120,18 +122,17 @@
 	ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
 	ido-use-filename-at-point 'ffap-guesser
 	ido-use-url-at-point t
-	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
-	;; ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-directory-list"))
+	ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
+	ido-work-directory-list `(,(expand-file-name user-home-directory)
+				  ,(expand-file-name user-documents-directory)
+				  ,(expand-file-name user-university-directory)
+				  ,(expand-file-name user-organisation-directory))
 	;; ido-ignore-directories '("~/.emacs.d/snippets") ;; NOTE: ignore snippets
 	;; ido-ignore-files '()
 	ido-file-extensions-order '(".org" ".el" ".lisp" ".asd" ".scm" ".rb" ".c" ".h" ".sh" ".hs" ".py")
 	ido-ignore-extensions t ;; NOTE: ignore extensions
 	;; TODO: can clean up the following ...
 	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\#[#]?" "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
-	ido-work-directory-list `(,(expand-file-name user-home-directory)
-				  ,(expand-file-name user-documents-directory)
-				  ,(expand-file-name user-university-directory)
-				  ,(expand-file-name user-organisation-directory))
 	ido-case-fold t ;; NOTE: enable case-insensitivity
 	ido-enable-last-directory-history t ;; NOTE: enable directory history
 	ido-max-work-directory-list 500 ;; NOTE: remember last used directories
@@ -159,25 +160,24 @@
 	recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
 	recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
 
-  (defcustom recentf-exclude-list '() "Files to exclude from `recentf' history.")
-
-  (setq recentf-exclude-list '("\\.yasnippet"
-			       "\\.snippet"
-			       "\\-autoloads.el"
-			       "\\.el.gz"
-			       "COMMIT_EDITMSG"
-			       ".newsrc.eld"
-			       "ido.last"
-			       "smex-items"
-			       "recent-files"
-			       "save-place"
-			       "ac-comphist.dat"
-			       "archive-contents"
-			       "minibuffer-history"
-			       "cookies"
-			       "bbdb"
-			       "contacts-file.el"
-			       "emacs-desktop"))
+  (defcustom recentf-exclude-list '("\\.yasnippet"
+				    "\\.snippet"
+				    "\\-autoloads.el"
+				    "\\.el.gz"
+				    "COMMIT_EDITMSG"
+				    ".newsrc.eld"
+				    "ido.last"
+				    "smex-items"
+				    "recent-files"
+				    "save-place"
+				    "ac-comphist.dat"
+				    "archive-contents"
+				    "minibuffer-history"
+				    "cookies"
+				    "bbdb"
+				    "contacts-file.el"
+				    "emacs-desktop")
+    "Files to exclude from `recentf' history." :group 'user-general :type 'list)
 
   (mapc #'(lambda (exclude) (add-to-list 'recentf-exclude exclude)) recentf-exclude-list)
 
@@ -192,7 +192,7 @@
 
   ;; NOTE: collapsing groups by default
   ;; SOURCE: http://www.emacswiki.org/emacs/IbufferMode#toc13
-  (defcustom ibuffer-collapsed-groups '("Miscellaneous") "Collapse groups by default.")
+  (defcustom ibuffer-collapsed-groups '("Miscellaneous") "Collapse groups by default." :group 'user-general :type 'list)
 
   (defadvice ibuffer (after collapse-helm)
     (dolist (group ibuffer-collapsed-groups)
@@ -216,7 +216,7 @@
   ;; (defcustom ibuffer-never-show-regexp '("^ \\*Minibuf-0\\*$"
   ;; 					 "^ \\*Minibuf-1\\*$"
   ;; 					 "^\\*Ibuffer\\*$"
-  ;; 					 "^\\*AgendaCommands\\*$") "Hide buffers whose name matches the regular expressions.")
+  ;; 					 "^\\*AgendaCommands\\*$") "Hide buffers whose name matches the regular expressions." :group 'user-general :type 'list)
 
   (defun ibuffer-never-show ()
     ;; (add-to-list 'ibuffer-never-show-predicates (regexp-opt ibuffer-never-show-regexp))
@@ -844,7 +844,7 @@
       ":name \"" str "\"" \n
       ":version 0.0.1" \n
       ":components ())"))
-  
+
   (define-auto-insert '("\\.lisp\\'" . "Lisp skeleton")
     '("Description: " ";; " (file-name-nondirectory (buffer-file-name)) " -- " str \n \n)))
 

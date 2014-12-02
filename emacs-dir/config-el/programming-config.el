@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(defgroup user-programming nil "Custom programming variables." :group 'user-variables)
+
 ;; IMPORTANT: ...
 ;; SOURCE: `http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/'
 ;; (defun smarter-move-beginning-of-line (arg)

@@ -24,32 +24,34 @@
 
 ;;; Code:
 
-;;; IMPORTANT: when running inside a terminal mode ...
-(defun terminal-mode-init (&rest args)
-  "Cleans up how GNU Emacs receives/interprets the CONTROL and META characters when run in a terminal session."
-  (interactive)
-  (define-key input-decode-map "[[A" (kbd "<f1>")) ;; NOTE: bind `<f1>' in (tty) terminal
-  (define-key input-decode-map "[[B" (kbd "<f2>")) ;; NOTE: bind `<f2>' in (tty) terminal
-  (define-key input-decode-map "[[C" (kbd "<f3>")) ;; NOTE: bind `<f3>' in (tty) terminal 
-  (define-key input-decode-map "[[D" (kbd "<f4>")) ;; NOTE: bind `<f4>' in (tty) terminal
-  (define-key input-decode-map "[[E" (kbd "<f5>")) ;; NOTE: bind `<f5>' in (tty) terminal 
-  (define-key input-decode-map "O1;3Q" (kbd "M-<f2>")) ;; NOTE: bind `M-<f2>' in terminal
-  (define-key input-decode-map "O1;5Q" (kbd "C-<f2>")) ;; NOTE: bind `C-<f2>' in terminal
-  (define-key input-decode-map "O1;2Q" (kbd "S-<f2>")) ;; NOTE: bind `S-<f2>' in terminal
-  (define-key input-decode-map "O1;3R" (kbd "M-<f3>")) ;; NOTE: bind `M-<f3>' in terminal
-  (define-key input-decode-map "O1;5R" (kbd "C-<f3>")) ;; NOTE: bind `C-<f3>' in terminal
-  (define-key input-decode-map "O1;2R" (kbd "S-<f3>")) ;; NOTE: bind `S-<f3>' in terminal
-  (define-key input-decode-map "O1;3S" (kbd "M-<f4>")) ;; NOTE: bind `M-<f4>' in terminal
-  (define-key input-decode-map "O1;5S" (kbd "C-<f4>")) ;; NOTE: bind `C-<f4>' in terminal
-  (define-key input-decode-map "O1;2S" (kbd "S-<f4>")) ;; NOTE: bind `S-<f4>' in terminal
-  (define-key input-decode-map " [15;3~
-    ]" (kbd "M-<f5>")) ;; NOTE: bind `M-<f5>'
-  (define-key input-decode-map " [15;5~
-    ]" (kbd "C-<f5>")) ;; NOTE: bind `C-<f5>'
-  )
+(defgroup user-key-bindings nil "Custom key-binding variables." :group 'user-variables)
 
-(unless (window-system)
-  (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
+;;; IMPORTANT: when running inside a terminal mode ...
+;; (defun terminal-mode-init (&rest args)
+;;   "Cleans up how GNU Emacs receives/interprets the CONTROL and META characters when run in a terminal session."
+;;   (interactive)
+;;   (define-key input-decode-map "[[A" (kbd "<f1>")) ;; NOTE: bind `<f1>' in (tty) terminal
+;;   (define-key input-decode-map "[[B" (kbd "<f2>")) ;; NOTE: bind `<f2>' in (tty) terminal
+;;   (define-key input-decode-map "[[C" (kbd "<f3>")) ;; NOTE: bind `<f3>' in (tty) terminal
+;;   (define-key input-decode-map "[[D" (kbd "<f4>")) ;; NOTE: bind `<f4>' in (tty) terminal
+;;   (define-key input-decode-map "[[E" (kbd "<f5>")) ;; NOTE: bind `<f5>' in (tty) terminal
+;;   (define-key input-decode-map "O1;3Q" (kbd "M-<f2>")) ;; NOTE: bind `M-<f2>' in terminal
+;;   (define-key input-decode-map "O1;5Q" (kbd "C-<f2>")) ;; NOTE: bind `C-<f2>' in terminal
+;;   (define-key input-decode-map "O1;2Q" (kbd "S-<f2>")) ;; NOTE: bind `S-<f2>' in terminal
+;;   (define-key input-decode-map "O1;3R" (kbd "M-<f3>")) ;; NOTE: bind `M-<f3>' in terminal
+;;   (define-key input-decode-map "O1;5R" (kbd "C-<f3>")) ;; NOTE: bind `C-<f3>' in terminal
+;;   (define-key input-decode-map "O1;2R" (kbd "S-<f3>")) ;; NOTE: bind `S-<f3>' in terminal
+;;   (define-key input-decode-map "O1;3S" (kbd "M-<f4>")) ;; NOTE: bind `M-<f4>' in terminal
+;;   (define-key input-decode-map "O1;5S" (kbd "C-<f4>")) ;; NOTE: bind `C-<f4>' in terminal
+;;   (define-key input-decode-map "O1;2S" (kbd "S-<f4>")) ;; NOTE: bind `S-<f4>' in terminal
+;;   (define-key input-decode-map " [15;3~
+;;     ]" (kbd "M-<f5>")) ;; NOTE: bind `M-<f5>'
+;;   (define-key input-decode-map " [15;5~
+;;     ]" (kbd "C-<f5>")) ;; NOTE: bind `C-<f5>'
+;;   )
+
+;; (unless (window-system)
+;;   (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
 
 ;;; IMPORTANT: global key-bindings
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html'
@@ -74,111 +76,93 @@
 (global-set-key (kbd "M-<f4>") #'eshell) ;; NOTE: switch to a bash shell
 (global-set-key (kbd "C-<f4>") #'gnus) ;; NOTE: start a gnus session (or switch to an existing session)
 
+;; IMPORTANT: custom key maps
+;; NOTE: this creates a map inside the global map
+(defmacro custom-keymap (name prefix)
+  (let* ((custom-name (concat "custom-" (symbol-name name)))
+	 (custom-keymap (intern (concat custom-name "-map")))
+	 (custom-prefix (intern (concat custom-name "-prefix-key"))))
+    `(progn
+       (defconst ,custom-prefix ,prefix "Custom prefix key.")
+       (defvar ,custom-keymap (lookup-key global-map ,custom-prefix) "Custom keymap.")
+
+       (unless (keymapp ,custom-keymap) (setq ,custom-keymap (make-sparse-keymap)))
+
+       (define-key global-map ,custom-prefix ,custom-keymap))))
+
+(custom-keymap ruby-programming (kbd "C-c C-r"))
+
 ;; IMPORTANT: programming specific tasks
-(defconst programming-prefix-key (kbd "<f5>") "Programming prefix key.")
-(defvar programming-map (lookup-key global-map programming-prefix-key) "Keymap designed for programming.")
+(custom-keymap programming (kbd "<f5>"))
 
-(unless (keymapp programming-map) ;; NOTE: if `programming-map' is not yet defined ...
-  (setq programming-map (make-sparse-keymap))) ;; NOTE:  ... set `programming-map' to a sparse key map
-
-(define-key global-map programming-prefix-key programming-map) ;; NOTE: join `programming-map' to `programming-prefix-key'
-(define-key programming-map (kbd "c") #'compile)
-(define-key programming-map (kbd "t") #'ecb-activate)
-;; (define-key programming-map (kbd "t") #'(lambda () (let ((enabled))
-;; 						(if enabled
-;; 						    (progn
-;; 						      (setf enabled nil)
-;; 						      ecb-deactivate)
-;; 						  (progn
-;; 						    (setf enabled t)
-;; 						    ecb-activate)))))
-(define-key programming-map (kbd "n") #'next-error)
-(define-key programming-map (kbd "p") #'previous-error)
-(define-key programming-map (kbd "d") #'gdb)
-(define-key programming-map (kbd "D") #'slime-documentation-lookup)
-(define-key programming-map (kbd "m") #'magit-status) ;; NOTE: view the `git-status' of the current file
-(define-key programming-map (kbd "g") #'gist-buffer) ;; NOTE: ...
-;;(define-key programming-map (kbd "G") #'ido-goto-symbol)
-;;(define-key programming-map (kbd "e") #'eval-and-replace) ;; NOTE: evaluate a lisp expression and replace with the value
-(define-key programming-map (kbd "i") #'ielm) ;; NOTE: start the interactive emacs lisp mode
-(define-key programming-map (kbd "s") #'slime-connect) ;; NOTE: start slime session
-(define-key programming-map (kbd "S") #'slime-disconnect) ;; NOTE: stop slime session
-(define-key programming-map (kbd "SPC") #'slime-selector)
-(define-key programming-map (kbd "M") #'(lambda () (interactive) (manual-entry (current-word)))) ;; NOTE: invoke `man' on word under point
+(define-key custom-programming-map (kbd "c") #'compile)
+(define-key custom-programming-map (kbd "t") #'ecb-activate)
+(define-key custom-programming-map (kbd "n") #'next-error)
+(define-key custom-programming-map (kbd "p") #'previous-error)
+(define-key custom-programming-map (kbd "d") #'gdb)
+(define-key custom-programming-map (kbd "D") #'slime-documentation-lookup)
+(define-key custom-programming-map (kbd "m") #'magit-status) ;; NOTE: view the `git-status' of the current file
+(define-key custom-programming-map (kbd "g") #'gist-buffer) ;; NOTE: ...
+(define-key custom-programming-map (kbd "G") #'ido-goto-symbol)
+;;(define-key custom-programming-map (kbd "e") #'eval-and-replace) ;; NOTE: evaluate a lisp expression and replace with the value
+(define-key custom-programming-map (kbd "i") #'ielm) ;; NOTE: start the interactive emacs lisp mode
+(define-key custom-programming-map (kbd "s") #'slime-connect) ;; NOTE: start slime session
+(define-key custom-programming-map (kbd "S") #'slime-disconnect) ;; NOTE: stop slime session
+(define-key custom-programming-map (kbd "SPC") #'slime-selector)
+(define-key custom-programming-map (kbd "M") #'(lambda () (interactive) (manual-entry (current-word)))) ;; NOTE: invoke `man' on word under point
 
 ;; IMPORTANT: writing specific keys
-(defconst writing-prefix-key (kbd "<f6>") "Writing prefix key.")
-(defvar writing-map (lookup-key global-map writing-prefix-key) "Keymap designed for writing.")
+(custom-keymap writing (kbd "<f6>"))
 
-(unless (keymapp writing-map)
-  (setq writing-map (make-sparse-keymap)))
-
-(define-key global-map writing-prefix-key writing-map)
-;; NOTE: "apps"
-(define-key writing-map (kbd "e") #'ebib) ;; NOTE: run the emacs bibliography manager
-(define-key writing-map (kbd "n") #'deft) ;; NOTE: quick note taking with `deft'
-;; NOTE: commands
-(define-key writing-map (kbd "c") #'count-words) ;; NOTE: count the words in the current buffer
-(define-key writing-map (kbd "t") #'thesaurus-choose-synonym-and-replace) ;; NOTE: ...
-(define-key writing-map (kbd "d") #'dictem-run-search) ;; NOTE: dictionary search for word.
-;; NOTE: text manipulation
-(define-key writing-map (kbd "u") #'upcase-word)
-(define-key writing-map (kbd "l") #'downcase-word)
-(define-key writing-map (kbd "C") #'capitalize-word)
-;; NOTE: spelling
-(define-key writing-map (kbd "i") #'ispell-word)
-(define-key writing-map (kbd "I") #'ispell-buffer)
+(define-key custom-writing-map (kbd "e") #'ebib) ;; NOTE: run the emacs bibliography manager
+(define-key custom-writing-map (kbd "n") #'deft) ;; NOTE: quick note taking with `deft'
+(define-key custom-writing-map (kbd "c") #'count-words) ;; NOTE: count the words in the current buffer
+;;(define-key custom-writing-map (kbd "t") #'thesaurus-choose-synonym-and-replace) ;; NOTE: ...
+(define-key custom-writing-map (kbd "d") #'dictionary-search) ;; NOTE: dictionary search for word.
+(define-key custom-writing-map (kbd "u") #'upcase-word)
+(define-key custom-writing-map (kbd "l") #'downcase-word)
+(define-key custom-writing-map (kbd "C") #'capitalize-word)
+(define-key custom-writing-map (kbd "i") #'ispell-word)
+(define-key custom-writing-map (kbd "I") #'ispell-buffer)
 
 ;; IMPORTANT: emacs internals
-(defconst internals-prefix-key (kbd "<f7>") "Emacs internals prefix key.")
-(defvar internals-map (lookup-key global-map internals-prefix-key) "Keymap designed for emacs internal functions.")
+(custom-keymap internals (kbd "<f7>"))
 
-(unless (keymapp internals-map)
-  (setq internals-map (make-sparse-keymap)))
-
-(define-key global-map internals-prefix-key internals-map)
-(define-key internals-map (kbd "E") #'elisp-index-search) ;; NOTE: search for the documentation of an emacs lisp function
-(define-key internals-map (kbd "M") #'emacs-index-search) ;; NOTE: search for the documentation of an emacs command
-(define-key internals-map (kbd "S") #'switch-to-scratch) ;; NOTE: switch to `*scratch*' buffer
-(define-key internals-map (kbd "s") #'w3m-search)
-;; ---
-(define-key internals-map (kbd "b") #'custom-erc-switch-buffer)
-(define-key internals-map (kbd "B") #'custom-w3m-switch-buffer)
-(define-key internals-map (kbd "c") #'bbdb-create) ;; NOTE: add an entry to the `bbdb' database
-;;(define-key internals-map (kbd "e") #'emms) ;; NOTE: start emacs multimedia system
-;;(define-key internals-map (kbd "h") #'hidden-mode-line-mode)
-(define-key internals-map (kbd "l") #'list-packages)  ;; NOTE: list available elpa packages
-;;(define-key internals-map (kbd "m") #'imaxima) ;; NOTE: start interactive maxima session
-(define-key internals-map (kbd "p") #'proced) ;; NOTE: start a process manager session
-(define-key internals-map (kbd "r") #'regexp-builder) ;; NOTE: start regular-expression builder
-(define-key internals-map (kbd "u") #'browse-url) ;; NOTE: browse a URL session
-(define-key internals-map (kbd "v") #'battery) ;; NOTE: display battery statistics
-;; ---
-;; (define-key internals-map (kbd "s") #'eshell) ;; NOTE: ..
-;; (define-key internals-map (kbd "i") #'erc-start-or-switch) ;; NOTE: ...
-;; (define-key internals-map (kbd "g") #'gnus) ;; NOTE: ...
+(define-key custom-internals-map (kbd "E") #'elisp-index-search) ;; NOTE: search for the documentation of an emacs lisp function
+(define-key custom-internals-map (kbd "M") #'emacs-index-search) ;; NOTE: search for the documentation of an emacs command
+(define-key custom-internals-map (kbd "S") #'switch-to-scratch) ;; NOTE: switch to `*scratch*' buffer
+(define-key custom-internals-map (kbd "s") #'w3m-search)
+(define-key custom-internals-map (kbd "b") #'custom-erc-switch-buffer)
+(define-key custom-internals-map (kbd "B") #'custom-w3m-switch-buffer)
+(define-key custom-internals-map (kbd "c") #'bbdb-create) ;; NOTE: add an entry to the `bbdb' database
+;;(define-key custom-internals-map (kbd "e") #'emms) ;; NOTE: start emacs multimedia system
+;;(define-key custom-internals-map (kbd "h") #'hidden-mode-line-mode)
+(define-key custom-internals-map (kbd "l") #'list-packages)  ;; NOTE: list available elpa packages
+;;(define-key custom-internals-map (kbd "m") #'imaxima) ;; NOTE: start interactive maxima session
+(define-key custom-internals-map (kbd "p") #'proced) ;; NOTE: start a process manager session
+(define-key custom-internals-map (kbd "r") #'regexp-builder) ;; NOTE: start regular-expression builder
+(define-key custom-internals-map (kbd "u") #'browse-url) ;; NOTE: browse a URL session
+(define-key custom-internals-map (kbd "v") #'battery) ;; NOTE: display battery statistics
+;; (define-key custom-internals-map (kbd "s") #'eshell) ;; NOTE: ..
+;; (define-key custom-internals-map (kbd "i") #'erc-start-or-switch) ;; NOTE: ...
+;; (define-key custom-internals-map (kbd "g") #'gnus) ;; NOTE: ...
 
 ;; IMPORTANT: `org-mode' related
-(defconst org-prefix-key (kbd "<f8>") "Emacs org-mode prefix key.")
-(defvar org-map (lookup-key global-map org-prefix-key) "Keymap designed for Emacs org-mode functions.")
+(custom-keymap org-mode (kbd "<f8>"))
 
-(unless (keymapp org-map)
-  (setq org-map (make-sparse-keymap)))
-
-(define-key global-map org-prefix-key org-map)
-(define-key org-map (kbd "a") #'org-agenda)
-(define-key org-map (kbd "b") #'org-iswitchb)
-(define-key org-map (kbd "c") #'org-capture)
-(define-key org-map (kbd "d") #'org-deadline)
-(define-key org-map (kbd "e") #'org-toggle-pretty-entities)
-(define-key org-map (kbd "f") #'org-agenda-file-to-front)
-;;(define-key org-map (kbd "g") #'generate) ;; NOTE: what?
-(define-key org-map (kbd "t") #'org-todo)
-(define-key org-map (kbd "r") #'org-refile)
-(define-key org-map (kbd "s") #'org-schedule)
-(define-key org-map (kbd "A") #'org-archive-subtree)
-;;(define-key org-map (kbd "C") #'cfw:open-calendar-buffer)
-(define-key org-map (kbd "S") #'org-store-link)
+(define-key custom-org-mode-map (kbd "a") #'org-agenda)
+(define-key custom-org-mode-map (kbd "b") #'org-iswitchb)
+(define-key custom-org-mode-map (kbd "c") #'org-capture)
+(define-key custom-org-mode-map (kbd "d") #'org-deadline)
+(define-key custom-org-mode-map (kbd "e") #'org-toggle-pretty-entities)
+(define-key custom-org-mode-map (kbd "f") #'org-agenda-file-to-front)
+;;(define-key custom-org-mode-map (kbd "g") #'generate) ;; NOTE: what?
+(define-key custom-org-mode-map (kbd "t") #'org-todo)
+(define-key custom-org-mode-map (kbd "r") #'org-refile)
+(define-key custom-org-mode-map (kbd "s") #'org-schedule)
+(define-key custom-org-mode-map (kbd "A") #'org-archive-subtree)
+;;(define-key custom-org-mode-map (kbd "C") #'cfw:open-calendar-buffer)
+(define-key custom-org-mode-map (kbd "S") #'org-store-link)
 
 ;; IMPORTANT:
 ;; (global-set-key (kbd "<f9>") #'function)
