@@ -57,13 +57,13 @@
 ;; NOTE: user files
 (defgroup user-files nil "User files." :group 'user-variables)
 
-;;(defcustom user-org-contacts-file (format "%s/contacts.org" user-organisation-directory) "File for user's contacts." :group 'user-files :type 'string)
-(defcustom user-org-university-file (format "%s/school.org" user-organisation-directory) "File for user's university organisation." :group 'user-files :type 'string)
-(defcustom user-org-notes-file (format "%s/notes.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
-(defcustom user-org-journal-file (format "%s/journal.org" user-organisation-directory) "File for user's journal." :group 'user-riles :type 'string)
+;;(defcustom user-org-contacts-file (format "%scontacts.org" user-organisation-directory) "File for user's contacts." :group 'user-files :type 'string)
+(defcustom user-org-university-file (format "%sschool.org" user-organisation-directory) "File for user's university organisation." :group 'user-files :type 'string)
+(defcustom user-org-notes-file (format "%snotes.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
+(defcustom user-org-journal-file (format "%sjournal.org" user-organisation-directory) "File for user's journal." :group 'user-riles :type 'string)
 ;; TODO: the projects file is obsolete and should be removed
-(defcustom user-org-projects-file (format "%s/projects.org" user-organisation-directory) "File for user's projects organisation." :group 'user-files :type 'string)
-(defcustom user-org-archive-file (format "%s/archive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
+;;(defcustom user-org-projects-file (format "%sprojects.org" user-organisation-directory) "File for user's projects organisation." :group 'user-files :type 'string)
+(defcustom user-org-archive-file (format "%sarchive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
 
 ;; NOTE: user details
 (setq user-full-name (getenv "USER_FULL_NAME")) ;; NOTE: set the user full name
@@ -176,7 +176,4 @@ Return a list of installed packages or nil for every skipped package."
   (when (y-or-n-p "Kill emacs daemon? ")
     (kill-emacs)))
 
-;; WARNING: I am not sure about this
-;; (defcustom *home-file* "~/Documents/Organisation/home.org" "Default file (buffer) to display on startup.")
-
-;; (setq initial-buffer-choice *home-file*)
+(setq initial-buffer-choice user-org-notes-file)
