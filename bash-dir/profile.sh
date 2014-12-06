@@ -4,8 +4,9 @@
 # WARNING: I don't know if this works
 if [ -z "$CONFIG_SCRIPTS_DIR" ]; then
     # NOTE: ... source ~/.xsessionrc if it exists
-    if [ -f "$HOME/.xsessionrc"]; then
-	. "$HOME/.xsessionrc"
+    if [ -f "$HOME/.xsessionrc" ]; then
+	# . "$HOME/.xsessionrc"
+	. "$HOME/.bashrc"
     fi
 fi
 

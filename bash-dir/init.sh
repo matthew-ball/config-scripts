@@ -12,8 +12,8 @@ export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
 export LOCALE=UTF-8
 export GREP_COLOR="1;33"
 export MOZ_DISABLE_PANGO=1
-# export TERM=xterm-256color # NOTE: export 256 colours in shell session
 export TERM=xterm-color # NOTE: export 8 colours in shell session
+# export TERM=xterm-256color # NOTE: export 256 colours in shell session
 
 shopt -s checkwinsize # NOTE: check the window size after each command and, if necessary, update the values of LINES and COLUMNS
 

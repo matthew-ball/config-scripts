@@ -166,6 +166,7 @@
 				    "\\.el.gz"
 				    "COMMIT_EDITMSG"
 				    ".newsrc.eld"
+				    ".newsrc-dribble"
 				    "ido.last"
 				    "smex-items"
 				    "recent-files"

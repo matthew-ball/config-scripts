@@ -13,6 +13,11 @@ declare -a default_packages=("emacs24" "chromium" "htop" "sudo")
 declare -a development_packages=("build-essential" "gcc" "gcc-doc" "gdb" "gdb-doc" "sbcl" "sbcl-doc" "ghc" "ghc-doc" "git" "strace" "ltrace")
 declare -a packages=(${default_packages[@]} ${development_packages[@]})
 
+# TODO: set user variables
+# - full-name
+# - email
+# - etc
+
 # IMPORTANT: interface
 function print_options {
     echo "[info] to use config-setup:"

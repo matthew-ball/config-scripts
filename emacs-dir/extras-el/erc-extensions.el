@@ -132,7 +132,14 @@
        ,doc
        (erc-send-message (concat name ": " ,string)))))
 
-;; TODO: (defmacro erc-user-command (command string))
+;; TODO: ...
+;; (defmacro erc-user-command (command string)
+;;   (let ((func (intern (concat "erc-cmd-" command)))
+;; 	(doc (concat "Send the command" command " to server in an `erc-mode' buffer."))
+;; 	(string message))
+;;     `(defun ,func (name &rest junk)
+;;        ,doc
+;;        (erc-send-command ,command))))
 
 (defmacro erc-user-action (action verb message)
   "Macro to create \"custom\" actions to an IRC user in an `erc-mode' session."
@@ -147,24 +154,21 @@
 ;; (erc-user-message "NICKSERV" "Freenode's NickServ allows a user to register a nickname. See: /msg NickServ help")
 ;; (erc-user-message "MEMOSERV" "Freenode's MemoServ allows a user to send messages to registered users. See: /msg MemoServ help")
 ;; (erc-user-message "CHANSERV" "Freenode's ChanServ gives normal users the ability to maintain control of a channel. See: /msg ChanServ help")
-;;
 (erc-user-message "GUIDELINES" "The guidelines for using the Ubuntu channels can be found here: http://wiki.ubuntu.com/IRC/Guidelines")
 (erc-user-message "LANGUAGE" "Please watch your language in this channel, thank you.")
 (erc-user-message "EMACS" "GNU Emacs is a powerful lisp environment and text editor. See: http://www.gnu.org/software/emacs/")
 (erc-user-message "STUMPWM" "StumpWM is a tiling window manager for X11 written in common lisp. See: http://www.nongnu.org/stumpwm/")
 (erc-user-message "ORGMODE" "Org-mode is for keeping notes, maintaining TODO lists, project planning, and writing. See: http://orgmode.org/")
-(erc-user-message "GNUS" "GNUS. See: ...")
-(erc-user-message "ERC" "ERC is an extensible IRC client written in emacs lisp. See: ...")
-(erc-user-message "DIRED" "Directory editor. See: ...")
+(erc-user-message "GNUS" "GNUS Network User Services, a news and mail reader with threading, ratings and self-documentation. See: http://www.gnus.org/")
+(erc-user-message "ERC" "ERC is a powerful, modular and extensible IRC client written in emacs lisp. See: http://savannah.gnu.org/projects/erc/")
+(erc-user-message "CHURCH" "Church of the Least-Fixed Point. See: http://c2.com/cgi/wiki?ChurchOfTheLeastFixedPoint")
 
 ;; SOURCE: `fsbot' in #emacs
 (erc-user-action "GNU" "takes" "aside and explains why GNU/Linux is the proper term for the operating system commonly referred to as Linux. See: http://www.gnu.org/gnu/linux-and-gnu.html")
 
-;; doctor
+;; NOTE: irc-doctor
 (autoload 'doctor-doc "doctor")
 (autoload 'make-doctor-variables "doctor")
-
-;;(defvar erc-doctor-id "")
 
 (defun erc-cmd-DOCTOR (&optional last-sender &rest ignore)
   "Get the last message in the channel and doctor it."

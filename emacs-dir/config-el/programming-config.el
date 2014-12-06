@@ -130,15 +130,15 @@ Enable the following minor modes:
 ;;; IMPORTANT: common lisp programming
 ;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
 (after "lisp-mode"
-  (defun scratch-lisp-file ()
-    "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into the current buffer."
-    (interactive)
-    (goto-char 0)
-    (let* ((file (file-name-nondirectory (buffer-file-name)))
-	   (package (file-name-sans-extension file)))
-      (insert ";;;; " file "\n")
-      (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
-      (insert "(in-package #:" package ")\n\n")))
+  ;; (defun scratch-lisp-file ()
+  ;;   "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into the current buffer."
+  ;;   (interactive)
+  ;;   (goto-char 0)
+  ;;   (let* ((file (file-name-nondirectory (buffer-file-name)))
+  ;; 	   (package (file-name-sans-extension file)))
+  ;;     (insert ";;;; " file "\n")
+  ;;     (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
+  ;;     (insert "(in-package #:" package ")\n\n")))
 
   (add-hook 'lisp-mode-hook #'(lambda ()
                                (turn-on-general-programming-mode)
@@ -179,7 +179,7 @@ Enable the following minor modes:
     (add-hook hook #'elisp-slime-nav-mode)))
 
 ;;; IMPORTANT: slime/swank
-(add-to-list 'load-path (expand-file-name "~/Public/slime"))
+;;(add-to-list 'load-path (expand-file-name "~/Public/slime"))
 
 (require 'slime-autoloads)
 ;; (when (member slime-autoloads features)
@@ -191,8 +191,13 @@ Enable the following minor modes:
   ;; (add-hook 'slime-mode-hook #'set-up-slime-ac)
   ;; (add-hook 'slime-repl-mode-hook #'set-up-slime-ac)
 
-  ;; (setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq inferior-lisp-program "/usr/bin/sbcl --noinform --userinit=\"$HOME/.sbclrc\"") ;; NOTE: suppress the printing of any banner or other informational message at startup
+  ;; NOTE: suppress the printing of any banner or other informational message at startup
+  (setq inferior-lisp-program "/usr/bin/sbcl --noinform --userinit=\"$HOME/.sbclrc\""
+	slime-repl-history-file (expand-file-name (concat user-emacs-directory "slime-history.el"))
+	slime-startup-animation nil
+	slime-net-coding-system 'utf-8-unix
+        slime-complete-symbol*-fancy t
+        slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
   (slime-setup '(slime-fancy
                  slime-tramp
@@ -217,11 +222,6 @@ Enable the following minor modes:
                  ;; ---
 		 ;; inferior-slime-mode
                  ))
-
-  (setq slime-startup-animation nil
-	slime-net-coding-system 'utf-8-unix
-        slime-complete-symbol*-fancy t
-        slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
   ;; (add-hook 'slime-mode-hook '(lambda ()
   ;;                               ;; (start-slime-automatically)
@@ -364,6 +364,8 @@ Enable the following minor modes:
 
 ;; (after "sr-speedbar"
 ;;   (setq sr-speedbar-right-side nil))
+
+;; TODO: `ruby-mode'
 
 (provide 'programming-config)
 ;;; programming-config.el ends here

@@ -199,6 +199,7 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
 	org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
 	org-hide-emphasis-markers t ;; NOTE: hide emphasis markers in org-mode buffers
+	;; org-fontify-done-headline t
 	;; org-read-date-display-live nil ;; NOTE: disable the live date-display
 	;; org-insert-mode-line-in-empty-file t
 	;; --- appearance ---
@@ -232,23 +233,21 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 
   ;; TODO: re-order AND add new tags
   (setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
-	'(;; ("ASSIGNMENT"       . ?a)
-	  ;; ("BOOKMARK"         . ?b)
-	  ("COMPUTER SCIENCE" . ?c)
+	'(("COMPUTER_SCIENCE" . ?c)
 	  ("GENERAL"          . ?g)
-	  ;; ("HOLIDAY"          . ?h)
+	  ;; ("ASSIGNMENT"       . ?a)
+	  ;; ("WEBSITE"          . ?w)
+	  ;; ("PROJECT"          . ?p)
 	  ("JOURNAL"          . ?j)
 	  ("NOTES"            . ?n)
+	  ("LINGUISTICS"      . ?l)
 	  ("MATHEMATICS"      . ?m)
-	  ("PROJECT"          . ?p)
 	  ("PROGRAMMING"      . ?P)
 	  ("READING"          . ?r)
-	  ("PHILOSOPHY"       . ?s)
+	  ("PHILOSOPHY"       . ?p)
 	  ("TRAVEL"           . ?t)
-	  ("WRITING"          . ?T)
-	  ("UNIVERSITY"       . ?u)
-	  ;;("WEBSITE"          . ?w)
-	  )))
+	  ("WRITING"          . ?w)
+	  ("UNIVERSITY"       . ?u))))
 
 ;;; IMPORTANT: `org-link'
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
@@ -293,16 +292,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	org-agenda-span 'month) ;; NOTE: show a month of agendas
 
   (setq org-agenda-files `(,(expand-file-name user-org-journal-file)
-			   ,(expand-file-name user-org-notes-file) 
-			   ,(expand-file-name user-org-projects-file)
-			   ;;,(expand-file-name user-org-university-file)
-			   ;;,(concat (expand-file-name user-organisation-directory) "home.org")			   
-			   ;;,(concat (expand-file-name user-organisation-directory) "contacts.org")
-			   ;;,(concat (expand-file-name user-organisation-directory) "birthday.org")
-			   ;;,(concat (expand-file-name user-organisation-directory) "bookmarks.org")
-			   ;;,(concat (expand-file-name user-reading-directory) "readings.org")
-			   ;;,(concat (expand-file-name user-writing-directory) "writings.org")
-			   ))
+			   ,(expand-file-name user-org-notes-file)
+			   ;; ,(expand-file-name user-org-projects-file)
+			   ,(expand-file-name user-org-university-file)))
 
   ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
   (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
@@ -316,16 +308,16 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 					      (org-agenda-scheduled-leaders '("" ""))
 					      (org-agenda-prefix-format "%t%s")))
 		      (todo "TODO" ;; NOTE: todos searched by context
-			    ((org-agenda-prefix-format "- %T: ")
+			    ((org-agenda-prefix-format "- ")
 			     (org-agenda-sorting-strategy '(tag-up priority-down))
 			     (org-agenda-todo-keyword-format "")
-			     (org-agenda-overriding-header "All TODOs"))))
+			     (org-agenda-overriding-header "All Tasks"))))
 	   "ALL" ((org-agenda-compact-blocks t) (org-agenda-remove-tags t))) ;; NOTE: `ALL' TODOs
 	  ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
 	  ("p" "Project" ((tags-todo "PROJECT") (tags-todo "TRAVEL") (tags-todo "GENERAL") (tags-todo "WRITING") (tags-todo "UNIVERSITY") (tags-todo "NOTES")) "PROJECTS") ;; NOTE: `PROJECT' tasks
-	  ;; ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
-	  ("r" "Reading" ((tags "READING") (tags "WEBSITE")) "READING") ;; NOTE: `READING' tasks
-	  )))
+	  ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
+	  ("w" "Writing" ((tags "WRITING")) "WRITING")
+	  ("r" "Reading" ((tags "READING") (tags "WEBSITE")) "READING"))))
 
 ;;; IMPORTANT: org-export
 ;; SOURCE: `http://orgmode.org/manual/Exporting.html'
@@ -353,16 +345,28 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 	  ;;  "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
 	  ;; ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
 	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
-	  ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
-	   "* %U\n%?\n%i\n")
-	  ("n" "Note" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
+	  ;; ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
+	  ;;  "* %U\n%?\n%i\n")
+	  ("n" "Notes" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
 	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("P" "Projects" plain (file+function (expand-file-name user-org-projects-file) project-capture)
-	   "*** TODO %^{Description} %?%^g\n" :empty-lines 1 :immediate-finish 1)
-	  ("R" "Reading" entry (file+headline (expand-file-name user-org-projects-file) "Reading"))
-	  ("W" "Writing" entry (file+headline (expand-file-name user-org-projects-file) "Writing"))
-	  ;; TODO: need to write `reading-capture' and `writing-capture' functions
-	  )))
+	  ("g" "General" entry (file+headline (expand-file-name user-org-notes-file) "General")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("p" "Philosophy" entry (file+headline (expand-file-name user-org-notes-file) "Philosophy")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("l" "Linguistics" entry (file+headline (expand-file-name user-org-notes-file) "Linguistics")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("m" "Mathematics" entry (file+headline (expand-file-name user-org-notes-file) "Mathematics")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("c" "Computer Science" entry (file+headline (expand-file-name user-org-notes-file) "Computer Science")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("P" "Programming" entry (file+headline (expand-file-name user-org-notes-file) "Programming")
+	   "** TODO %^{Title} %^g%?\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("r" "Reading" entry (file+headline (expand-file-name user-org-notes-file) "Reading")
+	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1)
+	  ("w" "Writing" entry (file+headline (expand-file-name user-org-notes-file) "Writing")
+	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1))))
+
+;; IMPORTANT: custom `org-capture' templates
 
 ;;; IMPORTANT: school organisation
 ;; TODO: integrate with `ido-mode' somehow
@@ -415,110 +419,108 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (after "ob-tangle"
   (require 'ob-lisp)
 
-  (org-babel-do-load-languages 'org-babel-load-languages
-			       '((emacs-lisp . t)
-				 (lisp . t)
-				 (maxima . t)
-				 (scheme . t)
-				 (haskell . t)
-				 (latex . t)
-				 (R . nil)
-				 (gnuplot . nil)
-				 (perl . nil)
-				 (python . nil)
-				 (ruby . nil)
-				 (screen . nil)
-				 (sh . nil)))
+  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t)
+							   (lisp . t)
+							   (maxima . t)
+							   (scheme . t)
+							   (haskell . t)
+							   (latex . t)
+							   (R . nil)
+							   (gnuplot . nil)
+							   (perl . nil)
+							   (python . nil)
+							   (ruby . nil)
+							   (screen . t)
+							   (sh . t)))
 
   (setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
 	org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
-	org-src-tab-acts-natively t ;; NOTE: tab works properly
-	))
+	org-src-tab-acts-natively t)) ;; NOTE: tab works properly
 
 ;;; IMPORTANT: org-latex-export
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
-(autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
-;; (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
+;; (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
+;; ;; (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
 
-;; (after "org-bibtex"
-;;   (require 'org-exp-bibtex))
+;; ;; (after "org-bibtex"
+;; ;;   (require 'org-exp-bibtex))
 
-(after "org-exp"
-  (unless (boundp 'org-export-latex-classes)
-    (setq org-export-latex-classes nil))
+;; (after "org-exp"
+;;   (unless (boundp 'org-export-latex-classes)
+;;     (setq org-export-latex-classes nil))
 
-  (add-to-list 'org-export-latex-classes
-	       '("paper"
-		 "\\documentclass[12pt,a4paper,oneside]{paper}
-\\usepackage{amsfonts}
-\\usepackage{amsthm}
-\\setcounter{secnumdepth}{0}
-[NO-DEFAULT-PACKAGES]
-[EXTRA]"
-	       ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;;   (add-to-list 'org-export-latex-classes
+;; 	       '("paper"
+;; 		 "\\documentclass[12pt,a4paper,oneside]{paper}
+;; \\usepackage{amsfonts}
+;; \\usepackage{amsthm}
+;; \\setcounter{secnumdepth}{0}
+;; [NO-DEFAULT-PACKAGES]
+;; [EXTRA]"
+;; 	       ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-  (add-to-list 'org-export-latex-classes
-	     '("book"
-	       "\\documentclass[12pt,a4paper,oneside]{book}
-\\usepackage{amsfonts}
-\\usepackage{amsthm}
-\\usepackage{mathtools}
-\\usepackage{makeidx}
-\\usepackage{bussproofs}
-[NO-DEFAULT-PACKAGES]
-[EXTRA]"
-	       ("\\part{%s}" . "\\part*{%s}")
-	       ("\\chapter{%s}" . "\\chapter*{%s}")
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+;;   (add-to-list 'org-export-latex-classes
+;; 	     '("book"
+;; 	       "\\documentclass[12pt,a4paper,oneside]{book}
+;; \\usepackage{amsfonts}
+;; \\usepackage{amsthm}
+;; \\usepackage{mathtools}
+;; \\usepackage{makeidx}
+;; \\usepackage{bussproofs}
+;; [NO-DEFAULT-PACKAGES]
+;; [EXTRA]"
+;; 	       ("\\part{%s}" . "\\part*{%s}")
+;; 	       ("\\chapter{%s}" . "\\chapter*{%s}")
+;; 	       ("\\section{%s}" . "\\section*{%s}")
+;; 	       ("\\subsection{%s}" . "\\subsection*{%s}")
+;; 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
-(add-to-list 'org-export-latex-classes
-	     '("assignment"
-	       "\\documentclass[10pt,a4paper]{article}
-\\usepackage{amsfonts}
-\\usepackage{amsthm}
-\\usepackage[cm]{fullpage}
-\\usepackage{multicol}
-\\usepackage{mdwlist}
-\\usepackage{geometry}
-\\usepackage{pgf}
-\\usepackage{tikz}
-\\usetikzlibrary{positioning,automata,arrows,shapes}
-[NO-DEFAULT-PACKAGES]
-[EXTRA]"
-	       ("\\section{%s}" . "\\section*{%s}")
-	       ("\\subsection{%s}" . "\\subsection*{%s}")
-	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;; (add-to-list 'org-export-latex-classes
+;; 	     '("assignment"
+;; 	       "\\documentclass[10pt,a4paper]{article}
+;; \\usepackage{amsfonts}
+;; \\usepackage{amsthm}
+;; \\usepackage[cm]{fullpage}
+;; \\usepackage{multicol}
+;; \\usepackage{mdwlist}
+;; \\usepackage{geometry}
+;; \\usepackage{pgf}
+;; \\usepackage{tikz}
+;; \\usetikzlibrary{positioning,automata,arrows,shapes}
+;; [NO-DEFAULT-PACKAGES]
+;; [EXTRA]"
+;; 	       ("\\section{%s}" . "\\section*{%s}")
+;; 	       ("\\subsection{%s}" . "\\subsection*{%s}")
+;; 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;; 	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;; 	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-export-latex-classes
-	     '("article"
-	       "\\documentclass[12pt,a4paper]{article}
-\\setcounter{secnumdepth}{0}
-[NO-DEFAULT-PACKAGES]
-[EXTRA]"
-	       ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;; (add-to-list 'org-export-latex-classes
+;; 	     '("article"
+;; 	       "\\documentclass[12pt,a4paper]{article}
+;; \\setcounter{secnumdepth}{0}
+;; [NO-DEFAULT-PACKAGES]
+;; [EXTRA]"
+;; 	       ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-to-list 'org-export-latex-classes
-	     '("beamer"
-	       "\\documentclass[10pt]{beamer}
-[NO-DEFAULT-PACKAGES]
-[EXTRA]"
-	       org-beamer-sectioning))
+;; (add-to-list 'org-export-latex-classes
+;; 	     '("beamer"
+;; 	       "\\documentclass[10pt]{beamer}
+;; [NO-DEFAULT-PACKAGES]
+;; [EXTRA]"
+;; 	       org-beamer-sectioning))
 
-;; IMPORTANT: enable latex source code highlighting
-(setq org-export-latex-listings t) ;; NOTE: enable listings features
-)
+;; ;; NOTE: enable latex source code highlighting
+;; (setq org-export-latex-listings t)
+;; )
 
 ;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
 ;; (after "org"
@@ -555,168 +557,168 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
       (insert (format "\\%s" entity)))))
 
 ;; IMPORTANT: ...
-(define-skeleton insert-org-latex-package
-  "Inserts a LaTeX use-package clause into a document."
-  "Insert package name: "
-  "#+LATEX_HEADER: \\usepackage{" str "}")
+;; (define-skeleton insert-org-latex-package
+;;   "Inserts a LaTeX use-package clause into a document."
+;;   "Insert package name: "
+;;   "#+LATEX_HEADER: \\usepackage{" str "}")
 
 ;; IMPORTANT: `org-mode' custom file templates
-(defcustom org-template-list '("beamer" "paper" "assignment") "List of custom template types." :group 'user-writing :type 'list)
+;; (defcustom org-template-list '("beamer" "paper" "assignment") "List of custom template types." :group 'user-writing :type 'list)
 
 ;;; IMPORTANT: org-beamer
 ;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html'
 ;; SOURCE: `http://orgmode.org/manual/Beamer-class-export.html'
-(autoload 'org-beamer "org-beamer" "Presentations with org-beamer." t)
+;; (autoload 'org-beamer "org-beamer" "Presentations with org-beamer." t)
 
-(defcustom org-beamer-themes-list '("Atnibes"
-				    "Bergen"
-				    "Berkeley"
-				    "Berlin"
-				    "Copenhagen"
-				    "Darmstadt"
-				    "Dresden"
-				    "Frankfurt"
-				    "Goettingen"
-				    "Hannover"
-				    "Ilmenau"
-				    "JuanLesPins"
-				    "Luebeck"
-				    "Madrid"
-				    "Malmoe"
-				    "Marburg"
-				    "Montpellier"
-				    "PaloAlto"
-				    "Pittsburgh"
-				    "Rochester"`
-				    "Singapore"
-				    "Szeged"
-				    "Warsaw"
-				    "boxes"
-				    "default")
-  "List of available beamer themes." :group 'user-writing :type 'list)
+;; (defcustom org-beamer-themes-list '("Atnibes"
+;; 				    "Bergen"
+;; 				    "Berkeley"
+;; 				    "Berlin"
+;; 				    "Copenhagen"
+;; 				    "Darmstadt"
+;; 				    "Dresden"
+;; 				    "Frankfurt"
+;; 				    "Goettingen"
+;; 				    "Hannover"
+;; 				    "Ilmenau"
+;; 				    "JuanLesPins"
+;; 				    "Luebeck"
+;; 				    "Madrid"
+;; 				    "Malmoe"
+;; 				    "Marburg"
+;; 				    "Montpellier"
+;; 				    "PaloAlto"
+;; 				    "Pittsburgh"
+;; 				    "Rochester"`
+;; 				    "Singapore"
+;; 				    "Szeged"
+;; 				    "Warsaw"
+;; 				    "boxes"
+;; 				    "default")
+;;   "List of available beamer themes." :group 'user-writing :type 'list)
 
 ;; NOTE: inserting a `reading-notes' template is not part of this function
-(defun insert-org-template (&rest junk)
-  "..."
-  (interactive)
-  (let ((type (ido-completing-read "Select template: " org-template-list))
-	(title (read-string "Enter title: "))
-	(options (list "toc:nil" "tasks:nil"))
-	(author "Matthew Ball"))
-    (insert (format "#+LATEX_CLASS: %s\n" type))
-    (when (string= type "beamer")
-      (insert (format "#+LATEX_HEADER: \\usetheme{%s}\n" (ido-completing-read "Select theme: " org-beamer-themes-list))))
-    (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
-    (insert "\n")
-    (insert (format "#+TITLE: %s\n" title))
-    (insert (format "#+AUTHOR: %s\n\n" author))
-    (insert (format "* %s\n" title))
-    (insert "* Footnotes\n")))
+;; (defun insert-org-template (&rest junk)
+;;   "..."
+;;   (interactive)
+;;   (let ((type (ido-completing-read "Select template: " org-template-list))
+;; 	(title (read-string "Enter title: "))
+;; 	(options (list "toc:nil" "tasks:nil"))
+;; 	(author "Matthew Ball"))
+;;     (insert (format "#+LATEX_CLASS: %s\n" type))
+;;     (when (string= type "beamer")
+;;       (insert (format "#+LATEX_HEADER: \\usetheme{%s}\n" (ido-completing-read "Select theme: " org-beamer-themes-list))))
+;;     (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
+;;     (insert "\n")
+;;     (insert (format "#+TITLE: %s\n" title))
+;;     (insert (format "#+AUTHOR: %s\n\n" author))
+;;     (insert (format "* %s\n" title))
+;;     (insert "* Footnotes\n")))
 
-(defun goto-or-create-reading-notes-file (title &rest junk)
-  "Open the corresponding reading notes file for a document, or create a new file if one doesn't exist."
-  (interactive "sEnter title: ")
-  (let ((file-name (format "~/Documents/Reading/notes/%s.org" (replace-regexp-in-string " " "-" (downcase title))))
-	;;(file (format user-reading-directory "notes/%s.org") (replace-regexp-in-string " " "-" (downcase title)))
-	)
-    (if (file-exists-p file-name)
-	(find-file file-name)
-      (progn
-	(find-file file-name)
-	(let ((author (read-string "Enter author's name: ")))
-	  (insert-org-reading-notes-template title author))))))
+;; (defun goto-or-create-reading-notes-file (title &rest junk)
+;;   "Open the corresponding reading notes file for a document, or create a new file if one doesn't exist."
+;;   (interactive "sEnter title: ")
+;;   (let ((file-name (format "~/Documents/Reading/notes/%s.org" (replace-regexp-in-string " " "-" (downcase title))))
+;; 	;;(file (format user-reading-directory "notes/%s.org") (replace-regexp-in-string " " "-" (downcase title)))
+;; 	)
+;;     (if (file-exists-p file-name)
+;; 	(find-file file-name)
+;;       (progn
+;; 	(find-file file-name)
+;; 	(let ((author (read-string "Enter author's name: ")))
+;; 	  (insert-org-reading-notes-template title author))))))
 
-(defun insert-org-reading-notes-template (title name &rest junk)
-  "Insert a template for a reading notes file into an `org-mode' document."
-  (interactive "sEnter title: \nsEnter author's name: ")
-  (let ((type "paper")
-	(options (list "toc:nil" "tasks:nil"))
-	(author "Matthew Ball"))
-    (insert (format "#+LATEX_CLASS: %s\n" type))
-    (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
-    (insert "\n")
-    (insert (format "#+TITLE: %s by %s: Reading Notes\n" title name))
-    (insert (format "#+AUTHOR: %s\n" author))
-    (insert "\n")
-    ;; (insert "* TODO Paper: \n") ;; TODO: link to PDF file (if it exists)
-    (insert (format "* %s\n" title))
-    (insert "* Footnotes\n")))
+;; (defun insert-org-reading-notes-template (title name &rest junk)
+;;   "Insert a template for a reading notes file into an `org-mode' document."
+;;   (interactive "sEnter title: \nsEnter author's name: ")
+;;   (let ((type "paper")
+;; 	(options (list "toc:nil" "tasks:nil"))
+;; 	(author "Matthew Ball"))
+;;     (insert (format "#+LATEX_CLASS: %s\n" type))
+;;     (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
+;;     (insert "\n")
+;;     (insert (format "#+TITLE: %s by %s: Reading Notes\n" title name))
+;;     (insert (format "#+AUTHOR: %s\n" author))
+;;     (insert "\n")
+;;     ;; (insert "* TODO Paper: \n") ;; TODO: link to PDF file (if it exists)
+;;     (insert (format "* %s\n" title))
+;;     (insert "* Footnotes\n")))
 
-;; IMPORTANT: the following `define-skeleton' entries are old and redundant
-(define-skeleton insert-org-paper
-  "Inserts an `org-mode' paper template."
-  "Insert paper title: "
-  "#+LATEX_CLASS: paper\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
+;; ;; IMPORTANT: the following `define-skeleton' entries are old and redundant
+;; (define-skeleton insert-org-paper
+;;   "Inserts an `org-mode' paper template."
+;;   "Insert paper title: "
+;;   "#+LATEX_CLASS: paper\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
 
-(define-skeleton insert-org-assignment
-  "Inserts an `org-mode' assignment template."
-  "Insert assignment title: "
-  "#+LATEX_CLASS: assignment\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
+;; (define-skeleton insert-org-assignment
+;;   "Inserts an `org-mode' assignment template."
+;;   "Insert assignment title: "
+;;   "#+LATEX_CLASS: assignment\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
 
-(define-skeleton insert-org-beamer
-  "Inserts an `org-mode' beamer presentation template."
-  "Insert presentation title: "
-  "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
+;; (define-skeleton insert-org-beamer
+;;   "Inserts an `org-mode' beamer presentation template."
+;;   "Insert presentation title: "
+;;   "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
 
-;;; IMPORTANT: Insert a custom file template
-(defcustom org-custom-file-alist '("paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents." :group 'user-writing :type 'list)
+;; ;;; IMPORTANT: Insert a custom file template
+;; (defcustom org-custom-file-alist '("paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents." :group 'user-writing :type 'list)
 
-(defun org-insert-custom-file (&rest junk)
-  "Insert custom `org-mode' file template."
-  (interactive)
-  (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
-    (funcall (intern (concat "insert-org-" custom-file-type)))))
+;; (defun org-insert-custom-file (&rest junk)
+;;   "Insert custom `org-mode' file template."
+;;   (interactive)
+;;   (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
+;;     (funcall (intern (concat "insert-org-" custom-file-type)))))
 
-;;; IMPORTANT: custom footnotes
-;; TODO: get user input from the keyboard
-(defcustom org-custom-footnote-types '("book" "paper" "article" "default") "The list of availables types for footnotes." :group 'user-writing :type 'list)
+;; ;;; IMPORTANT: custom footnotes
+;; ;; TODO: get user input from the keyboard
+;; (defcustom org-custom-footnote-types '("book" "paper" "article" "default") "The list of availables types for footnotes." :group 'user-writing :type 'list)
 
-(defun org-custom-insert-footnote-book ()
-  "Insert a book footnote template."
-  ;; - author
-  ;; - title
-  ;; - publisher
-  ;; - year
-  ;; - page number(s)
-  )
+;; (defun org-custom-insert-footnote-book ()
+;;   "Insert a book footnote template."
+;;   ;; - author
+;;   ;; - title
+;;   ;; - publisher
+;;   ;; - year
+;;   ;; - page number(s)
+;;   )
 
-(defun org-custom-insert-footnote-paper ()
-  "Insert a paper footnote template."
-  ;; - author
-  ;; - title
-  ;; - journal
-  ;; - volume number
-  ;; - year
-  ;; - page number(s)
-  )
+;; (defun org-custom-insert-footnote-paper ()
+;;   "Insert a paper footnote template."
+;;   ;; - author
+;;   ;; - title
+;;   ;; - journal
+;;   ;; - volume number
+;;   ;; - year
+;;   ;; - page number(s)
+;;   )
 
-(defun org-custom-insert-footnote-article ()
-  "Insert a article footnote template."
-  )
+;; (defun org-custom-insert-footnote-article ()
+;;   "Insert a article footnote template."
+;;   )
 
-(defun org-custom-insert-footnote-default ()
-  "Insert a default footnote template."
-  ;; - text
-  )
+;; (defun org-custom-insert-footnote-default ()
+;;   "Insert a default footnote template."
+;;   ;; - text
+;;   )
 
-(defun org-custom-insert-footnote (footnote-name)
-  "Insert a footnote in an `org-mode' document."
-  (interactive "sEnter footname name: ")
-  (save-excursion
-    (let* ((footnote-type (ido-completing-read "Select footnote type: " org-custom-footnote-types))
-	   (footnote-text (funcall (intern (concat "org-custom-insert-footnote-" footnote-type)))))
-      (insert (concat "[fn:" footnote-name "]"))
-      (end-of-buffer)
-      (insert (concat "\n[fn:" footnote-name "] " footnote-text)))))
+;; (defun org-custom-insert-footnote (footnote-name)
+;;   "Insert a footnote in an `org-mode' document."
+;;   (interactive "sEnter footname name: ")
+;;   (save-excursion
+;;     (let* ((footnote-type (ido-completing-read "Select footnote type: " org-custom-footnote-types))
+;; 	   (footnote-text (funcall (intern (concat "org-custom-insert-footnote-" footnote-type)))))
+;;       (insert (concat "[fn:" footnote-name "]"))
+;;       (end-of-buffer)
+;;       (insert (concat "\n[fn:" footnote-name "] " footnote-text)))))
 
-;;; IMPORTANT: this is a set of custom inserts for common clauses in an `org-mode' document
-(defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
-  "Insert a footnote in an `org-mode' document."
-  (interactive "sEnter footnote name: \nsEnter text: ")
-  (save-excursion
-    (insert (concat "[fn:" name "]"))
-    (end-of-buffer)
-    (insert (concat "\n[fn:" name "] " text))))
+;; ;;; IMPORTANT: this is a set of custom inserts for common clauses in an `org-mode' document
+;; (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
+;;   "Insert a footnote in an `org-mode' document."
+;;   (interactive "sEnter footnote name: \nsEnter text: ")
+;;   (save-excursion
+;;     (insert (concat "[fn:" name "]"))
+;;     (end-of-buffer)
+;;     (insert (concat "\n[fn:" name "] " text))))
 
 ;;; IMPORTANT: custom inserts
 (defun surrounded-by-p (char)
@@ -755,8 +757,6 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (propertize-word underline ?_) ;; => (underline-word)
 (propertize-word verbatim ?~) ;; => (verbatim-word)
 (propertize-word teletype ?=) ;; => (teletype-word)
-
-;;(define-key org-mode-map (kbd "C-c b") #'(propertize-word bold ?*))
 
 ;;; IMPORTANT: customisations
 (defun turn-on-custom-org-bindings ()

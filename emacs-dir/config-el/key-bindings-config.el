@@ -26,32 +26,32 @@
 
 (defgroup user-key-bindings nil "Custom key-binding variables." :group 'user-variables)
 
-;;; IMPORTANT: when running inside a terminal mode ...
-;; (defun terminal-mode-init (&rest args)
-;;   "Cleans up how GNU Emacs receives/interprets the CONTROL and META characters when run in a terminal session."
-;;   (interactive)
-;;   (define-key input-decode-map "[[A" (kbd "<f1>")) ;; NOTE: bind `<f1>' in (tty) terminal
-;;   (define-key input-decode-map "[[B" (kbd "<f2>")) ;; NOTE: bind `<f2>' in (tty) terminal
-;;   (define-key input-decode-map "[[C" (kbd "<f3>")) ;; NOTE: bind `<f3>' in (tty) terminal
-;;   (define-key input-decode-map "[[D" (kbd "<f4>")) ;; NOTE: bind `<f4>' in (tty) terminal
-;;   (define-key input-decode-map "[[E" (kbd "<f5>")) ;; NOTE: bind `<f5>' in (tty) terminal
-;;   (define-key input-decode-map "O1;3Q" (kbd "M-<f2>")) ;; NOTE: bind `M-<f2>' in terminal
-;;   (define-key input-decode-map "O1;5Q" (kbd "C-<f2>")) ;; NOTE: bind `C-<f2>' in terminal
-;;   (define-key input-decode-map "O1;2Q" (kbd "S-<f2>")) ;; NOTE: bind `S-<f2>' in terminal
-;;   (define-key input-decode-map "O1;3R" (kbd "M-<f3>")) ;; NOTE: bind `M-<f3>' in terminal
-;;   (define-key input-decode-map "O1;5R" (kbd "C-<f3>")) ;; NOTE: bind `C-<f3>' in terminal
-;;   (define-key input-decode-map "O1;2R" (kbd "S-<f3>")) ;; NOTE: bind `S-<f3>' in terminal
-;;   (define-key input-decode-map "O1;3S" (kbd "M-<f4>")) ;; NOTE: bind `M-<f4>' in terminal
-;;   (define-key input-decode-map "O1;5S" (kbd "C-<f4>")) ;; NOTE: bind `C-<f4>' in terminal
-;;   (define-key input-decode-map "O1;2S" (kbd "S-<f4>")) ;; NOTE: bind `S-<f4>' in terminal
-;;   (define-key input-decode-map " [15;3~
-;;     ]" (kbd "M-<f5>")) ;; NOTE: bind `M-<f5>'
-;;   (define-key input-decode-map " [15;5~
-;;     ]" (kbd "C-<f5>")) ;; NOTE: bind `C-<f5>'
-;;   )
+;; IMPORTANT: when running inside a terminal mode ...
+(defun terminal-mode-init (&rest args)
+  "Cleans up how GNU Emacs receives/interprets the CONTROL and META characters when run in a terminal session."
+  (interactive)
+  (define-key input-decode-map "[[A" (kbd "<f1>")) ;; NOTE: bind `<f1>' in (tty) terminal
+  (define-key input-decode-map "[[B" (kbd "<f2>")) ;; NOTE: bind `<f2>' in (tty) terminal
+  (define-key input-decode-map "[[C" (kbd "<f3>")) ;; NOTE: bind `<f3>' in (tty) terminal
+  (define-key input-decode-map "[[D" (kbd "<f4>")) ;; NOTE: bind `<f4>' in (tty) terminal
+  (define-key input-decode-map "[[E" (kbd "<f5>")) ;; NOTE: bind `<f5>' in (tty) terminal
+  (define-key input-decode-map "O1;3Q" (kbd "M-<f2>")) ;; NOTE: bind `M-<f2>' in terminal
+  (define-key input-decode-map "O1;5Q" (kbd "C-<f2>")) ;; NOTE: bind `C-<f2>' in terminal
+  (define-key input-decode-map "O1;2Q" (kbd "S-<f2>")) ;; NOTE: bind `S-<f2>' in terminal
+  (define-key input-decode-map "O1;3R" (kbd "M-<f3>")) ;; NOTE: bind `M-<f3>' in terminal
+  (define-key input-decode-map "O1;5R" (kbd "C-<f3>")) ;; NOTE: bind `C-<f3>' in terminal
+  (define-key input-decode-map "O1;2R" (kbd "S-<f3>")) ;; NOTE: bind `S-<f3>' in terminal
+  (define-key input-decode-map "O1;3S" (kbd "M-<f4>")) ;; NOTE: bind `M-<f4>' in terminal
+  (define-key input-decode-map "O1;5S" (kbd "C-<f4>")) ;; NOTE: bind `C-<f4>' in terminal
+  (define-key input-decode-map "O1;2S" (kbd "S-<f4>")) ;; NOTE: bind `S-<f4>' in terminal
+  (define-key input-decode-map " [15;3~
+    ]" (kbd "M-<f5>")) ;; NOTE: bind `M-<f5>'
+  (define-key input-decode-map " [15;5~
+    ]" (kbd "C-<f5>")) ;; NOTE: bind `C-<f5>'
+  )
 
-;; (unless (window-system)
-;;   (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
+(unless (window-system)
+  (terminal-mode-init)) ;; NOTE: set `input-decode-map' variable
 
 ;;; IMPORTANT: global key-bindings
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/elisp/Changing-Key-Bindings.html'
@@ -226,8 +226,8 @@
 ;; ---
 ;; (global-set-key (kbd "C-c C-b") #'custom-erc-switch-buffer) ;; NOTE: switch to an erc-buffer
 ;; ---
-(global-set-key (kbd "C-<prior>") #'previous-user-buffer) ;; NOTE: bind C-<PGUP> to oldest buffer
-(global-set-key (kbd "C-<next>") #'next-user-buffer) ;; NOTE: bind C-<PGDN> to most recently used
+;; (global-set-key (kbd "C-<prior>") #'previous-user-buffer) ;; NOTE: bind C-<PGUP> to oldest buffer
+;; (global-set-key (kbd "C-<next>") #'next-user-buffer) ;; NOTE: bind C-<PGDN> to most recently used
 ;; ---
 (global-set-key (kbd "C-+") #'toggle-hiding)
 (global-set-key (kbd "C-M-+") #'toggle-selective-display)

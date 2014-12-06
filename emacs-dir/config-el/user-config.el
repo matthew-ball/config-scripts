@@ -41,6 +41,7 @@
   (bbdb-mua-auto-update-init 'gnus 'message)
 
   (setq bbdb-mua-update-interactive-p '(query . create)
+	;; bbdb-file (expand-file-name (concat user-emacs-directory "bbdb-file.el"))
 	bbdb-file (expand-file-name (concat user-emacs-directory "contacts-file.el"))
 	bbdb-mua-pop-up nil
 	bbdb-default-country "Australia"))
@@ -205,7 +206,7 @@
       (custom-erc-propertize "ERC")))
 
   ;; IMPORTANT: erc user variables
-  (setq	erc-nick "chu"
+  (setq erc-nick user-irc-nickname
 	;;erc-nick (getenv "USER")
         erc-nick-uniquifier "_"
         ;; erc-server "irc.freenode.net"
@@ -357,7 +358,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
   ;; IMPORTANT: gnus settings
-  (setq gnus-use-full-window nil ;; NOTE: don't ruin my frame!
+  (setq gnus-use-full-window t
+	;;gnus-use-full-window nil ;; NOTE: don't ruin my frame!
 	gnus-adaptive-pretty-print t
 	gnus-agent-plugged nil
         gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
@@ -375,10 +377,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         gnus-fetch-old-headers t
 	gnus-show-all-headers nil
 	gnus-group-line-format "%M%S%p%P%y:%B%(%G%)\n"
-	gnus-group-mode-line-format "Gnus: %%b {%S}"
-	gnus-summary-mode-line-format "Gnus: %p %Z"
+	gnus-group-mode-line-format " %%b {%S}"
+	gnus-summary-mode-line-format " %p %Z"
 	gnus-summary-line-format "%U%R%z%I%(%[ %-18,18f%]%) %s\n"
-	gnus-article-mode-line-format "Gnus: %S%m"
+	gnus-article-mode-line-format " %S%m"
 	gnus-summary-display-arrow t
 	;; gnus-use-trees t
         gnus-thread-ignore-subject t
@@ -425,7 +427,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 						(nnimap-expunge-on-close 'never)
 						(nnimap-stream ssl))))
 
-
   ;; IMPORTANT: smtp setup (single account)
   (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
         smtpmail-smtp-server "smtp.gmail.com"
@@ -450,11 +451,13 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
   (setq ac-expand-on-auto-complete t ;; NOTE: expand common portions
 	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+	ac-use-fuzzy t
 	ac-fuzzy-enable t
 	ac-auto-start nil ;; NOTE: never auto-start the auto-complete menu
-	;;ac-ignore-case t ;; NOTE: always ignore case
+	ac-use-menu-map t ;;
+	ac-ignore-case 'smart ;; NOTE: always ignore case
 	;;ac-auto-show-menu t ;; NOTE: automatically show menu
-	;;ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+	;; ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
 	ac-source-yasnippet '(action . #'yas-expand))
 
   ;; NOTE: enables auto-complete globally
@@ -464,7 +467,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
 ;; (require 'ac-ispell)
 
-;; (after "ac-ispell"
+;; (after "auto-complete"
 ;;   (setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
 ;;   (ac-ispell-setup)
 
@@ -760,8 +763,9 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
-(when (display-graphic-p)
-  (require 'smart-mode-line))
+;; (when (display-graphic-p)
+;;   (require 'smart-mode-line))
+(require 'smart-mode-line)
 
 (after "smart-mode-line"
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/"            ":config:"))
@@ -814,36 +818,38 @@ Although this is interactive, call this with \\[browse-url]."
 (after "deft"
   (setq deft-extension "org"
 	deft-text-mode 'org-mode
-	deft-directory (format "%s.deft/" user-organisation-directory)))
+	;; deft-directory (format "%s.deft/" user-organisation-directory)
+	def-directory (expand-file-name (concat user-organisation-directory ".deft/"))))
 
 ;;; IMPORTANT: ecb
 (autoload 'ecb-minor-mode "ecb" "..." t)
 
 (after "ecb"
-  (setf ecb-show-sources-in-directories-buffer 'always
+  (setf ecb-tip-of-the-day-file (expand-file-name (concat user-emacs-directory "ecb-tip-of-day.el"))
 	;; ecb-layout-name 'left1
 	;; ecb-compile-window-height 12
-	))
+	ecb-show-sources-in-directories-buffer 'always))
 
 ;; TODO: write `ecb-toggle'
 
-;;; IMPORTANT: `inf-ruby'
-(autoload 'inf-ruby "inf-ruby" "Inferior Ruby process." t)
+;; IMPORTANT: `inf-ruby'
+;; IMPORTANT: `rvm'
+;; IMPORTANT: `rinari'
+;; IMPORTANT: `ruby-tools'
+(after "ruby-mode"
+  (require 'inf-ruby) ;; inferior ruby
+  (require 'rvm) ;; ruby virtual machine
+  (require 'rinari) ;; ruby on rails environment
+  (require 'ruby-tools)
 
-(defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
-(defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
+  (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
+  (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
 
-(unless (keymapp ruby-programming-map) (setq ruby-programming-map (make-sparse-keymap)))
+  (unless (keymapp ruby-programming-map) (setq ruby-programming-map (make-sparse-keymap)))
 
-(define-key global-map ruby-programming-prefix-key ruby-programming-map)
-(define-key ruby-programming-map (kbd "r") #'inf-ruby)
-(define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby)
-
-;;; IMPORTANT: rvm
-;;(autoload 'rvm-activate-corresponding-ruby "rvm" "Ruby virtual machine." t)
-
-;;; IMPORTANT: rinari
-;;(autoload 'rinari-minor-mode "rinari" "Ruby on Rails environment." t)
+  (define-key global-map ruby-programming-prefix-key ruby-programming-map)
+  (define-key ruby-programming-map (kbd "r") #'inf-ruby)
+  (define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby))
 
 ;;; IMPORTANT: dictionary
 (autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
