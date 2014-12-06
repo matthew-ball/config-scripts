@@ -49,7 +49,7 @@
       tab-always-indent 'complete ;; ...
       suggest-key-bindings nil) ;; NOTE: do not show respective key-bindings when using M-x to run a command
 
-(setq-default show-trailing-whitespace t
+(setq-default ;; show-trailing-whitespace t
 	      scroll-up-aggressively 0 ;; NOTE: local variables for smooth scrolling
 	      scroll-down-aggressively 0) ;; NOTE: local variables for smooth scrolling
 

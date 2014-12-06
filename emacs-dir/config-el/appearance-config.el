@@ -95,7 +95,7 @@
 (add-hook 'prog-mode-hook #'turn-on-truncate-lines)
 
 ;;; IMPORTANT: indicate empty lines
-;; (toggle-indicate-empty-lines)
+(toggle-indicate-empty-lines)
 
 ;;; IMPORTANT: mode line
 ;;(setq mode-line-format nil) ;; NOTE: removes the mode-line
