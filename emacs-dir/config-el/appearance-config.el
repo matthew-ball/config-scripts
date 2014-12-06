@@ -29,10 +29,10 @@
 ;;; IMPORTANT: X frame specific
 (defun decorate-frame ()
   "Apply features to a new frame."
+  ;; (load-theme 'tango)
   ;; (set-face-attribute 'default nil :height 90 :font "Terminus-10")
   ;; (set-face-attribute 'mode-line nil :box nil) ;; TODO: this doesn't activate
   (set-face-attribute 'default nil :height 90)
-  ;; (load-theme 'tango)
   (setq frame-title-format "%b" ;; NOTE: set frame title properties
 	icon-title-format "%b"))
 
