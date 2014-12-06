@@ -145,7 +145,7 @@ Return a list of installed packages or nil for every skipped package."
 
 (ensure-packages-installed-p 'ac-ispell 'ac-slime 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib
 			     'ecb 'elisp-slime-nav 'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh
-			     'gist 'git-commit-mode 'git-rebase-mode 'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'ruby-tools
+			     'gist 'git-commit-mode 'git-rebase-mode 'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools
 			     'ido-ubiquitous 'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile
 			     'rainbow-delimiters 's 'smart-mode-line 'smex 'switch-window 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
