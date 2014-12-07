@@ -4,19 +4,15 @@
 version="0.01"
 
 project_branch="laptop"
-project_source="https://github.com/matthew-ball/config-scripts.git"
+project_https_source="https://github.com/matthew-ball/config-scripts.git"
+# project_ssh_source="git://" # TODO: find the correct syntax
 project_target=".config-scripts"
 
 declare -a source_links=("bash-dir/init.sh" "bash-dir/profile.sh" "xinit-dir/session.sh" "xinit-dir/init.sh" "stumpwm-dir/init.lisp" "emacs-dir/")
 declare -a destination_links=(".bashrc" ".profile" ".xsessionrc" ".xinitrc" ".stumpwmrc" ".emacs.d/")
-declare -a default_packages=("emacs24" "chromium" "htop" "sudo")
-declare -a development_packages=("build-essential" "gcc" "gcc-doc" "gdb" "gdb-doc" "sbcl" "sbcl-doc" "ghc" "ghc-doc" "git" "strace" "ltrace")
+declare -a default_packages=("emacs24" "chromium" "htop" "sudo" "screen")
+declare -a development_packages=("build-essential" "gcc" "gcc-doc" "gdb" "gdb-doc" "sbcl" "sbcl-doc" "ghc" "ghc-doc" "git" "strace" "ltrace" "maxima" "maxima-doc" "maxima-emacs" "texlive" "texlive-docs")
 declare -a packages=(${default_packages[@]} ${development_packages[@]})
-
-# TODO: set user variables
-# - full-name
-# - email
-# - etc
 
 # IMPORTANT: interface
 function print_options {
