@@ -186,11 +186,6 @@ Enable the following minor modes:
 ;;   (require 'slime-autoloads))
 
 (after "slime"
-
-  ;;IMPORTANT: ac-slime
-  ;; (add-hook 'slime-mode-hook #'set-up-slime-ac)
-  ;; (add-hook 'slime-repl-mode-hook #'set-up-slime-ac)
-
   ;; NOTE: suppress the printing of any banner or other informational message at startup
   (setq inferior-lisp-program "/usr/bin/sbcl --noinform --userinit=\"$HOME/.sbclrc\""
 	slime-repl-history-file (expand-file-name (concat user-emacs-directory "slime-history.el"))

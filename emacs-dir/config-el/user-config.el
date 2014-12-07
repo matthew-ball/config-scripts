@@ -463,17 +463,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; NOTE: enables auto-complete globally
   (ac-config-default))
 
-;;; IMPORTANT: auto-complete `ispell' source
-;; SOURCE: `https://github.com/syohex/emacs-ac-ispell'
-;; (require 'ac-ispell)
-
-;; (after "auto-complete"
-;;   (setq ac-ispell-requires 4) ;; NOTE: completion words longer than 4 characters
-;;   (ac-ispell-setup)
-
-;;   ;;(add-hook 'prog-mode-hook #'ac-ispell-ac-setup)
-;;   (add-hook 'text-mode-hook #'ac-ispell-ac-setup))
-
 ;;; IMPORTANT: emacs snippets
 ;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
 ;;(autoload 'yas-minor-mode-on "yasnippet" "Emacs snippets." t)
