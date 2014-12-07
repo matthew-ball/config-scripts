@@ -821,16 +821,16 @@ Although this is interactive, call this with \\[browse-url]."
 	;; deft-directory (format "%s.deft/" user-organisation-directory)
 	def-directory (expand-file-name (concat user-organisation-directory ".deft/"))))
 
-;;; IMPORTANT: ecb
-(autoload 'ecb-minor-mode "ecb" "..." t)
+;; ;;; IMPORTANT: ecb
+;; (autoload 'ecb-minor-mode "ecb" "..." t)
 
-(after "ecb"
-  (setf ecb-tip-of-the-day-file (expand-file-name (concat user-emacs-directory "ecb-tip-of-day.el"))
-	;; ecb-layout-name 'left1
-	;; ecb-compile-window-height 12
-	ecb-show-sources-in-directories-buffer 'always))
+;; (after "ecb"
+;;   (setf ecb-tip-of-the-day-file (expand-file-name (concat user-emacs-directory "ecb-tip-of-day.el"))
+;; 	;; ecb-layout-name 'left1
+;; 	;; ecb-compile-window-height 12
+;; 	ecb-show-sources-in-directories-buffer 'always))
 
-;; TODO: write `ecb-toggle'
+;; ;; TODO: write `ecb-toggle'
 
 ;; IMPORTANT: `inf-ruby'
 ;; IMPORTANT: `rvm'

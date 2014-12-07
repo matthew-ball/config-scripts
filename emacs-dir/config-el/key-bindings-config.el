@@ -96,7 +96,7 @@
 (custom-keymap programming (kbd "<f5>"))
 
 (define-key custom-programming-map (kbd "c") #'compile)
-(define-key custom-programming-map (kbd "t") #'ecb-activate)
+;; (define-key custom-programming-map (kbd "t") #'ecb-activate)
 (define-key custom-programming-map (kbd "n") #'next-error)
 (define-key custom-programming-map (kbd "p") #'previous-error)
 (define-key custom-programming-map (kbd "d") #'gdb)

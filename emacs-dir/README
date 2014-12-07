@@ -6,8 +6,11 @@ This configuration presents the /best[fn:best]/ environment for using emacs eith
 
 Emacs is extensible, and many hackers have contributed extensions which would fall outside the classification of a "text-editor"; things such as a fully-featured email client, an IRC client, a directory editor, a shell, a web browser, a bibliography manager; and many new extensions being contributed daily.
 
-** [[file:init.el][Initiation]]
+** TODO [[file:init.el][Initiation]]
 This file initialises the configuration.
+
+*** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20customize%20configuration%20file][customize configuration file]]
+Set the custom configuration file (so that it doesn't populate this file with customisations).
 
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20user%20variables][user variables]]
 Define a customisation group [[elisp:(customize-group%20user-variables)][user-variables]] which defines two variables [[elisp:(customize-group%20'user-directories)][user-directories]] and [[elisp:(customize-group%20'user-directories)][user-files]].
@@ -44,19 +47,14 @@ User details are, this sets use details:
 - user-secondary-email-address
 
 These variables are mainly used by org-mode or for interaction with a StumpWM environment, and are all set from the login shell[fn:login].
-
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20common%20lisp][common lisp]]
 Require common-lisp library. Some functions and macros commonly employed in common lisp programming ported to emacs lisp.
-
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20after%20macro][after macro]]
 Define a macro [[file:init.el::(defmacro%20after%20(mode%20&rest%20body)][after]] which loads the body code after its argument file (syntactic sugar over [[help:eval-after-load][eval-after-load]]).
-
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20load%20path][load path]]
 Modifies the load-path variable.
-
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20info%20path][info path]]
 Modifies the info-path variable.
-
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20package%20manager][package manager]]
 This project is designed for use with the following emacs lisp packages. They are all available on [[http://melpa.milkbox.net/#/][MELPA]] using package.el[fn:ELPA] to install.
 
@@ -73,7 +71,7 @@ This package list is defined in the file [[file:init.el::(ensure-package-install
 - erc-hl-nicks :: Highlight user's nicknames with ERC.
 - flx :: Better flex matching.
 - flx-ido :: Improved flex algorithm for ido.
-- geiser
+- geiser :: Provides a Scheme REPL.
 - gh :: Library interacting with the GitHub API.
 - gist :: Paste code snippets to gist.github.com and return link.
 - git-commit-mode
@@ -91,12 +89,11 @@ This package list is defined in the file [[file:init.el::(ensure-package-install
 - popup
 - rainbow-delimiters :: Modify the foreground colour face for pairs of delimiters.
 - smex :: Super-charge M-x.
-- sr-speedbar :: Speedbar in single frame.
 - s
-- tabulated-list
+- tabulated-list :: Generic mode for browsing a list of items.
 - undo-tree :: Tree interface to the undo system.
 - w3m :: Emacs interface to w3m text web-browser.
-- ya snippet :: Yet Another Snippet system.
+- yasnippet :: Yet Another Snippet system.
 
 For most packages, I modify their default behaviour; their respective settings are set in the file [[file:config-el/user-config.el][user-config.el]].
 
@@ -112,14 +109,9 @@ Requires specific configuration files[fn:order-of-evaluation]:
  - *key-bindings-config*
 
 An explanation for each of these files, and the respective configuration they provide, follows in the text.
-
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20shutdown%20emacs%20server][shutdown emacs server]]
 Provide the user with the command [[file:init.el::%3B%3B%3B%20COMMENT:%20shutdown%20emacs%20server][server-shutdown]]. This will save any (modified) buffers, save the emacs daemon process, and kill the server.
-
-*** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20customize%20configuration%20file][customize configuration file]]
-Set the custom configuration file (so that it doesn't populate this file with customisations).
-
-** [[file:config-el/appearance-config.el][Appearance]]
+** TODO [[file:config-el/appearance-config.el][Appearance]]
 This file provides a configuration for visual appearance.
 
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20X%20frame%20specific][X frame specific]]
@@ -145,7 +137,7 @@ This section takes advantage of the fringe and displays a line number count for 
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20diminish][diminish]]
 *** [[file:config-el/appearance-config.el::%3B%3B%3B%20IMPORTANT:%20hide%20the%20mode-line][hide mode line]]
 
-** [[file:config-el/general-config.el][General]]
+** TODO [[file:config-el/general-config.el][General]]
 *** [[file:config-el/general-config.el::%3B%3B%20IMPORTANT:%20default%20variable%20values][default variables values]]
 *** [[file:config-el/general-config.el::%3B%3B%3B%20IMPORTANT:%20default%20auto-mode%20list][default auto-mode list]]
 *** [[file:config-el/general-config.el::%3B%3B%3BIMPORTANT:%20uniquify%20(unique%20buffer%20names)][uniquify]]
@@ -169,7 +161,7 @@ This section takes advantage of the fringe and displays a line number count for 
 *** [[file:config-el/general-config.el::%3B%3B%3B%20IMPORTANT:%20general%20functions][general functions]]
 *** [[file:config-el/general-config.el::%3B%3B%3B%20IMPORTANT:%20easy%20pg][easy pg]]
 
-** [[file:config-el/user-config.el][User]]
+** TODO [[file:config-el/user-config.el][User]]
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20the%20insidious%20big%20brother%20database][the insidious big brother database]]
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20make%20`ido'%20available%20everywhere][make ido available everywhere]]
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20improve%20`ido's%20flex%20matching][improve ido's flex matching]]
@@ -197,7 +189,7 @@ This file provides a configuration for =GNUS= (the GNU Emacs Mail and News Reade
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20ibuffer%20version%20control][ibuffer version control]]
 *** [[file:config-el/user-config.el::%3B%3B%3B%20IMPORTANT:%20iedit][iedit]]
 
-** [[file:config-el/writing-config.el][Writing]]
+** TODO [[file:config-el/writing-config.el][Writing]]
 *** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20insert%20date%20and%20time][insert date and time]]
 *** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20deft][deft]]
 *** [[file:config-el/writing-config.el::%3B%3B%3B%20IMPORTANT:%20diary%20and%20calendar%20mode][diary and calendar mode]]
@@ -222,7 +214,7 @@ Org is a mode for keeping notes, maintaining TODO lists, and doing project plann
 *** LaTeX Settings
 This file provides a configuration for =LaTeX=:
 
-** [[file:config-el/programming-config.el][Programming]]
+** TODO [[file:config-el/programming-config.el][Programming]]
 This file provides a configuration for programming modes.
 
 *** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20stumpwm%20mode][stumpwm mode]]
@@ -247,7 +239,7 @@ This file provides a configuration for programming modes.
 *** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20maxima][maxima]]
 *** [[file:config-el/programming-config.el::%3B%3B%3B%20IMPORTANT:%20speedbar][speedbar]]
 
-** [[file:config-el/key-bindings-config.el][Key Bindings]]
+** TODO [[file:config-el/key-bindings-config.el][Key Bindings]]
 This file provides a configuration for key bindings:
 
 * Footnotes
