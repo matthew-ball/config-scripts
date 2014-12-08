@@ -582,6 +582,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
       (switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
     (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
 
+(define-key custom-internals-map (kbd "b") #'custom-erc-switch-buffer)
+
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
 ;; SOURCE: `http://emacswiki.org/emacs/Gnus'
@@ -727,6 +729,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	bbdb-mua-pop-up nil
 	bbdb-default-country "Australia"))
 
+(define-key custom-internals-map (kbd "c") #'bbdb-create)
+
 ;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
 (after "ido"
@@ -766,7 +770,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; SOURCE: `https://github.com/defunkt/gist.el'
 (autoload 'gist-buffer "gist" "Integrate with Github." t)
 
-;; (define-key programming-map (kbd "g") #'gist-buffer)
+(define-key custom-programming-map (kbd "g") #'gist-buffer)
 
 ;;; IMPORTANT: git integration
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
@@ -775,7 +779,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; (after "magit"
 ;;   (setq magit-save-some-buffers t))
 
-;; (define-key programming-map (kbd "m") #'magit-status)
+(define-key custom-programming-map (kbd "m") #'magit-status)
 
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
@@ -1014,6 +1018,9 @@ Although this is interactive, call this with \\[browse-url]."
 	  (w3m w3m-home-page)
 	(w3m url)))))
 
+(define-key custom-internals-map (kbd "s") #'w3m-search)
+(define-key custom-internals-map (kbd "B") #'custom-w3m-switch-buffer)
+
 ;;; IMPORTANT: highlight custom comment tags
 (require 'custom-comments)
 
@@ -1145,6 +1152,8 @@ Although this is interactive, call this with \\[browse-url]."
 	deft-text-mode 'org-mode
 	def-directory (expand-file-name (concat user-organisation-directory ".deft/"))))
 
+(define-key custom-writing-map (kbd "n") #'deft)
+
 ;; IMPORTANT: `inf-ruby'
 ;; IMPORTANT: `rvm'
 ;; IMPORTANT: `rinari'
@@ -1168,7 +1177,7 @@ Although this is interactive, call this with \\[browse-url]."
 ;;; IMPORTANT: dictionary
 (autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
 
-(global-set-key (kbd "C-c d") #'dictionary-search)
+(define-key custom-writing-map (kbd "d") #'dictionary-search)
 
 ;;; IMPORTANT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
@@ -1184,6 +1193,8 @@ Although this is interactive, call this with \\[browse-url]."
 				,(expand-file-name (concat user-documents-directory "Papers/"))))
 
   (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
+
+(define-key custom-writing-map (kbd "e") #'ebib)
 
 (provide 'user-config)
 ;;; user-config.el ends here
