@@ -26,97 +26,296 @@
 
 (defgroup user-writing nil "Custom writing variables." :group 'user-variables)
 
-;;; IMPORTANT: insert date and time
-;; SOURCE: `http://www.emacswiki.org/emacs/InsertDate'
-;; (defun insert-date (format)
-;;   "Wrapper around `format-time-string'."
-;;   (interactive "MFormat: ")
-;;   (insert (format-time-string format)))
-
-;; (defun insert-standard-date ()
-;;   "Inserts standard date time string."
-;;   (interactive)
-;;   (insert (format-time-string "%c")))
-
 ;;; IMPORTANT: diary and calendar mode
 ;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
 ;; TODO: move this to `general-config.el'
-;; (autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
+;;(autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
+;; (require 'calendar)
 
-;; (setq calendar-view-diary-initially-flag t
-;;       calendar-view-holidays-initially-flag t
-;;       ;;calendar-mark-diary-entries-flag t
-;;       ;;calendar-mark-holidays-flag t
-;;       ;;diary-file "/home/chu/Documents/Organisation/diary"
-;;       number-of-diary-entries 7)
+;; (after "calendar"
+;;   (setq ;;calendar-view-diary-initially-flag t
+;; 	;;calendar-view-holidays-initially-flag t
+;; 	;;calendar-mark-diary-entries-flag t
+;; 	calendar-mark-holidays-flag t
+;; 	;;diary-file (expand-file-name (concat user-organisation-directory "journal.org"))
+;; 	number-of-diary-entries 14)
 
-;; (eval-after-load "calendar"
-;;   ;; (add-hook 'diary-display-hook 'fancy-diary-display)
-;;   ;; (add-hook 'today-visible-calendar-hook 'calendar-mark-today)
-;;   )
+;;   ;; (add-hook 'diary-display-hook #'fancy-diary-display)
+;;   (add-hook 'today-visible-calendar-hook #'calendar-mark-today))
 
-;;; IMPORTANT: thesaurus
-;; SOURCE: `http://emacswiki.org/emacs/thesaurus.el'
-;; (autoload 'thesaurus-choose-synonym-and-replace "thesaurus" "Choose and replace a word with it's synonym." t)
+;;; IMPORTANT: org-mode configuration
+;; TODO: move to `user-config.el'
+;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
+;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
+(autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
+(autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
+(autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
 
-;; (after "thesaurus"
-;;   (setq thesaurus-bhl-api-key "8c5a079b300d16a5bb89246322b1bea6"))  ;; NOTE: from registration
+(after "org"
+  ;; (require 'ox-odt)
+  ;; (require 'ox-latex)
+  ;; (require 'org-agenda)
+  ;; (require 'org-capture)
+  ;; (require 'org-indent)
+  
+  ;; TODO: split these up - move them earlier in the config (if possible)
+  (setq org-return-follows-link t ;; NOTE: use RETURN to follow links
+	org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
+	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
+	org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
+	org-hide-emphasis-markers t ;; NOTE: hide emphasis markers in org-mode buffers
+	;; org-fontify-done-headline t
+	;; org-read-date-display-live nil ;; NOTE: disable the live date-display
+	;; org-insert-mode-line-in-empty-file t
+	;; appearance
+	;; org-odd-levels-only t ;; NOTE: use only odd levels for an outline
+	;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
+	;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
+	;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
+	org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
+	;; log
+	org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
+	org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
+	;; custom tags
+	org-tags-column -90
+	org-tag-alist '(("COMPUTER_SCIENCE" . ?c)
+			("GENERAL"          . ?g)
+			;; ("ASSIGNMENT"       . ?a)
+			;; ("WEBSITE"          . ?w)
+			;; ("PROJECT"          . ?p)
+			("JOURNAL"          . ?j)
+			("NOTES"            . ?n)
+			("LINGUISTICS"      . ?l)
+			("MATHEMATICS"      . ?m)
+			("PROGRAMMING"      . ?P)
+			("READING"          . ?r)
+			("PHILOSOPHY"       . ?p)
+			("TRAVEL"           . ?t)
+			("WRITING"          . ?w)
+			("UNIVERSITY"       . ?u))
+	;; scheduling
+	org-deadline-warning-days 7
+	org-timeline-show-empty-dates t
+	org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
+	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
+	;; notes
+	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
+	org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
+	;; `org-archive'
+	org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
+	;; `org-refile'
+	org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
+	org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
+	org-refile-allow-creating-parent-nodes 'confirm))  ;; NOTE: allow refile to create parent tasks with confirmation
+
+;;; IMPORTANT: `org-link'
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
+(after "org-link"
+  (org-add-link-type "ebib" 'ebib)
+
+  ;; TODO: add more citation types to ebib
+  (org-add-link-type "cite" 'ebib
+		     (lambda (path desc format)
+		       (cond ((eq format 'latex)
+			      (format "\\cite{%s}" path)))))
+
+  ;; TODO: create an ebib entry which links to ERC logs
+  ;; NOTE: this would require `erc-log-mode' from MELPA
+
+  ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
+  (setq org-link-abbrev-alist '(("google" . "http://www.google.com/search?q=")
+				("wikipedia" . "http://www.en.wikipedia.org/wiki/Special:Search/"))))
+
+;;; IMPORTANT: org-agenda
+;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
+(autoload 'org-agenda "org-agenda" "View an agenda of tasks in `org-mode'." t)
+
+(after "org-agenda"
+  (setq org-agenda-include-diary t ;; NOTE: include entries from the emacs diary
+	org-agenda-skip-scheduled-if-done t ;; NOTE: ...
+	org-agenda-inhibit-startup t
+	org-agenda-skip-deadline-if-done t ;; NOTE: ...
+	org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
+	org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
+	org-agenda-span 'month ;; NOTE: show a month of agendas
+	org-agenda-files `(,(expand-file-name user-org-journal-file)
+			   ,(expand-file-name user-org-notes-file)
+			   ;; ,(expand-file-name user-org-projects-file)
+			   ,(expand-file-name user-org-university-file)))
+
+  ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
+  (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
+	'(("A" "All" ((agenda "Weekly Agenda" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
+					       (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
+					       (org-agenda-repeating-timestamp-show-all t)
+					       (org-agenda-entry-types '(:timestamp :sexp))))
+		      (agenda "Daily Agenda" ((org-agenda-ndays 1) ;; NOTE: daily agenda
+					      (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
+					      (org-agenda-todo-keyword-format "[ ]")
+					      (org-agenda-scheduled-leaders '("" ""))
+					      (org-agenda-prefix-format "%t%s")))
+		      (todo "TODO" ;; NOTE: todos searched by context
+			    ((org-agenda-prefix-format "- ")
+			     (org-agenda-sorting-strategy '(tag-up priority-down))
+			     (org-agenda-todo-keyword-format "")
+			     (org-agenda-overriding-header "All Tasks"))))
+	   "ALL" ((org-agenda-compact-blocks t) (org-agenda-remove-tags t))) ;; NOTE: `ALL' TODOs
+	  ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
+	  ("p" "Project" ((tags-todo "PROJECT") (tags-todo "TRAVEL") (tags-todo "GENERAL") (tags-todo "WRITING") (tags-todo "UNIVERSITY") (tags-todo "NOTES")) "PROJECTS") ;; NOTE: `PROJECT' tasks
+	  ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
+	  ("w" "Writing" ((tags "WRITING")) "WRITING")
+	  ("r" "Reading" ((tags "READING") (tags "WEBSITE")) "READING"))))
+
+;;; IMPORTANT: org-capture
+;; SOURCE: `http://orgmode.org/manual/Capture.html'
+(autoload 'org-capture "org-capture" "Quickly capture tasks and notes with `org-mode'." t)
+
+;;; IMPORTANT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
+;; TODO: custom `org-capture' templates
+;;       - school
+;;       - notes
+;;       - journal
+(after "org-capture"
+  (setq org-capture-templates
+	'(;; ("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
+	  ;;  "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
+	  ;; ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
+	  ;;  "%(add-course)" :empty-lines 1 :immediate-finish 1)
+	  ;; ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
+	  ;;  "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	  ;; ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
+	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
+	  ;; ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
+	  ;;  "* %U\n%?\n%i\n")
+	  ("n" "Notes" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("g" "General" entry (file+headline (expand-file-name user-org-notes-file) "General")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("p" "Philosophy" entry (file+headline (expand-file-name user-org-notes-file) "Philosophy")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("l" "Linguistics" entry (file+headline (expand-file-name user-org-notes-file) "Linguistics")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("m" "Mathematics" entry (file+headline (expand-file-name user-org-notes-file) "Mathematics")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("c" "Computer Science" entry (file+headline (expand-file-name user-org-notes-file) "Computer Science")
+	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+	  ("P" "Programming" entry (file+headline (expand-file-name user-org-notes-file) "Programming")
+	   "** TODO ~%^{Name}~ - %^{Description} [0%] %^g
+- [ ] Research [0%]
+- [ ] Design [0%]
+- [ ] Implementation [0%]" :empty-lines 1 :immediate-finish 1)
+	  ("r" "Reading" entry (file+headline (expand-file-name user-org-notes-file) "Reading")
+	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1)
+	  ("w" "Writing" entry (file+headline (expand-file-name user-org-notes-file) "Writing")
+	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1))))
+
+;;; IMPORTANT: org-babel
+;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
+(autoload 'org-babel-load-file "ob-tangle" "Interact with programming languages in `org-mode'." t)
+
+(after "ob-tangle"
+  ;; (require 'ob-lisp)
+
+  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t)
+							   (lisp . t)
+							   (maxima . t)
+							   (scheme . t)
+							   (haskell . t)
+							   (latex . t)
+							   (R . nil)
+							   (gnuplot . nil)
+							   (perl . nil)
+							   (python . nil)
+							   (ruby . nil)
+							   (screen . t)
+							   (sh . t)))
+
+  (setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
+	org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
+	org-src-tab-acts-natively t)) ;; NOTE: tab works properly
+
+;;; IMPORTANT: `org-entities'
+;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
+(autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
+
+(after "org-entities"
+  (require 'org-entities-user+)
+
+  (defun org-insert-user-entity ()
+    "Insert symbol from `org-entities-user' list."
+    (interactive)
+    (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
+      (insert (format "\\%s" entity))))
+
+  (defun org-insert-entity ()
+    "Insert symbol from `org-entities' list."
+    (interactive)
+    (let ((entity
+	   (ido-completing-read "Insert entity: "
+				(remove-if #'null (mapcar #'(lambda (element)
+							      (unless (stringp element)
+								(format "%s" (car element))))
+							  org-entities)))))
+      (insert (format "\\%s" entity)))))
+
+;;; IMPORTANT: org-export
+;; SOURCE: `http://orgmode.org/manual/Exporting.html'
+;; (autoload 'org-export-dispatch "ox" "Export files in `org-mode'." t)
+
+;; (after "ox"
+;;   (setq org-export-latex-default-class "article"
+;; 	org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
+;; 	org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
+;; 	org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
+;; 	org-export-with-todo-keywords nil)) ;; NOTE: turn off `org-mode' exporting of TODO keywords
+
+;; IMPORTANT: `org-indent'
+;; SOURCE: ...
+;; (after "org-indent"
+;;   (setq org-indent-indentation-per-level 1 ;; NOTE: two indents per level
+;; 	org-startup-indented t)) ;; NOTE: indent text in org documents (WARNING: can crash emacs)))
+
+;;; IMPORTANT: blogging from emacs (org publishing)
+;; SOURCE: `http://bzg.fr/blogging-from-emacs.html'
+;; (after "ox-publish"
+;;   (setq org-publish-project-alist
+;; 	'(("blog"
+;; 	   :base-directory "~/Documents/blog/"
+;; 	   :html-extension "html"
+;; 	   :base-extension "org"
+;; 	   :publishing-directory "~/Public/html/"
+;; 	   :publishing-function (org-html-publish-to-html)
+;; 	   :html-preamble nil
+;; 	   :html-postamble nil))))
 
 ;;; IMPORTANT: bibtex
 ;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
 
 ;;; IMPORTANT: reftex
 ;; SOURCE:
-(autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
-(autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
-(autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
-(autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
+;; (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
+;; (autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
+;; (autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
+;; (autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
 
-(after "reftex"
-  ;; IMPORTANT: reftex formats (for biblatex)
-  ;; (setq reftex-cite-format
-  ;;       '((?c . "\\cite[]{%l}")
-  ;;         (?t . "\\textcite{%l}")
-  ;;         (?a . "\\autocite[]{%l}")
-  ;;         (?p . "\\parencite{%l}")
-  ;;         (?f . "\\footcite[][]{%l}")
-  ;;         (?F . "\\fullcite[]{%l}")
-  ;;         (?x . "[]{%l}")
-  ;;         (?X . "{%l}")))
+;; (after "reftex"
+;;   (setq reftex-enable-partial-scans t ;; NOTE: make reftex faster
+;; 	reftex-save-parse-info t ;; NOTE: save the information gathered while reading a file
+;; 	reftex-use-multiple-selection-buffers t ;; NOTE: use a separate buffer for each selection type
+;; 	reftex-default-bibliography `("default.bib" ,(expand-file-name (concat user-documents-directory "Papers/papers.bib")))
+;; 	reftex-cite-prompt-optional-args nil
+;; 	reftex-cite-cleanup-optional-args t
+;; 	reftex-extra-bindings t))
 
-  ;; (setq font-latex-match-reference-keywords
-  ;;       '(("cite" "[{")
-  ;;         ("cites" "[{}]")
-  ;;         ("footcite" "[{")
-  ;;         ("footcites" "[{")
-  ;;         ("parencite" "[{")
-  ;;         ("textcite" "[{")
-  ;;         ("fullcite" "[{")
-  ;;         ("citetitle" "[{")
-  ;;         ("citetitles" "[{")
-  ;;         ("headlessfullcite" "[{")))
+;; (defun org-mode-reftex-setup ()
+;;   "Set up `reftex' integration with `org-mode'."
+;;   (unless (fboundp 'reftex-mode)
+;;     (load-library "reftex"))
+;;   (and (buffer-file-name) (file-exists-p (buffer-file-name)) (reftex-parse-all))
+;;   (define-key org-mode-map (kbd "C-c )") #'reftex-citation))
 
-  (setq reftex-enable-partial-scans t ;; make reftex faster
-	reftex-save-parse-info t ;; save the information gathered while reading a file
-	reftex-use-multiple-selection-buffers t ;; use a separate buffer for each selection type
-	reftex-default-bibliography '("default.bib"
-				      "/home/chu/Documents/Papers/papers.bib"
-				      ) ;; default bibliography file(s)
-	reftex-cite-prompt-optional-args nil
-	reftex-cite-cleanup-optional-args t
-	reftex-extra-bindings t))
-
-(defun org-mode-reftex-setup ()
-  "Set up `reftex' integration with `org-mode'."
-  (unless (fboundp 'reftex-mode)
-    (load-library "reftex"))
-  (and (buffer-file-name)
-       (file-exists-p (buffer-file-name))
-       (reftex-parse-all))
-  (define-key org-mode-map (kbd "C-c )") 'reftex-citation))
-
-;;(add-hook 'org-mode-hook 'org-mode-reftex-setup)
+;;(add-hook 'org-mode-hook #'org-mode-reftex-setup)
 
 ;;; IMPORTANT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
@@ -145,580 +344,6 @@
 				    (format "%sPapers/" user-documents-directory))) ;; NOTE: directories to search when viewing external files
 
   (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
-
-;; Ebib Entry: [[ebib:horwich1996][Horwich (1996)]]
-;; Citation Entry: [[cite:horwich1996][Horwich (1996)]]
-
-;; IMPORTANT: some personal ebib stuff
-(defun ebib-export-directory (extension directory &rest junk)
-  "Generates a BibTeX entry for all files with file-extension EXTENSION in directory DIRECTORY.
-
-NOTE: This requires that each file in DIRECTORY be named according to \"<title>.EXTENSION\"."
-  (mapc #'(lambda (file)
-            ;; TODO: this needs to have a check whether `file' is already known, and if so, skip
-	    (let ((title (replace-regexp-in-string "-" " " (file-name-nondirectory (file-name-sans-extension file))))
-		  (author "")
-		  (year "")
-		  (tags nil))
-	      (when (and (file-readable-p file) (not (file-directory-p file)))
-		(insert
-		 (format "@article{%s,\n	author = {%s},\n	title  = {%s},\n	year   = {%s},\n	file   = {%s}\n}\n\n"
-			 (file-name-nondirectory (file-name-sans-extension file))
-			 author
-			 title
-			 year
-			 file)))))
-	(directory-files directory t (concat "\." extension "$") t)))
-
-(defun ebib-print-directory ()
-  "Print the BibTeX entries from the TARGET-DIRECTORY variable, according to FILE-EXTENSION."
-  (interactive)
-  (let ((buffer-name "ebib-")
-	(file-extension "pdf")
-	(target-directory (format "%sPapers/PDFs/" user-documents-directory)))
-    (switch-to-buffer "ebib-directory")
-    (ebib-export-directory file-extension target-directory)))
-
-;; TODO: can we do an `ido-completing-read' over a list of keys?
-(defun org-insert-citation (key name)
-  "Insert a BibTeX citation in an `org-mode' buffer, matching the `org-link' format."
-  (interactive "sEnter key: \nsEnter name: ")
-  (insert (format "[[%s][%s]]" key name)))
-
-;;; IMPORTANT: org-mode configuration
-;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
-;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
-(autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
-(autoload 'org-special-blocks "org-special-blocks" "Render blocks of code with org-mode." t)
-(autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
-
-(after "org"
-  ;; TODO: split these up - move them earlier in the config (if possible)
-  (setq org-return-follows-link t ;; NOTE: use RETURN to follow links
-	org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
-	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
-	org-footnote-auto-adjust t ;; NOTE: automatically handle footnotes
-	org-hide-emphasis-markers t ;; NOTE: hide emphasis markers in org-mode buffers
-	;; org-fontify-done-headline t
-	;; org-read-date-display-live nil ;; NOTE: disable the live date-display
-	;; org-insert-mode-line-in-empty-file t
-	;; --- appearance ---
-	;; org-indent-mode t ;; NOTE: enable org indent mode
-	;; org-indent-indentation-per-level 2 ;; NOTE: two indents per level
-	;; org-startup-indented t ;; NOTE: indent text in org documents (WARNING: can crash emacs)
-	;; org-odd-levels-only t ;; NOTE: use only odd levels for an outline
-	;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
-	;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
-	;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
-	org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
-	;; --- `org-log' ---
-	org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
-	org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
-	;; --- scheduling ---
-	org-deadline-warning-days 7
-	org-timeline-show-empty-dates t
-	org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
-	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
-	;; --- tags ---
-	org-tags-column -80
-	;; --- notes ---
-	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
-	org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
-	;; --- `org-archive' ---
-	org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
-	;; --- `org-refile' ---
-	org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
-	org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
-	org-refile-allow-creating-parent-nodes 'confirm) ;; NOTE: allow refile to create parent tasks with confirmation
-
-  ;; TODO: re-order AND add new tags
-  (setq org-tag-alist ;; NOTE: list of tags allowed in `org-mode' files
-	'(("COMPUTER_SCIENCE" . ?c)
-	  ("GENERAL"          . ?g)
-	  ;; ("ASSIGNMENT"       . ?a)
-	  ;; ("WEBSITE"          . ?w)
-	  ;; ("PROJECT"          . ?p)
-	  ("JOURNAL"          . ?j)
-	  ("NOTES"            . ?n)
-	  ("LINGUISTICS"      . ?l)
-	  ("MATHEMATICS"      . ?m)
-	  ("PROGRAMMING"      . ?P)
-	  ("READING"          . ?r)
-	  ("PHILOSOPHY"       . ?p)
-	  ("TRAVEL"           . ?t)
-	  ("WRITING"          . ?w)
-	  ("UNIVERSITY"       . ?u))))
-
-;;; IMPORTANT: `org-link'
-;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
-(after "org"
-  (org-add-link-type "ebib" 'ebib)
-
-  ;; TODO: add more citation types to ebib
-  (org-add-link-type "cite" 'ebib
-		     (lambda (path desc format)
-		       (cond ((eq format 'latex)
-			      (format "\\cite{%s}" path)))))
-
-  ;; TODO: create an ebib entry which links to ERC logs
-  ;; NOTE: this would require `erc-log-mode' from MELPA
-
-  ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
-  (setq org-link-abbrev-alist '(("google" . "http://www.google.com/search?q=")
-				("wikipedia" . "http://www.en.wikipedia.org/wiki/Special:Search/"))))
-
-;;; IMPORTANT: blogging from emacs (org publishing)
-;; SOURCE: `http://bzg.fr/blogging-from-emacs.html'
-;; (after "ox-publish"
-;;   (setq org-publish-project-alist
-;; 	'(("blog"
-;; 	   :base-directory "~/"
-;; 	   :html-extension "html"
-;; 	   :base-extension "org"
-;; 	   :publishing-directory "~/Public/html/"
-;; 	   :publishing-function (org-html-publish-to-html)
-;; 	   :html-preamble nil
-;; 	   :html-postamble nil))))
-
-;;; IMPORTANT: org-agenda
-;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Agenda-commands.html'
-(after "org-agenda"
-  (setq org-agenda-include-diary nil ;; NOTE: include entries from the emacs diary
-	org-agenda-skip-scheduled-if-done t ;; NOTE: ...
-	org-agenda-inhibit-startup t
-	org-agenda-skip-deadline-if-done t ;; NOTE: ...
-	org-agenda-skip-additional-timestamps-same-entry nil ;; NOTE: don't skip multiple entries per day
-	org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
-	org-agenda-span 'month) ;; NOTE: show a month of agendas
-
-  (setq org-agenda-files `(,(expand-file-name user-org-journal-file)
-			   ,(expand-file-name user-org-notes-file)
-			   ;; ,(expand-file-name user-org-projects-file)
-			   ,(expand-file-name user-org-university-file)))
-
-  ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
-  (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
-	'(("A" "All" ((agenda "Weekly Agenda" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
-					       (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
-					       (org-agenda-repeating-timestamp-show-all t)
-					       (org-agenda-entry-types '(:timestamp :sexp))))
-		      (agenda "Daily Agenda" ((org-agenda-ndays 1) ;; NOTE: daily agenda
-					      (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
-					      (org-agenda-todo-keyword-format "[ ]")
-					      (org-agenda-scheduled-leaders '("" ""))
-					      (org-agenda-prefix-format "%t%s")))
-		      (todo "TODO" ;; NOTE: todos searched by context
-			    ((org-agenda-prefix-format "- ")
-			     (org-agenda-sorting-strategy '(tag-up priority-down))
-			     (org-agenda-todo-keyword-format "")
-			     (org-agenda-overriding-header "All Tasks"))))
-	   "ALL" ((org-agenda-compact-blocks t) (org-agenda-remove-tags t))) ;; NOTE: `ALL' TODOs
-	  ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY") ;; NOTE: `UNIVERSITY' tasks
-	  ("p" "Project" ((tags-todo "PROJECT") (tags-todo "TRAVEL") (tags-todo "GENERAL") (tags-todo "WRITING") (tags-todo "UNIVERSITY") (tags-todo "NOTES")) "PROJECTS") ;; NOTE: `PROJECT' tasks
-	  ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
-	  ("w" "Writing" ((tags "WRITING")) "WRITING")
-	  ("r" "Reading" ((tags "READING") (tags "WEBSITE")) "READING"))))
-
-;;; IMPORTANT: org-export
-;; SOURCE: `http://orgmode.org/manual/Exporting.html'
-(after "org-export"
-  (setq org-export-latex-default-class "article"
-	org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
-	org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
-	org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
-	org-export-with-todo-keywords nil)) ;; NOTE: turn off `org-mode' exporting of TODO keywords
-
-;;; IMPORTANT: org-capture
-;; SOURCE: `http://orgmode.org/manual/Capture.html'
-;; SOURCE: `http://orgmode.org/worg/org-contrib/org-protocol.html'
-(autoload 'org-capture "org-capture" "..." t)
-(autoload 'org-protocol "org-protocol" "Use `org-mode' with `emacsclient'." t)
-
-;;; IMPORTANT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
-(after "org-capture"
-  (setq org-capture-templates
-	'(;; ("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
-	  ;;  "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
-	  ;; ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
-	  ;;  "%(add-course)" :empty-lines 1 :immediate-finish 1)
-	  ;; ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
-	  ;;  "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
-	  ;; ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
-	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
-	  ;; ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
-	  ;;  "* %U\n%?\n%i\n")
-	  ("n" "Notes" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("g" "General" entry (file+headline (expand-file-name user-org-notes-file) "General")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("p" "Philosophy" entry (file+headline (expand-file-name user-org-notes-file) "Philosophy")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("l" "Linguistics" entry (file+headline (expand-file-name user-org-notes-file) "Linguistics")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("m" "Mathematics" entry (file+headline (expand-file-name user-org-notes-file) "Mathematics")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("c" "Computer Science" entry (file+headline (expand-file-name user-org-notes-file) "Computer Science")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("P" "Programming" entry (file+headline (expand-file-name user-org-notes-file) "Programming")
-	   "** TODO %^{Title} %^g%?\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("r" "Reading" entry (file+headline (expand-file-name user-org-notes-file) "Reading")
-	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1)
-	  ("w" "Writing" entry (file+headline (expand-file-name user-org-notes-file) "Writing")
-	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1))))
-
-;; IMPORTANT: custom `org-capture' templates
-
-;;; IMPORTANT: school organisation
-;; TODO: integrate with `ido-mode' somehow
-;; WARNING: this is *terrible* - seriously consider a re-write !!!
-;; TODO: can do some cool stuff here - consider writing a `org-school.el'
-(defun add-course (&rest junk)
-  "Capture a course via org-mode's `org-capture'."
-  (let ((course-details ""))
-    ;; NOTE: need to create link to course.org file
-    (setq course-details (concat course-details "** " (read-from-minibuffer "Course Code: ") "%?%^g\n"
-				 " TITLE: " (read-from-minibuffer "Course Title: ") "\n"
-				 " LECTURER: " (read-from-minibuffer "Course Lecturer: ") "\n"
-				 " LECTURES: \n + %^T :: " (read-from-minibuffer "Room Location: ") "\n"))
-    ;; NOTE: this technically lies, y goes into the loop, anything else jumps to tutorial/seminar
-    (while (string= (read-from-minibuffer "Add Lecture? (y/n): ") "y")
-      (setq course-details (concat course-details " + %^T  :: " (read-from-minibuffer "Room Location: ") "\n")))
-    ;; NOTE: this technically lies, t for "tutorial", any other input means "seminar"
-    (concat course-details " " (if (string= (read-from-minibuffer "Tutorial or Seminar? (t/s): ") "t")
-				   "TUTORIAL: "
-				 "SEMINAR: ")
-	    "\n + %^T :: " (read-from-minibuffer "Room Location: ") "\n")))
-
-(defun file-path (&rest junk)
-  "Return the path of a file."
-  (buffer-file-name (get-buffer (car buffer-name-history))))
-
-(defun dir-path (&rest junk)
-  "Return the path of a directory."
-  (car (rassq (get-buffer (car buffer-name-history)) dired-buffers)))
-
-;; TODO: this needs to be looked at again
-(defun course-code (&rest junk)
-  "Search for a COURSE-CODE appearing in 'school.org' and if found move the point to that location."
-  (interactive)
-  (switch-to-buffer "school.org")
-  (goto-char (point-min))
-  (let ((str (read-from-minibuffer "Enter course code: ")))
-    (when (search-forward (concat "** " str "\t") nil nil)
-      (forward-line 9))))
-
-(defun insert-lecture-template ()
-  "..."
-  (interactive)
-  (insert (format "** Lecture %d: %s" 1 (format-time-string "%d/%m/%y"))))
-
-;;; IMPORTANT: org-babel
-;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
-(autoload 'org-babel-load-file "ob-tangle" "Interact with programming languages in `org-mode'." t)
-
-(after "ob-tangle"
-  (require 'ob-lisp)
-
-  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t)
-							   (lisp . t)
-							   (maxima . t)
-							   (scheme . t)
-							   (haskell . t)
-							   (latex . t)
-							   (R . nil)
-							   (gnuplot . nil)
-							   (perl . nil)
-							   (python . nil)
-							   (ruby . nil)
-							   (screen . t)
-							   (sh . t)))
-
-  (setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
-	org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
-	org-src-tab-acts-natively t)) ;; NOTE: tab works properly
-
-;;; IMPORTANT: org-latex-export
-;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-latex-export.html'
-;; (autoload 'org-latex "org-latex" "Render LaTeX with `org-mode'." t)
-;; ;; (autoload 'org-bibtex "org-bibtex" "Bibliographies with `org-mode'." t)
-
-;; ;; (after "org-bibtex"
-;; ;;   (require 'org-exp-bibtex))
-
-;; (after "org-exp"
-;;   (unless (boundp 'org-export-latex-classes)
-;;     (setq org-export-latex-classes nil))
-
-;;   (add-to-list 'org-export-latex-classes
-;; 	       '("paper"
-;; 		 "\\documentclass[12pt,a4paper,oneside]{paper}
-;; \\usepackage{amsfonts}
-;; \\usepackage{amsthm}
-;; \\setcounter{secnumdepth}{0}
-;; [NO-DEFAULT-PACKAGES]
-;; [EXTRA]"
-;; 	       ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;;   (add-to-list 'org-export-latex-classes
-;; 	     '("book"
-;; 	       "\\documentclass[12pt,a4paper,oneside]{book}
-;; \\usepackage{amsfonts}
-;; \\usepackage{amsthm}
-;; \\usepackage{mathtools}
-;; \\usepackage{makeidx}
-;; \\usepackage{bussproofs}
-;; [NO-DEFAULT-PACKAGES]
-;; [EXTRA]"
-;; 	       ("\\part{%s}" . "\\part*{%s}")
-;; 	       ("\\chapter{%s}" . "\\chapter*{%s}")
-;; 	       ("\\section{%s}" . "\\section*{%s}")
-;; 	       ("\\subsection{%s}" . "\\subsection*{%s}")
-;; 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-
-;; (add-to-list 'org-export-latex-classes
-;; 	     '("assignment"
-;; 	       "\\documentclass[10pt,a4paper]{article}
-;; \\usepackage{amsfonts}
-;; \\usepackage{amsthm}
-;; \\usepackage[cm]{fullpage}
-;; \\usepackage{multicol}
-;; \\usepackage{mdwlist}
-;; \\usepackage{geometry}
-;; \\usepackage{pgf}
-;; \\usepackage{tikz}
-;; \\usetikzlibrary{positioning,automata,arrows,shapes}
-;; [NO-DEFAULT-PACKAGES]
-;; [EXTRA]"
-;; 	       ("\\section{%s}" . "\\section*{%s}")
-;; 	       ("\\subsection{%s}" . "\\subsection*{%s}")
-;; 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;; 	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;; 	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;; (add-to-list 'org-export-latex-classes
-;; 	     '("article"
-;; 	       "\\documentclass[12pt,a4paper]{article}
-;; \\setcounter{secnumdepth}{0}
-;; [NO-DEFAULT-PACKAGES]
-;; [EXTRA]"
-;; 	       ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;; (add-to-list 'org-export-latex-classes
-;; 	     '("beamer"
-;; 	       "\\documentclass[10pt]{beamer}
-;; [NO-DEFAULT-PACKAGES]
-;; [EXTRA]"
-;; 	       org-beamer-sectioning))
-
-;; ;; NOTE: enable latex source code highlighting
-;; (setq org-export-latex-listings t)
-;; )
-
-;; TODO: modify `org-export-latex-packages-alist' (i.e. include some LaTeX packages)
-;; (after "org"
-;;   (add-to-list 'org-export-latex-packages-alist '("" "listings")) ;; NOTE: listings package
-;;   (add-to-list 'org-export-latex-packages-alist '("" "color")) ;; NOTE: colored source code
-;;   (add-to-list 'org-export-latex-packages-alist '("" "tipa")) ;; NOTE: support for phonetic alphabet
-;;   (add-to-list 'org-export-latex-packages-alist '("" "tipx")) ;; NOTE: support for phonetic alphabet
-;;   ;;(add-to-list 'org-export-latex-packages-alist '("" "bussproofs")) ;; NOTE: for sequent style proofs
-;;   (add-to-list 'org-export-latex-packages-alist '("" "amssymb")) ;; NOTE: mathematics symbols
-;;   (add-to-list 'org-export-latex-packages-alist '("" "amsmath")) ;; NOTE: mathematics symbols
-;;   (add-to-list 'org-export-latex-packages-alist '("" "hyperref"))) ;; NOTE: hyper-references
-
-;;; IMPORTANT: `org-entities'
-;; SOURCE: `http://orgmode.org/manual/Special-symbols.html'
-(autoload 'org-entities "org-entities" "Enable unicode support for `org-mode'." t)
-
-(after "org-entities"
-  (require 'org-entities-user+)
-
-  (defun org-insert-user-entity ()
-    "Insert symbol from `org-entities-user' list."
-    (interactive)
-    (let ((entity (ido-completing-read "Insert entity: " (mapcar #'(lambda (element) (car element)) org-entities-user))))
-      (insert (format "\\%s" entity))))
-
-  (defun org-insert-entity ()
-    "Insert symbol from `org-entities' list."
-    (interactive)
-    (let ((entity (ido-completing-read "Insert entity: "
-				       (remove-if #'null (mapcar #'(lambda (element)
-								     (unless (stringp element)
-								       (format "%s" (car element))))
-								 org-entities)))))
-      (insert (format "\\%s" entity)))))
-
-;; IMPORTANT: ...
-;; (define-skeleton insert-org-latex-package
-;;   "Inserts a LaTeX use-package clause into a document."
-;;   "Insert package name: "
-;;   "#+LATEX_HEADER: \\usepackage{" str "}")
-
-;; IMPORTANT: `org-mode' custom file templates
-;; (defcustom org-template-list '("beamer" "paper" "assignment") "List of custom template types." :group 'user-writing :type 'list)
-
-;;; IMPORTANT: org-beamer
-;; SOURCE: `http://orgmode.org/worg/org-tutorials/org-beamer/tutorial.html'
-;; SOURCE: `http://orgmode.org/manual/Beamer-class-export.html'
-;; (autoload 'org-beamer "org-beamer" "Presentations with org-beamer." t)
-
-;; (defcustom org-beamer-themes-list '("Atnibes"
-;; 				    "Bergen"
-;; 				    "Berkeley"
-;; 				    "Berlin"
-;; 				    "Copenhagen"
-;; 				    "Darmstadt"
-;; 				    "Dresden"
-;; 				    "Frankfurt"
-;; 				    "Goettingen"
-;; 				    "Hannover"
-;; 				    "Ilmenau"
-;; 				    "JuanLesPins"
-;; 				    "Luebeck"
-;; 				    "Madrid"
-;; 				    "Malmoe"
-;; 				    "Marburg"
-;; 				    "Montpellier"
-;; 				    "PaloAlto"
-;; 				    "Pittsburgh"
-;; 				    "Rochester"`
-;; 				    "Singapore"
-;; 				    "Szeged"
-;; 				    "Warsaw"
-;; 				    "boxes"
-;; 				    "default")
-;;   "List of available beamer themes." :group 'user-writing :type 'list)
-
-;; NOTE: inserting a `reading-notes' template is not part of this function
-;; (defun insert-org-template (&rest junk)
-;;   "..."
-;;   (interactive)
-;;   (let ((type (ido-completing-read "Select template: " org-template-list))
-;; 	(title (read-string "Enter title: "))
-;; 	(options (list "toc:nil" "tasks:nil"))
-;; 	(author "Matthew Ball"))
-;;     (insert (format "#+LATEX_CLASS: %s\n" type))
-;;     (when (string= type "beamer")
-;;       (insert (format "#+LATEX_HEADER: \\usetheme{%s}\n" (ido-completing-read "Select theme: " org-beamer-themes-list))))
-;;     (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
-;;     (insert "\n")
-;;     (insert (format "#+TITLE: %s\n" title))
-;;     (insert (format "#+AUTHOR: %s\n\n" author))
-;;     (insert (format "* %s\n" title))
-;;     (insert "* Footnotes\n")))
-
-;; (defun goto-or-create-reading-notes-file (title &rest junk)
-;;   "Open the corresponding reading notes file for a document, or create a new file if one doesn't exist."
-;;   (interactive "sEnter title: ")
-;;   (let ((file-name (format "~/Documents/Reading/notes/%s.org" (replace-regexp-in-string " " "-" (downcase title))))
-;; 	;;(file (format user-reading-directory "notes/%s.org") (replace-regexp-in-string " " "-" (downcase title)))
-;; 	)
-;;     (if (file-exists-p file-name)
-;; 	(find-file file-name)
-;;       (progn
-;; 	(find-file file-name)
-;; 	(let ((author (read-string "Enter author's name: ")))
-;; 	  (insert-org-reading-notes-template title author))))))
-
-;; (defun insert-org-reading-notes-template (title name &rest junk)
-;;   "Insert a template for a reading notes file into an `org-mode' document."
-;;   (interactive "sEnter title: \nsEnter author's name: ")
-;;   (let ((type "paper")
-;; 	(options (list "toc:nil" "tasks:nil"))
-;; 	(author "Matthew Ball"))
-;;     (insert (format "#+LATEX_CLASS: %s\n" type))
-;;     (mapc #'(lambda (option) (insert (format "#+OPTIONS: %s\n" option))) options)
-;;     (insert "\n")
-;;     (insert (format "#+TITLE: %s by %s: Reading Notes\n" title name))
-;;     (insert (format "#+AUTHOR: %s\n" author))
-;;     (insert "\n")
-;;     ;; (insert "* TODO Paper: \n") ;; TODO: link to PDF file (if it exists)
-;;     (insert (format "* %s\n" title))
-;;     (insert "* Footnotes\n")))
-
-;; ;; IMPORTANT: the following `define-skeleton' entries are old and redundant
-;; (define-skeleton insert-org-paper
-;;   "Inserts an `org-mode' paper template."
-;;   "Insert paper title: "
-;;   "#+LATEX_CLASS: paper\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
-
-;; (define-skeleton insert-org-assignment
-;;   "Inserts an `org-mode' assignment template."
-;;   "Insert assignment title: "
-;;   "#+LATEX_CLASS: assignment\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball, u4537508\n\n* " str "\n* Footnotes\n")
-
-;; (define-skeleton insert-org-beamer
-;;   "Inserts an `org-mode' beamer presentation template."
-;;   "Insert presentation title: "
-;;   "#+LATEX_CLASS: beamer\n#+LATEX_HEADER: \\usetheme{Warsaw}\n#+OPTIONS: toc:nil\n#+OPTIONS: tasks:nil\n\n#+TITLE: " str "\n#+AUTHOR: Matthew Ball\n\n* " str "\n* Footnotes\n")
-
-;; ;;; IMPORTANT: Insert a custom file template
-;; (defcustom org-custom-file-alist '("paper" "beamer" "assignment") "List of custom file types for use with `org-mode' documents." :group 'user-writing :type 'list)
-
-;; (defun org-insert-custom-file (&rest junk)
-;;   "Insert custom `org-mode' file template."
-;;   (interactive)
-;;   (let ((custom-file-type (ido-completing-read "Select file type: " org-custom-file-alist)))
-;;     (funcall (intern (concat "insert-org-" custom-file-type)))))
-
-;; ;;; IMPORTANT: custom footnotes
-;; ;; TODO: get user input from the keyboard
-;; (defcustom org-custom-footnote-types '("book" "paper" "article" "default") "The list of availables types for footnotes." :group 'user-writing :type 'list)
-
-;; (defun org-custom-insert-footnote-book ()
-;;   "Insert a book footnote template."
-;;   ;; - author
-;;   ;; - title
-;;   ;; - publisher
-;;   ;; - year
-;;   ;; - page number(s)
-;;   )
-
-;; (defun org-custom-insert-footnote-paper ()
-;;   "Insert a paper footnote template."
-;;   ;; - author
-;;   ;; - title
-;;   ;; - journal
-;;   ;; - volume number
-;;   ;; - year
-;;   ;; - page number(s)
-;;   )
-
-;; (defun org-custom-insert-footnote-article ()
-;;   "Insert a article footnote template."
-;;   )
-
-;; (defun org-custom-insert-footnote-default ()
-;;   "Insert a default footnote template."
-;;   ;; - text
-;;   )
-
-;; (defun org-custom-insert-footnote (footnote-name)
-;;   "Insert a footnote in an `org-mode' document."
-;;   (interactive "sEnter footname name: ")
-;;   (save-excursion
-;;     (let* ((footnote-type (ido-completing-read "Select footnote type: " org-custom-footnote-types))
-;; 	   (footnote-text (funcall (intern (concat "org-custom-insert-footnote-" footnote-type)))))
-;;       (insert (concat "[fn:" footnote-name "]"))
-;;       (end-of-buffer)
-;;       (insert (concat "\n[fn:" footnote-name "] " footnote-text)))))
-
-;; ;;; IMPORTANT: this is a set of custom inserts for common clauses in an `org-mode' document
-;; (defun custom-org-insert-footnote (name text) ;; TODO: this could be made so much better
-;;   "Insert a footnote in an `org-mode' document."
-;;   (interactive "sEnter footnote name: \nsEnter text: ")
-;;   (save-excursion
-;;     (insert (concat "[fn:" name "]"))
-;;     (end-of-buffer)
-;;     (insert (concat "\n[fn:" name "] " text))))
 
 ;;; IMPORTANT: custom inserts
 (defun surrounded-by-p (char)
@@ -759,15 +384,9 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (propertize-word teletype ?=) ;; => (teletype-word)
 
 ;;; IMPORTANT: customisations
-(defun turn-on-custom-org-bindings ()
-  "Activate custom `org-mode' bindings."
-  ;; TODO: add binding for `org-insert-custom-file' command
+(defun turn-on-custom-org-key-bindings ()
+  "Activate custom `org-mode' key-bindings."
   (define-key org-mode-map (kbd "C-M-j") #'org-insert-heading) ;; NOTE: M-RET inserts a new heading
-  ;;(define-key org-mode-map (kbd "C-c p") #'insert-org-paper) ;; NOTE: insert paper template with C-c p
-  ;;(define-key org-mode-map (kbd "C-c b") #'insert-org-beamer) ;; NOTE: insert beamer template with C-c b
-  ;;(define-key org-mode-map (kbd "C-c c") #'org-insert-citation) ;; NOTE: insert a citation clause
-  (define-key org-mode-map (kbd "C-c i") #'org-insert-latex-clause) ;; NOTE: insert a LaTeX clause with C-c i
-  (define-key org-mode-map (kbd "C-c f") #'custom-org-insert-footnote) ;; NOTE: insert a footnote with C-c f
   (define-key org-mode-map (kbd "C-c b") #'bold-word)
   (define-key org-mode-map (kbd "C-c i") #'italic-word)
   (define-key org-mode-map (kbd "C-c u") #'underline-word)
@@ -777,12 +396,8 @@ NOTE: This requires that each file in DIRECTORY be named according to \"<title>.
 (defun turn-on-custom-org ()
   "Activate custom `org-mode' functionality."
   (org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
-  ;;(org-indent-mode) ;; NOTE: indent with headings
-  ;;(setq org-startup-indented t) ;; NOTE: indent with headings
-  (auto-complete-mode t)
-  (hs-minor-mode)
   (imenu-add-to-menubar "Imenu")
-  (turn-on-custom-org-bindings)) ;; NOTE: enable custom org-mode bindings
+  (turn-on-custom-org-key-bindings)) ;; NOTE: enable custom org-mode bindings
 
 (defun turn-on-hl-mode ()
   ""

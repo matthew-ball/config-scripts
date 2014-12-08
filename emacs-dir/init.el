@@ -177,4 +177,4 @@ Return a list of installed packages or nil for every skipped package."
   (when (y-or-n-p "Kill emacs daemon? ")
     (kill-emacs)))
 
-(setq initial-buffer-choice user-org-notes-file)
+;; (setq initial-buffer-choice user-org-notes-file)

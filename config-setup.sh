@@ -8,8 +8,10 @@ project_https_source="https://github.com/matthew-ball/config-scripts.git"
 # project_ssh_source="git://" # TODO: find the correct syntax
 project_target=".config-scripts"
 
-declare -a source_links=("bash-dir/init.sh" "bash-dir/profile.sh" "xinit-dir/session.sh" "xinit-dir/init.sh" "stumpwm-dir/init.lisp" "emacs-dir/")
-declare -a destination_links=(".bashrc" ".profile" ".xsessionrc" ".xinitrc" ".stumpwmrc" ".emacs.d/")
+# TODO: /etc/apt/sources.list
+
+declare -a source_links=("bash-dir/init.sh" "bash-dir/profile.sh" "xinit-dir/session.sh" "xinit-dir/init.sh" "stumpwm-dir/init.lisp" "emacs-dir/" "screen-dir/init.sh")
+declare -a destination_links=(".bashrc" ".profile" ".xsessionrc" ".xinitrc" ".stumpwmrc" ".emacs.d/" ".screenrc")
 declare -a default_packages=("emacs24" "chromium" "htop" "sudo" "screen")
 declare -a development_packages=("build-essential" "gcc" "gcc-doc" "gdb" "gdb-doc" "sbcl" "sbcl-doc" "ghc" "ghc-doc" "git" "strace" "ltrace" "maxima" "maxima-doc" "maxima-emacs" "texlive" "texlive-docs")
 declare -a packages=(${default_packages[@]} ${development_packages[@]})
@@ -20,7 +22,6 @@ function print_options {
     echo "-f, --full-install :: full configuration install"
     echo "-i, --install :: install config-setup"
     echo "-l, --linking :: sym-link files"
-    echo "-p, --project :: clone project"
     echo "-u, --update :: update config-setup"
     echo "-U, --upgrade-and-update :: upgrade and update config-setup"
     exit
@@ -31,11 +32,11 @@ function print_welcome_message {
 }
 
 # IMPORTANT: install script
-function clone_project {
-    # TODO: pull config-scripts project from github
-    echo "[info] cloning $project_source into $project_target"
-    # echo "cd && git clone -b $project_branch $project_source $project_target"
-}
+# function clone_project {
+#     # TODO: pull config-scripts project from github
+#     echo "[info] cloning $project_https_source into $project_target"
+#     # echo "cd && git clone -b $project_branch $project_source $project_target"
+# }
 
 function clone_window_manager {
     # TODO: pull stumpwm source code from github
@@ -72,7 +73,6 @@ function sym_link {
 
 function install_packages {
     # TODO: install default and development packages
-    # sudo apt-get install emacs24 chromium htop sudo build-essential gcc gcc-doc gdb gdb-doc sbcl sbcl-doc ghc ghc-doc git strace ltrace
     for package in ${packages[@]}; do
 	echo "[info] installing package: $package"
 	# sudo apt-get install $package

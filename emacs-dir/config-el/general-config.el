@@ -313,9 +313,11 @@
 					(or (mode . org-mode)
 					    (mode . org-agenda-mode)
 					    (mode . calendar-mode)
+					    (name . "^\\*Holidays\\*$")
 					    (mode . display-time-world-mode)
 					    ;;(mode . cfw:calendar-mode)
 					    (mode . diary-mode)
+					    (mode . diary-fancy-display-mode)
 					    (filename . ,(expand-file-name user-organisation-directory))))
 				       ("IRC" ;; NOTE: irc related buffers
 					(or (mode . erc-mode)
