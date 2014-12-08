@@ -53,8 +53,6 @@
 (autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
 
 (after "org"
-  ;; (require 'ox-odt)
-  ;; (require 'ox-latex)
   ;; (require 'org-agenda)
   ;; (require 'org-capture)
   ;; (require 'org-indent)
@@ -142,36 +140,33 @@
 	org-agenda-files `(,(expand-file-name user-org-journal-file)
 			   ,(expand-file-name user-org-notes-file)
 			   ;; ,(expand-file-name user-org-projects-file)
-			   ,(expand-file-name user-org-university-file)))
-
-  ;; TODO: create something similar to the 'q' version (i.e. include a section on Tasks by Context),
-  (setq org-agenda-custom-commands ;; NOTE: custom commands for `org-agenda'
-	'(("A" "All" ((agenda "Weekly Agenda" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
-					       (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
-					       (org-agenda-repeating-timestamp-show-all t)
-					       (org-agenda-entry-types '(:timestamp :sexp))))
-		      (agenda "Daily Agenda" ((org-agenda-ndays 1) ;; NOTE: daily agenda
-					      (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
-					      (org-agenda-todo-keyword-format "[ ]")
-					      (org-agenda-scheduled-leaders '("" ""))
-					      (org-agenda-prefix-format "%t%s")))
-		      (todo "TODO" ;; NOTE: todos searched by context
-			    ((org-agenda-prefix-format "- ")
-			     (org-agenda-sorting-strategy '(tag-up priority-down))
-			     (org-agenda-todo-keyword-format "")
-			     (org-agenda-overriding-header "All Tasks"))))
-	   "ALL" ((org-agenda-compact-blocks nil) (org-agenda-remove-tags nil)))
-	  ;; ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY")
-	  ("p" "Project" ((tags-todo "PROGRAMMING")
-			  (tags-todo "TRAVEL")
-			  (tags-todo "GENERAL")
-			  (tags-todo "WRITING")
-			  (tags-todo "UNIVERSITY")
-			  (tags-todo "NOTES")) "PROJECTS")
-	  ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
-	  ("w" "Writing" ((tags "WRITING")) "WRITING")
-	  ("r" "Reading" ((tags "READING")
-			  (tags "WEBSITE")) "READING"))))
+			   ,(expand-file-name user-org-university-file))
+	org-agenda-custom-commands '(("A" "All" ((agenda "Weekly Agenda" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
+									  (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
+									  (org-agenda-repeating-timestamp-show-all t)
+									  (org-agenda-entry-types '(:timestamp :sexp))))
+						 (agenda "Daily Agenda" ((org-agenda-ndays 1) ;; NOTE: daily agenda
+									 (org-deadline-warning-days 7) ;; NOTE: seven day warning for deadlines
+									 (org-agenda-todo-keyword-format "[ ]")
+									 (org-agenda-scheduled-leaders '("" ""))
+									 (org-agenda-prefix-format "%t%s")))
+						 (todo "TODO" ;; NOTE: todos searched by context
+						       ((org-agenda-prefix-format "- ")
+							(org-agenda-sorting-strategy '(tag-up priority-down))
+							(org-agenda-todo-keyword-format "")
+							(org-agenda-overriding-header "All Tasks"))))
+				      "ALL" ((org-agenda-compact-blocks nil) (org-agenda-remove-tags nil)))
+				     ;; ("u" "University" ((org-agenda-list nil nil 1) (tags "UNIVERSITY") (tags-todo "ASSIGNMENT")) "UNIVERSITY")
+				     ("p" "Project" ((tags-todo "PROGRAMMING")
+						     (tags-todo "TRAVEL")
+						     (tags-todo "GENERAL")
+						     (tags-todo "WRITING")
+						     (tags-todo "UNIVERSITY")
+						     (tags-todo "NOTES")) "PROJECTS")
+				     ("j" "Journal" ((tags "JOURNAL")) "JOURNAL")
+				     ("w" "Writing" ((tags "WRITING")) "WRITING")
+				     ("r" "Reading" ((tags "READING")
+						     (tags "WEBSITE")) "READING"))))
 
 ;;; IMPORTANT: org-capture
 ;; SOURCE: `http://orgmode.org/manual/Capture.html'
@@ -270,6 +265,9 @@
 ;; (autoload 'org-export-dispatch "ox" "Export files in `org-mode'." t)
 
 ;; (after "ox"
+;;   (require 'ox-odt)
+;;   (require 'ox-latex)
+  
 ;;   (setq org-export-latex-default-class "article"
 ;; 	org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
 ;; 	org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
@@ -294,6 +292,67 @@
 ;; 	   :publishing-function (org-html-publish-to-html)
 ;; 	   :html-preamble nil
 ;; 	   :html-postamble nil))))
+
+;;; IMPORTANT: custom inserts
+(defun surrounded-by-p (char)
+  "Returns t if word is surrounded by given char."
+  (save-excursion
+    (and (forward-word -1)
+         (equal char (char-before))
+         (forward-word 1)
+         (equal char (char-after)))))
+
+(defun surround-word (char &optional force)
+  "Surrounds word with given character.  If force is nil and word is already surrounded by given character removes them."
+  (save-excursion
+    (if (not (surrounded-by-p char))
+        (progn
+          (forward-word 1)
+          (insert char)
+          (forward-word -1)
+          (insert char)
+          t)
+      (forward-word 1)
+      (delete-char 1)
+      (forward-word -1)
+      (delete-char -1)
+      nil)))
+
+(defmacro propertize-word (property character)
+  "Define functions for propertizing words with PROPERTY using CHARACTER."
+  `(defun ,(intern (format "%s-word" property)) (&optional force)
+     ,(format "Insert a %s character (%c) before (and after) an input string." property character)
+     (interactive "p")
+     (surround-word ,character force)))
+
+(propertize-word bold ?*) ;; => (bold-word)
+(propertize-word italic ?/) ;; => (italic-word)
+(propertize-word underline ?_) ;; => (underline-word)
+(propertize-word verbatim ?~) ;; => (verbatim-word)
+(propertize-word teletype ?=) ;; => (teletype-word)
+
+;;; IMPORTANT: customisations
+(defun turn-on-custom-org-key-bindings ()
+  "Activate custom `org-mode' key-bindings."
+  (define-key org-mode-map (kbd "C-M-j") #'org-insert-heading) ;; NOTE: M-RET inserts a new heading
+  (define-key org-mode-map (kbd "C-c b") #'bold-word)
+  (define-key org-mode-map (kbd "C-c i") #'italic-word)
+  (define-key org-mode-map (kbd "C-c u") #'underline-word)
+  (define-key org-mode-map (kbd "C-c v") #'verbatim-word)
+  (define-key org-mode-map (kbd "C-c t") #'teletype-word))
+
+(defun turn-on-custom-org ()
+  "Activate custom `org-mode' functionality."
+  (org-toggle-pretty-entities) ;; NOTE: toggle UTF-8 unicode symbols
+  (imenu-add-to-menubar "Imenu")
+  (turn-on-custom-org-key-bindings)) ;; NOTE: enable custom org-mode bindings
+
+(defun turn-on-hl-mode ()
+  ""
+  (hl-line-mode t))
+
+(add-hook 'org-mode-hook #'turn-on-custom-org)
+(add-hook 'org-agenda-mode-hook #'turn-on-hl-mode #'append)
 
 ;;; IMPORTANT: emacs relay chat
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
@@ -624,15 +683,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; (require 'abbrev)
 
 ;; (after "abbrev"
-;;   (setq abbrev-file-name "~/.emacs.d/abbreviations"
+;;   (setq abbrev-file-name (expand-file-name (concat user-emacs-directory "abbreviations"))
 ;; 	save-abbrevs t))
-
-;;; IMPORTANT: ace-jump-mode
-;; SOURCE: `http://www.emacswiki.org/emacs/AceJump'
-;; (autoload 'ace-jump-mode "ace-jump-mode" "..." t)
-
-;; (global-set-key (kbd "C-c SPC") #'ace-jump-mode)
-;; (global-set-key (kbd "C-c C-SPC") #'ace-jump-mode-pop-mark)
 
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
@@ -686,7 +738,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; SOURCE: `https://github.com/defunkt/gist.el'
 (autoload 'gist-buffer "gist" "Integrate with Github." t)
 
-;;(define-key programming-map (kbd "g") #'gist-buffer)
+;; (define-key programming-map (kbd "g") #'gist-buffer)
 
 ;;; IMPORTANT: git integration
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
@@ -695,18 +747,19 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; (after "magit"
 ;;   (setq magit-save-some-buffers t))
 
-;;(define-key programming-map (kbd "m") #'magit-status)
+;; (define-key programming-map (kbd "m") #'magit-status)
 
 ;;; IMPORTANT: undo tree
 ;; SOURCE: `http://www.emacswiki.org/emacs/UndoTree'
-(autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
+;; (autoload 'global-undo-tree-mode "undo-tree" "Visualize the current buffer's undo tree." t)
+(require 'undo-tree)
 
-;; NOTE: persistent undo history
-;; (after "undo-tree"
-;;   (setq undo-tree-auto-save-history t
-;;         undo-tree-history-directory-alist `((".*" . ,(concat user-emacs-directory "undo")))))
+(after "undo-tree"
+  ;; NOTE: persistent undo history
+  ;;   (setq undo-tree-auto-save-history t
+  ;;         undo-tree-history-directory-alist `((".*" . ,(concat user-emacs-directory "undo")))))
 
-(global-undo-tree-mode) ;; NOTE: enable undo-tree mode
+  (global-undo-tree-mode)) ;; NOTE: enable undo-tree mode
 
 (global-set-key (kbd "C-z") #'undo-tree-visualize)
 (global-set-key (kbd "M-Z") #'undo-tree-redo)
@@ -725,7 +778,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	ac-auto-start nil ;; NOTE: never auto-start the auto-complete menu
 	ac-use-menu-map t ;;
 	ac-ignore-case 'smart ;; NOTE: always ignore case
-	;;ac-auto-show-menu t ;; NOTE: automatically show menu
+	;; ac-auto-show-menu t ;; NOTE: automatically show menu
 	;; ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
 	ac-source-yasnippet '(action . #'yas-expand))
 
@@ -738,8 +791,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (require 'yasnippet)
 
 (after "yasnippet"
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
-  (yas-load-directory "~/.emacs.d/snippets/" t) ;; NOTE: use just-in-time
+  (setq yas-snippet-dirs `(,(expand-file-name (concat user-emacs-directory "snippets/"))))
+  (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
 
   (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
@@ -832,23 +885,22 @@ Although this is interactive, call this with \\[browse-url]."
 
   ;; NOTE: `youtube-dl' and `mplayer'
   ;; TODO: this doesn't work just yet
-  ;; (defvar youtube-videos-directory nil "Directory location to save YouTube videos.")
+  ;; (defcustom youtube-videos-directory nil "Directory location to save YouTube videos." :group 'user-variables)
 
-  ;; (setq youtube-videos-directory "~/Videos/youtube/")
+  ;; (setq youtube-videos-directory (expand-file-name user-home-directory "Videos/youtube/"))
 
   ;; IMPORTANT: w3m session
   ;; SOURCE: `http://www.emacswiki.org/emacs/WThreeMSession'
   ;; (require 'w3m-session)
 
-  ;; (setq w3m-session-file "~/.emacs.d/w3m/session")
+  ;; (setq w3m-session-file (expand-file-name (concat user-emacs-directory "session")))
 
   ;; (progn
   ;;   (unless (fboundp 'desktop)
   ;;     (require 'desktop))
   ;;   ;;(add-to-list 'desktop-buffer-mode-handlers '(w3m-mode . w3m-restore-desktop-buffer))
 
-  ;;   ;;(add-hook 'w3m-mode-hook 'w3m-register-desktop-save) ;; NOTE: add w3m-buffers to desktop-save
-  ;;   )
+  ;;   ;;(add-hook 'w3m-mode-hook 'w3m-register-desktop-save))
 
   ;; NOTE: w3m mode hooks
   (defun desktop-display (url)
@@ -863,8 +915,6 @@ Although this is interactive, call this with \\[browse-url]."
   (setq w3m-search-engine-alist '(("google" "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
 				  ;; ("github" "http://www.github.com/search?q=%s&ie=utf-8")
 				  ("cliki" "http://www.cliki.net/site/search?query=%s" utf-8)
-				  ;; ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" utf-8)
-				  ;; ("emacswiki" "http://www.google.com/cse?cx=004774160799092323420%%3A6-ff2s0o6yi&q=%s" utf-8)
 				  ("wikipedia" "http://en.wikipedia.org/wiki/Special:Search?search=%s" utf-8)
 				  ("stanford" "http://plato.stanford.edu/search/searcher.py?query=%s" utf-8))))
 
@@ -972,16 +1022,16 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;; IMPORTANT: google translate
 ;; SOURCE: `https://github.com/manzyuk/google-translate'
-(require 'google-translate)
+;; (require 'google-translate)
 
-(after "google-translate"
-  (setq google-translate-enable-ido-completion t
-	;; google-translate-default-source-language "auto"
-	;; google-translate-default-target-language "en"
-	google-translate-show-phonetic t)
+;; (after "google-translate"
+;;   (setq google-translate-enable-ido-completion t
+;; 	;; google-translate-default-source-language "auto"
+;; 	;; google-translate-default-target-language "en"
+;; 	google-translate-show-phonetic t)
 
-  (global-set-key (kbd "C-c r") #'google-translate-at-point-reverse)
-  (global-set-key (kbd "C-c R") #'google-translate-query-translate-reverse))
+;;   (global-set-key (kbd "C-c r") #'google-translate-at-point-reverse)
+;;   (global-set-key (kbd "C-c R") #'google-translate-query-translate-reverse))
 
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
@@ -1006,10 +1056,6 @@ Although this is interactive, call this with \\[browse-url]."
 ;;; IMPORTANT: adaptive text wrap
 (autoload 'adaptive-wrap-prefix-mode "adaptive-wrap" "Adaptive wrap for text mode buffers." t)
 
-;; (defun turn-on-adaptive-wrap-prefix-mode ()
-;;   "Enable `adaptive-wrap-prefix-mode'."
-;;   (adaptive-wrap-prefix-mode t))
-
 (add-hook 'text-mode-hook #'adaptive-wrap-prefix-mode)
 
 ;;; IMPORTANT: projectile
@@ -1026,6 +1072,7 @@ Although this is interactive, call this with \\[browse-url]."
 (require 'smart-mode-line)
 
 (after "smart-mode-line"
+  ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" (getenv "CONFIG_SCRIPTS_DIR")) ":config:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/"            ":config:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/emacs-dir/"  ":emacs:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/stumpwm-dir" ":stumpwm:"))
@@ -1033,14 +1080,18 @@ Although this is interactive, call this with \\[browse-url]."
   (add-to-list 'sml/replacer-regexp-list '("^~/.config-scripts/xinit-dir/"  ":xinit:"))
   ;; ---
   (add-to-list 'sml/replacer-regexp-list '("^~/Public/"                 ":public:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"         ":scratch:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/"              ":docs:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/ANU/"          ":uni:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
+  ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" user-public-directory) ":public:"))
+  ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" user-documents-directory) ":docs:"))
+  ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" user-university-directory) ":uni:"))
+  ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" user-organisation-directory) ":org:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Public/scratch/"         ":scratch:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Reading/"      ":read:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Writing/"      ":write:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"         ":mail:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"         ":news:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Organisation/" ":org:"))
 
   (setq sml/name-width 1
 	sml/mode-width 0
@@ -1048,12 +1099,6 @@ Although this is interactive, call this with \\[browse-url]."
 	sml/theme 'light)
 
   (sml/setup))
-
-;;; IMPORTANT: expand region
-;; SOURCE: `https://github.com/magnars/expand-region.el'
-(require 'expand-region)
-
-(global-set-key (kbd "C-x U") #'er/expand-region)
 
 ;;; IMPORTANT: journal entries with `org-mode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
@@ -1063,12 +1108,6 @@ Although this is interactive, call this with \\[browse-url]."
 (after "org-journal"
   (setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/"))))
 
-;;; IMPORTANT: switch window
-;; SOURCE: ...
-(require 'switch-window)
-
-(global-set-key (kbd "C-x o") #'switch-window)
-
 ;;; IMPORTANT: deft
 ;; SOURCE: `http://jblevins.org/projects/deft/'
 (autoload 'deft "deft" "Note taking with deft." t)
@@ -1076,19 +1115,7 @@ Although this is interactive, call this with \\[browse-url]."
 (after "deft"
   (setq deft-extension "org"
 	deft-text-mode 'org-mode
-	;; deft-directory (format "%s.deft/" user-organisation-directory)
 	def-directory (expand-file-name (concat user-organisation-directory ".deft/"))))
-
-;; ;;; IMPORTANT: ecb
-;; (autoload 'ecb-minor-mode "ecb" "..." t)
-
-;; (after "ecb"
-;;   (setf ecb-tip-of-the-day-file (expand-file-name (concat user-emacs-directory "ecb-tip-of-day.el"))
-;; 	;; ecb-layout-name 'left1
-;; 	;; ecb-compile-window-height 12
-;; 	ecb-show-sources-in-directories-buffer 'always))
-
-;; ;; TODO: write `ecb-toggle'
 
 ;; IMPORTANT: `inf-ruby'
 ;; IMPORTANT: `rvm'
@@ -1100,6 +1127,7 @@ Although this is interactive, call this with \\[browse-url]."
   (require 'rinari) ;; ruby on rails environment
   (require 'ruby-tools)
 
+  TODO: ...
   (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
   (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
 
@@ -1113,6 +1141,21 @@ Although this is interactive, call this with \\[browse-url]."
 (autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
 
 (global-set-key (kbd "C-c d") #'dictionary-search)
+
+;;; IMPORTANT: the emacs bibliography manager
+;; SOURCE: `http://ebib.sourceforge.net/'
+(autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
+
+(after "ebib"
+  ;; TODO: investigate @string clauses and abbreviations for common journals
+  (setq ebib-preload-bib-files `(,(expand-file-name (concat user-university-directory "u4537508.bib")) ;; NOTE: university courses
+				 ,(expand-file-name (concat user-documents-directory "Papers/papers.bib")))  ;; NOTE: general papers
+	ebib-keywords-list '("philosophy" "mathematics" "logic" "computer science" "linguistics" "miscellaneous")
+	ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
+	ebib-file-search-dirs `(,(expand-file-name user-home-directory)
+				,(expand-file-name (concat user-documents-directory "Papers/"))))
+
+  (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
 
 (provide 'user-config)
 ;;; user-config.el ends here

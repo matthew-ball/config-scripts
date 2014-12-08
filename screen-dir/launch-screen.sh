@@ -1,3 +1,3 @@
 #!/bin/bash
 
-$TERMINAL -e screen -dR
+exec $TERMINAL -e screen -dR

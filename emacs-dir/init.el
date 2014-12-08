@@ -143,12 +143,11 @@ Return a list of installed packages or nil for every skipped package."
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
 (or (file-exists-p package-user-dir) (package-refresh-contents))
 
-(ensure-packages-installed-p 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib
-			     'elisp-slime-nav 'epl 'erc-hl-nicks 'expand-region 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist
-			     'git-commit-mode 'git-rebase-mode 'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby
-			     'rinari 'rvm 'ruby-tools 'ido-ubiquitous 'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache
-			     'pkg-info 'popup 'projectile 'rainbow-delimiters 's 'smart-mode-line 'smex 'switch-window 'tabulated-list
-			     'undo-tree 'w3m 'yasnippet)
+(ensure-packages-installed-p 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib 'elisp-slime-nav
+			     'epl 'erc-hl-nicks 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode
+			     'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools
+			     'ido-ubiquitous 'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile
+			     'rainbow-delimiters 's 'smart-mode-line 'smex 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
