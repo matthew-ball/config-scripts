@@ -152,7 +152,12 @@ Return a list of installed packages or nil for every skipped package."
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
-(defcustom user-config-files '("appearance" "general" "writing" "programming" "user" "key-bindings") "User configuration files.")
+(defcustom user-config-files '("appearance"
+			       "general"
+			       ;;"writing"
+			       "programming"
+			       "user"
+			       "key-bindings") "User configuration files.")
 
 (defun use-config-file (name)
   "Print a loading message and call `require' on configuration file referred to by \"NAME-config\"."
@@ -178,3 +183,4 @@ Return a list of installed packages or nil for every skipped package."
     (kill-emacs)))
 
 ;; (setq initial-buffer-choice user-org-notes-file)
+

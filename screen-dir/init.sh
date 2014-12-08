@@ -30,12 +30,8 @@ hardstatus string "%-Lw%{= BW}%50>%n %t%{-}%+Lw%< " # window list (plain)
 ## NOTE: custom key bindings
 escape ^Zz # make the escape key C-z so it plays nice with emacs
 
-bind E screen -t emacs 0 emacs -nw # launch a new emacs session (C-z E)
-# bind L screen -t irssi 0 irssi # launch a new irssi session (C-z L)
-# bind M screen -t mutt 0 mutt -n # launch a new mutt session (C-z M)
-# bind P screen -t aptitude 0 aptitude # launch a new aptitude session (C-z P)
+bind E screen -t emacs 0 emacsclient -nw -c # launch an emacsclient session (C-z E)
 bind T screen -t htop 0 htop -u $USER # launch a new htop session for my user (C-z T)
-# bind B screen -t bash 0 bash # launch a new terminal session (C-z B)
 
 bind u hardstatus alwayslastline # show the status bar (C-z u)
 bind U hardstatus alwaysignore # hide the status bar (C-z U)
@@ -45,8 +41,7 @@ bind R resize # resize window session (C-z R)
 bind m monitor # monitor a session (C-z m)
 
 ## NOTE: startup
-# screen -t emacs 0 emacs -nw # start an emacs session by default
-# screen -t irssi 0 irssi # start an irssi session by default
+screen -t emacs 0 emacsclient -nw -c # start an emacsclient session by default
 
 select 0 # return control to the first window
 
