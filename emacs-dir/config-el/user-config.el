@@ -354,6 +354,34 @@
 (add-hook 'org-mode-hook #'turn-on-custom-org)
 (add-hook 'org-agenda-mode-hook #'turn-on-hl-mode #'append)
 
+;;; IMPORTANT: bibtex
+;; SOURCE: `http://www.emacswiki.org/emacs/BibTeX'
+
+;;; IMPORTANT: reftex
+;; SOURCE:
+;; (autoload 'reftex-mode "reftex" "RefTeX minor mode for GNU Emacs." t)
+;; (autoload 'turn-on-reftex "reftex" "RefTeX minor mode for GNU Emacs." t)
+;; (autoload 'reftex-citation "reftex-cite" "RefTeX inert citation." nil)
+;; (autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
+
+;; (after "reftex"
+;;   (setq reftex-enable-partial-scans t ;; NOTE: make reftex faster
+;; 	reftex-save-parse-info t ;; NOTE: save the information gathered while reading a file
+;; 	reftex-use-multiple-selection-buffers t ;; NOTE: use a separate buffer for each selection type
+;; 	reftex-default-bibliography `("default.bib" ,(expand-file-name (concat user-documents-directory "Papers/papers.bib")))
+;; 	reftex-cite-prompt-optional-args nil
+;; 	reftex-cite-cleanup-optional-args t
+;; 	reftex-extra-bindings t))
+
+;; (defun org-mode-reftex-setup ()
+;;   "Set up `reftex' integration with `org-mode'."
+;;   (unless (fboundp 'reftex-mode)
+;;     (load-library "reftex"))
+;;   (and (buffer-file-name) (file-exists-p (buffer-file-name)) (reftex-parse-all))
+;;   (define-key org-mode-map (kbd "C-c )") #'reftex-citation))
+
+;;(add-hook 'org-mode-hook #'org-mode-reftex-setup)
+
 ;;; IMPORTANT: emacs relay chat
 ;; SOURCE: `http://emacswiki.org/emacs/ERC'
 ;; SOURCE: `http://www.emacswiki.org/emacs/ErcSSL'

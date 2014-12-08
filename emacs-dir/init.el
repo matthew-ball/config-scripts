@@ -153,7 +153,6 @@ Return a list of installed packages or nil for every skipped package."
 ;; NOTE: requires that config files are in `load-path' already
 (defcustom user-config-files '("appearance"
 			       "general"
-			       ;;"writing"
 			       "programming"
 			       "user"
 			       "key-bindings") "User configuration files.")
@@ -165,13 +164,6 @@ Return a list of installed packages or nil for every skipped package."
     (funcall #'require (intern config-file))))
 
 (mapc #'use-config-file user-config-files)
-
-;; (use-config-file "appearance")
-;; (use-config-file "general")
-;; (use-config-file "writing")
-;; (use-config-file "user")
-;; (use-config-file "programming")
-;; (use-config-file "key-bindings")
 
 ;;; IMPORTANT: shutdown emacs server
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsAsDaemon'
