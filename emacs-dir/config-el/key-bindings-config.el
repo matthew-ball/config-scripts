@@ -81,8 +81,6 @@
 
        (define-key global-map ,custom-prefix ,custom-keymap))))
 
-(custom-keymap ruby-programming (kbd "C-c C-r"))
-
 ;; IMPORTANT: programming specific tasks
 (custom-keymap programming (kbd "<f5>"))
 

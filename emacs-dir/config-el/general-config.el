@@ -1,6 +1,6 @@
 ;;; general-config.el --- Configuration for general settings
 
-;; Copyright (C) 2013  Matthew Ball
+;; Copyright (C) 2008-2014  Matthew Ball
 
 ;; Author: Matthew Ball <mathew.ball@gmail.com>
 ;; Keywords: configuration
