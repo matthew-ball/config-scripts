@@ -4,7 +4,7 @@ defmonitor on # turn monitoring on by default
 altscreen on # fix residual text issues
 defbce on # ...
 defutf8 on # ...
-nethack on # enable nethack-inspired error messages
+# nethack on # enable nethack-inspired error messages
 
 ## NOTE: setup user interface
 # term screen-color # set 8 colour shell session
