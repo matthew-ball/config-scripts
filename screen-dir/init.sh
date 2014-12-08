@@ -30,7 +30,7 @@ hardstatus string "%-Lw%{= BW}%50>%n %t%{-}%+Lw%< " # window list (plain)
 ## NOTE: custom key bindings
 escape ^Zz # make the escape key C-z so it plays nice with emacs
 
-bind E screen -t emacs 0 emacsclient -nw -c # launch an emacsclient session (C-z E)
+# bind E screen -t emacs 0 emacsclient -nw -c # launch an emacsclient session (C-z E)
 bind T screen -t htop 0 htop -u $USER # launch a new htop session for my user (C-z T)
 
 bind u hardstatus alwayslastline # show the status bar (C-z u)
