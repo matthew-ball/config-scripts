@@ -110,14 +110,14 @@
 ;; IMPORTANT: emacs internals
 (custom-keymap internals (kbd "<f7>"))
 
+;;(define-key custom-internals-map (kbd "#") #'switch-to-scratch)
 (define-key custom-internals-map (kbd "E") #'elisp-index-search)
 (define-key custom-internals-map (kbd "M") #'emacs-index-search)
-(define-key custom-internals-map (kbd "S") #'switch-to-scratch)
 (define-key custom-internals-map (kbd "l") #'list-packages)
 (define-key custom-internals-map (kbd "p") #'proced)
 (define-key custom-internals-map (kbd "r") #'regexp-builder)
 (define-key custom-internals-map (kbd "u") #'browse-url)
-(define-key custom-internals-map (kbd "v") #'battery)
+(define-key custom-internals-map (kbd "b") #'battery)
 
 ;; IMPORTANT: `org-mode' related
 (custom-keymap org-mode (kbd "<f8>"))

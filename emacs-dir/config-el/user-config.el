@@ -1045,6 +1045,7 @@ Although this is interactive, call this with \\[browse-url]."
 	(w3m url)))))
 
 (define-key custom-internals-map (kbd "s") #'w3m-search)
+(define-key custom-internals-map (kbd "S") #'w3m-search-new-session)
 (define-key custom-internals-map (kbd "B") #'custom-w3m-switch-buffer)
 
 ;;; IMPORTANT: highlight custom comment tags
