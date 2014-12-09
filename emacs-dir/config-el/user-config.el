@@ -96,6 +96,8 @@
 	org-timeline-show-empty-dates t
 	org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
 	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
+	;; org structure
+	;; org-structure-template-alist ;; TODO: ...
 	;; notes
 	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
 	org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
@@ -188,6 +190,7 @@
 	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
 	  ;; ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
 	  ;;  "* %U\n%?\n%i\n")
+	  ("j" "Journal" plain (file+datetree+prompt (expand-file-name user-org-journal-file) "%K - %a\n%i\n%?\n"))
 	  ("n" "Notes" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
 	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 	  ("g" "General" entry (file+headline (expand-file-name user-org-notes-file) "General")
@@ -266,10 +269,9 @@
 ;; (after "ox"
 ;;   (require 'ox-odt)
 ;;   (require 'ox-latex)
+;;   (require 'ox-beamer)
   
-;;   (setq org-export-latex-default-class "article"
-;; 	org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
-;; 	org-export-run-in-background t ;; NOTE: run `org-export' tasks in the background
+;;   (setq org-export-with-toc nil ;; NOTE: turn off `org-mode' exporting a table of contents
 ;; 	org-export-with-tasks nil ;; NOTE: turn off `org-mode' exporting tasks
 ;; 	org-export-with-todo-keywords nil)) ;; NOTE: turn off `org-mode' exporting of TODO keywords
 

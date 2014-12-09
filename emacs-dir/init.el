@@ -126,7 +126,7 @@
 			   ("gnu" . "http://elpa.gnu.org/packages/"))))
 
 ;; SOURCE: `http://hastebin.com/yidodunufo.lisp'
-(defun ensure-package-installed-p (package)
+(defun ensure-package-installed (package)
   "Assure PACKAGE is installed."
   (if (package-installed-p package)
       nil
@@ -134,20 +134,20 @@
 	(package-install package)
       package)))
 
-(defun ensure-packages-installed-p (&rest packages)
+(defun ensure-packages-installed (&rest packages)
   "Assure every package is installed, ask for installation if it's not.
 
 Return a list of installed packages or nil for every skipped package."
-  (mapcar #'ensure-package-installed-p packages))
+  (mapcar #'ensure-package-installed packages))
 
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
 (or (file-exists-p package-user-dir) (package-refresh-contents))
 
-(ensure-packages-installed-p 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib 'elisp-slime-nav
-			     'epl 'erc-hl-nicks 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode
-			     'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools
-			     'ido-ubiquitous 'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile
-			     'rainbow-delimiters 's 'smart-mode-line 'smex 'tabulated-list 'undo-tree 'w3m 'yasnippet)
+(ensure-packages-installed 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib 'elisp-slime-nav
+			   'epl 'erc-hl-nicks 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode
+			   'google-translate 'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools
+			   'ido-ubiquitous 'idomenu 'iedit 'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile
+			   'rainbow-delimiters 's 'smart-mode-line 'smex 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
@@ -170,4 +170,4 @@ Return a list of installed packages or nil for every skipped package."
     (kill-emacs)))
 
 ;; (setq initial-buffer-choice user-org-notes-file)
-
+;; (org-agenda nil "A") ;; NOTE: start emacs displaying `org-agenda'
