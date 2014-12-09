@@ -98,6 +98,9 @@ Enable the following minor modes:
 ;; SOURCE: `http://emacswiki.org/emacs/ParEdit'
 (autoload 'paredit-mode "paredit" "Minor mode for pseudo-structurally editing Lisp code." t)
 
+(after "paredit"
+  (diminish-minor-mode "paredit"))
+
 ;;; IMPORTANT: emacs lisp programming
 ;; SOURCE: `http://www.emacwswiki.org/emacs/EmacsLisp'
 ;; SOURCE: `http://www.emacswiki.org/emacs/EmacsLispIntro'
@@ -175,6 +178,7 @@ Enable the following minor modes:
 (require 'elisp-slime-nav)
 
 (after "elisp-slime-nav"
+  (diminish-minor-mode "elisp-slime-nav")
   (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
     (add-hook hook #'elisp-slime-nav-mode)))
 
@@ -260,6 +264,8 @@ Enable the following minor modes:
 (require 'geiser) ;; TODO: find a `guile-mode' for scheme ...
 
 (after "geiser"
+  (diminish-minor-mode "geiser-mode" 'geiser-mode)
+  (diminish-minor-mode "geiser-autodoc")
   (setq geiser-active-implementations '(guile)))
 
 (defun custom-scheme-mode ()
@@ -280,6 +286,9 @@ Enable the following minor modes:
   (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
 
 (after "haskell-mode"
+  (diminish-minor-mode "haskell-doc")
+  (diminish-minor-mode "haskell-indent")
+  (diminish-minor-mode "haskell-indentation")
   (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
 
   (add-hook 'haskell-mode-hook #'custom-turn-on-haskell-modes))

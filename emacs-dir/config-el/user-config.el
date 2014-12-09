@@ -45,7 +45,6 @@
 ;;   (add-hook 'today-visible-calendar-hook #'calendar-mark-today))
 
 ;;; IMPORTANT: org-mode configuration
-;; TODO: move to `user-config.el'
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
 ;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
 (autoload 'org-install "org-exp" "Organise tasks with org-mode." t)
@@ -277,8 +276,9 @@
 ;; IMPORTANT: `org-indent'
 ;; SOURCE: ...
 ;; (after "org-indent"
+;;   (diminish-minor-mode "org-indent")
 ;;   (setq org-indent-indentation-per-level 1 ;; NOTE: two indents per level
-;; 	org-startup-indented t)) ;; NOTE: indent text in org documents (WARNING: can crash emacs)))
+;; 	org-startup-indented t)) ;; NOTE: indent text in org documents (WARNING: can crash emacs)
 
 ;;; IMPORTANT: blogging from emacs (org publishing)
 ;; SOURCE: `http://bzg.fr/blogging-from-emacs.html'
@@ -365,6 +365,7 @@
 ;; (autoload 'reftex-index-phrase-mode "reftex-index" "RefTeX phrase mode." t)
 
 ;; (after "reftex"
+;;   (diminish-minor-mode "reftex")
 ;;   (setq reftex-enable-partial-scans t ;; NOTE: make reftex faster
 ;; 	reftex-save-parse-info t ;; NOTE: save the information gathered while reading a file
 ;; 	reftex-use-multiple-selection-buffers t ;; NOTE: use a separate buffer for each selection type
@@ -716,6 +717,22 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;;   (setq abbrev-file-name (expand-file-name (concat user-emacs-directory "abbreviations"))
 ;; 	save-abbrevs t))
 
+;;; IMPORTANT: diminish
+;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
+(autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
+
+(defmacro diminish-minor-mode (package-name &optional mode-name)
+  (let ((name (if (eq mode-name nil)
+		   `',(intern (concat package-name "-mode"))
+		 mode-name)))
+    `(after ,package-name (diminish ,name))))
+
+(diminish-minor-mode "eldoc")
+(diminish-minor-mode "flyspell")
+(diminish-minor-mode "hideshow" 'hs-minor-mode)
+(diminish-minor-mode "hilit-chg" 'highlight-changes-mode)
+(diminish-minor-mode "simple" 'visual-line-mode)
+
 ;;; IMPORTANT: the insidious big brother database
 ;; SOURCE: `http://www.emacswiki.org/emacs/BbdbMode'
 (after "gnus"
@@ -776,8 +793,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 ;; SOURCE: `http://www.emacswiki.org/emacs/Magit'
 (autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
 
-;; (after "magit"
-;;   (setq magit-save-some-buffers t))
+(after "magit"
+  (diminish-minor-mode "magit" 'magit-auto-revert-mode)
+  ;;(setq magit-save-some-buffers t)
+  )
 
 (define-key custom-programming-map (kbd "m") #'magit-status)
 
@@ -787,11 +806,15 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (require 'undo-tree)
 
 (after "undo-tree"
-  ;; NOTE: persistent undo history
-  ;;   (setq undo-tree-auto-save-history t
-  ;;         undo-tree-history-directory-alist `((".*" . ,(concat user-emacs-directory "undo")))))
 
-  (global-undo-tree-mode)) ;; NOTE: enable undo-tree mode
+  (diminish-minor-mode "undo-tree")
+  (setq undo-tree-visualizer-timestamps t
+	undo-tree-visualizer-diff t
+	;; NOTE: persistent undo history
+	undo-tree-auto-save-history t
+	undo-tree-history-directory-alist `((".*" . ,(concat user-emacs-directory "undo"))))
+
+  (global-undo-tree-mode))
 
 (global-set-key (kbd "C-z") #'undo-tree-visualize)
 (global-set-key (kbd "M-Z") #'undo-tree-redo)
@@ -803,6 +826,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (after "auto-complete"
   (require 'auto-complete-config)
 
+  (diminish-minor-mode "auto-complete")
   (setq ac-expand-on-auto-complete t ;; NOTE: expand common portions
 	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
 	ac-use-fuzzy t
@@ -823,6 +847,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (require 'yasnippet)
 
 (after "yasnippet"
+  (diminish-minor-mode "yasnippet" 'yas-minor-mode)
   (setq yas-snippet-dirs `(,(expand-file-name (concat user-emacs-directory "snippets/"))))
   (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
 
@@ -880,6 +905,7 @@ Although this is interactive, call this with \\[browse-url]."
   (require 'w3m-ccl)
 
   ;; NOTE: w3m interface and cookies
+  (diminish-minor-mode "w3m-lnum")
   (w3m-lnum-mode 1) ;; NOTE: enable Conkeror-like numbered links
 
   ;; NOTE: w3m antenna
@@ -1098,6 +1124,7 @@ Although this is interactive, call this with \\[browse-url]."
 (require 'projectile)
 
 (after "projectile"
+  (diminish-minor-mode "projectile")
   (projectile-global-mode))
 
 ;;; IMPORTANT: smart mode line
@@ -1163,6 +1190,8 @@ Although this is interactive, call this with \\[browse-url]."
   (require 'rvm) ;; ruby virtual machine
   (require 'rinari) ;; ruby on rails environment
   (require 'ruby-tools)
+
+  (diminish-minor-mode "ruby-tools")
 
   TODO: ...
   (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")

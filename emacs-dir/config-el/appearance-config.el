@@ -229,77 +229,6 @@
 (when (display-graphic-p)
   (global-prettify-symbols-mode t))
 
-;;; IMPORTANT: diminish
-;; TODO: move to `user-config.el'
-;; SOURCE: `http://www.emacswiki.org/emacs/DiminishedModes'
-(autoload 'diminish "diminish" "Turn off the textual mode indicator in the mode line." t)
-
-(defmacro diminish-minor-mode (package-name &optional mode-name)
-  (let ((name (if (eq mode-name nil)
-		   `',(intern (concat package-name "-mode"))
-		 mode-name)))
-    `(after ,package-name (diminish ,name))))
-
-(diminish-minor-mode "abbrev")
-(diminish-minor-mode "eldoc")
-(diminish-minor-mode "auto-complete")
-(diminish-minor-mode "cwarn")
-(diminish-minor-mode "elisp-slime-nav")
-(diminish-minor-mode "eproject")
-(diminish-minor-mode "flyspell")
-(diminish-minor-mode "flymake")
-(diminish-minor-mode "glasses")
-(diminish-minor-mode "haskell-doc")
-(diminish-minor-mode "haskell-indent")
-(diminish-minor-mode "haskell-indentation")
-(diminish-minor-mode "longlines")
-(diminish-minor-mode "org-indent")
-(diminish-minor-mode "paredit")
-(diminish-minor-mode "projectile")
-(diminish-minor-mode "reftex")
-(diminish-minor-mode "undo-tree")
-(diminish-minor-mode "face-remap" 'buffer-face-mode)
-(diminish-minor-mode "hideshow" 'hs-minor-mode)
-(diminish-minor-mode "hilit-chg" 'highlight-changes-mode)
-(diminish-minor-mode "magit" 'magit-auto-revert-mode)
-(diminish-minor-mode "simple" 'visual-line-mode)
-(diminish-minor-mode "yasnippet" 'yas-minor-mode)
-(diminish-minor-mode "w3m-lnum")
-(diminish-minor-mode "geiser-mode" 'geiser-mode)
-(diminish-minor-mode "geiser-autodoc")
-(diminish-minor-mode "ruby-tools")
-;; ---
-;; (after "abbrev" (diminish 'abbrev-mode))
-;; (after "eldoc" (diminish 'eldoc-mode))
-;; (after "auto-complete" (diminish 'auto-complete-mode))
-;; (after "cwarn" (diminish 'cwarn-mode))
-;; (after "elisp-slime-nav" (diminish 'elisp-slime-nav-mode))
-;; (after "eproject" (diminish 'eproject-mode))
-;; (after "face-remap" (diminish 'buffer-face-mode))
-;; (after "flyspell" (diminish 'flyspell-mode))
-;; (after "flymake" (diminish 'flymake-mode))
-;; (after "glasses" (diminish 'glasses-mode))
-;; (after "haskell-doc" (diminish 'haskell-doc-mode))
-;; (after "haskell-indent" (diminish 'haskell-indent-mode))
-;; (after "haskell-indentation" (diminish 'haskell-indentation-mode))
-;; (after "hideshow" (diminish 'hs-minor-mode))
-;; (after "hilit-chg" (diminish 'highlight-changes-mode))
-;; (after "longlines" (diminish 'longlines-mode))
-;; (after "magit" (diminish 'magit-auto-revert-mode))
-;; (after "org-indent" (diminish 'org-indent-mode))
-;; (after "paredit" (diminish 'paredit-mode))
-;; (after "projectile" (diminish 'projectile-mode))
-;; (after "reftex" (diminish 'reftex-mode))
-;; (after "simple" (diminish 'visual-line-mode))
-;; (after "undo-tree" (diminish 'undo-tree-mode))
-;; (after "w3m-lnum" (diminish 'w3m-lnum-mode))
-;; (after "yasnippet" (diminish 'yas-minor-mode))
-;; (after "geiser-mode" (diminish 'geiser-mode))
-;; (after "geiser-autodoc" (diminish 'geiser-autodoc-mode))
-;; TODO: ...
-;;(after "gnus-sum" (diminish 'gnus-agent-mode))
-;;(after "gnus-topic" (diminish 'gnus-topic-mode))
-
 ;; TODO: ...
 ;; (defmacro diminish-major-mode (package-name &optional mode-name)
 ;;   `(,package-name ,mode-name))
@@ -310,10 +239,10 @@
 				     (dired-mode . "Dired")
 				     (lisp-mode . "Common Lisp")
 				     (emacs-lisp-mode . "Emacs Lisp")
-				     (gnus-group-mode . "Email")
+				     (gnus-group-mode . "Email") ;; TODO: `user-config.el'
 				     (eshell-mode . "Eshell")
-				     (erc-mode . "ERC")
-				     (haskell-mode . "Haskell")
+				     (erc-mode . "ERC") ;; TODO: `user-config.el'
+				     (haskell-mode . "Haskell") ;; TODO: `user-config.el'
 				     (help-mode . "Help")
 				     (ibuffer-mode . "iBuffer")
 				     (org-mode . "Organisation")
@@ -333,44 +262,6 @@
 		  (setq mode-name mode-str)))))
 
 (add-hook 'after-change-major-mode-hook #'clean-mode-line)
-
-;;; IMPORTANT: hide the mode-line
-;; SOURCE: `http://bzg.fr/emacs-hide-mode-line.html'
-;; (defvar-local hidden-mode-line-mode nil)
-
-;; TODO: rename
-;; (define-minor-mode hidden-mode-line-mode
-;;   "Minor mode to hide the mode-line in the current buffer."
-;;   :init-value nil
-;;   :global t
-;;   :variable hidden-mode-line-mode
-;;   :group 'editing-basics
-;;   (if hidden-mode-line-mode
-;;       (setq hide-mode-line mode-line-format
-;;             mode-line-format nil)
-;;     (setq mode-line-format hide-mode-line
-;;           hide-mode-line nil))
-;;   (force-mode-line-update)
-;;   ;; NOTE: apparently force-mode-line-update is not always enough to redisplay the mode-line
-;;   (redraw-display)
-;;   (when (and (called-interactively-p 'interactive)
-;;              hidden-mode-line-mode)
-;;     (run-with-idle-timer
-;;      0 nil 'message
-;;      (concat "Hidden Mode Line Mode enabled.  "
-;;              "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
-
-;; (defun hide-mode-line ()
-;;   "Hide the mode-line in every buffer."
-;;   (interactive)
-;;   (hidden-mode-line-mode)
-;;   (add-hook 'after-change-major-mode-hook #'hidden-mode-line-mode))
-
-;; (defun show-mode-line ()
-;;   "Show the mode-line in every buffer."
-;;   (interactive)
-;;   (remove-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-;;   (hidden-mode-line-mode))
 
 (provide 'appearance-config)
 ;;; appearance-config.el ends here

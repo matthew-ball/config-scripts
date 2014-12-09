@@ -151,7 +151,7 @@ Return a list of installed packages or nil for every skipped package."
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already
-(defcustom user-config-files '("appearance" "key-bindings" "general" "programming" "user") "User configuration files.")
+(defcustom user-config-files '("appearance" "key-bindings" "general" "user" "programming") "User configuration files.")
 
 (defun use-config-file (name)
   "Print a loading message and call `require' on configuration file referred to by \"NAME-config\"."
