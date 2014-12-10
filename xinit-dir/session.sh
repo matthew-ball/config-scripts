@@ -34,3 +34,6 @@ export CONFIG_SCRIPTS_DIR="$HOME/.config-scripts/"
 # NOTE: add clojure's lein to $PATH
 #export PATH=$HOME/Programming/lisp/clojure/leiningen/:$PATH
 #export LEIN_JVM_OPTS=
+# NOTE: ruby gems
+# TODO: this should be cleaned up
+export PATH=$HOME/.gem/ruby/2.1.0/bin:$PATH

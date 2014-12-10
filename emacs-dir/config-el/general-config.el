@@ -872,5 +872,22 @@
 	;; ispell-alternate-dictionary "/usr/share/dict/american-english" ;; FIX: ...
 	ispell-extra-args '("--sug-mode=ultra")))
 
+;;; IMPORTANT: diary and calendar mode
+;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
+;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
+;;(autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
+;; (require 'calendar)
+
+;; (after "calendar"
+;;   (setq ;;calendar-view-diary-initially-flag t
+;; 	;;calendar-view-holidays-initially-flag t
+;; 	;;calendar-mark-diary-entries-flag t
+;; 	calendar-mark-holidays-flag t
+;; 	;;diary-file (expand-file-name (concat user-organisation-directory "journal.org"))
+;; 	number-of-diary-entries 14)
+
+;;   ;; (add-hook 'diary-display-hook #'fancy-diary-display)
+;;   (add-hook 'today-visible-calendar-hook #'calendar-mark-today))
+
 (provide 'general-config)
 ;;; general-config.el ends here

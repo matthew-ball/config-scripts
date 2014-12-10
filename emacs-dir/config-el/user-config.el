@@ -26,24 +26,6 @@
 
 (defgroup user-custom nil "Custom variables for user-specific settings (and packages)." :group 'user-variables)
 
-;;; IMPORTANT: diary and calendar mode
-;; SOURCE: `http://www.emacswiki.org/emacs/DiaryMode'
-;; SOURCE: `http://www.emacswiki.org/emacs/CalendarMode'
-;; TODO: move this to `general-config.el'
-;;(autoload 'calendar "calendar" "Keep a personal diary with GNU Emacs." t)
-;; (require 'calendar)
-
-;; (after "calendar"
-;;   (setq ;;calendar-view-diary-initially-flag t
-;; 	;;calendar-view-holidays-initially-flag t
-;; 	;;calendar-mark-diary-entries-flag t
-;; 	calendar-mark-holidays-flag t
-;; 	;;diary-file (expand-file-name (concat user-organisation-directory "journal.org"))
-;; 	number-of-diary-entries 14)
-
-;;   ;; (add-hook 'diary-display-hook #'fancy-diary-display)
-;;   (add-hook 'today-visible-calendar-hook #'calendar-mark-today))
-
 ;;; IMPORTANT: org-mode configuration
 ;; SOURCE: `http://emacswiki.org/emacs/OrgMode'
 ;; SOURCE: `http://lists.gnu.org/archive/html/emacs-orgmode/2011-04/msg00761.html'
@@ -52,11 +34,6 @@
 (autoload 'org-bbdb-open "org-bbdb" "The big-brother database and org-mode." t)
 
 (after "org"
-  ;; (require 'org-agenda)
-  ;; (require 'org-capture)
-  ;; (require 'org-indent)
-  
-  ;; TODO: split these up - move them earlier in the config (if possible)
   (setq org-return-follows-link t ;; NOTE: use RETURN to follow links
 	org-completion-use-ido t ;; NOTE: enable `ido-mode' for target (buffer) completion
 	org-outline-path-complete-in-steps t ;; NOTE: targets complete in steps - 1. filename 2. <tab> next level of targets
@@ -65,16 +42,13 @@
 	;; org-fontify-done-headline t
 	;; org-read-date-display-live nil ;; NOTE: disable the live date-display
 	;; org-insert-mode-line-in-empty-file t
-	;; appearance
 	;; org-odd-levels-only t ;; NOTE: use only odd levels for an outline
 	;; org-hide-leading-stars t ;; NOTE: hide leading stars in a headline
 	;; org-treat-S-cursor-todo-selection-as-state-change nil ;; NOTE: ignore processing
 	;; org-use-property-inheritance t ;; NOTE: children tasks inherit properties from their parent
 	org-support-shift-select 1 ;; NOTE: enable using SHIFT + ARROW keys to highlight text
-	;; log
 	org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
 	org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
-	;; custom tags
 	org-tags-column -90
 	org-tag-alist '(("COMPUTER_SCIENCE" . ?c)
 			("GENERAL"          . ?g)
@@ -91,19 +65,14 @@
 			("TRAVEL"           . ?t)
 			("WRITING"          . ?w)
 			("UNIVERSITY"       . ?u))
-	;; scheduling
 	org-deadline-warning-days 7
 	org-timeline-show-empty-dates t
 	org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
 	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
-	;; org structure
 	;; org-structure-template-alist ;; TODO: ...
-	;; notes
 	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
 	org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
-	;; `org-archive'
 	org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
-	;; `org-refile'
 	org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
 	org-refile-use-outline-path 'file ;; NOTE: targets start with the file name - allows creating level 1 tasks
 	org-refile-allow-creating-parent-nodes 'confirm))  ;; NOTE: allow refile to create parent tasks with confirmation
@@ -112,15 +81,12 @@
 ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Handling-links.html'
 (after "org-link"
   (org-add-link-type "ebib" 'ebib)
-
+  ;; TODO: create an ebib entry which links to ERC logs (NOTE: this would require `erc-log-mode' from MELPA)
   ;; TODO: add more citation types to ebib
   (org-add-link-type "cite" 'ebib
 		     (lambda (path desc format)
 		       (cond ((eq format 'latex)
 			      (format "\\cite{%s}" path)))))
-
-  ;; TODO: create an ebib entry which links to ERC logs
-  ;; NOTE: this would require `erc-log-mode' from MELPA
 
   ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
   (setq org-link-abbrev-alist '(("google" . "http://www.google.com/search?q=")
@@ -174,23 +140,11 @@
 (autoload 'org-capture "org-capture" "Quickly capture tasks and notes with `org-mode'." t)
 
 ;;; IMPORTANT: capture templates (WARNING: do not use 'C' or 'q' characters for binding)
-;; TODO: custom `org-capture' templates
-;;       - school
-;;       - notes
-;;       - journal
 (after "org-capture"
   (setq org-capture-templates
-	'(;; ("L" "Library" entry (file+headline (expand-file-name user-org-university-file) "Library")
-	  ;;  "** %^{Title} %?%^g\n - Borrowed %^t\n - Due: %^t\n\n" :empty-lines 1 :immediate-finish 1)
-	  ;; ("U" "University Course" entry (file+headline (expand-file-name user-org-university-file) "Courses")
-	  ;;  "%(add-course)" :empty-lines 1 :immediate-finish 1)
-	  ;; ("A" "Assignment" plain (file+function (expand-file-name user-org-university-file) course-code)
-	  ;;  "*** TODO %^{Title} %?%^g\n DEADLINE: %^T\n\n" :empty-lines 1 :immediate-finish 1)
+	'(("j" "Journal" plain (file+datetree+prompt (expand-file-name user-org-journal-file) "%K - %a\n%i\n%?\n"))
 	  ;; ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
 	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
-	  ;; ("j" "Journal" entry (file+datetree (expand-file-name user-org-journal-file))
-	  ;;  "* %U\n%?\n%i\n")
-	  ("j" "Journal" plain (file+datetree+prompt (expand-file-name user-org-journal-file) "%K - %a\n%i\n%?\n"))
 	  ("n" "Notes" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
 	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 	  ("g" "General" entry (file+headline (expand-file-name user-org-notes-file) "General")
@@ -217,22 +171,8 @@
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
 (autoload 'org-babel-load-file "ob-tangle" "Interact with programming languages in `org-mode'." t)
 
-(after "ob-tangle"
-  ;; (require 'ob-lisp)
-
-  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t)
-							   (lisp . t)
-							   (maxima . t)
-							   (scheme . t)
-							   (haskell . t)
-							   (latex . t)
-							   (R . nil)
-							   (gnuplot . nil)
-							   (perl . nil)
-							   (python . nil)
-							   (ruby . nil)
-							   (screen . t)
-							   (sh . t)))
+(after "ob"
+  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t) (lisp . t) (maxima . t) (scheme . t) (haskell . t) (latex . t) (ruby . t) (screen . t) (sh . t) (R . nil) (gnuplot . nil) (perl . nil) (python . nil)))
 
   (setq org-confirm-babel-evaluate nil ;; NOTE: no confirmation before evaluating code
 	org-src-fontify-natively t ;; NOTE: enable fontify in source code blocks
@@ -843,18 +783,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; NOTE: enables auto-complete globally
   (ac-config-default))
 
-;;; IMPORTANT: emacs snippets
-;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
-;;(autoload 'yas-minor-mode-on "yasnippet" "Emacs snippets." t)
-(require 'yasnippet)
-
-(after "yasnippet"
-  (diminish-minor-mode "yasnippet" 'yas-minor-mode)
-  (setq yas-snippet-dirs `(,(expand-file-name (concat user-emacs-directory "snippets/"))))
-  (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
-
-  (add-hook 'prog-mode-hook #'yas-minor-mode-on))
-
 ;;; IMPORTANT: smart completion
 (defun smart-completion ()
   "Implement a way of selecting the completion system."
@@ -1080,26 +1008,14 @@ Although this is interactive, call this with \\[browse-url]."
 (add-tag-to-category "misc" "EDIT")
 (add-tag-to-category "misc" "TEMP")
 (add-tag-to-category "misc" "TEST")
+(add-tag-to-category "misc" "EXAMPLE")
 
 ;;(custom-comment-mode t)
 (highlight-custom-comment-tags) ;; TEMP: call this until the mode works ...
 
-;; IMPORTANT: google translate
-;; SOURCE: `https://github.com/manzyuk/google-translate'
-;; (require 'google-translate)
-
-;; (after "google-translate"
-;;   (setq google-translate-enable-ido-completion t
-;; 	;; google-translate-default-source-language "auto"
-;; 	;; google-translate-default-target-language "en"
-;; 	google-translate-show-phonetic t)
-
-;;   (global-set-key (kbd "C-c r") #'google-translate-at-point-reverse)
-;;   (global-set-key (kbd "C-c R") #'google-translate-query-translate-reverse))
-
 ;;; IMPORTANT: rainbow delimiters
 ;; SOURCE: `http://www.emacswiki.org/RainbowDelimiters'
-(require 'rainbow-delimiters)
+(autoload 'rainbow-delimiters-mode "rainbow-delimiters" "..." t)
 
 (after "rainbow-delimiters"
   ;; (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
@@ -1132,9 +1048,8 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
-;; (when (display-graphic-p)
-;;   (require 'smart-mode-line))
-(require 'smart-mode-line)
+(when (display-graphic-p)
+  (require 'smart-mode-line))
 
 (after "smart-mode-line"
   ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" (getenv "CONFIG_SCRIPTS_DIR")) ":config:"))
@@ -1158,7 +1073,8 @@ Although this is interactive, call this with \\[browse-url]."
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"         ":mail:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"         ":news:"))
 
-  (setq sml/name-width 1
+  (setq sml/battery-format "%p%%"
+	sml/name-width 0
 	sml/mode-width 0
 	sml/shorten-directory t
 	sml/theme 'light)
@@ -1167,7 +1083,6 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: journal entries with `org-mode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
-;; (require 'org-journal)
 (autoload 'org-journal-new-entry "org-journal" "Manage journals with `org-mode'." t)
 
 (after "org-journal"
@@ -1196,7 +1111,7 @@ Although this is interactive, call this with \\[browse-url]."
 
   (diminish-minor-mode "ruby-tools")
 
-  TODO: ...
+  ;; TODO: ...
   (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
   (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
 
@@ -1227,6 +1142,18 @@ Although this is interactive, call this with \\[browse-url]."
   (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
 
 (define-key custom-writing-map (kbd "e") #'ebib)
+
+;;; IMPORTANT: emacs snippets
+;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
+;;(autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
+(require 'yasnippet)
+
+(after "yasnippet"
+  (diminish-minor-mode "yasnippet" 'yas-minor-mode)
+  (setq yas-snippet-dirs `(,(expand-file-name (concat user-emacs-directory "snippets/"))))
+  (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
+
+  (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
 (provide 'user-config)
 ;;; user-config.el ends here
