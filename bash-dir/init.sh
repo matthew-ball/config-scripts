@@ -38,6 +38,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# TODO: $CONFIG_SCRIPTS_DIR
 ### COMMENT: bash aliases (sourced from ~/.conf-scripts/bash-dir/aliases.sh)
 if [ -f ~/.config-scripts/bash-dir/aliases.sh ]; then
     . ~/.config-scripts/bash-dir/aliases.sh

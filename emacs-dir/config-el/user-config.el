@@ -1099,28 +1099,6 @@ Although this is interactive, call this with \\[browse-url]."
 
 (define-key custom-writing-map (kbd "n") #'deft)
 
-;; IMPORTANT: `inf-ruby'
-;; IMPORTANT: `rvm'
-;; IMPORTANT: `rinari'
-;; IMPORTANT: `ruby-tools'
-(after "ruby-mode"
-  (require 'inf-ruby) ;; inferior ruby
-  (require 'rvm) ;; ruby virtual machine
-  (require 'rinari) ;; ruby on rails environment
-  (require 'ruby-tools)
-
-  (diminish-minor-mode "ruby-tools")
-
-  ;; TODO: ...
-  (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
-  (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
-
-  (unless (keymapp ruby-programming-map) (setq ruby-programming-map (make-sparse-keymap)))
-
-  (define-key global-map ruby-programming-prefix-key ruby-programming-map)
-  (define-key ruby-programming-map (kbd "r") #'inf-ruby)
-  (define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby))
-
 ;;; IMPORTANT: dictionary
 (autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
 
