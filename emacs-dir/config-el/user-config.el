@@ -67,7 +67,7 @@
 			("UNIVERSITY"       . ?u))
 	org-deadline-warning-days 7
 	org-timeline-show-empty-dates t
-	org-use-tag-inheritance nil ;; NOTE: disable tag inheritance
+	org-use-tag-inheritance t
 	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
 	;; org-structure-template-alist ;; TODO: ...
 	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
@@ -452,7 +452,7 @@
 	erc-remove-parsed-property nil
 	erc-prompt #'custom-erc-prompt
         erc-join-buffer 'bury
-        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#lisp" "#ruby" "#ubuntu-offtopic" "#ubuntu-mars" "#ubuntu-ops" "#ubuntu-ops-team")))
+        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#lisp" "#ruby" "#ubuntu-offtopic" "##programming" "#ubuntu-ops" "#ubuntu-ops-team")))
 
   (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
 
@@ -583,6 +583,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         gnus-agent-article-alist-save-format 2 ;; NOTE: compress cache
 	gnus-select-method '(nnml "")
 	gnus-check-new-newsgroups nil ;; NOTE: suppress checking for new groups
+	gnus-check-bogus-newsgroups nil ;; ...
         gnus-save-newsrc-file nil ;; NOTE: turn off writing the `.newsrc' file
         gnus-read-newsrc-file nil ;; NOTE: ignore the `.newsrc' file
         gnus-interactive-exit nil
@@ -590,28 +591,29 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]"
         gnus-invalid-group-regexp "[:`'\"]\\|^$"
         gnus-permanently-visible-groups "mail"
+        gnus-thread-ignore-subject t	
         gnus-thread-hide-subtree t
         gnus-fetch-old-headers t
 	gnus-show-all-headers nil
 	gnus-group-line-format "%M%S%p%P%y:%B%(%G%)\n"
 	gnus-group-mode-line-format " %%b {%S}"
+	gnus-article-mode-line-format " %S%m"
 	gnus-summary-mode-line-format " %p %Z"
 	gnus-summary-line-format "%U%R%z%I%(%[ %-18,18f%]%) %s\n"
-	gnus-article-mode-line-format " %S%m"
+	gnus-summary-gather-subject-limit 'fuzzy
 	gnus-summary-display-arrow t
-	;; gnus-use-trees t
-        gnus-thread-ignore-subject t
+        gnus-summary-thread-gathering-function #'gnus-gather-threads-by-subject	
+	;; gnus-use-trees t	
 	;; gnus-use-dribble-file t
 	;; gnus-dribble-directory (concat user-emacs-directory "gnus/")
         gnus-always-read-dribble-file t ;; NOTE: don't bugger me with dribbles
-        gnus-summary-thread-gathering-function #'gnus-gather-threads-by-subject
 	gnus-visible-headers (concat "^From:\\|^Subject:" "\\|^To:\\|^Cc:\\|^Date:")
-        gnus-posting-styles '((".*" (name "Matthew Ball")) ("gmail" (address "mathew.ball@gmail.com"))))
+        gnus-posting-styles '((".*" (name "Matthew Ball")) ("mail" (address "mathew.ball@gmail.com"))))
 
   (add-hook 'gnus-group-mode-hook #'gnus-topic-mode) ;; NOTE: topic mode - tree view - is always active
 
   ;; NOTE: html display
-  (setq mm-text-html-renderer 'w3m
+  (setq mm-text-html-renderer 'shr
 	mm-inline-large-images 'resize
 	mm-inline-text-html-with-images t
 	mm-inline-text-html-with-w3m-keymap nil)
@@ -780,8 +782,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	;; ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
 	ac-source-yasnippet '(action . #'yas-expand))
 
-  ;; NOTE: enables auto-complete globally
-  (ac-config-default))
+  (ac-config-default)
+
+  ;; (add-hook 'prog-mode-hook #'auto-complete-mode)
+  (add-hook 'text-mode-hook #'auto-complete-mode))
 
 ;;; IMPORTANT: smart completion
 (defun smart-completion ()

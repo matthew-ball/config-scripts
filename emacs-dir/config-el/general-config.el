@@ -666,6 +666,7 @@
   (defun turn-on-custom-dired ()
     "Modify the default `dired' behaviour slightly."
     (turn-on-dired-find-alternate-file)
+    (turn-on-gnus-dired-mode)
     (dired-hide-details-mode t) ;; NOTE: hide file details
     ;; NOTE: set `dired-x' buffer-local variables here
     (dired-omit-mode))
