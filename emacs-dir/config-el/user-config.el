@@ -85,8 +85,8 @@
   ;; TODO: add more citation types to ebib
   (org-add-link-type "cite" 'ebib
 		     (lambda (path desc format)
-		       (cond ((eq format 'latex)
-			      (format "\\cite{%s}" path)))))
+		       (cond
+			((eq format 'latex) (format "\\cite{%s}" path)))))
 
   ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
   (setq org-link-abbrev-alist '(("google" . "http://www.google.com/search?q=")
@@ -452,7 +452,7 @@
 	erc-remove-parsed-property nil
 	erc-prompt #'custom-erc-prompt
         erc-join-buffer 'bury
-        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#lisp" "#ruby" "#ubuntu-offtopic" "##programming" "#ubuntu-ops" "#ubuntu-ops-team")))
+        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#lisp" "#ruby" "#ubuntu-th" "#ubuntu-offtopic" "##programming" "#ubuntu-ops" "#ubuntu-ops-team")))
 
   (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
 
@@ -525,7 +525,10 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
       (switch-to-buffer channel)) ;; NOTE: ... and if so, just switch to buffer
     (erc-cmd-JOIN channel))) ;; NOTE: need to be in an existing ERC session for this command to work
 
-(define-key custom-internals-map (kbd "b") #'custom-erc-switch-buffer)
+(global-set-key (kbd "<f4>") #'erc-start-or-switch)
+(global-set-key (kbd "S-<f4>") #'custom-erc-switch-buffer)
+(define-key custom-internals-map (kbd "I") #'erc-start-or-switch)
+(define-key custom-internals-map (kbd "i") #'custom-erc-switch-buffer)
 
 ;;; IMPORTANT: gnus
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryGnus'
@@ -575,8 +578,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
   ;; IMPORTANT: gnus settings
-  (setq gnus-use-full-window t
-	;;gnus-use-full-window nil ;; NOTE: don't ruin my frame!
+  (setq ;;gnus-use-full-window t
+	gnus-use-full-window nil ;; NOTE: don't ruin my frame!
 	gnus-adaptive-pretty-print t
 	gnus-agent-plugged nil
         gnus-agent-expire-all t  ;; NOTE: allow uncaching of unread articles
@@ -635,7 +638,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (setq imap-ssl-program "openssl s_client -tls1 -connect %s:%p" ;; NOTE: set ssl
         imap-log t ;; NOTE: log the imap session
         imap-store-password t ;; NOTE: store the session password
-	gnus-secondary-select-methods `((nntp "news.gmane.org")
+	gnus-secondary-select-methods `(;; (nntp "news.gmane.org")
 					;; ,(custom-imap-server "anu" "anumail.anu.edu.au")
 					;; ,(custom-imap-server "gmail" "imap.gmail.com")
 					(nnimap "gmail"
@@ -652,6 +655,9 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
         smtpmail-default-smtp-server "smtp.gmail.com"
         smtpmail-smtp-service 587
         smtpmail-auth-credentials '(("smtp.gmail.com" 587 user-primary-email-address nil))))
+
+(global-set-key (kbd "C-<f4>") #'gnus)
+(define-key custom-internals-map (kbd "e") #'gnus)
 
 ;;; IMPORTANT: abbreviations
 ;; SOURCE: `http://www.emacswiki.org/emacs/AbbrevMode'
@@ -978,9 +984,10 @@ Although this is interactive, call this with \\[browse-url]."
 	  (w3m w3m-home-page)
 	(w3m url)))))
 
+(global-set-key (kbd "M-S-<f4>") #'custom-w3m-switch-buffer)
 (define-key custom-internals-map (kbd "s") #'w3m-search)
 (define-key custom-internals-map (kbd "S") #'w3m-search-new-session)
-(define-key custom-internals-map (kbd "B") #'custom-w3m-switch-buffer)
+(define-key custom-internals-map (kbd "B") 'custom-w3m-switch-buffer)
 
 ;;; IMPORTANT: highlight custom comment tags
 (require 'custom-comments)

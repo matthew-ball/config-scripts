@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(defgroup erc-star-services nil "ERC Freenode services.")
+
 ;; IMPORTANT: freenode <*>Serv interaction commands
 ;; SOURCE: `http://keramida.wordpress.com/2008/11/04/extending-erc-with-emacs-lisp/'
 ;; SOURCE: `http://paste.ubuntu.com/7629077/'
@@ -39,11 +41,12 @@
 (defun service-commands (service)
   (mapcar #'(lambda (elem (car elem)) service)))
 
-;; NOTE: CHANSERV
+;; NOTE: Freenode `ChanServ' commands:
+;; ...
 (erc-server-services "chanserv") ;; => erc-cmd-CHANSERV
 
-(defcustom user-modes-list '("D" "g" "i" "Q" "R" "w" "z"))
-(defcustom channel-modes-list '("b" "C" "c" "e" "f" "F" "g" "i" "I" "j" "k" "l" "L" "m" "n" "p" "P" "q" "Q" "r" "s" "t" "z"))
+(defcustom user-modes-list '("D" "g" "i" "Q" "R" "w" "z") "User modes." :group 'erc-star-services)
+(defcustom channel-modes-list '("b" "C" "c" "e" "f" "F" "g" "i" "I" "j" "k" "l" "L" "m" "n" "p" "P" "q" "Q" "r" "s" "t" "z") "Channel modes." :group 'erc-star-services)
 
 ;; (defun user-mode-command (user-flag)
 ;;   "..."
@@ -68,30 +71,16 @@
 
 (erc-server-services "memoserv") ;; => erc-cmd-MEMOSERV
 
-;; (defun erc-cmd-MS (&rest junk)
-;;   "Send `MemoServ' command to server process in an `erc-mode' buffer."
-;;   (let ((choice (ido-completing-read "Select command: " memoserv-commands-list)))
-;;     (erc-message "PRIVMSG" (concat "MemoServ " choice " help") nil)))
-
-;; (defcustom memoserv-commands-alist '(("DEL" . "Alias for DELETE.")
-;; 				     ("DELETE" . "Deletes memos.")
-;; 				     ("FORWARD" . "Forwards a memo.")
-;; 				     ("HELP" . "Displays contextual help information.")
-;; 				     ("IGNORE" . "Ignores memos.")
-;; 				     ("LIST" . "List of all user memos.")
-;; 				     ("READ" . "Reads a memo.")
-;; 				     ("SEND" . "Sends a memo to a user.")
-;; 				     ("SENDOPS" . "Sends a memo to all ops on a channel.")) "List of Freenode's `MemoServ' commands.")
-
-
-(defcustom memoserv-commands-alist '((d . delete)
-				     (f . forward)
-				     (h . help)
-				     (i . ignore)
-				     (l . list-memos)
-				     (r . read-memo)
-				     (s . send-memo)
-				     (S . send-ops-memo)))
+(defcustom memoserv-commands-alist '((DEL . "Alias for DELETE.")
+				     (DELETE . "Deletes memos.")
+				     (FORWARD . "Forwards a memo.")
+				     (HELP . "Displays contextual help information.")
+				     (IGNORE . "Ignores memos.")
+				     (LIST . "List of all user memos.")
+				     (READ . "Reads a memo.")
+				     (SEND . "Sends a memo to a user.")
+				     (SENDOPS . "Sends a memo to all ops on a channel."))
+  "List of Freenode's `MemoServ' commands." :group 'erc-star-services)
 
 
 ;; NOTE: Freenode `NickServ' commands:
@@ -105,41 +94,35 @@
 ;; SET             Sets various control flags.
 ;; UNGROUP         Removes a nickname from your account.
 ;;  
-;; Other commands: ACC, ACCESS, CERT, DROP, HELP, LISTOWNMAIL, 
-;;                 LOGOUT, REGAIN, SETPASS, STATUS, TAXONOMY, 
-;;                 VACATION, VERIFY
+;; Other commands: ACC, ACCESS, CERT, DROP, HELP, LISTOWNMAIL, LOGOUT, REGAIN, SETPASS, STATUS, TAXONOMY, VACATION, VERIFY
 
 (erc-server-services "nickserv") ;; => erc-cmd-NICKSERV
 
-;; (defun erc-cmd-NS ()
-;;   ""
-;;   (let ((choice (ido-completing-read "Select command: " nickserv-commands-list)))
-;;     (erc-message "PRIVMSG" (format "NickServ help %s" choice))))
-
-(defcustom nickserv-commands-alist '(("GHOST" . "Reclaims use of a nickname.")
-				     ("GROUP" . "Adds a nickname to user account.")
-				     ("IDENTIFY" . "Identifies to services for a nickname.")
-				     ("INFO" . "Displays information on registrations.")
-				     ("LISTCHANS" . "Lists channels that user has access to.")
-				     ("REGISTER" . "Registers a nickname.")
-				     ("RELEASE" . "Releases a service enforcer.")
-				     ("SET" . "Sets various control flags.")
-				     ("UNGROUP" . "Removes a nicknae from user account.")) "List of Freenode's `NickServ' commands.")
+(defcustom nickserv-commands-alist '((GHOST . "Reclaims use of a nickname.")
+				     (GROUP . "Adds a nickname to user account.")
+				     (IDENTIFY . "Identifies to services for a nickname.")
+				     (INFO . "Displays information on registrations.")
+				     (LISTCHANS . "Lists channels that user has access to.")
+				     (REGISTER . "Registers a nickname.")
+				     (RELEASE . "Releases a service enforcer.")
+				     (SET . "Sets various control flags.")
+				     (UNGROUP . "Removes a nicknae from user account."))
+  "List of Freenode's `NickServ' commands." :group 'erc-star-services)
 
 ;; NOTE: other (nickserv) commands
-(add-to-list 'nickserv-commands-alist '("ACC" . "Description"))
-(add-to-list 'nickserv-commands-alist '("ACCESS" . "Description"))
-(add-to-list 'nickserv-commands-alist '("CERT" . "Description"))
-(add-to-list 'nickserv-commands-alist '("DROP" . "Description"))
-(add-to-list 'nickserv-commands-alist '("HELP" . "Description"))
-(add-to-list 'nickserv-commands-alist '("LISTOWNMAIL" . "Description"))
-(add-to-list 'nickserv-commands-alist '("LOGOUT" . "Description"))
-(add-to-list 'nickserv-commands-alist '("REGAIN" . "Description"))
-(add-to-list 'nickserv-commands-alist '("SETPASS" . "Description"))
-(add-to-list 'nickserv-commands-alist '("STATUS" . "Description"))
-(add-to-list 'nickserv-commands-alist '("TAXONOMY" . "Description"))
-(add-to-list 'nickserv-commands-alist '("VACATION" . "Description"))
-(add-to-list 'nickserv-commands-alist '("VERIFY" . "Description"))
+(add-to-list 'nickserv-commands-alist '(ACC . "Description"))
+(add-to-list 'nickserv-commands-alist '(ACCESS . "Description"))
+(add-to-list 'nickserv-commands-alist '(CERT . "Description"))
+(add-to-list 'nickserv-commands-alist '(DROP . "Description"))
+(add-to-list 'nickserv-commands-alist '(HELP . "Description"))
+(add-to-list 'nickserv-commands-alist '(LISTOWNMAIL . "Description"))
+(add-to-list 'nickserv-commands-alist '(LOGOUT . "Description"))
+(add-to-list 'nickserv-commands-alist '(REGAIN . "Description"))
+(add-to-list 'nickserv-commands-alist '(SETPASS . "Description"))
+(add-to-list 'nickserv-commands-alist '(STATUS . "Description"))
+(add-to-list 'nickserv-commands-alist '(TAXONOMY . "Description"))
+(add-to-list 'nickserv-commands-alist '(VACATION . "Description"))
+(add-to-list 'nickserv-commands-alist '(VERIFY . "Description"))
 
 (provide 'erc-star-serv)
 ;;; erc-star-serv.el ends here

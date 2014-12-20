@@ -553,11 +553,42 @@
 ;; SOURCE: `http://emacswiki.org/emacs/CategoryEshell'
 (autoload 'eshell "eshell" "GNU Emacs Shell." t)
 
+(defmacro with-face (str &rest properties)
+  `(propertize ,str 'face (list ,@properties)))
+
 (after "eshell"
   (require 'esh-mode)
   (require 'esh-util)
   (require 'em-term)
   (require 'dired) ;; NOTE: ...
+
+  (defun eshell/git-branch (&rest junk)
+    "Return the current git branch, if applicable."
+    (let ((branch (shell-command-to-string "git branch")))
+      (string-match "^\\* \\(.*\\)" branch)
+      (match-string 1 branch)))
+
+  (defun eshell/clear (&rest junk)
+    "Clear the eshell buffer."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer)))
+
+  (defun eshell-prompt ()
+    "Fancy prompt for `eshell'."
+    (concat
+     (with-face user-login-name :foreground "dim gray" :weight 'bold)
+     "@"
+     (with-face (car (split-string system-name "\\.")) :foreground "dim gray" :weight 'bold)
+     ":"
+     (with-face (eshell/pwd) :foreground "blue" :weight 'bold)
+     (if (string= (substring (shell-command-to-string "git branch") 0 1) "f")
+	 " "
+       (with-face (concat " (" (eshell/git-branch) ")") :foreground "yellow" :weight 'bold))
+     (if (= (user-uid) 0)
+	 (with-face " #" :foreground "red")
+       "$")
+     " "))
 
   (setq eshell-prompt-function #'eshell-prompt
 	;;eshell-ls-use-in-dired t  ;; NOTE: use eshell to read directories in `dired'
@@ -588,70 +619,11 @@
 
   (add-hook 'eshell-preoutput-filter-functions #'ansi-color-filter-apply))
 
-
 (after "em-term"
   (add-to-list 'eshell-visual-commands "htop")
   (add-to-list 'eshell-visual-commands "aptitude"))
 
-(defun eshell/git-branch (&rest junk)
-  "Return the current git branch, if applicable."
-  (let ((branch (shell-command-to-string "git branch")))
-    (string-match "^\\* \\(.*\\)" branch)
-    (match-string 1 branch)))
-
-(defun eshell/clear (&rest junk)
-  "Clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
-
-;; (defun eshell/deb (&rest args)
-;;   "Interface with a debian apt system."
-;;   (eshell-eval-using-options
-;;    "deb" args
-;;    '((?f "find" t find "list available packages matching a pattern")
-;;      (?i "installed" t installed "list installed debs matching a pattern")
-;;      (?l "list-files" t list-files "list files of a package")
-;;      (?s "show" t show "show an available package")
-;;      (?v "version" t version "show the version of an installed package")
-;;      (?w "where" t where "find the package containing the given file")
-;;      (nil "help" nil nil "show this usage information")
-;;      :show-usage)
-;;    (eshell-do-eval
-;;     (eshell-parse-command
-;;      (cond
-;;       (find
-;;        (format "apt-cache search %s" find))
-;;       (installed
-;;        (format "dlocate -l %s | grep '^.i'" installed))
-;;       (list-files
-;;        (format "dlocate -L %s | sort" list-files))
-;;       (show
-;;        (format "apt-cache show %s" show))
-;;       (version
-;;        (format "dlocate -s %s | egrep '^(Package|Status|Version):'" version))
-;;       (where
-;;        (format "dlocate %s" where))))
-;;     t)))
-
-(defmacro with-face (str &rest properties)
-  `(propertize ,str 'face (list ,@properties)))
-
-(defun eshell-prompt ()
-  "Fancy prompt for `eshell'."
-  (concat
-   (with-face user-login-name :foreground "dim gray" :weight 'bold)
-   "@"
-   (with-face (car (split-string system-name "\\.")) :foreground "dim gray" :weight 'bold)
-   ":"
-   (with-face (eshell/pwd) :foreground "blue" :weight 'bold)
-   (if (string= (substring (shell-command-to-string "git branch") 0 1) "f")
-       " "
-     (with-face (concat " (" (eshell/git-branch) ")") :foreground "yellow" :weight 'bold))
-   (if (= (user-uid) 0)
-       (with-face " #" :foreground "red")
-     "$")
-   " "))
+(global-set-key (kbd "M-<f4>") #'eshell)
 
 ;;; IMPORTANT: directory editor (extensions)
 ;; SOURCE: `http://emacswiki.org/emacs/DiredMode'
@@ -704,34 +676,10 @@
   (define-key dired-mode-map (kbd "^") #'(lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
 
 ;;; IMPORTANT: general functions
-;; (defun eval-and-replace ()
-;;   "Replace the preceding s-expression with its value."
-;;   (interactive)
-;;   (backward-kill-sexp)
-;;   (condition-case nil
-;;       (prin1 (eval (read (current-kill 0)))
-;;              (current-buffer))
-;;     (error (message "Invalid expression")
-;;            (insert (current-kill 0)))))
-
 (defun switch-to-scratch (&rest junk)
   "Switch to scratch buffer."
   (interactive)
   (switch-to-buffer "*scratch*"))
-
-;; (defun select-previous-window ()
-;;   "Switch to the previous window"
-;;   (interactive)
-;;   (select-window (previous-window)))
-
-;; (defun flip-windows ()
-;;   "Flip windows."
-;;   (interactive)
-;;   (let (buffer (buffer-name))
-;;     (save-excursion
-;;       (delete-other-windows)
-;;       (split-window-below)
-;;       (switch-to-buffer buffer))))
 
 ;; SOURCE: `http://wenshanren.org/?p=298'
 (defun edit-current-file-as-root ()

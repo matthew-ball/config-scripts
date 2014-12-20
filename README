@@ -65,6 +65,9 @@ Creates a configuration for a desktop environment.
 *** Laptop Branch
 Creates a configuration for a laptop environment.
 
+*** Server Branch
+Creates a configuration for a server environment. This is essentially without development tools.
+
 ** Configuration Files
 This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required. The script ~config-setup.sh~ (which should have been distributed with this file) will install the configuration project.
 

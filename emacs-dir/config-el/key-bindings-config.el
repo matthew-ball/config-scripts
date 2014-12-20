@@ -60,13 +60,6 @@
 (global-set-key (kbd "<f2>") #'server-start) ;; NOTE: start an emacs --daemon service
 (global-set-key (kbd "C-<f2>") #'server-shutdown) ;; NOTE: kill the current emacs --daemon session
 
-;; IMPORTANT: emacs interactive functions (NOTE: these are my most commonly used shortcuts)
-;; TODO: these should probably be set in `user-config.el'
-(global-set-key (kbd "<f4>") #'erc-start-or-switch)
-(global-set-key (kbd "S-<f4>") #'custom-erc-switch-buffer)
-(global-set-key (kbd "M-<f4>") #'eshell)
-(global-set-key (kbd "C-<f4>") #'gnus)
-
 ;; IMPORTANT: custom key maps
 ;; NOTE: this creates a map inside the global map
 (defmacro custom-keymap (name prefix)
@@ -96,7 +89,6 @@
 (define-key custom-programming-map (kbd "s") #'slime-connect) ;; TODO: `user-config.el'
 (define-key custom-programming-map (kbd "S") #'slime-disconnect) ;; TODO: `user-config.el'
 (define-key custom-programming-map (kbd "SPC") #'slime-selector) ;; TODO: `user-config.el'
-
 
 ;; IMPORTANT: writing specific keys
 (custom-keymap writing (kbd "<f6>"))
