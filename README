@@ -1,128 +1,67 @@
+#+TITLE: Configuration Script
+#+AUTHOR: Matthew Ball
 
-* The ~configuration script~ project
-** XFCE
+* Introduction
+- This configuration project is a work in progress. It attempts to create an environment which is consistent across systems and easily set up.
+
+** Git Branches
+- The *laptop* branch represents the /unstable/ configuration[fn:development-and-current].
+- The *desktop* branch represents the /stable/ configuration.
+- The *server* branch represents the /minimal/ configuration.
+
+* ~configuration script~ :: laptop branch
 This configuration project /essentially/ replaces xfwm4 with StumpWM under an XFCE environment. The base system used in the development has been Debian Squeeze/Wheezy/Jessie but presumably it should be independent of specific GNU/Linux distribution (and indeed, desktop environment); the configuration represents a possible "desktop" shell for GNU environments; ideally this "shell" will work across multiple distributions.
 
-# There are two separate branches associated with this configuration; one is designed for use with laptop (and portable) systems, the other for desktop systems. The differences are subtle and either branch can be used on the other system without hindrance - the separation simply provides convenience to the user.
+I describe this as "essentially" for the reason that, to use this configuration effectively, it is desirable that you use GNU Emacs, of course, it's not /impossible/ to use the configuration without it, but it does make certain things easier. As such, this configuration is designed primarily to maximize the use, and work-flow, of GNU Emacs. With this in mind, this configuration creates a simple distraction-free desktop environment. To cater to this demand, the window manager StumpWM was chosen; StumpWM is a /tiling/ window manager (although, it offers /floating/ window management too).
 
-I describe this as "essentially" for the reason that, to use this configuration effectively, it is desirable that you use GNU Emacs[fn:emacs-version], of course, it's not /impossible/ to use the configuration without it, but it does make certain things easier. As such, this configuration is designed primarily to maximize the use, and work-flow, of GNU Emacs. With this in mind, this configuration creates a simple distraction-free desktop environment. To cater to this demand, the window manager StumpWM was chosen; StumpWM is a /tiling/ window manager (although, it offers /floating/ window management too). An [[file:config-setup.sh][install]] script is provided which includes functionality to ~save~, and ~update~ the configuration script project.
+The configuration sets up an effective working system; unique workstations for each task - editing, browsing, misc, etc - which launch applications to specific workstations. This is a paradigm shift in window management, with an emphasis on focusing on tasks.
 
-The configuration sets up a desirable[fn:subjective] working system; unique workstations for each task - editing, browsing, misc, etc - which launch applications to specific workstations. This is a paradigm shift in window management, with an emphasis on focusing on tasks.
-
-The ~configuration script~ project is designed for use with the following applications:
-+ =BASH= Shell :: [[file:bash-dir/README][README]]
-  - Version: 4.2.37(1)
-+ =StumpWM= Window Manager :: [[file:stumpwm-dir/README][README]]
-  - Version: 0.9.8
-+ =GNU Emacs= Editor :: [[file:emacs-dir/README][README]]
-  - Version: 24.3.50.1
-+ =htop= System Monitor :: An interactive process viewer.
-  - Version: 1.0.1
-+ =aptitude= Package Manager :: An ncurses front-end to ~apt~.
-  - Version: 0.6.8.2-1
-+ =thunar= File Manager :: A graphical file manager.
-  - Version: 1.2.3
-+ =chromium= Web Browser :: A web browser.
-  - Version: 32
-
-The ~session.sh~ file (which is linked to ~/.xsessionrc) sets environment variables which are read by the StumpWM window manager[fn:login] as the /default/ applications.
-
-The environment variables are:
-+ =FILE_MANAGER= :: =thunar=
-+ =EDITOR= :: =emacsclient -n -c=
-+ =PACKAGE_MANAGER= :: =aptitude=
-+ =SYSTEM_MONITOR= :: =htop=
-
-After a user logs in from LightDM, which is the default login manager for XFCE distributions, the shell executes the user's [[file:~/.xsessionrc][~/.xsessionrc]] file. This configuration is included in the file ~session.sh~ which exports a number of environment variables. These variables are used both by the StumpWM window manager process, the GNU Emacs process, and a terminal with a BASH shell process.
-
-The following applications must be installed separately:
-- emacs24
-- build-essential
-- gcc
-- gdb
-- ghc
-- sbcl
-- strace
-- ltrace
-- chromium
-- sudo
-- screen
-- htop
-- bison
-- flex
-- git
-- prolog
-- guile-2.0
-- texlive
-
-** TODO Git Branches
-*** Main Branch
-Creates a configuration.
-
-*** Desktop Branch
-Creates a configuration for a desktop environment.
-
-*** Laptop Branch
-Creates a configuration for a laptop environment.
-
-*** Server Branch
-Creates a configuration for a server environment. This is essentially without development tools.
+- The ~session.sh~ file (which is linked to [[file:~/.xsessionrc][~/.xsessionrc]]) sets environment variables which are read by GNU Emacs, BASH, and the StumpWM window manager[fn:login] as the /default/ applications.
 
 ** Configuration Files
-This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required. The script ~config-setup.sh~ (which should have been distributed with this file) will install the configuration project.
+- This configuration should be stored in a single directory; the configuration can be put on github (or another service) and pulled/pushed as required.
+- The script ~config-setup.sh~ (which should have been distributed with this file) will install the configuration project - that is, will establish the necessary symbolic links. This script should be run from the configuration scripts project root directory, and it ought to be agnostic to the underlying architecture; though it has primarily been developed on a ~debian~ install.
+- The following list of files is to be linked:
+  |-----------------------+---------------+------------------------------------------|
+  | Source:               | Destination:  | Command:                                 |
+  |-----------------------+---------------+------------------------------------------|
+  | emacs-dir/            | ~/.emacs.d/   | ln -s emacs-dir/ ~/.emacs.d              |
+  | stumpwm-dir/          | ~/.stumpwm.d/ | ln -s stumpwm-dir/ ~/.stumpwm.d          |
+  |-----------------------+---------------+------------------------------------------|
+  | bash-dir/init.sh      | ~/.bashrc     | ln -s bash-dir/init.sh ~/.bashrc         |
+  | bash-dir/profile.sh   | ~/.profile    | ln -s bash-dir/profile.sh ~/.profile     |
+  | xinit-dir/session.sh  | ~/.xsessionrc | ln -s xinit-dir/session.sh ~/.xsessionrc |
+  | xinit-dir/init.sh     | ~/.xinitrc    | ln -s xinit-dir/init.sh ~/.xinitrc       |
+  | screen-dir/init.sh    | ~/.screenrc   | ln -s screen-dir/init.sh ~/.screenrc     |
+  | stumpwm-dir/init.lisp | ~/.stumpwmrc  | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
+  |-----------------------+---------------+------------------------------------------|
 
-# WARNING: The linking process needs to be run from the ~configuration scripts~ project root directory.
+** Default Applications
+- The following applications are assumed /default/ for this configuration to take effect:
+  1. GNU Emacs (24.4.1)
+  2. Chromium
+  3. SBCL
+  4. GNU Screen (4.02.01)
 
-*** List of link files:
-|-----------------------+----------------+------------------------------------------|
-| Source:               | Destination:   | Command:                                 |
-|-----------------------+----------------+------------------------------------------|
-| bash-dir/             | ~/.bash.d/     | ln -s bash-dir/ ~/.bash.d                |
-| emacs-dir/            | ~/.emacs.d/    | ln -s emacs-dir/ ~/.emacs.d              |
-| stumpwm-dir/          | ~/.stumpwm.d/  | ln -s stumpwm-dir/ ~/.stumpwm.d          |
-|-----------------------+----------------+------------------------------------------|
-| bash-dir/init.sh      | ~/.bashrc      | ln -s bash-dir/init.sh ~/.bashrc         |
-| xinit-dir/session.sh  | ~/.xsessionrc  | ln -s xinit-dir/session.sh ~/.xsessionrc |
-| xinit-dir/init.sh     | ~/.xinitrc     | ln -s xinit-dir/init.sh ~/.xinitrc       |
-| stumpwm-dir/init.lisp | ~/.stumpwmrc   | ln -s stumpwm-dir/init.lisp ~/.stumpwmrc |
-| bash-dir/profile.sh   | ~/.bash_profile | ln -s bash-dir/profile.sh ~/.bash_profile |
-|-----------------------+----------------+------------------------------------------|
-
-*** List of non-link files:
-|--------------------|
-| File Name:         |
-|--------------------|
-| [[file:.gitignore][.gitignore]]         |
-| [[file:~/.conf-scripts][README]]             |
-| [[file:bash-dir/README][bash-dir/README]]    |
-| [[file:emacs-dir/README][emacs-dir/README]]   |
-| [[file:stumpwm-dir/README][stumpwm-dir/README]] |
-| [[file:xinit-dir/README][xinit-dir/README]]   |
-| [[file:config-setup.sh][config-setup.sh]]    |
-| [[file:restore-script.sh][restore-script.sh]]  |
-| [[file:backup-script.sh][backup-script.sh]]   |
-|--------------------|
-
-*** TODO create script for symlinking files and directories
-- the symlink command is: =ln -s <src> <dst>=
-- example: =cd; ln -s .conf-scripts/bashrc .bashrc=
-- =config-setup.sh= started
-** Configuration Script
-The [[file:config-setup.sh][config-setup.sh]] script ought to be agnostic to the underlying architecture; though it has primarily been developed on a =debian= install.
-
-An install will just run the [[file:config-setup.sh][config-setup.sh]] script. The script runs the following operations:
-  + Execute =clone= on the /configuration scripts/ project directory from [[http://www.github.com][github]].
-  + Download stumpwm source code and compile.
-  + Run =quicklisp= configuration (available from [[http://www.google.com][here]]).
-  + Execute =symlink= on the appropriate configuration files (from =~/.conf-scripts/=).
-
-The user =BASH= profile is launched with the [[file:bash-dir/profile.sh][bash-dir/profile.sh]] script. Also the [[file:bash-dir/session.sh][bash-dir/session.sh]] script.
-
-The system =startx= command is launched with the [[file:xinit-dir/rc.sh][xinit/init.sh]] script.
- + The window manager =stumpwm= is loaded with the command: 
-   #+BEGIN_SRC shell-script
-     exec sbcl --eval "(ql:quickload 'stumpwm)" --eval "(stumpwm:stumpwm)"
-   #+END_SRC
+- The following packages are assumed /default/ for this configuration to take effect.
+  1. emacs24
+  2. build-essential
+  3. gcc
+  4. gdb
+  5. ghc
+  6. sbcl
+  7. strace
+  8. ltrace
+  9. chromium
+  10. sudo
+  11. screen
+  12. htop
+  13. bison
+  14. flex
+  15. git
+  16. prolog
+  17. guile-2.0
+  18. texlive
 
 *** GNOME Desktop Manager
 - The following command: =sudo update-rc.d -f gdm remove= removes gdm from the boot process.
@@ -133,24 +72,6 @@ The system =startx= command is launched with the [[file:xinit-dir/rc.sh][xinit/i
 - The following command:
 - To start LightDM manually:
 - To restore defaults:
-  
-*** [[file:config-setup.sh][Configuration Script]]
-- The =configuration script= serves three main purposes:
-  1. install the custom configuration
-  2. backup the custom configuration
-  3. restore the custom configuration
-
-*** [[file:backup-script.sh][Backup Script]]
-- the backup script ...
-
-*** [[file:restore-script.sh][Restore Script]]
-- the restore script ...
-
-** Default Applications
-The following applications are assumed /default/ for this configuration to take effect:
-1. GNU Emacs 24
-2. Chromium
-3. SBCL
 
 ** TODO Create a =mailconfig= file for handling the email configuration
 - symlink to ~/.authinfo
@@ -161,7 +82,5 @@ The following applications are assumed /default/ for this configuration to take 
 
 ** TODO create personal dictionary from ~/home/chu/.aspell.en.pws~
 * Footnotes
-[fn:subjective] Obviously this is subjective, these are the features I consider to be most important.
-[fn:broken-link] WARNING: Broken link.
-[fn:emacs-version] GNU Emacs 24.3.50.1
+[fn:development-and-current] Main development is done on the laptop, when a configuration is (arbitrarily) considered "stable" it is merged with the desktop branch. This is the current branch.
 [fn:login] This is actually read by the LightDM process upon logging into the XFCE environment.

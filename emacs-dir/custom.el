@@ -58,7 +58,8 @@
  '(ecb-options-version "2.40")
  '(org-agenda-files
    (quote
-    ("~/Documents/Organisation/school.org" "~/Documents/Organisation/journal.org" "~/Documents/Organisation/projects.org" "~/Documents/Organisation/home.org"))))
+    ("~/Documents/Organisation/school.org" "~/Documents/Organisation/journal.org" "~/Documents/Organisation/projects.org" "~/Documents/Organisation/home.org")))
+ '(send-mail-function (quote smtpmail-send-it)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

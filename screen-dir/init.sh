@@ -41,7 +41,7 @@ bind R resize # resize window session (C-z R)
 bind m monitor # monitor a session (C-z m)
 
 ## NOTE: startup
-screen -t emacs 0 emacsclient -nw -c # start an emacsclient session by default
+# screen -t emacs 0 emacsclient -nw -c # start an emacsclient session by default
 
 select 0 # return control to the first window
 

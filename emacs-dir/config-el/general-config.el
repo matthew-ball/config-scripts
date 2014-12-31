@@ -208,10 +208,18 @@
 
   (ad-activate 'ibuffer)
 
-  ;; TODO: investigate `ibuffer-directory-abbrev-list'
-  ;; (setq ibuffer-directory-abbrev-alist
-  ;; 	'((expand-file-name "~/Documents/" . "Documents")
-  ;; 	  (expand-file-name "~/Programming" . "Programming")))
+  (setq ibuffer-directory-abbrev-alist `((,(expand-file-name (concat user-scripts-directory "emacs-dir/"))   . ":emacs:")
+					 (,(expand-file-name user-emacs-directory)                           . ":emacs:")
+					 ;; NOTE: slightly annoying I have to duplicate
+					 (,(expand-file-name (concat user-scripts-directory "screen-dir/"))  . ":screen:")
+					 (,(expand-file-name (concat user-scripts-directory "bash-dir/"))    . ":bash:")
+					 (,(expand-file-name (concat user-scripts-directory "stumpwm-dir/")) . ":stumpwm:")
+					 (,(expand-file-name (concat user-scripts-directory "xinit-dir/"))   . ":xinit:")
+					 (,(expand-file-name user-scripts-directory)   . ":conf:")
+					 (,(expand-file-name user-writing-directory)   . ":write:")
+					 (,(expand-file-name user-reading-directory)   . ":read:")
+					 (,(expand-file-name user-documents-directory) . ":docs:")
+					 (,(expand-file-name user-public-directory)    . ":public:")))
 
   ;; TODO: need to look at how the regexp is handled here
   ;; (defcustom ibuffer-never-show-regexp '("^ \\*Minibuf-0\\*$"
@@ -401,14 +409,13 @@
 					    (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
   (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
-	ibuffer-marked-char ?✓
+	;; ibuffer-marked-char ?✓
 	;; ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
 	ibuffer-default-sorting-mode 'filename/process ;; NOTE: sort buffers by `buffer-file-name'
 	ibuffer-sorting-mode 'recency
 	ibuffer-expert t ;; NOTE: do not ask for confirmation
-	;;ibuffer-shrink-to-minimum-size t
-	;;ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
-	;;ibuffer-use-other-window t
+	ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
+	ibuffer-use-other-window t
 	ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
 	ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
 	ibuffer-case-fold-search t ;; NOTE: ignore case when searching
@@ -419,7 +426,7 @@
   (defun turn-on-custom-ibuffer ()
     "Modify `ibuffer' behaviour slightly."
     (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
-    ;;(ibuffer-never-show)
+    (ibuffer-never-show)
     (ibuffer-switch-to-saved-filter-groups "default"))
 
   (add-hook 'ibuffer-mode-hook #'turn-on-custom-ibuffer))
@@ -430,7 +437,8 @@
 
 ;;; IMPORTANT: tramp
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
-(autoload 'tramp "tramp" "Remote file manipulation with Tramp." t)
+;;(autoload 'tramp "tramp" "Remote file manipulation with Tramp." t)
+(require 'tramp)
 
 (after "tramp"
   (setq tramp-default-method "ssh")) ;; NOTE: use ssh for tramp
