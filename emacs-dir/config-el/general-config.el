@@ -32,9 +32,7 @@
       pop-up-windows nil
       use-dialog-box nil ;; NOTE: do not use mouse
       mouse-yank-at-point t ;; NOTE: middle click with the mouse yanks at point
-      initial-scratch-message (concat ";; For information about "
-      				      (substring (emacs-version) 0 16)
-      				      " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
+      initial-scratch-message (concat ";; For information about " (substring (emacs-version) 0 16) " and the GNU system, type C-h C-a.\n\n") ;; NOTE: initial scratch message
       completion-ignore-case t ;; NOTE: ignore case in auto-completing text
       read-file-name-completion-ignore-case t ;; NOTE: ignore cases in filenames
       ;; enable-recursive-minibuffers t ;; NOTE: ...
@@ -115,33 +113,28 @@
   ;; (ido-mode 'buffer)
   (ido-everywhere)
 
-  (setq ido-enable-flex-matching t ;; NOTE: enable fuzzy matching
-	ido-enable-regexp t ;; NOTE: enable regexp
-	ido-use-virtual-buffers t ;; NOTE: keep buffers around
-	;;ido-auto-merge-work-directories-length -1 ;; TODO: we'll see...
-	ido-create-new-buffer 'always ;; NOTE: create new buffers (if name does not exist)
+  (setq ido-enable-flex-matching t
+	ido-enable-regexp t
+	ido-use-virtual-buffers t
+	ido-create-new-buffer 'always
 	ido-use-filename-at-point 'ffap-guesser
 	ido-use-url-at-point t
+	ido-file-extensions-order '(".org" ".el" ".lisp" ".asd" ".scm" ".rb" ".c" ".h" ".sh" ".hs" ".py")
 	ido-save-directory-list-file (expand-file-name (concat user-emacs-directory "ido-cache"))
 	ido-work-directory-list `(,(expand-file-name user-home-directory)
-				  ,(expand-file-name user-documents-directory)
-				  ,(expand-file-name user-university-directory)
-				  ,(expand-file-name user-organisation-directory))
+				  ,(expand-file-name user-documents-directory))
 	;; ido-ignore-directories '("~/.emacs.d/snippets") ;; NOTE: ignore snippets
 	;; ido-ignore-files '()
-	ido-file-extensions-order '(".org" ".el" ".lisp" ".asd" ".scm" ".rb" ".c" ".h" ".sh" ".hs" ".py")
 	ido-ignore-extensions t ;; NOTE: ignore extensions
-	;; TODO: can clean up the following ...
 	ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" ".*Completion" "^\*Ido" "^\#[#]?" "^\*trace" "^\*compilation" "^\*GTAGS" "^session\.*" "^\*") ;; NOTE: ignore buffers matching regexp
-	ido-case-fold t ;; NOTE: enable case-insensitivity
-	ido-enable-last-directory-history t ;; NOTE: enable directory history
-	ido-max-work-directory-list 500 ;; NOTE: remember last used directories
-	ido-max-work-file-list 500 ;; NOTE: ... and files
-	ido-max-prospects 7 ;; NOTE: don't spam the mini buffer
-	ido-show-dot-for-dired t ;; NOTE: enable `dired' with `ido-mode'
-	confirm-nonexistent-file-or-buffer nil ;; NOTE: the confirmation is rather annoying
-	read-buffer-completion-ignore-case t ;; NOTE: ignore case when reading a buffer name
-	))
+	ido-case-fold t
+	ido-enable-last-directory-history t
+	ido-max-work-directory-list 250
+	ido-max-work-file-list 250
+	ido-max-prospects 5
+	ido-show-dot-for-dired t
+	confirm-nonexistent-file-or-buffer nil
+	read-buffer-completion-ignore-case t))
 
 (defun recentf-ido-find-file (&rest junk) ;; NOTE: replace recentf-open-files
   "Find a recent file using `ido-mode'."
@@ -156,28 +149,11 @@
 (require 'recentf)
 
 (after "recentf"
-  (setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recent-files") ;; NOTE: recently saved files
-	recentf-max-saved-items 500 ;; NOTE: maximum saved items is 500
-	recentf-max-menu-items 25) ;; NOTE: maximum 25 files in menu
-
-  (defcustom recentf-exclude-list '("\\.yasnippet"
-				    "\\.snippet"
-				    "\\-autoloads.el"
-				    "\\.el.gz"
-				    "COMMIT_EDITMSG"
-				    ".newsrc.eld"
-				    ".newsrc-dribble"
-				    "ido.last"
-				    "smex-items"
-				    "recent-files"
-				    "save-place"
-				    "ac-comphist.dat"
-				    "archive-contents"
-				    "minibuffer-history"
-				    "cookies"
-				    "bbdb"
-				    "contacts-file.el"
-				    "emacs-desktop")
+  (setq recentf-save-file (concat (expand-file-name user-emacs-directory) "recent-files")
+	recentf-max-saved-items 250
+	recentf-max-menu-items 10)
+  
+  (defcustom recentf-exclude-list '("\\.yasnippet" "\\.snippet" "\\-autoloads.el" "\\.el.gz" "COMMIT_EDITMSG" ".newsrc.eld" ".newsrc-dribble" "ido.last" "smex-items" "recent-files" "save-place" "ac-comphist.dat" "archive-contents" "minibuffer-history" "cookies" "bbdb" "contacts-file.el" "emacs-desktop")
     "Files to exclude from `recentf' history." :group 'user-general :type 'list)
 
   (mapc #'(lambda (exclude) (add-to-list 'recentf-exclude exclude)) recentf-exclude-list)
@@ -208,10 +184,15 @@
 
   (ad-activate 'ibuffer)
 
-  ;; TODO: investigate `ibuffer-directory-abbrev-list'
-  ;; (setq ibuffer-directory-abbrev-alist
-  ;; 	'((expand-file-name "~/Documents/" . "Documents")
-  ;; 	  (expand-file-name "~/Programming" . "Programming")))
+  (setq ibuffer-directory-abbrev-alist
+  	`((,(expand-file-name (concat user-scripts-directory "emacs-dir/")) . ":emacs:")
+	  (,(expand-file-name (concat user-scripts-directory "screen-dir/")) . ":screen:")
+	  (,(expand-file-name (concat user-scripts-directory "bash-dir/")) . ":bash:")
+	  (,(expand-file-name (concat user-scripts-directory "irssi-dir/")) . ":irssi:")
+	  (,(expand-file-name (concat user-scripts-directory "xinit-dir/")) . ":xinit:")
+	  (,(expand-file-name user-scripts-directory) . ":conf:")
+	  (,(expand-file-name user-documents-directory) . ":docs:")
+  	  (,(expand-file-name user-public-directory) . ":public:")))
 
   ;; TODO: need to look at how the regexp is handled here
   ;; (defcustom ibuffer-never-show-regexp '("^ \\*Minibuf-0\\*$"
@@ -229,14 +210,12 @@
 				       ("Configuration" ;; NOTE: run-time configuration related buffers
 					(or (filename . ,(expand-file-name user-emacs-directory))
 					    (filename . ,(expand-file-name user-scripts-directory))))
-				       ("University" ;; NOTE: university related buffers
-					(filename . ,(expand-file-name user-university-directory)))
+				       ;; ("University" ;; NOTE: university related buffers
+				       ;; 	(filename . ,(expand-file-name user-university-directory)))
 				       ("Reading" ;; NOTE: reading (material and notes) related buffers
-					(or (filename . ,(expand-file-name user-reading-directory))
-					    (mode . doc-view-mode)))
+					(mode . doc-view-mode))
 				       ("Writing" ;; NOTE: writing related buffers
-					(or (filename . ,(expand-file-name user-writing-directory))
-					    (mode . reftex-toc-mode)
+					(or (mode . reftex-toc-mode)
 					    (mode . bibtex-mode)
 					    (mode . ebib-log-mode)
 					    (mode . ebib-index-mode)
@@ -245,11 +224,10 @@
 					    (mode . dictem-mode)
 					    (name . "^\\*Ebib-edit\\*$")))
 				       ("Projects" ;; NOTE: project related buffers
-					(or (filename . ,(expand-file-name user-projects-directory))
+					(or (filename . ,(expand-file-name user-public-directory))
 					    (mode . projectile-mode)))
 				       ("Programming" ;; NOTE: programming related buffers
-					(or (filename . ,(expand-file-name user-programming-directory))
-					    (mode . c-mode)
+					(or (mode . c-mode)
 					    (mode . c++-mode)
 					    (mode . haskell-mode)
 					    (mode . inferior-haskell-mode)
@@ -317,8 +295,7 @@
 					    (mode . display-time-world-mode)
 					    ;;(mode . cfw:calendar-mode)
 					    (mode . diary-mode)
-					    (mode . diary-fancy-display-mode)
-					    (filename . ,(expand-file-name user-organisation-directory))))
+					    (mode . diary-fancy-display-mode)))
 				       ("IRC" ;; NOTE: irc related buffers
 					(or (mode . erc-mode)
 					    (mode . rcirc-mode)))
@@ -401,14 +378,13 @@
 					    (name . "\\*Org PDF LaTeX Output\\*$"))))))
 
   (setq ibuffer-show-empty-filter-groups nil ;; NOTE: do not display empty groups
-	ibuffer-marked-char ?✓
+	;; ibuffer-marked-char ?✓
 	;; ibuffer-default-sorting-mode 'major-mode ;; NOTE: sort buffers by `major-mode'
 	ibuffer-default-sorting-mode 'filename/process ;; NOTE: sort buffers by `buffer-file-name'
 	ibuffer-sorting-mode 'recency
 	ibuffer-expert t ;; NOTE: do not ask for confirmation
-	;;ibuffer-shrink-to-minimum-size t
-	;;ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
-	;;ibuffer-use-other-window t
+	ibuffer-default-shrink-to-minimum-size t ;; NOTE: minimize the size of the ibuffer window
+	ibuffer-use-other-window t
 	ibuffer-always-show-last-buffer t ;; NOTE: always display the previous buffer
 	ibuffer-display-summary t ;; NOTE: summarize ibuffer columns
 	ibuffer-case-fold-search t ;; NOTE: ignore case when searching
@@ -419,21 +395,21 @@
   (defun turn-on-custom-ibuffer ()
     "Modify `ibuffer' behaviour slightly."
     (ibuffer-auto-mode 1) ;; NOTE: automatically update buffer list
-    ;;(ibuffer-never-show)
+    (ibuffer-never-show)
     (ibuffer-switch-to-saved-filter-groups "default"))
 
   (add-hook 'ibuffer-mode-hook #'turn-on-custom-ibuffer))
 
 ;;; IMPORTANT: find file at point
 ;; SOURCE: `http://emacswiki.org/emacs/FindFileAtPoint'
-(autoload 'find-file-at-point "ffap" "Find files (and urls) at point." t)
+;; (autoload 'find-file-at-point "ffap" "Find files (and urls) at point." t)
 
 ;;; IMPORTANT: tramp
 ;; SOURCE: `http://emacswiki.org/cgi-bin/wiki/TrampMode'
-(autoload 'tramp "tramp" "Remote file manipulation with Tramp." t)
+;; (autoload 'tramp "tramp" "Remote file manipulation with Tramp." t)
 
-(after "tramp"
-  (setq tramp-default-method "ssh")) ;; NOTE: use ssh for tramp
+;; (after "tramp"
+;;   (setq tramp-default-method "ssh")) ;; NOTE: use ssh for tramp
 
 ;;; IMPORTANT: enable commands
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisabledCommands'
@@ -482,64 +458,63 @@
 ;; SOURCE: `http://emacswiki.org/emacs/DeskTop'
 ;;(require 'desktop)
 
-(after "desktop"
-  ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
-  ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
-  (setq desktop-path (list (expand-file-name user-emacs-directory))
-	desktop-dirname (expand-file-name user-emacs-directory)
-	desktop-base-file-name "emacs-desktop"
-	desktop-restore-eager 10
-	desktop-buffers-not-to-save "\\(\\.newsrc-dribble\\|\\.bbdb\\)$"
-	history-length 300)
+;; (after "desktop"
 
-  (setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
-	(append '((extended-command-history . 30)
-		  (file-name-history        . 100)
-		  (grep-history             . 30)
-		  (compile-history          . 30)
-		  (minibuffer-history       . 50)
-		  (query-replace-history    . 60)
-		  (read-expression-history  . 60)
-		  (regexp-history           . 60)
-		  (regexp-search-ring       . 20)
-		  (search-ring              . 20)
-		  (shell-command-history    . 50)
-		  tags-file-name
-		  register-alist)))
+;; (defun restore-desktop-session (&rest junk)
+;;   "Query the user to start the previous saved session or not."
+;;   (interactive)
+;;   ;;(desktop-save-mode 1) ;; NOTE: enable desktop-save-mode also
+;;   (desktop-read))
 
-  (add-to-list 'desktop-globals-to-save 'file-name-history)
-  (add-to-list 'desktop-modes-not-to-save 'fundamental-mode))
+;; (defun save-desktop-session (&rest junk)
+;;   "Saves the current GNU Emacs session."
+;;   (interactive)
+;;   ;;(desktop-save)
+;;   (desktop-save-in-desktop-dir))
 
-(defun restore-desktop-session (&rest junk)
-  "Query the user to start the previous saved session or not."
-  (interactive)
-  ;;(desktop-save-mode 1) ;; NOTE: enable desktop-save-mode also
-  (desktop-read);; NOTE: read the desktop file
-  ;;(message (format "Restoring %s session." desktop-base-file-name))
-  )
+;; ;; TODO: could add `save-desktop-session' to `kill-emacs-hook'
 
-(defun save-desktop-session (&rest junk)
-  "Saves the current GNU Emacs session."
-  (interactive)
-  ;;(desktop-save)
-  (desktop-save-in-desktop-dir))
+;; (defun emacs-process-p (pid) ;; NOTE: over-ride stale lock
+;;   "If PID is the process ID of an emacs process, return t, else nil. Also returns nil if PID is nil."
+;;   (when pid
+;;     (let* ((cmdline-file (concat "/proc/" (int-to-string pid) "/cmdline")))
+;;       (when (file-exists-p cmdline-file)
+;;         (with-temp-buffer
+;;           (insert-file-contents-literally cmdline-file)
+;;           (goto-char (point-min))
+;;           (search-forward "emacs" nil t) pid)))))
 
-;; TODO: could add `save-desktop-session' to `kill-emacs-hook'
+;; (defadvice desktop-owner (after pry-from-cold-dead-hands activate)
+;;   "Don't allow dead GNU Emacsen to own the desktop file."
+;;   (when (not (emacs-process-p ad-return-value))
+;;     (setq ad-return-value nil)))
 
-(defun emacs-process-p (pid) ;; NOTE: over-ride stale lock
-  "If PID is the process ID of an emacs process, return t, else nil. Also returns nil if PID is nil."
-  (when pid
-    (let* ((cmdline-file (concat "/proc/" (int-to-string pid) "/cmdline")))
-      (when (file-exists-p cmdline-file)
-        (with-temp-buffer
-          (insert-file-contents-literally cmdline-file)
-          (goto-char (point-min))
-          (search-forward "emacs" nil t) pid)))))
+;;   ;; (restore-desktop-session) ;; NOTE: this is not asked so that `emacs --daemon' works
+;;   ;; (desktop-save-mode 1) ;; NOTE: enable desktop save mode
+;;   (setq desktop-path (list (expand-file-name user-emacs-directory))
+;; 	desktop-dirname (expand-file-name user-emacs-directory)
+;; 	desktop-base-file-name "emacs-desktop"
+;; 	desktop-restore-eager 10
+;; 	desktop-buffers-not-to-save "\\(\\.newsrc-dribble\\|\\.bbdb\\)$"
+;; 	history-length 300)
 
-(defadvice desktop-owner (after pry-from-cold-dead-hands activate)
-  "Don't allow dead GNU Emacsen to own the desktop file."
-  (when (not (emacs-process-p ad-return-value))
-    (setq ad-return-value nil)))
+;;   (setq desktop-globals-to-save ;; NOTE: save variables to the desktop file (for lists specify the length of the saved data also)
+;; 	(append '((extended-command-history . 30)
+;; 		  (file-name-history        . 100)
+;; 		  (grep-history             . 30)
+;; 		  (compile-history          . 30)
+;; 		  (minibuffer-history       . 50)
+;; 		  (query-replace-history    . 60)
+;; 		  (read-expression-history  . 60)
+;; 		  (regexp-history           . 60)
+;; 		  (regexp-search-ring       . 20)
+;; 		  (search-ring              . 20)
+;; 		  (shell-command-history    . 50)
+;; 		  tags-file-name
+;; 		  register-alist)))
+
+;;   (add-to-list 'desktop-globals-to-save 'file-name-history)
+;;   (add-to-list 'desktop-modes-not-to-save 'fundamental-mode))
 
 ;;; IMPORTANT: auto refresh buffers
 ;; SOURCE: `http://www.emacswiki.org/emacs/AutoRevertMode'
@@ -583,7 +558,7 @@
      ":"
      (with-face (eshell/pwd) :foreground "blue" :weight 'bold)
      (if (string= (substring (shell-command-to-string "git branch") 0 1) "f")
-	 " "
+	 ""
        (with-face (concat " (" (eshell/git-branch) ")") :foreground "yellow" :weight 'bold))
      (if (= (user-uid) 0)
 	 (with-face " #" :foreground "red")
@@ -634,16 +609,17 @@
 
   ;; ERROR: the following function requires that `dired' is loaded
   ;; (define-key dired-mode-map (kbd "C-c o") #'dired-open-file)
+  ;; NOTE: use `xdg-open' which is freedesktop.org compatible
+  (defun dired-open-file ()
+    "In dired, open the file named on this line."
+    (interactive)
+    (let* ((file (dired-get-filename nil t)))
+      (call-process "xdg-open" nil 0 nil file)))
 
-  (defun turn-on-custom-dired ()
-    "Modify the default `dired' behaviour slightly."
-    (turn-on-dired-find-alternate-file)
-    (turn-on-gnus-dired-mode)
-    (dired-hide-details-mode t) ;; NOTE: hide file details
-    ;; NOTE: set `dired-x' buffer-local variables here
-    (dired-omit-mode))
-
-  (add-hook 'dired-mode-hook #'turn-on-custom-dired)
+  (defun turn-on-dired-find-alternate-file (&rest junk)
+    "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
+    (define-key dired-mode-map (kbd "<return>") #'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
+    (define-key dired-mode-map (kbd "^") #'(lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
 
   ;; NOTE: make sizes human-readable by default, sort version numbers correctly, and put dotfiles and capital-letters first
   (setq dired-listing-switches "-DaGghlv --group-directories-first --time-style=long-iso"
@@ -655,25 +631,23 @@
 				      dired-bibtex-unclean-extensions
 				      dired-texinfo-unclean-extensions)
 	;; NOTE: dired application management
-	dired-guess-shell-alist-user (list
-				      (list "\\.pdf$" "epdfview")
-				      (list "\\.PDF$" "epdfview")
-				      (list "\\.odt$" "libreoffice")
-				      (list "\\.doc$" "libreoffice")
-				      (list "\\.docx$" "libreoffice")
-				      (list "\\.DOC$" "libreoffice"))))
+	dired-guess-shell-alist-user '(("\\.pd$f" . "epdfview")
+				       ("\\.PDF$" . "epdfview")
+				       ("\\.odt$" . "libreoffice")
+				       ("\\.doc$" . "libreoffice")
+				       ("\\.docx$" . "libreoffice")
+				       ("\\.DOC$" . "libreoffice")
+				       ("\\.DOCX$" . "libreoffice")))
 
-;; NOTE: use `xdg-open' which is freedesktop.org comtabile
-(defun dired-open-file ()
-  "In dired, open the file named on this line."
-  (interactive)
-  (let* ((file (dired-get-filename nil t)))
-    (call-process "xdg-open" nil 0 nil file)))
+  (defun turn-on-custom-dired ()
+    "Modify the default `dired' behaviour slightly."
+    (turn-on-dired-find-alternate-file)
+    (turn-on-gnus-dired-mode)
+    (dired-hide-details-mode t) ;; NOTE: hide file details
+    ;; NOTE: set `dired-x' buffer-local variables here
+    (dired-omit-mode))
 
-(defun turn-on-dired-find-alternate-file (&rest junk)
-  "Enable `dired-find-alternate-file' function and modifies `dired-up-directory'."
-  (define-key dired-mode-map (kbd "<return>") #'dired-find-alternate-file) ;; NOTE: was `dired-advertised-find-file'
-  (define-key dired-mode-map (kbd "^") #'(lambda () (interactive) (find-alternate-file "..")))) ;; NOTE: was `dired-up-directory'
+  (add-hook 'dired-mode-hook #'turn-on-custom-dired))
 
 ;;; IMPORTANT: general functions
 (defun switch-to-scratch (&rest junk)
@@ -770,42 +744,42 @@
 ;; SOURCE: `http://www.emacswiki.org/AutoInsertMode'
 (autoload 'auto-insert-mode "autoinsert" "Insert templates." t)
 
-(after "autoinsert"
-  (setq auto-insert-directory "~/.emacs.d/templates/"
-  	auto-insert-query t)
+;; (after "autoinsert"
+;;   (setq auto-insert-directory "~/.emacs.d/templates/"
+;;   	auto-insert-query t)
 
-  (define-auto-insert '("\\.sh\\'" . "Shell scripts") '(nil "#!/bin/bash"))
-  (define-auto-insert '("\\.rb\\'" . "Ruby scripts") '(nil "#!/usr/bin/ruby"))
+;;   (define-auto-insert '("\\.sh\\'" . "Shell scripts") '(nil "#!/bin/bash"))
+;;   (define-auto-insert '("\\.rb\\'" . "Ruby scripts") '(nil "#!/usr/bin/ruby"))
 
-  (define-auto-insert '("\\.yasnippet" . "Yasnippet expansions.")
-    '("Name: " "# name: " str \n "# key: " str \n "# --" \n \n))
+;;   (define-auto-insert '("\\.yasnippet" . "Yasnippet expansions.")
+;;     '("Name: " "# name: " str \n "# key: " str \n "# --" \n \n))
 
-  (define-auto-insert '("\\README\\'" . "README file")
-    '("Title: " "#+TITLE: " str \n "#+AUTHOR: " (user-login-name) \n \n "* Introduction" \n \n "* Footnotes" \n \n))
+;;   (define-auto-insert '("\\README\\'" . "README file")
+;;     '("Title: " "#+TITLE: " str \n "#+AUTHOR: " (user-login-name) \n \n "* Introduction" \n \n "* Footnotes" \n \n))
 
-  ;; TODO: investigate whether this can be a major mode ...
-  (define-auto-insert '("\\.org\\'" . "Org skeleton")
-    '("Title: " "#+TITLE: " str \n "#+AUTHOR: " (user-full-name) \n \n))
+;;   ;; TODO: investigate whether this can be a major mode ...
+;;   (define-auto-insert '("\\.org\\'" . "Org skeleton")
+;;     '("Title: " "#+TITLE: " str \n "#+AUTHOR: " (user-full-name) \n \n))
 
-  (define-auto-insert '("\\.asd\\'" . "ASD package definition skeleton")
-    '("System name: "
-      "(defpackage #:" str "-asd" \n
-      "(:use :common-lisp))" \n \n
-      "(in-package :asdf-user)" \n \n
-      "(defsystem :" str \n
-      ":name \"" str "\"" \n
-      ":version 0.0.1" \n
-      ":components ())"))
+;;   (define-auto-insert '("\\.asd\\'" . "ASD package definition skeleton")
+;;     '("System name: "
+;;       "(defpackage #:" str "-asd" \n
+;;       "(:use :common-lisp))" \n \n
+;;       "(in-package :asdf-user)" \n \n
+;;       "(defsystem :" str \n
+;;       ":name \"" str "\"" \n
+;;       ":version 0.0.1" \n
+;;       ":components ())"))
 
-  (define-auto-insert '("\\.lisp\\'" . "Lisp skeleton")
-    '("Description: " ";; " (file-name-nondirectory (buffer-file-name)) " -- " str \n \n)))
+;;   (define-auto-insert '("\\.lisp\\'" . "Lisp skeleton")
+;;     '("Description: " ";; " (file-name-nondirectory (buffer-file-name)) " -- " str \n \n)))
 
-(add-hook 'find-file-hook 'auto-insert)
+;; (add-hook 'find-file-hook #'auto-insert)
 
 ;;; IMPORTANT: flyspell
 ;; SOURCE: `http://www.emacswiki.org/emacs/FlySpell'
-;;(require 'flyspell)
-(autoload 'flyspell-mode "flyspell" "..." t)
+(require 'flyspell)
+;;(autoload 'flyspell-mode "flyspell" "..." t)
 
 (after "flyspell"
   (setq flyspell-issue-welcome-flag nil)

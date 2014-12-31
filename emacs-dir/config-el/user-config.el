@@ -50,27 +50,15 @@
 	org-log-done 'time ;; NOTE: capture a timestamp for when a task changes state
 	org-log-into-drawer 'LOGBOOK ;; NOTE: log changes in the LOGBOOK drawer
 	org-tags-column -90
-	org-tag-alist '(("COMPUTER_SCIENCE" . ?c)
-			("GENERAL"          . ?g)
-			;; ("ASSIGNMENT"       . ?a)
-			;; ("WEBSITE"          . ?w)
-			;; ("PROJECT"          . ?p)
-			("JOURNAL"          . ?j)
-			("NOTES"            . ?n)
-			("LINGUISTICS"      . ?l)
-			("MATHEMATICS"      . ?m)
-			("PROGRAMMING"      . ?P)
-			("READING"          . ?r)
-			("PHILOSOPHY"       . ?p)
-			("TRAVEL"           . ?t)
-			("WRITING"          . ?w)
-			("UNIVERSITY"       . ?u))
+	org-tag-alist '(("GENERAL" . ?g)
+			("JOURNAL" . ?j)
+			("NOTES"   . ?n))
 	org-deadline-warning-days 7
 	org-timeline-show-empty-dates t
 	org-use-tag-inheritance t
 	org-use-fast-todo-selection t ;; NOTE: enable fast task state switching
 	;; org-structure-template-alist ;; TODO: ...
-	org-directory (expand-file-name user-organisation-directory) ;; NOTE: default directory for org mode
+	org-directory (expand-file-name user-documents-directory) ;; NOTE: default directory for org mode
 	org-default-notes-file (expand-file-name user-org-notes-file) ;; NOTE: file for quick notes
 	org-archive-location (concat (expand-file-name user-org-archive-file) "::* Archives") ;; NOTE: archiving items
 	org-refile-target '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)) ;; NOTE: any file contributing (agenda); up to 5 levels deep
@@ -105,9 +93,7 @@
 	org-agenda-dim-blocked-tasks nil ;; NOTE: do not dim blocked tasks
 	org-agenda-span 'month ;; NOTE: show a month of agendas
 	org-agenda-files `(,(expand-file-name user-org-journal-file)
-			   ,(expand-file-name user-org-notes-file)
-			   ;; ,(expand-file-name user-org-projects-file)
-			   ,(expand-file-name user-org-university-file))
+			   ,(expand-file-name user-org-notes-file))
 	org-agenda-custom-commands '(("A" "All" ((agenda "Weekly Agenda" ((org-agenda-ndays 7) ;; NOTE: overview of tasks
 									  (org-agenda-start-on-weekday nil) ;; NOTE: calendar begins today
 									  (org-agenda-repeating-timestamp-show-all t)
@@ -146,26 +132,7 @@
 	  ;; ("c" "Contacts" plain (file+headline (expand-file-name user-org-contacts-file) "Contacts")
 	  ;;  "[[bbdb:%^{Name}][%^{Name}]] %?%^g" :empty-lines 1 :immediate-finish 1)
 	  ("n" "Notes" entry (file+headline (expand-file-name user-org-notes-file) "Notes")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("g" "General" entry (file+headline (expand-file-name user-org-notes-file) "General")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("p" "Philosophy" entry (file+headline (expand-file-name user-org-notes-file) "Philosophy")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("l" "Linguistics" entry (file+headline (expand-file-name user-org-notes-file) "Linguistics")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("m" "Mathematics" entry (file+headline (expand-file-name user-org-notes-file) "Mathematics")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("c" "Computer Science" entry (file+headline (expand-file-name user-org-notes-file) "Computer Science")
-	   "** %^{Title} %?%^g\n %^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-	  ("P" "Programming" entry (file+headline (expand-file-name user-org-notes-file) "Programming")
-	   "** TODO ~%^{Name}~ - %^{Description} [0%] %^g
-- [ ] Research [0%]
-- [ ] Design [0%]
-- [ ] Implementation [0%]" :empty-lines 1 :immediate-finish 1)
-	  ("r" "Reading" entry (file+headline (expand-file-name user-org-notes-file) "Reading")
-	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1)
-	  ("w" "Writing" entry (file+headline (expand-file-name user-org-notes-file) "Writing")
-	   "** %^{Title}%?%^g\n" :empty-lines 1 :immediate-finish 1))))
+	   "** %^{Title} %?%^g\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1))))
 
 ;;; IMPORTANT: org-babel
 ;; SOURCE: `http://orgmode.org/worg/org-contrib/babel/intro.html'
@@ -360,7 +327,7 @@
 
   (setq-default erc-ignore-list '()) ;; SOURCE: `http://www.emacswiki.org/emacs/ErcIgnoring'
 
-  (remove-hook 'erc-text-matched-hook 'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
+  (remove-hook 'erc-text-matched-hook #'erc-hide-fools) ;; NOTE: keep messages from `erc-fools'
 
   ;; IMPORTANT: erc logging
   ;; SOURCE: `http://www.emacswiki.org/emacs/ErcLogging'
@@ -563,7 +530,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; IMPORTANT: personal settings
   (setq user-mail-address user-primary-email-address
 	;; gnus-startup-file (expand-file-name (concat user-emacs-directory "newsrc"))
-	;; gnus-init-file (expand-file-name (concat user-emacs-directory "gnus.el"))
+	;; gnus-init-file (expand-file-name (concat user-mail-directory "gnus.el"))
         mail-personal-alias-file "~/.mailrc"
 	mail-aliases t ;; NOTE: enable mail aliases (NOTE: uses `mail-personal-alias-file')
 	auth-source-save-behavior nil
@@ -641,7 +608,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	gnus-secondary-select-methods `(;; (nntp "news.gmane.org")
 					;; ,(custom-imap-server "anu" "anumail.anu.edu.au")
 					;; ,(custom-imap-server "gmail" "imap.gmail.com")
-					(nnimap "gmail"
+					(nnimap "imap.gmail.com"
 						(nnimap-address "imap.gmail.com")
 						(nnimap-server-port 993)
 						(nnimap-authinfo-file "~/.authinfo.gpg")
@@ -700,29 +667,29 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: make `ido' available everywhere
 ;; SOURCE: `https://github.com/technomancy/ido-ubiquitous'
-(after "ido"
-  (require 'ido-ubiquitous)
-  (ido-ubiquitous-mode t))
+;; (after "ido"
+;;   (require 'ido-ubiquitous)
+;;   (ido-ubiquitous-mode t))
 
 ;;; IMPORTANT: improve `ido's flex matching
 ;; SOURCE: `https://github.com/lewang/flx'
-(after "ido"
-  (require 'flx)
-  (setq ido-use-faces t)
-  (flx-ido-mode t))
+;; (after "ido"
+;;   (require 'flx)
+;;   (setq ido-use-faces t)
+;;   (flx-ido-mode t))
 
 ;;; IMPORTANT: smex mode
 ;; SOURCE: `http://emacswiki.org/emacs/Smex'
-(autoload 'smex "smex" "Super-charge ido-mode." t)
+;; (autoload 'smex "smex" "Super-charge ido-mode." t)
 
-(after "smex"
-  (setq smex-save-file (concat user-emacs-directory "smex-items")
-        smex-key-advice-ignore-menu-bar t)
+;; (after "smex"
+;;   (setq smex-save-file (concat user-emacs-directory "smex-items")
+;;         smex-key-advice-ignore-menu-bar t)
 
-  (smex-initialize)) ;; NOTE: super-charge `ido-mode'
+;;   (smex-initialize)) ;; NOTE: super-charge `ido-mode'
 
-(global-set-key (kbd "M-x") #'smex) ;; NOTE: smex improves default ido at the mini buffer
-(global-set-key	(kbd "M-X") #'smex-major-mode-commands) ;; NOTE: available major mode commands
+;; (global-set-key (kbd "M-x") #'smex) ;; NOTE: smex improves default ido at the mini buffer
+;; (global-set-key	(kbd "M-X") #'smex-major-mode-commands) ;; NOTE: available major mode commands
 
 ;;; IMPORTANT: browse kill ring
 ;; SOURCE: `http://www.emacswiki.org/BrowseKillRing'
@@ -771,27 +738,33 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 
 ;;; IMPORTANT: auto-complete mode
 ;; SOURCE: `http://emacswiki.org/emacs/AutoComplete'
-(require 'auto-complete)
+;; (require 'auto-complete)
 
-(after "auto-complete"
-  (require 'auto-complete-config)
+;; (after "auto-complete"
+;;   (require 'auto-complete-config)
 
-  (diminish-minor-mode "auto-complete")
-  (setq ac-expand-on-auto-complete t ;; NOTE: expand common portions
-	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
-	ac-use-fuzzy t
-	ac-fuzzy-enable t
-	ac-auto-start nil ;; NOTE: never auto-start the auto-complete menu
-	ac-use-menu-map t ;;
-	ac-ignore-case 'smart ;; NOTE: always ignore case
-	;; ac-auto-show-menu t ;; NOTE: automatically show menu
-	;; ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
-	ac-source-yasnippet '(action . #'yas-expand))
+;;   (diminish-minor-mode "auto-complete")
+;;   (setq ac-expand-on-auto-complete t ;; NOTE: expand common portions
+;; 	ac-dwim nil ;; NOTE: get pop-ups with docs even if unique
+;; 	ac-use-fuzzy t
+;; 	ac-fuzzy-enable t
+;; 	ac-auto-start nil ;; NOTE: never auto-start the auto-complete menu
+;; 	ac-use-menu-map t ;;
+;; 	ac-ignore-case 'smart ;; NOTE: always ignore case
+;; 	;; ac-auto-show-menu t ;; NOTE: automatically show menu
+;; 	;; ac-trigger-key "TAB" ;; NOTE: use TAB for trigger
+;; 	ac-source-yasnippet '(action . #'yas-expand))
 
-  (ac-config-default)
+;;   (ac-config-default)
 
   ;; (add-hook 'prog-mode-hook #'auto-complete-mode)
-  (add-hook 'text-mode-hook #'auto-complete-mode))
+  ;; (add-hook 'text-mode-hook #'auto-complete-mode))
+
+;; IMPORTANT: emacs abbrev
+(autoload 'dabbrev-expand "abbrev" "..." t)
+
+(after "abbrev"
+  (diminish-minor-mode "abbrev"))
 
 ;;; IMPORTANT: smart completion
 (defun smart-completion ()
@@ -978,7 +951,7 @@ Although this is interactive, call this with \\[browse-url]."
 			      (buffer-list))))))
     (if (get-buffer "*w3m*")
 	(if (= (length buffers) 1)
-	    (switch-to-buffer (first buffers))
+	    (switch-to-buffer (cl-first buffers))
 	  (switch-to-buffer (ido-completing-read "w3m session: " buffers)))
       (if (null url)
 	  (w3m w3m-home-page)
@@ -1034,11 +1007,11 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: ibuffer version control
 ;; SOURCE: `https://github.com/purcell/ibuffer-vc'
-(after "ibuffer"
-  (require 'ibuffer-vc))
+;; (after "ibuffer"
+;;   (require 'ibuffer-vc))
 
-(after "ibuffer-vc"
-  (setq ibuffer-formats	'((mark modified read-only vc-status-mini " " (name 18 18 :left :elide) " " filename-and-process))))
+;; (after "ibuffer-vc"
+;;   (setq ibuffer-formats	'((mark modified read-only vc-status-mini " " (name 18 18 :left :elide) " " filename-and-process))))
 
 ;;; IMPORTANT: iedit
 ;; SOURCE: `http://www.emacswiki.org/emacs/Iedit'
@@ -1051,16 +1024,17 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: projectile
 ;; SOURCE: `http://www.emacswiki.org/emacs/Projectile'
-(require 'projectile)
+;; (require 'projectile)
 
-(after "projectile"
-  (diminish-minor-mode "projectile")
-  (projectile-global-mode))
+;; (after "projectile"
+;;   (diminish-minor-mode "projectile")
+;;   (projectile-global-mode))
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
-(when (display-graphic-p)
-  (require 'smart-mode-line))
+;; (when (display-graphic-p)
+;;   (require 'smart-mode-line))
+(require 'smart-mode-line)
 
 (after "smart-mode-line"
   ;; (add-to-list 'sml/replacer-regexp-list `(,(concat "^" (getenv "CONFIG_SCRIPTS_DIR")) ":config:"))
@@ -1094,55 +1068,55 @@ Although this is interactive, call this with \\[browse-url]."
 
 ;;; IMPORTANT: journal entries with `org-mode'
 ;; SOURCE: `http://www.emacswiki.org/emacs/OrgJournal'
-(autoload 'org-journal-new-entry "org-journal" "Manage journals with `org-mode'." t)
+;; (autoload 'org-journal-new-entry "org-journal" "Manage journals with `org-mode'." t)
 
-(after "org-journal"
-  (setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/"))))
+;; (after "org-journal"
+;;   (setq org-journal-dir (expand-file-name (concat user-organisation-directory "/journal/"))))
 
 ;;; IMPORTANT: deft
 ;; SOURCE: `http://jblevins.org/projects/deft/'
-(autoload 'deft "deft" "Note taking with deft." t)
+;; (autoload 'deft "deft" "Note taking with deft." t)
 
-(after "deft"
-  (setq deft-extension "org"
-	deft-text-mode 'org-mode
-	def-directory (expand-file-name (concat user-organisation-directory ".deft/"))))
+;; (after "deft"
+;;   (setq deft-extension "org"
+;; 	deft-text-mode 'org-mode
+;; 	def-directory (expand-file-name (concat user-organisation-directory ".deft/"))))
 
-(define-key custom-writing-map (kbd "n") #'deft)
+;; (define-key custom-writing-map (kbd "n") #'deft)
 
 ;;; IMPORTANT: dictionary
-(autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
+;; (autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
 
-(define-key custom-writing-map (kbd "d") #'dictionary-search)
+;; (define-key custom-writing-map (kbd "d") #'dictionary-search)
 
 ;;; IMPORTANT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
-(autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
+;; (autoload 'ebib "ebib" "A BibTeX database manager for GNU Emacs." t)
 
-(after "ebib"
-  ;; TODO: investigate @string clauses and abbreviations for common journals
-  (setq ebib-preload-bib-files `(,(expand-file-name (concat user-university-directory "u4537508.bib")) ;; NOTE: university courses
-				 ,(expand-file-name (concat user-documents-directory "Papers/papers.bib")))  ;; NOTE: general papers
-	ebib-keywords-list '("philosophy" "mathematics" "logic" "computer science" "linguistics" "miscellaneous")
-	ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
-	ebib-file-search-dirs `(,(expand-file-name user-home-directory)
-				,(expand-file-name (concat user-documents-directory "Papers/"))))
+;; (after "ebib"
+;;   ;; TODO: investigate @string clauses and abbreviations for common journals
+;;   (setq ebib-preload-bib-files `(,(expand-file-name (concat user-university-directory "u4537508.bib")) ;; NOTE: university courses
+;; 				 ,(expand-file-name (concat user-documents-directory "Papers/papers.bib")))  ;; NOTE: general papers
+;; 	ebib-keywords-list '("philosophy" "mathematics" "logic" "computer science" "linguistics" "miscellaneous")
+;; 	ebib-autogenerate-keys t ;; NOTE: generate unique keys automatically
+;; 	ebib-file-search-dirs `(,(expand-file-name user-home-directory)
+;; 				,(expand-file-name (concat user-documents-directory "Papers/"))))
 
-  (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
+;;   (setcdr (assoc "pdf" ebib-file-associations) "epdfview"))
 
-(define-key custom-writing-map (kbd "e") #'ebib)
+;; (define-key custom-writing-map (kbd "e") #'ebib)
 
 ;;; IMPORTANT: emacs snippets
 ;; SOURCE: `http://www.emacswiki.org/emacs/Yasnippet'
 ;;(autoload 'yas-minor-mode "yasnippet" "Emacs snippets." t)
-(require 'yasnippet)
+;; (require 'yasnippet)
 
-(after "yasnippet"
-  (diminish-minor-mode "yasnippet" 'yas-minor-mode)
-  (setq yas-snippet-dirs `(,(expand-file-name (concat user-emacs-directory "snippets/"))))
-  (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
+;; (after "yasnippet"
+;;   (diminish-minor-mode "yasnippet" 'yas-minor-mode)
+;;   (setq yas-snippet-dirs `(,(expand-file-name (concat user-emacs-directory "snippets/"))))
+;;   (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
 
-  (add-hook 'prog-mode-hook #'yas-minor-mode-on))
+;;   (add-hook 'prog-mode-hook #'yas-minor-mode-on))
 
 (provide 'user-config)
 ;;; user-config.el ends here

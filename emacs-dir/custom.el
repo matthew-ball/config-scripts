@@ -58,7 +58,7 @@
  '(ecb-options-version "2.40")
  '(org-agenda-files
    (quote
-    ("~/Documents/Organisation/school.org" "~/Documents/Organisation/journal.org" "~/Documents/Organisation/projects.org" "~/Documents/Organisation/home.org"))))
+    ("/home/chu/Documents/journal.org" "/home/chu/Documents/notes.org"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

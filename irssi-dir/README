@@ -1,0 +1,14 @@
+#+TITLE: Configuration Script: ~irssi~ Configuration
+#+AUTHOR: Matthew Ball
+
+* Introduction
+/describe ~irssi~ configuration/
+
+** Scripts
+*** ~autobleh.pl~
+*** ~caps_sasl.pl~
+*** ~nickcolor.pl~
+*** ~spellcheck.pl~
+  
+* Footnotes
+    

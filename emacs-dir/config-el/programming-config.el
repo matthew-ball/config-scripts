@@ -32,7 +32,7 @@
 
 Enable the following minor modes:
 1. `hs-minor-mode' - Fold comment blocks.
-2. `electric-pair-mode' - Automatic pairing of parenthesis.
+2. `electric-pair-mode' - Automatic pairing.
 3. `flyspell-prog-mode' - Spell checking for programming modes."
   ;; (flymake-mode) ;; NOTE: turn on flymake mode
   ;; (glasses-mode) ;; NOTE: turn on glasses mode
@@ -62,16 +62,17 @@ Enable the following minor modes:
 
 (after "lisp-mode"
   (defun custom-emacs-lisp-key-bindings ()
+    ;; FIX: these are entirely redundant - C-M-f and C-M-b respectively
     (define-key emacs-lisp-mode-map (kbd "C-c f") 'forward-sexp)
     (define-key emacs-lisp-mode-map (kbd "C-c b") 'backward-sexp))
   
   (defun custom-emacs-lisp ()
     "Custom `emacs-lisp-mode' functionality."
     (turn-on-eldoc-mode)
-    (paredit-mode t)
+    (paredit-mode t) ;; `user-config.el'
     (custom-emacs-lisp-key-bindings))
 
-(add-hook 'emacs-lisp-mode-hook #'custom-emacs-lisp))
+  (add-hook 'emacs-lisp-mode-hook #'custom-emacs-lisp))
 
 ;;; IMPORTANT: interactive emacs lisp
 (after "ielm"
@@ -82,7 +83,7 @@ Enable the following minor modes:
 ;;(byte-recompile-directory (expand-file-name user-emacs-directory) 0)
 
 ;;; IMPORTANT: common lisp programming
-;; SOURCE: `http://emacswiki.org/emacs/CommonLisp'
+;; SOURCE: `http://www.emacswiki.org/emacs/CommonLisp'
 (after "lisp-mode"
   ;; (defun scratch-lisp-file ()
   ;;   "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into the current buffer."
@@ -121,12 +122,12 @@ Enable the following minor modes:
 ;;; IMPORTANT: elisp slime navigation
 ;; SOURCE: `https://github.com/purcell/elisp-slime-nav'
 ;; TODO: `user-config.el'
-(autoload 'elisp-slime-nav-mode "elisp-slime-nav" "..." t)
+;; (autoload 'elisp-slime-nav-mode "elisp-slime-nav" "..." t)
 
-(after "elisp-slime-nav"
-  (diminish-minor-mode "elisp-slime-nav")
-  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-    (add-hook hook #'elisp-slime-nav-mode)))
+;; (after "elisp-slime-nav"
+;;   (diminish-minor-mode "elisp-slime-nav")
+;;   (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+;;     (add-hook hook #'elisp-slime-nav-mode)))
 
 ;;; IMPORTANT: slime/swank
 ;; TODO: `user-config.el'
@@ -141,6 +142,7 @@ Enable the following minor modes:
         slime-complete-symbol*-fancy t
         slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 
+  ;; TODO: document what `slime-setup' *does*
   (slime-setup '(slime-fancy
                  slime-tramp
                  slime-banner
@@ -154,7 +156,11 @@ Enable the following minor modes:
                  slime-editing-commands
                  slime-fuzzy
                  slime-autodoc
-                 slime-sbcl-exts))
+                 slime-sbcl-exts
+		 slime-trace-dialog
+		 slime-fancy-inspector
+		 slime-highlight-edits
+		 slime-references))
 
   (defun custom-slime ()
     (paredit-mode t))
@@ -162,55 +168,55 @@ Enable the following minor modes:
   (add-hook 'slime-repl-mode-hook #'custom-slime t))
 
 ;;; IMPORTANT: clojure programming
-(autoload 'clojure-mode "clojure-mode" "Major mode for editing clojure source code files." t)
-(autoload 'nrepl-mode "nrepl" "Major mode for nREPL interactions." t)
+;; (autoload 'clojure-mode "clojure-mode" "Major mode for editing clojure source code files." t)
+;; (autoload 'nrepl-mode "nrepl" "Major mode for nREPL interactions." t)
 
-(after "nrepl"
-  (add-hook 'nrepl-interaction-mode-hook #'nrepl-turn-on-eldoc-mode)
+;; (after "nrepl"
+;;   (add-hook 'nrepl-interaction-mode-hook #'nrepl-turn-on-eldoc-mode)
 
-  (setq nrepl-hide-special-buffers t)
+;;   (setq nrepl-hide-special-buffers t)
 
-  (add-hook 'nrepl-mode-hook #'paredit-mode))
+;;   (add-hook 'nrepl-mode-hook #'paredit-mode))
 
-(after "clojure-mode"
-  (defun custom-clojure ()
-    ""
-    (paredit-mode t))
+;; (after "clojure-mode"
+;;   (defun custom-clojure ()
+;;     ""
+;;     (paredit-mode t))
 
-  (add-hook 'clojure-mode-hook #'custom-clojure))
+;;   (add-hook 'clojure-mode-hook #'custom-clojure))
 
 ;;; IMPORTANT: scheme (guile) programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
-(autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t)
-(require 'geiser) ;; TODO: find a `guile-mode' for scheme ...
+;; (autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t)
+;; (require 'geiser) ;; TODO: find a `guile-mode' for scheme ...
 
-(after "geiser"
-  (diminish-minor-mode "geiser-mode" 'geiser-mode)
-  (diminish-minor-mode "geiser-autodoc")
-  (setq geiser-active-implementations '(guile)))
+;; (after "geiser"
+;;   (diminish-minor-mode "geiser-mode" 'geiser-mode)
+;;   (diminish-minor-mode "geiser-autodoc")
+;;   (setq geiser-active-implementations '(guile)))
 
-(after "scheme"
-  (defun custom-scheme ()
-    ""
-    (paredit-mode t))
+;; (after "scheme"
+;;   (defun custom-scheme ()
+;;     ""
+;;     (paredit-mode t))
   
-  (add-hook 'scheme-mode-hook #'custom-scheme))
+;;   (add-hook 'scheme-mode-hook #'custom-scheme))
 
 ;;; IMPORTANT: haskell programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
-(autoload 'haskell-mode "haskell-mode" "Major mode for editing haskell source code." t)
+;; (autoload 'haskell-mode "haskell-mode" "Major mode for editing haskell source code." t)
 
-(after "haskell-mode"
-  (defun custom-haskell ()
-    (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
-    (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
+;; (after "haskell-mode"
+;;   (defun custom-haskell ()
+;;     (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
+;;     (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
   
-  (diminish-minor-mode "haskell-doc")
-  (diminish-minor-mode "haskell-indent")
-  (diminish-minor-mode "haskell-indentation")
-  (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
+;;   (diminish-minor-mode "haskell-doc")
+;;   (diminish-minor-mode "haskell-indent")
+;;   (diminish-minor-mode "haskell-indentation")
+;;   (setq haskell-font-lock-symbols t) ;; NOTE: enable unicode symbols for haskell
 
-  (add-hook 'haskell-mode-hook #'custom-haskell))
+;;   (add-hook 'haskell-mode-hook #'custom-haskell))
 
 ;;; IMPORTANT: shell script
 ;; SOURCE: `http://emacswiki.org/emacs/ShMode'
@@ -240,6 +246,7 @@ Enable the following minor modes:
   (defun custom-c ()
     ""
     (turn-on-cwarn-mode)
+    (diminish-minor-mode "cwarn")
     (c-mode-settings))
 
   (add-hook 'c-mode-hook #'custom-c))
@@ -252,38 +259,38 @@ Enable the following minor modes:
    gdb-show-main t))
 
 ;;; IMPORTANT: prolog
-(autoload 'run-prolog "prolog" "Prolog in GNU Emacs." t)
+;; (autoload 'run-prolog "prolog" "Prolog in GNU Emacs." t)
 
 ;;; IMPORTANT: maxima
 ;; SOURCE: `http://emacswiki.org/emacs/MaximaMode'
-(autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
-(autoload 'maxima "maxima" "Major mode for maxima interaction." t)
-(autoload 'imaxima "imaxima" "Major mode frontend for maxima with image support." t)
-(autoload 'imath-mode "imath" "Imath mode for math formula input." t)
+;; (autoload 'maxima-mode "maxima" "Major mode for interaction with maxima." t)
+;; (autoload 'maxima "maxima" "Major mode for maxima interaction." t)
+;; (autoload 'imaxima "imaxima" "Major mode frontend for maxima with image support." t)
+;; (autoload 'imath-mode "imath" "Imath mode for math formula input." t)
 
-(after "imaxima"
-  (setq imaxima-use-maxima-mode-flag t))
+;; (after "imaxima"
+;;   (setq imaxima-use-maxima-mode-flag t))
 
 ;; IMPORTANT: `inf-ruby'
 ;; IMPORTANT: `rvm'
 ;; IMPORTANT: `rinari'
 ;; IMPORTANT: `ruby-tools'
-(after "ruby-mode"
-  (require 'inf-ruby) ;; inferior ruby
-  (require 'rvm) ;; ruby virtual machine
-  (require 'rinari) ;; ruby on rails environment
-  (require 'ruby-tools)
+;; (after "ruby-mode"
+;;   (require 'inf-ruby) ;; inferior ruby
+;;   (require 'rvm) ;; ruby virtual machine
+;;   (require 'rinari) ;; ruby on rails environment
+;;   (require 'ruby-tools)
 
-  (diminish-minor-mode "ruby-tools")
+;;   (diminish-minor-mode "ruby-tools")
 
-  (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
-  (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
+;;   (defconst ruby-programming-prefix-key (kbd "C-c C-r") "Ruby programming prefix key.")
+;;   (defvar ruby-programming-map (lookup-key global-map ruby-programming-prefix-key) "Keymap designed for ruby programming.")
 
-  (unless (keymapp ruby-programming-map) (setq ruby-programming-map (make-sparse-keymap)))
+;;   (unless (keymapp ruby-programming-map) (setq ruby-programming-map (make-sparse-keymap)))
 
-  (define-key global-map ruby-programming-prefix-key ruby-programming-map)
-  (define-key ruby-programming-map (kbd "r") #'inf-ruby)
-  (define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby))
+;;   (define-key global-map ruby-programming-prefix-key ruby-programming-map)
+;;   (define-key ruby-programming-map (kbd "r") #'inf-ruby)
+;;   (define-key ruby-programming-map (kbd "a") #'rvm-activate-corresponding-ruby))
 
 (provide 'programming-config)
 ;;; programming-config.el ends here

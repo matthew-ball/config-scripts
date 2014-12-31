@@ -5,10 +5,10 @@
 if [ -z "$CONFIG_SCRIPTS_DIR" ]; then
     # NOTE: ... source ~/.xsessionrc if it exists
     if [ -f "$HOME/.xsessionrc" ]; then
-	# . "$HOME/.xsessionrc"
+	. "$HOME/.xsessionrc"
 	. "$HOME/.bashrc"
     fi
 fi
 
 ## IMPORTANT: start the X server
-#startx &
+# startx &

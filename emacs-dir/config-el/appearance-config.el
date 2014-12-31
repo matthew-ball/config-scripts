@@ -130,31 +130,31 @@
   (custom-world-cities))
 
 ;; SOURCE: `https://github.com/hh/emacs/blob/master/.emacs.d/wireless.el'
-(after "wireless"
-  (setq wireless-mode-line-format "[w: %k%\%] "))
+;; (after "wireless"
+;;   (setq wireless-mode-line-format "[w: %k%\%] "))
 
 ;; SOURCE: `http://www.emacswiki.org/emacs/DisplayBatteryMode'
-(after "battery"
-  (setq ;;battery-mode-line-format "[b: %b%p%\%] "
-	battery-mode-line-limit 65))
+;; (after "battery"
+;;   (setq ;;battery-mode-line-format "[b: %b%p%\%] "
+;; 	battery-mode-line-limit 65))
 
 ;; IMPORTANT: laptop
-(defcustom custom-laptop nil "This system is (or isn't) a laptop." :group 'user-appearance :type 'boolean)
+;; (defcustom custom-laptop nil "This system is (or isn't) a laptop." :group 'user-appearance :type 'boolean)
 
-(setq custom-laptop t)
+;; (setq custom-laptop t)
 
-(defun laptop-mode ()
-  (interactive)
-  (require 'wireless)
+;; (defun laptop-mode ()
+;;   (interactive)
+;;   (require 'wireless)
 
-  ;; (display-time-mode t) ;; NOTE: display time status in the mode line
-  (display-battery-mode t) ;; NOTE: display battery status in the mode line
-  ;; (display-wireless-mode t)  ;; NOTE: display wireless status in the mode line
+;;   ;; (display-time-mode t) ;; NOTE: display time status in the mode line
+;;   (display-battery-mode t) ;; NOTE: display battery status in the mode line
+;;   ;; (display-wireless-mode t)  ;; NOTE: display wireless status in the mode line
 
-  (message "Enable laptop specific settings."))
+;;   (message "Enable laptop specific settings."))
 
-(when custom-laptop
-  (laptop-mode))
+;; (when custom-laptop
+;;   (laptop-mode))
 
 ;;; IMPORTANT: text folding
 ;; SOURCE: `http://emacswiki.org/emacs/HideShow'
@@ -216,20 +216,19 @@
 
 ;;; IMPORTANT: prettyify symbols
 ;; SOURCE: `http://ergoemacs.org/emacs/emacs_pretty_lambda.html'
+;; (setq lisp--prettify-symbols-alist '(("lambda"  . ?λ)
+;; 				     (">=" . ?≥)
+;; 				     ("<=" . ?≤)
+;; 				     ("member" . ?∈)
+;; 				     ("forall" . ?∀)
+;; 				     ("exists" . ?∃)
+;; 				     ("and" . ?∧)
+;; 				     ("or" . ?∨)
+;; 				     ;; ("if" . ?→)
+;; 				     ("not" . ?¬)))
 
-(setq lisp--prettify-symbols-alist '(("lambda"  . ?λ)
-				     (">=" . ?≥)
-				     ("<=" . ?≤)
-				     ("member" . ?∈)
-				     ("forall" . ?∀)
-				     ("exists" . ?∃)
-				     ("and" . ?∧)
-				     ("or" . ?∨)
-				     ;; ("if" . ?→)
-				     ("not" . ?¬)))
-
-(when (display-graphic-p)
-  (global-prettify-symbols-mode t))
+;; (when (display-graphic-p)
+;;   (global-prettify-symbols-mode t))
 
 ;; TODO: ...
 ;; (defmacro diminish-major-mode (package-name &optional mode-name)

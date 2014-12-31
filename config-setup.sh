@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# config for server
+
 # variables
 version="0.01"
 
@@ -10,11 +12,9 @@ project_target=".config-scripts"
 
 # TODO: /etc/apt/sources.list
 
-declare -a source_links=("bash-dir/init.sh" "bash-dir/profile.sh" "xinit-dir/session.sh" "xinit-dir/init.sh" "stumpwm-dir/init.lisp" "emacs-dir/" "screen-dir/init.sh")
-declare -a destination_links=(".bashrc" ".profile" ".xsessionrc" ".xinitrc" ".stumpwmrc" ".emacs.d/" ".screenrc")
-declare -a default_packages=("emacs24" "chromium" "htop" "sudo" "screen")
-declare -a development_packages=("build-essential" "gcc" "gcc-doc" "gdb" "gdb-doc" "sbcl" "sbcl-doc" "ghc" "ghc-doc" "git" "strace" "ltrace" "maxima" "maxima-doc" "maxima-emacs" "texlive" "texlive-docs")
-declare -a packages=(${default_packages[@]} ${development_packages[@]})
+declare -a source_links=("bash-dir/init.sh" "bash-dir/profile.sh" "xinit-dir/session.sh" "emacs-dir" "screen-dir/init.sh")
+declare -a destination_links=(".bashrc" ".profile" ".xsessionrc" ".emacs.d" ".screenrc")
+declare -a packages=("emacs24" "w3m" "irssi" "screen")
 
 # IMPORTANT: interface
 function print_options {
@@ -38,36 +38,16 @@ function print_welcome_message {
 #     # echo "cd && git clone -b $project_branch $project_source $project_target"
 # }
 
-function clone_window_manager {
-    # TODO: pull stumpwm source code from github
-    echo "[info] cloning stumpwm"
-    echo "[info] cloning stumpwm-contrib"
-
-    # git clone https://github.com/stumpwm/stumpwm.git
-    # TODO: compile stumpwm source code
-    echo "[info] compiling stumpwm"
-}
-
 # IMPORTANT: output colours
 default_colour="\e[39m"
 green_colour="\e[32m"
 red_colour="\e[31m"
 
 function sym_link {
-    # TODO: symlinking
     for ((i = 1; i < ${#source_links[@]}+1; i++));
     do
 	echo "[info] linking: ${source_links[$i-1]} -> ${destination_links[$i-1]}"
-	# TODO: check if destination exists
-	echo "[info] checking if file ${destination_links[$i-1]} exists"
-	if [ -f ${destination_links[$i-1]} -o -d ${destination_links[$i-1]} ]; then
-	    echo -e "$green_colour[info]$default_colour ... file does exist"
-	    # rm -rf ${destination_links[$i-1]}
-	else
-	    echo -e "$red_colour[info]$default_colour ... file doesn't exist"
-	fi
-	# rm -rf ~/$link
-	# ln -s $PWD/$source_links ~/$link
+	ln -s ~/$project_target/${source_links[$i-1]} ~/${destination_links[$i-1]}
     done
 }
 
@@ -83,7 +63,7 @@ function install_packages {
 # TODO: fetch and merge project from github
 
 # IMPORTANT: this is top level
-cd
+# cd
 
 if [ -z "$1" ]; then
     print_options

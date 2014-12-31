@@ -40,37 +40,23 @@
 (defcustom user-home-directory (getenv "HOME") "The user's $HOME environment variable." :group 'user-directories :type 'string)
 (defcustom user-scripts-directory (format "%s/.config-scripts/" user-home-directory) "Directory for user's run-time scripts." :group 'user-directories :type 'string)
 (defcustom user-documents-directory (format "%s/Documents/" user-home-directory) "Directory for user's documents." :group 'user-directories :type 'string)
-(defcustom user-news-directory (format "%sNews/" user-home-directory) "Directory for user's news." :group 'user-directories :type 'string)
-(defcustom user-mail-directory (format "%sMail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
-(defcustom user-audio-directory (format "%sMusic/" user-home-directory) "Directory for user's music." :group 'user-directories :type 'string)
-(defcustom user-video-directory (format "%sVideos/" user-home-directory) "Directory for user's videos." :group 'user-directories :type 'string)
-(defcustom user-programming-directory (format "%sPublic/" user-home-directory) "Directory for user's programming files." :group 'user-directories :type 'string)
-(defcustom user-public-directory (format "%sPublic/" user-home-directory) "Directory for user's public files." :group 'user-directories :type 'string)
-(defcustom user-projects-directory (format "%sProjects/" user-home-directory) "Directory for user's projects." :group 'user-directories :type 'string)
-(defcustom user-reading-directory (format "%sReading/" user-documents-directory) "Directory for user's reading material." :group 'user-directories :type 'string)
-(defcustom user-writing-directory (format "%sWriting/" user-documents-directory) "Directory for user's writing material." :group 'user-directories :type 'string)
-(defcustom user-organisation-directory (format "%sOrganisation/" user-documents-directory) "Directory for user's organisation files." :group 'user-directories :type 'string)
-(defcustom user-university-directory (format "%sANU/" user-documents-directory) "Directory for user's university files." :group 'user-directories :type 'string)
+(defcustom user-news-directory (format "%s/.news/" user-home-directory) "Directory for user's news." :group 'user-directories :type 'string)
+(defcustom user-mail-directory (format "%s/.mail/" user-home-directory) "Directory for user's mail." :group 'user-directories :type 'string)
+(defcustom user-public-directory (format "%s/Public/" user-home-directory) "Directory for user's public files." :group 'user-directories :type 'string)
 ;; NOTE: requires quicklisp (from `http://www.quicklisp.org/')
-(defcustom quicklisp-directory (expand-file-name "~/quicklisp/dists/quicklisp/software/") "The directory path to `quicklisp'." :group 'user-directories :type 'string)
+(defcustom quicklisp-directory (getenv "QUICKLISP_DIR") "The directory path to `quicklisp'." :group 'user-directories :type 'string)
 
 ;; NOTE: user files
 (defgroup user-files nil "User files." :group 'user-variables)
 
-;;(defcustom user-org-contacts-file (format "%scontacts.org" user-organisation-directory) "File for user's contacts." :group 'user-files :type 'string)
-(defcustom user-org-university-file (format "%sschool.org" user-organisation-directory) "File for user's university organisation." :group 'user-files :type 'string)
-(defcustom user-org-notes-file (format "%snotes.org" user-organisation-directory) "File for user's notes organisation." :group 'user-files :type 'string)
-(defcustom user-org-journal-file (format "%sjournal.org" user-organisation-directory) "File for user's journal." :group 'user-riles :type 'string)
-;; TODO: the projects file is obsolete and should be removed
-;;(defcustom user-org-projects-file (format "%sprojects.org" user-organisation-directory) "File for user's projects organisation." :group 'user-files :type 'string)
-(defcustom user-org-archive-file (format "%sarchive.org" user-organisation-directory) "File for user's archive organisation." :group 'user-files :type 'string)
+(defcustom user-org-notes-file (format "%snotes.org" user-documents-directory) "File for user's notes organisation." :group 'user-files :type 'string)
+(defcustom user-org-journal-file (format "%sjournal.org" user-documents-directory) "File for user's journal." :group 'user-riles :type 'string)
+(defcustom user-org-archive-file (format "%sarchive.org" user-documents-directory) "File for user's archive organisation." :group 'user-files :type 'string)
 
 ;; NOTE: user details
 (setq user-full-name (getenv "USER_FULL_NAME")) ;; NOTE: set the user full name
-(defcustom user-university-id (getenv "USER_UNI_ID") "University ID for the user." :group 'user-variables :type 'string)
 (defcustom user-irc-nickname (or (getenv "USER_IRC_NICKNAME") (getenv "USER")) "User IRC nickname." :group 'user-variables :type 'string)
 (defcustom user-primary-email-address (getenv "USER_PRIMARY_EMAIL") "Primary email address for the user." :group 'user-variables :type 'string)
-(defcustom user-secondary-email-address (format "%s@%s" user-university-id (getenv "USER_UNI")) "Secondary email address for the user." :group 'user-variables :type 'string)
 
 ;; TODO: define `programming-map' and `writing-map'
 
@@ -143,11 +129,7 @@ Return a list of installed packages or nil for every skipped package."
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
 (or (file-exists-p package-user-dir) (package-refresh-contents))
 
-(ensure-packages-installed 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib 'elisp-slime-nav
-			   'epl 'erc-hl-nicks 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode
-			   'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools 'ido-ubiquitous 'idomenu 'iedit
-			   'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile 'rainbow-delimiters 's
-			   'smart-mode-line 'smex 'tabulated-list 'undo-tree 'w3m 'yasnippet)
+(ensure-packages-installed 'adaptive-wrap 'bbdb 'browse-kill-ring 'diminish 'smart-mode-line 'undo-tree 'w3m 'magit)
 
 ;;; IMPORTANT: use configuration files
 ;; NOTE: requires that config files are in `load-path' already

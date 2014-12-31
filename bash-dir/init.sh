@@ -9,7 +9,7 @@
 ### COMMENT: export functionality
 export HISTCONTROL=ignoredups # NOTE: don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # NOTE: ... and ignore same sucessive entries
-export LOCALE=UTF-8
+# export LOCALE=UTF-8
 export GREP_COLOR="1;33"
 export MOZ_DISABLE_PANGO=1
 export TERM=xterm-color # NOTE: export 8 colours in shell session
@@ -69,7 +69,7 @@ fi
 unset color_prompt force_color_prompt
 
 # NOTE: set up ssh-agent
-SSH_ENV="$HOME/.ssh/environment"
+# SSH_ENV="$HOME/.ssh/environment"
  
 function start_agent {
     echo "Initializing new SSH agent..."
@@ -81,15 +81,15 @@ function start_agent {
 }
  
 # NOTE: source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    # NOTE: ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
-fi
+# if [ -f "${SSH_ENV}" ]; then
+#     . "${SSH_ENV}" > /dev/null
+#     # NOTE: ps ${SSH_AGENT_PID} doesn't work under cywgin
+#     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+#         start_agent;
+#     }
+# else
+#     start_agent;
+# fi
 
 ### COMMENT: youtube
 # mplayer -cookies -cookies-file /foo/bar.txt $(youtube-dl -g --cookies /foo/bar.txt "youtube-share-link")
