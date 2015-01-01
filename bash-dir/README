@@ -1,5 +1,7 @@
+#+TITLE: Configuration Script: ~BASH~ configuration
+#+AUTHOR: Matthew Ball
 
-* The =BASH= configuration
+* Introduction
 - The bash configuration is split over the following files:
   + [[file:init.sh][init.sh]] :: The bash init file.
   + [[file:aliases.sh][aliases.sh]] :: The bash alias definitions file.

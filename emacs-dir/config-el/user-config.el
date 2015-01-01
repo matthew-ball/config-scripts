@@ -762,8 +762,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   ;; (add-hook 'text-mode-hook #'auto-complete-mode))
 
 ;; IMPORTANT: emacs abbrev
-(autoload 'dabbrev-expand "abbrev" "..." t)
-
 (after "abbrev"
   (diminish-minor-mode "abbrev"))
 
