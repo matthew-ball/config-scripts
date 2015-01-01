@@ -645,6 +645,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
     `(after ,package-name (diminish ,name))))
 
 (diminish-minor-mode "eldoc")
+(diminish-minor-mode "abbrev")
 (diminish-minor-mode "flyspell")
 (diminish-minor-mode "hideshow" 'hs-minor-mode)
 (diminish-minor-mode "hilit-chg" 'highlight-changes-mode)

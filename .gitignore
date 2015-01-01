@@ -10,6 +10,9 @@ conkeror-dir/
 mpd-dir/
 ncmpcpp-dir/
 
+# ...
+irssi-dir/sasl.auth
+
 # ignore a bunch of oldish emacs stuff
 emacs-dir/extras-el/cc-old.el
 emacs-dir/extras-el/logic-mode.el

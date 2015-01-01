@@ -186,6 +186,7 @@
 
   (setq ibuffer-directory-abbrev-alist
   	`((,(expand-file-name (concat user-scripts-directory "emacs-dir/")) . ":emacs:")
+	  (,(expand-file-name user-emacs-directory) . ":emacs:")
 	  (,(expand-file-name (concat user-scripts-directory "screen-dir/")) . ":screen:")
 	  (,(expand-file-name (concat user-scripts-directory "bash-dir/")) . ":bash:")
 	  (,(expand-file-name (concat user-scripts-directory "irssi-dir/")) . ":irssi:")
