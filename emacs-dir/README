@@ -27,28 +27,18 @@ The user directories are:
 - user-documents-directory
 - user-news-directory
 - user-mail-directory
-- user-audio-directory
-- user-video-directory
-- user-programming-directory
-- user-projects-directory
-- user-reading-directory
-- user-writing-directory
-- user-organisation-directory
-- user-university-directory
+- user-public-directory
 - user-quicklisp-directory
 
 The user files are:
-- user-org-coontacts-file
-- user-org-university-file
 - user-org-notes-file
-- user-org-projects-file
+- user-org-journal-file
 - user-org-archive-file
 
 User details are, this sets use details:
 - user-full-name
-- user-university-id
+- user-irc-nickname
 - user-primary-email-address
-- user-secondary-email-address
 
 These variables are mainly used by org-mode or for interaction with a StumpWM environment, and are all set from the login shell[fn:login].
 

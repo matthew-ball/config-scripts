@@ -35,6 +35,7 @@ bind U hardstatus alwaysignore # hide the status bar (C-z U)
 bind T screen -t htop 0 htop -u $USER # launch a new htop session for my user
 bind E screen -t emacs 0 emacs -nw # ...
 bind I screen -t irssi 0 irssi # ...
+# bind P screen -t aptitude - aptitude
 bind A title # rename session (C-z A)
 bind R resize # resize window session (C-z R)
 bind m monitor # monitor a session (C-z m)
