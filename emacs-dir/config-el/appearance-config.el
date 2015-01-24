@@ -217,23 +217,22 @@
 ;;; IMPORTANT: prettyify symbols
 ;; SOURCE: `http://ergoemacs.org/emacs/emacs_pretty_lambda.html'
 
-(setq lisp--prettify-symbols-alist '(("lambda"  . ?λ)
-				     (">=" . ?≥)
-				     ("<=" . ?≤)
-				     ("member" . ?∈)
-				     ("forall" . ?∀)
-				     ("exists" . ?∃)
-				     ("and" . ?∧)
-				     ("or" . ?∨)
-				     ;; ("if" . ?→)
-				     ("not" . ?¬)))
+;; (setq lisp--prettify-symbols-alist '(("lambda"  . ?λ)
+;; 				     (">=" . ?≥)
+;; 				     ("<=" . ?≤)
+;; 				     ("member" . ?∈)
+;; 				     ("forall" . ?∀)
+;; 				     ("exists" . ?∃)
+;; 				     ("and" . ?∧)
+;; 				     ("or" . ?∨)
+;; 				     ;; ("if" . ?→)
+;; 				     ("not" . ?¬)))
 
 (when (display-graphic-p)
   (global-prettify-symbols-mode t))
 
-;; TODO: ...
-;; (defmacro diminish-major-mode (package-name &optional mode-name)
-;;   `(,package-name ,mode-name))
+(defun diminish-major-mode (package-name format)
+  (add-to-list 'mode-line-cleaner-alist (cons package-name format)))
 
 ;; NOTE: this is unofficially `diminish' for major modes
 (defcustom mode-line-cleaner-alist '((c-mode . "C")
@@ -241,10 +240,7 @@
 				     (dired-mode . "Dired")
 				     (lisp-mode . "Common Lisp")
 				     (emacs-lisp-mode . "Emacs Lisp")
-				     (gnus-group-mode . "Email") ;; TODO: `user-config.el'
 				     (eshell-mode . "Eshell")
-				     (erc-mode . "ERC") ;; TODO: `user-config.el'
-				     (haskell-mode . "Haskell") ;; TODO: `user-config.el'
 				     (help-mode . "Help")
 				     (ibuffer-mode . "iBuffer")
 				     (org-mode . "Organisation")

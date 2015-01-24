@@ -181,20 +181,20 @@ Enable the following minor modes:
 
 ;;; IMPORTANT: scheme (guile) programming
 ;; SOURCE: `http://emacswiki.org/emacs/Scheme'
-(autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t)
-(require 'geiser) ;; TODO: find a `guile-mode' for scheme ...
+;; (autoload 'scheme-mode "scheme" "Major mode for editing scheme source code files." t)
+;; (require 'geiser)
 
-(after "geiser"
-  (diminish-minor-mode "geiser-mode" 'geiser-mode)
-  (diminish-minor-mode "geiser-autodoc")
-  (setq geiser-active-implementations '(guile)))
+;; (after "geiser"
+;;   (diminish-minor-mode "geiser-mode" 'geiser-mode)
+;;   (diminish-minor-mode "geiser-autodoc")
+;;   (setq geiser-active-implementations '(guile)))
 
-(after "scheme"
-  (defun custom-scheme ()
-    ""
-    (paredit-mode t))
+;; (after "scheme"
+;;   (defun custom-scheme ()
+;;     ""
+;;     (paredit-mode t))
   
-  (add-hook 'scheme-mode-hook #'custom-scheme))
+;;   (add-hook 'scheme-mode-hook #'custom-scheme))
 
 ;;; IMPORTANT: haskell programming
 ;; SOURCE: `http://www.emacswiki.org/emacs/Haskell'
@@ -204,7 +204,8 @@ Enable the following minor modes:
   (defun custom-haskell ()
     (turn-on-haskell-doc-mode) ;; NOTE: enable haskell's documentation mode
     (turn-on-haskell-indentation))  ;; NOTE: enable haskell's indentation mode
-  
+
+  (diminish-major-mode 'haskell-mode "Haskell")
   (diminish-minor-mode "haskell-doc")
   (diminish-minor-mode "haskell-indent")
   (diminish-minor-mode "haskell-indentation")

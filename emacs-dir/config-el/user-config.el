@@ -337,6 +337,8 @@
   ;; (require 'erc-ibuffer) ;; ibuffer
   (require 'erc-log) ;; logging
 
+  (diminish-major-mode erc-mode "ERC")
+  
   ;; IMPORTANT: erc spelling
   (erc-spelling-enable)
 
@@ -573,7 +575,6 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 	message-from-style 'angles ;; NOTE: specifies how the "From" header appears
         message-send-mail-function #'smtpmail-send-it) ;; NOTE: for gnus (message-mode)
 
-  ;; TODO: should these be set in `general-config.el' or even `init.el' ???
   (setq custom-mail-dir (expand-file-name user-mail-directory) ;; NOTE: set directory for mail
 	custom-news-dir (expand-file-name user-news-directory)) ;; NOTE: set directory for news
 
@@ -678,6 +679,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
     `(after ,package-name (diminish ,name))))
 
 (diminish-minor-mode "eldoc")
+(diminish-minor-mode "cwarn")
+(diminish-minor-mode "abbrev")
 (diminish-minor-mode "flyspell")
 (diminish-minor-mode "hideshow" 'hs-minor-mode)
 (diminish-minor-mode "hilit-chg" 'highlight-changes-mode)
@@ -689,6 +692,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (require 'bbdb)
   (bbdb-initialize 'gnus 'message)
   (bbdb-mua-auto-update-init 'gnus 'message)
+
+  (diminish-major-mode 'gnus-group-mode "Email")
 
   (setq bbdb-mua-update-interactive-p '(query . create)
 	;; bbdb-file (expand-file-name (concat user-emacs-directory "bbdb-file.el"))
@@ -794,6 +799,8 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
   (add-hook 'text-mode-hook #'auto-complete-mode))
 
 ;;; IMPORTANT: smart completion
+;; TODO: this needs to be made better
+;; for instance, if the call `auto-complete' returns nil, it could call `ispell-word', etc
 (defun smart-completion ()
   "Implement a way of selecting the completion system."
   (cond
