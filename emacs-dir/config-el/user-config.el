@@ -337,7 +337,7 @@
   ;; (require 'erc-ibuffer) ;; ibuffer
   (require 'erc-log) ;; logging
 
-  (diminish-major-mode erc-mode "ERC")
+  ;;(diminish-major-mode erc-mode "ERC")
   
   ;; IMPORTANT: erc spelling
   (erc-spelling-enable)
@@ -454,7 +454,7 @@
 	erc-remove-parsed-property nil
 	erc-prompt #'custom-erc-prompt
         erc-join-buffer 'bury
-        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#stumpwm" "#lisp" "#ruby" "#ubuntu-th" "#ubuntu-offtopic" "##programming" "#ubuntu-ops" "#ubuntu-ops-team")))
+        erc-autojoin-channels-alist '((".*\\.freenode.net" "#emacs" "#emacs-th" "#stumpwm" "#lisp" "#ubuntu-th" "#ubuntu-offtopic" "#ubuntu-ops" "#ubuntu-ops-team" "##outcasts")))
 
   (setq erc-modules (delq 'fill erc-modules)) ;; NOTE: disable `erc-fill-mode'
 

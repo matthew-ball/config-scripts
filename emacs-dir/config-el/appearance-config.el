@@ -41,17 +41,17 @@
   (decorate-frame))
 
 ;; SOURCE: `http://ubuntuforums.org/archive/index.php/t-183638.html'
-(modify-frame-parameters nil '((wait-for-wm . nil)))
+;; (modify-frame-parameters nil '((wait-for-wm . nil)))
 
 ;; NOTE: apply `load-frame' to an emacsclient frame
 ;; SOURCE: `http://www.emacswiki.org/emacs/ColorThemeQuestions'
-(defun turn-on-frame-decorations (frame)
-  "Decorate new frame FRAME with colour theme."
-  (select-frame frame)
-  (when (display-graphic-p)
-    (decorate-frame)))
+;; (defun turn-on-frame-decorations (frame)
+;;   "Decorate new frame FRAME with colour theme."
+;;   (select-frame frame)
+;;   (when (display-graphic-p)
+;;     (decorate-frame)))
 
-(add-hook 'after-make-frame-functions #'turn-on-frame-decorations)
+;; (add-hook 'after-make-frame-functions #'turn-on-frame-decorations)
 
 ;; NOTE: minimal GUI elements ...
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
@@ -216,20 +216,10 @@
 
 ;;; IMPORTANT: prettyify symbols
 ;; SOURCE: `http://ergoemacs.org/emacs/emacs_pretty_lambda.html'
-
-;; (setq lisp--prettify-symbols-alist '(("lambda"  . ?λ)
-;; 				     (">=" . ?≥)
-;; 				     ("<=" . ?≤)
-;; 				     ("member" . ?∈)
-;; 				     ("forall" . ?∀)
-;; 				     ("exists" . ?∃)
-;; 				     ("and" . ?∧)
-;; 				     ("or" . ?∨)
-;; 				     ;; ("if" . ?→)
-;; 				     ("not" . ?¬)))
-
 (when (display-graphic-p)
   (global-prettify-symbols-mode t))
+
+;;; IMPORTANT: diminish major modes
 
 (defun diminish-major-mode (package-name format)
   (add-to-list 'mode-line-cleaner-alist (cons package-name format)))
