@@ -47,14 +47,19 @@ User details are, this sets use details:
 - user-secondary-email-address
 
 These variables are mainly used by org-mode or for interaction with a StumpWM environment, and are all set from the login shell[fn:login].
+
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20common%20lisp][common lisp]]
 Require common-lisp library. Some functions and macros commonly employed in common lisp programming ported to emacs lisp.
+
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20after%20macro][after macro]]
 Define a macro [[file:init.el::(defmacro%20after%20(mode%20&rest%20body)][after]] which loads the body code after its argument file (syntactic sugar over [[help:eval-after-load][eval-after-load]]).
+
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20load%20path][load path]]
 Modifies the load-path variable.
+
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20info%20path][info path]]
 Modifies the info-path variable.
+
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20package%20manager][package manager]]
 This project is designed for use with the following emacs lisp packages. They are all available on [[http://melpa.milkbox.net/#/][MELPA]] using package.el[fn:ELPA] to install.
 
@@ -109,8 +114,10 @@ Requires specific configuration files[fn:order-of-evaluation]:
  - *key-bindings-config*
 
 An explanation for each of these files, and the respective configuration they provide, follows in the text.
+
 *** [[file:init.el::%3B%3B%3B%20IMPORTANT:%20shutdown%20emacs%20server][shutdown emacs server]]
 Provide the user with the command [[file:init.el::%3B%3B%3B%20COMMENT:%20shutdown%20emacs%20server][server-shutdown]]. This will save any (modified) buffers, save the emacs daemon process, and kill the server.
+
 ** TODO [[file:config-el/appearance-config.el][Appearance]]
 This file provides a configuration for visual appearance.
 

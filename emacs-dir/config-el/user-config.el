@@ -749,7 +749,7 @@ NOTE: This is currently hard-coded to strictly use channels on \"irc.freenode.ne
 (autoload 'magit-status "magit" "Version control with Git." t) ;; NOTE: magit for use with github
 
 (after "magit"
-  (diminish-minor-mode "magit" 'magit-auto-revert-mode)
+  ;;(diminish-minor-mode "magit" 'magit-auto-revert-mode)
   ;;(setq magit-save-some-buffers t)
   )
 
@@ -1118,9 +1118,9 @@ Although this is interactive, call this with \\[browse-url]."
 (define-key custom-writing-map (kbd "n") #'deft)
 
 ;;; IMPORTANT: dictionary
-(autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
+;; (autoload 'dictionary-search "dictionary" "Look-up definitions of words online." t)
 
-(define-key custom-writing-map (kbd "d") #'dictionary-search)
+;; (define-key custom-writing-map (kbd "d") #'dictionary-search)
 
 ;;; IMPORTANT: the emacs bibliography manager
 ;; SOURCE: `http://ebib.sourceforge.net/'
@@ -1150,6 +1150,12 @@ Although this is interactive, call this with \\[browse-url]."
   (yas-load-directory (expand-file-name (concat user-emacs-directory "snippets/")) t) ;; NOTE: use just-in-time
 
   (add-hook 'prog-mode-hook #'yas-minor-mode-on))
+
+;;; IMPORTANT: define word at point
+(require 'define-word)
+
+(define-key custom-writing-map (kbd "d") #'define-word)
+(define-key custom-writing-map (kbd "D") #'define-word-at-point)
 
 (provide 'user-config)
 ;;; user-config.el ends here

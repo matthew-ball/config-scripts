@@ -143,9 +143,9 @@ Return a list of installed packages or nil for every skipped package."
 ;; NOTE: either `~/.emacs.d/elpa/' exists or refresh the package contents
 (or (file-exists-p package-user-dir) (package-refresh-contents))
 
-(ensure-packages-installed 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'diminish 'dictionary 'ebib 'elisp-slime-nav
-			   'epl 'erc-hl-nicks 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist 'git-commit-mode 'git-rebase-mode
-			   'haskell-mode 'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools 'ido-ubiquitous 'idomenu 'iedit
+(ensure-packages-installed 'adaptive-wrap 'auto-complete 'bbdb 'browse-kill-ring 'dash 'deft 'define-word 'diminish 'dictionary 'ebib
+			   'elisp-slime-nav 'epl 'erc-hl-nicks 'find-file-in-project 'flx 'flx-ido 'fuzzy 'geiser 'gh 'gist 'haskell-mode
+			   'highlight-indentation 'ibuffer-vc 'inf-ruby 'rinari 'rvm 'ruby-tools 'ido-ubiquitous 'idomenu 'iedit
 			   'logito 'magit 'nose 'org-journal 'paredit 'pcache 'pkg-info 'popup 'projectile 'rainbow-delimiters 's
 			   'smart-mode-line 'smex 'tabulated-list 'undo-tree 'w3m 'yasnippet)
 

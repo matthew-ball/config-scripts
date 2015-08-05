@@ -123,6 +123,9 @@ Enable the following minor modes:
 ;; TODO: `user-config.el'
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav" "..." t)
 
+;; ERROR: note sure what's going on here
+;;(add-hook emacs-lisp-mode-hook #'turn-on-elisp-slime-nav-mode)
+
 (after "elisp-slime-nav"
   (diminish-minor-mode "elisp-slime-nav")
   (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
