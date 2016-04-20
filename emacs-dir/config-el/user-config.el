@@ -83,10 +83,7 @@
   (org-add-link-type "ebib" 'ebib)
   ;; TODO: create an ebib entry which links to ERC logs (NOTE: this would require `erc-log-mode' from MELPA)
   ;; TODO: add more citation types to ebib
-  (org-add-link-type "cite" 'ebib
-		     (lambda (path desc format)
-		       (cond
-			((eq format 'latex) (format "\\cite{%s}" path)))))
+  (org-add-link-type "cite" 'ebib #'(lambda (path desc format) (cond ((eq format 'latex) (format "\\cite{%s}" path)))))
 
   ;; SOURCE: `http://www.gnu.org/software/emacs/manual/html_node/org/Link-abbreviations.html'
   (setq org-link-abbrev-alist '(("google" . "http://www.google.com/search?q=")
@@ -1062,7 +1059,9 @@ Although this is interactive, call this with \\[browse-url]."
 
 (after "projectile"
   (diminish-minor-mode "projectile")
-  (projectile-global-mode))
+  (projectile-global-mode)
+
+  (global-set-key (kbd "C-<f5>") #'projectile-switch-project))
 
 ;;; IMPORTANT: smart mode line
 ;; SOURCE: `https://github.com/Bruce-Connor/smart-mode-line'
@@ -1091,11 +1090,13 @@ Although this is interactive, call this with \\[browse-url]."
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/Mail/"         ":mail:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/Documents/News/"         ":news:"))
 
-  (setq sml/battery-format "%p%%"
+  (setq	;;sml/theme 'light
+	;;sml/theme 'respectful
+	sml/battery-format "%p%%"
 	sml/name-width 0
-	sml/mode-width 0
+	;;sml/mode-width 0
 	sml/shorten-directory t
-	sml/theme 'light)
+	sml/shorten-modes t)
 
   (sml/setup))
 

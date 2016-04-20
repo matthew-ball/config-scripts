@@ -54,8 +54,8 @@
 ;; (add-hook 'after-make-frame-functions #'turn-on-frame-decorations)
 
 ;; NOTE: minimal GUI elements ...
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; NOTE: hide the tool bar
+;;(when (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ;; NOTE: hide the menu bar
+;;(when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ;; NOTE: hide the tool bar
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ;; NOTE: hide the scroll bar
 (when (fboundp 'blink-cursor-mode) (blink-cursor-mode -1)) ;; NOTE: turn off blinking cursor
 (when (fboundp 'tooltip-mode) (tooltip-mode -1)) ;; NOTE: turn off tooltip

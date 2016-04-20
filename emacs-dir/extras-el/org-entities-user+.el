@@ -29,6 +29,10 @@
 (unless (fboundp 'org-entities-user)
   (require 'org-entities))
 
+;; IMPORTANT: music symbols
+(add-to-list 'org-entities-user '("sharp" "\\sharp" nil nil nil nil "♯"))
+(add-to-list 'org-entities-user '("flat" "\\flat" nil nil nil nil "♭"))
+
 ;; IMPORTANT: logic symbols
 (add-to-list 'org-entities-user '("top" "\\top" nil nil nil nil "⊤"))
 (add-to-list 'org-entities-user '("bot" "\\bot" nil nil nil nil "⊥"))

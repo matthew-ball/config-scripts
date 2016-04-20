@@ -585,10 +585,7 @@
 ;;   "Connect via ssh to CONNECTION."
 ;;   (run-or-raise (format nil "ssh ~A" connection) "ssh"))
 
-(defcommand logout () ()
-  "Logout of an XFCE4 session."
-  ;;(run-shell-command "xfce4-session-logout")
-  (launch-xfce-logout))
+(defcommand logout () () "Logout of an XFCE4 session." (launch-xfce-logout))
 
 (defcommand safe-quit () ()
   "Checks if any windows are open before quitting."
@@ -695,7 +692,7 @@
 This function is only called the first time StumpWM is launched."
   (run-swank) ;; NOTE: start the swank server
   (launch-emacs-daemon) ;; NOTE: start the emacs daemon service
-  ;;(launch-xfce-panel) ;; NOTE: start panel
+  ;; (launch-xfce-panel) ;; NOTE: start panel
   ;; (launch-nm-applet) ;; NOTE: start nm-applet
   ;; (launch-mpd) ;; NOTE: start mpd server
   ;; (mpd-connect) ;; NOTE: start mpd connection
