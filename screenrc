@@ -1,0 +1,30 @@
+autodetach on
+altscreen on
+defbce on
+deflogin on
+defutf8 on
+nonblock on
+nethack on
+defflow off
+vbell off
+startup_message off
+
+term xterm-256color
+
+termcapinfo xterm ti@:te@
+
+escape ^Zz
+
+activity ""
+
+caption splitonly "%n %t"
+
+hardstatus alwayslastline
+# hardstatus string " [%H] %-Lw%{= BW}%50> %n %t%{-}%+Lw%< "
+hardstatus string "%-Lw%{= BW}%50> %n %t%{-}%+Lw%< "
+
+bind u hardstatus alwayslastline
+bind U hardstatus alwaysignore
+
+bind T screen -t htop 0 htop
+bind E screen -t emacs 0 emacs -nw
