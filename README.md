@@ -3,11 +3,11 @@ Configuration Scripts
 This is a minimal collection of configuration files and a script to configure a "default" environment.
 
 This project uses the following applications:
- * [Ubuntu 16.10]()
- * [GNU Emacs 25.1.2]()
- * [GNU Bash 4.3.46]()
- * [Screen 4.04.00]()
- * [htop 2.0.2]()
+ * [Ubuntu 16.10](https://www.ubuntu.com/)
+ * [GNU Emacs 25.1.2](https://www.gnu.org/software/emacs/)
+ * [GNU Bash 4.3.46](https://www.gnu.org/software/bash/)
+ * [Screen 4.04.00](https://www.gnu.org/software/screen/)
+ * [htop 2.0.2](http://hisham.hm/htop/)
 
 # Setup Script
 The setup script is pretty straight forward:
@@ -29,7 +29,7 @@ As this project uses the default __~/.bashrc__ file from an Ubuntu 16.10 install
 ## TODO Remove bashrc from project
 
 # Screen
-Simple settings for screen.
+Explain the settings for screen.
 
 # Emacs
-A default __~/.emacs.d/init.el__ file (which pulls in everything required) and the directory __~/.emacs.d/snippets/__ for [yasnippet]().
+Explain the __~/.emacs.d/init.el__ file.
