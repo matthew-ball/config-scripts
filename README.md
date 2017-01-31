@@ -22,7 +22,7 @@ The setup script is pretty straight forward; it simply links the files from the 
 The script is designed to be as unobtrusive as possible. It therefore does not ask about removing files (if they exist) before it runs the symbolic linking. This is perhaps counter-intuitive to some, so be forewarned.
 
 # Bash
-As this project uses the default __~/.bashrc__ file from an Ubuntu 16.10 install, I will not comment further upon it, nor document it in this project documentation. Except to mention that this file adds alias definitions from the file __~/.bash_aliases__ (if it exists). The main purpose of this bash configuration is the aliases.
+The default __~/.bashrc__ file from an Ubuntu 16.10 install adds alias definitions from the file __~/.bash_aliases__ (if it exists). The main purpose of this bash configuration is the aliases.
 
 ```
  alias screen='screen -DRaAU'
