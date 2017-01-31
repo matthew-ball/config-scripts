@@ -2,7 +2,7 @@ Configuration Scripts
 =====================
 This is a minimal collection of configuration files and a script to configure a "default" environment.
 
-This project uses the following applications:
+This configuration project uses the following systems/applications:
  * [Ubuntu 16.10](https://www.ubuntu.com/)
  * [GNU Emacs 25.1.2](https://www.gnu.org/software/emacs/)
  * [GNU Bash 4.3.46](https://www.gnu.org/software/bash/)
@@ -10,9 +10,7 @@ This project uses the following applications:
  * [htop 2.0.2](http://hisham.hm/htop/)
 
 # Setup Script
-The setup script is pretty straight forward:
-
-It symbolically links the files from the project directory to the respective file location in the home directory.
+The setup script is pretty straight forward; it simply links the files from the project directory to the respective file location in the home directory.
 
 ```
  ln -s ~/.config-scripts/bashrc ~/.bashrc
@@ -24,7 +22,23 @@ It symbolically links the files from the project directory to the respective fil
 The script is designed to be as unobtrusive as possible. It therefore does not ask about removing files (if they exist) before it runs the symbolic linking. This is perhaps counter-intuitive to some, so be forewarned.
 
 # Bash
-As this project uses the default __~/.bashrc__ file from an Ubuntu 16.10 install, I will not comment further upon it, nor document it in this project documentation, except to mention that this file adds alias definitions from the file __~/.bash_aliases__ (if it exists). The main purpose of this bash configuration is the aliases.
+As this project uses the default __~/.bashrc__ file from an Ubuntu 16.10 install, I will not comment further upon it, nor document it in this project documentation. Except to mention that this file adds alias definitions from the file __~/.bash_aliases__ (if it exists). The main purpose of this bash configuration is the aliases.
+
+```
+ alias screen='screen -DRaAU'
+ alias utop='htop -u $USER'
+ alias search='apt-cache search'
+ alias show='apt-cache show'
+ alias update='sudo apt update'
+ alias upgrade='sudo apt upgrade'
+ alias dist_upgrade='sudo apt dist-upgrade'
+ alias install='sudo apt install'
+ alias remove='sudo apt remove'
+ alias autoremove='sudo apt autoremove'
+ alias purge='sudo apt purge'
+```
+
+They are fairly simple aliases, heavily focused around the [apt](https://wiki.debian.org/Apt) package manager.
 
 ## TODO Remove bashrc from project
 
