@@ -27,4 +27,4 @@ bind u hardstatus alwayslastline
 bind U hardstatus alwaysignore
 
 bind T screen -t htop 0 htop
-bind E screen -t emacs 0 emacs -nw
+bind E screen -t emacsclient 0 emacsclient -t

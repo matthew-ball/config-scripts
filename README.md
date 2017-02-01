@@ -62,8 +62,9 @@ The following features are enabled:
  * recentf-mode
  * savehist-mode
  * save-place-mode
+ * server-mode
 
-The following packages are available from [melpa]():
+The following packages are available from [melpa](http://melpa.milkbox.net/packages/):
  * magit
  * gist
  * markdown-mode

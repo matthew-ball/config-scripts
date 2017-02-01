@@ -28,6 +28,7 @@
 (recentf-mode 1)
 (savehist-mode 1)
 (save-place-mode 1)
+(server-mode 1)
 (fringe-mode '(nil . 1))
 
 (setq show-paren-delay 1.0
@@ -112,7 +113,7 @@
 (ad-activate 'ibuffer)
 
 (defun custom-ibuffer-mode ()
-  (ibuffer-auto-mode 1)
+  (ibuffer-auto-mode)
   (ibuffer-switch-to-saved-filter-groups "default"))
 
 (add-hook 'ibuffer-mode-hook #'custom-ibuffer-mode)
