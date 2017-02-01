@@ -9,7 +9,7 @@
 
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
 
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish haskell-mode) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -312,6 +312,12 @@
 
 (require 'autorevert)
 (require 'with-editor)
+(require 'haskell)
+
+(defun custom-haskell-mode ()
+  (interactive-haskell-mode))
+
+(add-hook 'haskell-mode-hook #'custom-haskell-mode)
 
 (diminish 'flyspell-mode)
 (diminish 'visual-line-mode)
@@ -323,6 +329,7 @@
 (diminish 'undo-tree-mode)
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
+(diminish 'interactive-haskell-mode)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c g b") #'gist-buffer)

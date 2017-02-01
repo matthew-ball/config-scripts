@@ -1,12 +1,9 @@
 #!/bin/bash
 
 version="0.01"
-branch="master"
-source="https://github.com/matthew-ball/config-scripts.git"
-target="~/.config-scripts/"
 
-declare -a source_links=("bashrc" "bash_aliases" "emacs-dir/" "screenrc")
-declare -a destination_links=("~/.bashrc" "~/.bash_aliases" "~/.emacs.d" "~/.screenrc")
+declare -a source_links=("aliases.sh" "screenrc.sh" "emacs-dir/")
+declare -a destination_links=("~/.bash_aliases" "~/.screenrc" "~/.emacs.d")
 
 echo "=========================="
 echo "Configuration Scripts $version"
