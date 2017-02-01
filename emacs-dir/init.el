@@ -290,8 +290,6 @@
 
 (load-theme 'misterioso)
 
-(require 'autorevert)
-
 ;; user packages
 (browse-kill-ring-default-keybindings)
 
@@ -312,6 +310,9 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
+(require 'autorevert)
+(require 'with-editor)
+
 (diminish 'flyspell-mode)
 (diminish 'visual-line-mode)
 (diminish 'hs-minor-mode)
@@ -321,6 +322,7 @@
 (diminish 'auto-complete-mode)
 (diminish 'undo-tree-mode)
 (diminish 'auto-revert-mode)
+(diminish 'with-editor-mode)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c g b") #'gist-buffer)
