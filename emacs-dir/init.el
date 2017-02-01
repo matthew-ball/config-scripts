@@ -319,6 +319,10 @@
 
 (add-hook 'haskell-mode-hook #'custom-haskell-mode)
 
+(setq load-path (append (list (expand-file-name "~/Public/lilypond-mode")) load-path))
+
+(require 'lilypond-mode)
+
 (diminish 'flyspell-mode)
 (diminish 'visual-line-mode)
 (diminish 'hs-minor-mode)
