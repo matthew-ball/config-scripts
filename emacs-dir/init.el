@@ -1,4 +1,6 @@
 
+(eval-when-compile (require 'cl-lib))
+
 (defgroup user-variables nil "User variables.")
 
 (defcustom user-projects-directory "~/Public/" "Directory for user's project files." :type 'directory :group 'user-variables)
@@ -9,8 +11,6 @@
 
 (defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
-(eval-when-compile (require 'cl-lib))
-
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -20,7 +20,6 @@
 (delete-selection-mode 1)
 (show-paren-mode 1)
 (electric-pair-mode 1)
-(line-number-mode 1)
 (column-number-mode 1)
 (size-indication-mode 1)
 (global-prettify-symbols-mode 1)
@@ -30,10 +29,6 @@
 (savehist-mode 1)
 (save-place-mode 1)
 (fringe-mode '(nil . 1))
-
-(setq-default tab-width 4
-			  show-trailing-whitespace 1
-			  delete-old-versions t)
 
 (setq show-paren-delay 1.0
 	  inhibit-startup-message 1
@@ -48,6 +43,10 @@
 	  uniquify-buffer-name-style 'reverse
 	  uniquify-separator "/"
 	  uniquify-ignore-buffers-re "^\\*")
+
+(setq-default tab-width 4
+			  show-trailing-whitespace 1
+			  delete-old-versions t)
 
 (load custom-file t)
 
