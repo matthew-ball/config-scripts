@@ -290,6 +290,8 @@
 
 (load-theme 'misterioso)
 
+(require 'autorevert)
+
 ;; user packages
 (browse-kill-ring-default-keybindings)
 
