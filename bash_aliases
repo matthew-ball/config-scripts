@@ -12,3 +12,5 @@ alias install='sudo apt install'
 alias remove='sudo apt remove'
 alias autoremove='sudo apt autoremove'
 alias purge='sudo apt purge'
+
+alias vim='vim.tiny'

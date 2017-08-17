@@ -9,7 +9,7 @@
 
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
 
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish haskell-mode) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish haskell-mode slime) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -21,13 +21,13 @@
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (column-number-mode 1)
-(size-indication-mode 1)
 (global-prettify-symbols-mode 1)
 (global-visual-line-mode 1)
 (midnight-mode 1)
 (recentf-mode 1)
 (savehist-mode 1)
 (save-place-mode 1)
+(desktop-save-mode 1)
 (server-mode 1)
 (fringe-mode '(nil . 1))
 
@@ -177,6 +177,20 @@
 (require 'org)
 (require 'org-agenda)
 (require 'org-capture)
+(require 'ox-latex)
+;;(require 'ox-odt)
+
+(add-to-list 'org-latex-classes
+			 '("paper"
+			   "\\documentclass[12pt,a4paper,oneside]{paper}
+\\setcounter{secnumdepth}{0}
+[NO-DEFAULT-PACKAGES]
+[EXTRA]"
+	       ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (setq org-return-follows-link 1
 	  org-completion-use-ido 1
@@ -189,14 +203,22 @@
 	  org-confirm-babel-evaluate nil
 	  org-src-fontify-natively 1
 	  org-src-tab-acts-natively 1
-	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t))
+	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t) ("PROJECTS" . ?p))
 	  org-capture-templates '(("N" "Note" entry (file+headline (expand-file-name user-notes-file) "Notes") "*** %^{Title}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)))
+							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1))
+	  org-latex-default-class "article"
+	  org-latex-with-hyperref nil
+	  org-export-with-toc nil
+	  org-export-with-tasks nil
+	  org-export-with-todo-keywords nil)
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
+(add-to-list 'org-latex-packages-alist '("" "bussproofs"))
 
-(org-babel-do-load-languages 'org-babel-do-load-languages '((emacs-lisp . t) (sh . t)))
+(org-babel-do-load-languages 'org-babel-do-load-languages '((emacs-lisp . t)
+															(sh . t)
+															(latex-mode . t)))
 
 (defun surrounded-by-p (char)
   (save-excursion
@@ -240,6 +262,7 @@
 
 (defun custom-org-mode ()
   (custom-org-bindings)
+  (org-indent-mode)
   (org-toggle-pretty-entities))
 
 (add-hook 'org-mode-hook #'custom-org-mode)
@@ -283,6 +306,11 @@
 		  (complete-string nil)
 		(indent-for-tab-command)))))
 
+(defun previous-window ()
+  (interactive)
+  (other-window -1))
+
+(global-set-key (kbd "C-x p") #'previous-window)
 (global-set-key (kbd "M-+") #'hs-toggle-hiding)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "M-n") #'eshell)
@@ -310,8 +338,6 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
-(require 'autorevert)
-(require 'with-editor)
 (require 'haskell)
 
 (defun custom-haskell-mode ()
@@ -322,14 +348,21 @@
 (setq load-path (append (list (expand-file-name "~/Public/lilypond-mode")) load-path))
 
 (require 'lilypond-mode)
+(require 'autorevert)
+(require 'with-editor)
+(require 'slime-autoloads)
+
+(setq inferior-lisp-program "/usr/bin/sbcl")
+
+(slime-setup '(slime-fancy))
 
 (diminish 'flyspell-mode)
 (diminish 'visual-line-mode)
 (diminish 'hs-minor-mode)
 (diminish 'eldoc-mode)
-(diminish 'abbrev-mode)
 (diminish 'yas-minor-mode)
 (diminish 'auto-complete-mode)
+(diminish 'abbrev-mode)
 (diminish 'undo-tree-mode)
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
