@@ -367,6 +367,7 @@
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
 (diminish 'interactive-haskell-mode)
+(diminish 'org-indent-mode)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c g b") #'gist-buffer)

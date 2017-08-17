@@ -4,7 +4,7 @@ This is a minimal collection of configuration files and a script to configure a 
 
 This configuration project assumes the following system and applications:
  * [Ubuntu 16.10](https://www.ubuntu.com/)
- * [GNU Emacs 25.1.2](https://www.gnu.org/software/emacs/)
+ * [GNU Emacs 25.2.2](https://www.gnu.org/software/emacs/)
  * [GNU Bash 4.3.46](https://www.gnu.org/software/bash/)
  * [Screen 4.04.00](https://www.gnu.org/software/screen/)
  * [htop 2.0.2](http://hisham.hm/htop/)
