@@ -174,9 +174,15 @@
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 
+(require 'hl-line)
+
+(add-hook 'text-mode-hook #'hl-line-mode)
+(add-hook 'prog-mode-hook #'hl-line-mode)
+
 (require 'org)
 (require 'org-agenda)
 (require 'org-capture)
+(require 'org-indent)
 (require 'ox-latex)
 ;;(require 'ox-odt)
 
