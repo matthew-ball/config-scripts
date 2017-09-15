@@ -43,7 +43,8 @@
 	  visual-line-fringe-indicators '(left-curly-arrow nil)
 	  uniquify-buffer-name-style 'reverse
 	  uniquify-separator "/"
-	  uniquify-ignore-buffers-re "^\\*")
+	  uniquify-ignore-buffers-re "^\\*"
+	  sentence-end-double-space nil)
 
 (setq-default tab-width 4
 			  show-trailing-whitespace 1
@@ -184,7 +185,7 @@
 (require 'org-capture)
 (require 'org-indent)
 (require 'ox-latex)
-;;(require 'ox-odt)
+(require 'ox-odt)
 
 (add-to-list 'org-latex-classes
 			 '("paper"
@@ -216,7 +217,8 @@
 	  org-latex-with-hyperref nil
 	  org-export-with-toc nil
 	  org-export-with-tasks nil
-	  org-export-with-todo-keywords nil)
+	  org-export-with-todo-keywords nil
+	  org-support-shift-select t)
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
@@ -329,6 +331,9 @@
 
 (ac-config-default)
 
+(add-hook 'text-mode-hook #'undo-tree-mode)
+(add-hook 'prog-mode-hook #'undo-tree-mode)
+
 (undo-tree-mode 1)
 (projectile-mode 1)
 (yas-global-mode 1)
@@ -366,6 +371,7 @@
 (diminish 'visual-line-mode)
 (diminish 'hs-minor-mode)
 (diminish 'eldoc-mode)
+(diminish 'org-indent-mode)
 (diminish 'yas-minor-mode)
 (diminish 'auto-complete-mode)
 (diminish 'abbrev-mode)
@@ -373,7 +379,6 @@
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
 (diminish 'interactive-haskell-mode)
-(diminish 'org-indent-mode)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c g b") #'gist-buffer)
