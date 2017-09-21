@@ -132,6 +132,7 @@
 
 (defun custom-dired-mode ()
   (custom-dired-bindings)
+  (dired-hide-details-mode)
   (dired-omit-mode))
 
 (add-hook 'dired-mode-hook #'custom-dired-mode)
@@ -218,7 +219,8 @@
 	  org-export-with-toc nil
 	  org-export-with-tasks nil
 	  org-export-with-todo-keywords nil
-	  org-support-shift-select t)
+	  org-support-shift-select t
+	  org-highlight-latex-and-related '(latex script entities))
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
@@ -323,6 +325,7 @@
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "M-n") #'eshell)
 (global-set-key (kbd "TAB") #'smart-tab)
+(global-set-key (kbd "C-c a") #'org-agenda)
 
 (load-theme 'misterioso)
 
