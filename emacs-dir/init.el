@@ -220,7 +220,8 @@
 	  org-export-with-tasks nil
 	  org-export-with-todo-keywords nil
 	  org-support-shift-select t
-	  org-highlight-latex-and-related '(latex script entities))
+	  org-highlight-latex-and-related '(latex script entities)
+	  org-export-with-smart-quotes t)
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
@@ -263,12 +264,23 @@
 (org-propertise-word verbatim ?~)
 (org-propertise-word teletype ?=)
 
+(define-skeleton org-paper-skeleton
+  "Insert an org-mode skeleton."
+  "Title: "
+  "#+TITLE: " str | "Title" "\n"
+  "#+AUTHOR: Matthew Ball\n"
+  "#+OPTIONS: date:nil num:nil"
+  "\n"
+  "* Introduction\n"
+  "* Footnotes\n")
+
 (defun custom-org-bindings ()
   (define-key org-mode-map (kbd "C-c b") #'org-bold-word)
   (define-key org-mode-map (kbd "C-c i") #'org-italic-word)
   (define-key org-mode-map (kbd "C-c u") #'org-underline-word)
   (define-key org-mode-map (kbd "C-c v") #'org-verbatim-word)
-  (define-key org-mode-map (kbd "C-c t") #'org-teletype-word))
+  (define-key org-mode-map (kbd "C-c t") #'org-teletype-word)
+  (define-key org-mode-map (kbd "C-c s") #'org-paper-skeleton))
 
 (defun custom-org-mode ()
   (custom-org-bindings)
@@ -326,6 +338,7 @@
 (global-set-key (kbd "M-n") #'eshell)
 (global-set-key (kbd "TAB") #'smart-tab)
 (global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
 
 (load-theme 'misterioso)
 
@@ -352,6 +365,12 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
+(setq load-path (append (list (expand-file-name "~/Public/lilypond-mode")) load-path))
+
+(require 'lilypond-mode)
+(require 'autorevert)
+(require 'with-editor)
+
 (require 'haskell)
 
 (defun custom-haskell-mode ()
@@ -359,11 +378,6 @@
 
 (add-hook 'haskell-mode-hook #'custom-haskell-mode)
 
-(setq load-path (append (list (expand-file-name "~/Public/lilypond-mode")) load-path))
-
-(require 'lilypond-mode)
-(require 'autorevert)
-(require 'with-editor)
 (require 'slime-autoloads)
 
 (setq inferior-lisp-program "/usr/bin/sbcl")
