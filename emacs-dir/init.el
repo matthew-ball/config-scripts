@@ -187,12 +187,12 @@
 (require 'org-indent)
 (require 'ox-latex)
 (require 'ox-odt)
+(require 'ox-beamer)
 
 (add-to-list 'org-latex-classes
 			 '("paper"
 			   "\\documentclass[12pt,a4paper,oneside]{paper}
 \\setcounter{secnumdepth}{0}
-[NO-DEFAULT-PACKAGES]
 [EXTRA]"
 	       ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
@@ -213,7 +213,8 @@
 	  org-src-tab-acts-natively 1
 	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t) ("PROJECTS" . ?p))
 	  org-capture-templates '(("N" "Note" entry (file+headline (expand-file-name user-notes-file) "Notes") "*** %^{Title}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
-							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1))
+							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nSCHEDULED: %^t\n" :empty-lines 1 :immediate-finish 1))
 	  org-latex-default-class "article"
 	  org-latex-with-hyperref nil
 	  org-export-with-toc nil
@@ -221,6 +222,7 @@
 	  org-export-with-todo-keywords nil
 	  org-support-shift-select t
 	  org-highlight-latex-and-related '(latex script entities)
+	  org-odt-preferred-output-format "docx"
 	  org-export-with-smart-quotes t)
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
@@ -265,7 +267,7 @@
 (org-propertise-word teletype ?=)
 
 (define-skeleton org-paper-skeleton
-  "Insert an org-mode skeleton."
+  "Insert an `org-mode' skeleton for a paper."
   "Title: "
   "#+TITLE: " str | "Title" "\n"
   "#+AUTHOR: Matthew Ball\n"
@@ -337,6 +339,7 @@
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "M-n") #'eshell)
 (global-set-key (kbd "TAB") #'smart-tab)
+(global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
