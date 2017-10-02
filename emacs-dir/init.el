@@ -44,7 +44,8 @@
 	  uniquify-buffer-name-style 'reverse
 	  uniquify-separator "/"
 	  uniquify-ignore-buffers-re "^\\*"
-	  sentence-end-double-space nil)
+	  sentence-end-double-space nil
+	  x-stretch-cursor t)
 
 (setq-default tab-width 4
 			  show-trailing-whitespace 1
