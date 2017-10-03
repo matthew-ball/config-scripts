@@ -209,22 +209,24 @@
 	  org-agenda-inhibit-startup 1
 	  org-agenda-span 'month
 	  org-agenda-files `(,(expand-file-name user-notes-file))
+	  org-agenda-skip-scheduled-if-done t
+	  org-support-shift-select t
 	  org-confirm-babel-evaluate nil
 	  org-src-fontify-natively 1
 	  org-src-tab-acts-natively 1
-	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t) ("PROJECTS" . ?p))
+	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t) ("PROJECTS" . ?p) ("UNIVERSITY" . ?u))
 	  org-capture-templates '(("N" "Note" entry (file+headline (expand-file-name user-notes-file) "Notes") "*** %^{Title}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
+							  ("P" "Project" entry (file+headline (expand-file-name user-notes-file) "Projects") "*** TODO %^{Description}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nSCHEDULED: %^t\n" :empty-lines 1 :immediate-finish 1))
 	  org-latex-default-class "article"
 	  org-latex-with-hyperref nil
 	  org-export-with-toc nil
 	  org-export-with-tasks nil
 	  org-export-with-todo-keywords nil
-	  org-support-shift-select t
+	  org-export-with-smart-quotes t
 	  org-highlight-latex-and-related '(latex script entities)
-	  org-odt-preferred-output-format "docx"
-	  org-export-with-smart-quotes t)
+	  org-odt-preferred-output-format "docx")
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
