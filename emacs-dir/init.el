@@ -366,6 +366,8 @@
 (global-auto-complete-mode 1)
 
 (setq browse-kill-ring-highlight-inserted-item t
+	  undo-tree-visualizer-diff 1
+	  undo-tree-visualizer-timestamps 1
 	  yas-snippet-dirs `(,(concat (expand-file-name user-emacs-directory) "snippets"))
 	  yas-triggers-in-field 1)
 
