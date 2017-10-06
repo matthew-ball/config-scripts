@@ -9,7 +9,7 @@
 
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
 
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish haskell-mode slime) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -212,6 +212,10 @@
 	  org-agenda-skip-scheduled-if-done t
 	  org-support-shift-select t
 	  org-confirm-babel-evaluate nil
+	  org-special-ctrl-a/e t
+	  org-special-ctrl-k t
+	  org-special-ctrl-o t
+	  org-fontify-done-headline t
 	  org-src-fontify-natively 1
 	  org-src-tab-acts-natively 1
 	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t) ("PROJECTS" . ?p) ("UNIVERSITY" . ?u))
@@ -221,11 +225,11 @@
 							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nSCHEDULED: %^t\n" :empty-lines 1 :immediate-finish 1))
 	  org-latex-default-class "article"
 	  org-latex-with-hyperref nil
+	  org-highlight-latex-and-related '(latex script entities)
 	  org-export-with-toc nil
 	  org-export-with-tasks nil
 	  org-export-with-todo-keywords nil
 	  org-export-with-smart-quotes t
-	  org-highlight-latex-and-related '(latex script entities)
 	  org-odt-preferred-output-format "docx")
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
@@ -377,19 +381,6 @@
 (require 'autorevert)
 (require 'with-editor)
 
-(require 'haskell)
-
-(defun custom-haskell-mode ()
-  (interactive-haskell-mode))
-
-(add-hook 'haskell-mode-hook #'custom-haskell-mode)
-
-(require 'slime-autoloads)
-
-(setq inferior-lisp-program "/usr/bin/sbcl")
-
-(slime-setup '(slime-fancy))
-
 (diminish 'flyspell-mode)
 (diminish 'visual-line-mode)
 (diminish 'hs-minor-mode)
@@ -401,7 +392,6 @@
 (diminish 'undo-tree-mode)
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
-(diminish 'interactive-haskell-mode)
 
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c g b") #'gist-buffer)
