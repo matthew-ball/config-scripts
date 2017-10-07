@@ -9,7 +9,7 @@
 
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
 
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish org-journal) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -28,7 +28,6 @@
 (savehist-mode 1)
 (save-place-mode 1)
 (desktop-save-mode 1)
-(server-mode 1)
 (fringe-mode '(nil . 1))
 
 (setq show-paren-delay 1.0
@@ -310,7 +309,7 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
-(load-theme 'misterioso)
+(load-theme 'misterioso t)
 
 ;; user packages
 (browse-kill-ring-default-keybindings)
@@ -337,7 +336,7 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
-(setq load-path (append (list (expand-file-name (concat user-projects-directory "lilypond-mode"))) load-path))
+(setq load-path (append (list (concat (expand-file-name user-projects-directory) "lilypond-mode")) load-path))
 
 (require 'lilypond-mode)
 (require 'autorevert)
