@@ -66,10 +66,6 @@
   (package-refresh-contents)
   (user-packages-install))
 
-(require 'tramp)
-
-(setq tramp-default-method "ssh")
-
 (require 'ido)
 
 (ido-mode 1)
@@ -137,36 +133,6 @@
   (dired-omit-mode))
 
 (add-hook 'dired-mode-hook #'custom-dired-mode)
-
-(require 'eshell)
-
-(defun git-branch-string ()
-  (shell-command-to-string "git branch"))
-
-(defmacro with-face (string &rest properties)
-  `(propertize ,string 'face (list ,@properties)))
-
-(defun custom-eshell-prompt ()
-  (concat
-   (with-face user-login-name :foreground "green" :weight 'bold) ":" (with-face (eshell/pwd) :foreground "light blue" :weight 'bold)
-   (if (string= (substring (git-branch-string) 0 1) "f") "" (with-face (concat " (" (eshell/git-branch) ")") :foreground "yellow" :weight 'bold))
-   (if (= (user-uid) 0) (with-face "#" :foreground "red") "$")
-   " "))
-
-(setq eshell-prompt-function #'custom-eshell-prompt
-	  eshell-prompt-regexp "^[^#$\n]*[#$] "
-	  eshell-banner-message "")
-
-(defun eshell/git-branch ()
-  (let ((branch (git-branch-string)))
-    (string-match "^\\* \\(.*\\)" branch)
-    (match-string 1 branch)))
-
-(defun eshell/clear ()
-  (let ((eshell-buffer-maximum-lines 0))
-	(eshell-truncate-buffer)))
-
-(add-hook 'eshell-preoutput-filter-functions #'ansi-color-filter-apply)
 
 (require 'ispell)
 
@@ -277,8 +243,8 @@
   "Insert an `org-mode' skeleton for a paper."
   "Title: "
   "#+TITLE: " str | "Title" "\n"
-  "#+AUTHOR: Matthew Ball\n"
-  "#+OPTIONS: date:nil num:nil"
+  "#+AUTHOR: " (user-full-name) "\n"
+  "#+OPTIONS: date:nil num:nil\n"
   "\n"
   "* Introduction\n"
   "* Footnotes\n")
@@ -314,12 +280,6 @@
 (require 'eldoc)
 
 (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
-
-(require 'gdb-mi)
-(require 'cc-mode)
-
-(setq gdb-many-windows 1
-	  gdb-show-main 1)
 
 (defun complete-string (source)
   (cond
@@ -377,7 +337,7 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
-(setq load-path (append (list (expand-file-name "~/Public/lilypond-mode")) load-path))
+(setq load-path (append (list (expand-file-name (concat user-projects-directory "lilypond-mode"))) load-path))
 
 (require 'lilypond-mode)
 (require 'autorevert)
