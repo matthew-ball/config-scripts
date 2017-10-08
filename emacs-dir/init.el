@@ -300,15 +300,6 @@
   (interactive)
   (other-window -1))
 
-(global-set-key (kbd "C-x p") #'previous-window)
-(global-set-key (kbd "M-+") #'hs-toggle-hiding)
-(global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "M-n") #'eshell)
-(global-set-key (kbd "TAB") #'smart-tab)
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
-
 (load-theme 'misterioso t)
 
 ;; user packages
@@ -354,6 +345,15 @@
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
 
+;; key bindings
+(global-set-key (kbd "C-x p") #'previous-window)
+(global-set-key (kbd "M-+") #'hs-toggle-hiding)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
+(global-set-key (kbd "M-n") #'eshell)
+(global-set-key (kbd "TAB") #'smart-tab)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
 (global-set-key (kbd "C-x g") #'magit-status)
 (global-set-key (kbd "C-c g b") #'gist-buffer)
 (global-set-key (kbd "C-c g r") #'gist-region)
