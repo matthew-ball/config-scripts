@@ -9,7 +9,7 @@
 
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
 
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish org-journal) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -187,7 +187,7 @@
 	  org-capture-templates '(("N" "Note" entry (file+headline (expand-file-name user-notes-file) "Notes") "*** %^{Title}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("P" "Project" entry (file+headline (expand-file-name user-notes-file) "Projects") "*** TODO %^{Description}\n\n" :empty-lines 1 :immediate-finish 1)
-							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nSCHEDULED: %^t\n" :empty-lines 1 :immediate-finish 1))
+							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nDEADLINE: %^t\n" :empty-lines 1 :immediate-finish 1))
 	  org-latex-default-class "article"
 	  org-latex-with-hyperref nil
 	  org-highlight-latex-and-related '(latex script entities)
