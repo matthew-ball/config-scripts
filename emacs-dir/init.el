@@ -9,7 +9,7 @@
 
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
 
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring projectile yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -152,8 +152,8 @@
 (require 'org-capture)
 (require 'org-indent)
 (require 'ox-latex)
-(require 'ox-odt)
 (require 'ox-beamer)
+;;(require 'ox-odt)
 
 (add-to-list 'org-latex-classes
 			 '("paper"
@@ -175,6 +175,7 @@
 	  org-agenda-span 'month
 	  org-agenda-files `(,(expand-file-name user-notes-file))
 	  org-agenda-skip-scheduled-if-done t
+	  org-agenda-skip-deadline-if-done t
 	  org-support-shift-select t
 	  org-confirm-babel-evaluate nil
 	  org-special-ctrl-a/e t
@@ -188,14 +189,14 @@
 							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("P" "Project" entry (file+headline (expand-file-name user-notes-file) "Projects") "*** TODO %^{Description}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nDEADLINE: %^t\n" :empty-lines 1 :immediate-finish 1))
+	  ;;org-odt-preferred-output-format "docx"
 	  org-latex-default-class "article"
 	  org-latex-with-hyperref nil
 	  org-highlight-latex-and-related '(latex script entities)
 	  org-export-with-toc nil
 	  org-export-with-tasks nil
 	  org-export-with-todo-keywords nil
-	  org-export-with-smart-quotes t
-	  org-odt-preferred-output-format "docx")
+	  org-export-with-smart-quotes t)
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
@@ -300,9 +301,8 @@
   (interactive)
   (other-window -1))
 
-(load-theme 'misterioso t)
+;;(load-theme 'misterioso t)
 
-;; user packages
 (browse-kill-ring-default-keybindings)
 
 (ac-config-default)
@@ -311,7 +311,6 @@
 (add-hook 'prog-mode-hook #'undo-tree-mode)
 
 (undo-tree-mode 1)
-(projectile-mode 1)
 (yas-global-mode 1)
 (global-auto-complete-mode 1)
 
@@ -327,9 +326,9 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
-(setq load-path (append (list (concat (expand-file-name user-projects-directory) "lilypond-mode")) load-path))
+;; (setq load-path (append (list (concat (expand-file-name user-projects-directory) "lilypond-mode")) load-path))
 
-(require 'lilypond-mode)
+;; (require 'lilypond-mode)
 (require 'autorevert)
 (require 'with-editor)
 
@@ -345,11 +344,9 @@
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
 
-;; key bindings
 (global-set-key (kbd "C-x p") #'previous-window)
 (global-set-key (kbd "M-+") #'hs-toggle-hiding)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "M-n") #'eshell)
 (global-set-key (kbd "TAB") #'smart-tab)
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
