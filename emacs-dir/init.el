@@ -89,10 +89,7 @@
 									 ("Projects"
 									  (filename . ,(expand-file-name user-projects-directory)))
 									 ("Documents"
-									  (filename . ,(expand-file-name user-documents-directory)))
-									 ("Miscellaneous"
-									  (or (mode . dired-mode)
-										  (mode . eshell-mode))))))
+									  (filename . ,(expand-file-name user-documents-directory))))))
 
 (defvar ibuffer-default-collapsed-groups '("Default") "Filter groups to be collapsed by default.")
 
@@ -301,8 +298,9 @@
   (interactive)
   (other-window -1))
 
-;;(load-theme 'misterioso t)
+(load-theme 'misterioso t)
 
+;; user packages
 (browse-kill-ring-default-keybindings)
 
 (ac-config-default)
@@ -326,9 +324,6 @@
 (add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
 (add-hook 'text-mode-hook #'auto-complete-mode)
 
-;; (setq load-path (append (list (concat (expand-file-name user-projects-directory) "lilypond-mode")) load-path))
-
-;; (require 'lilypond-mode)
 (require 'autorevert)
 (require 'with-editor)
 
