@@ -20,7 +20,6 @@
 (delete-selection-mode 1)
 (show-paren-mode 1)
 (electric-pair-mode 1)
-(electric-layout-mode 1)
 (column-number-mode 1)
 (global-prettify-symbols-mode 1)
 (global-visual-line-mode 1)
