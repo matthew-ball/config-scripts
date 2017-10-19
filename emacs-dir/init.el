@@ -38,7 +38,7 @@
 	  disabled-command-function nil
 	  use-dialog-box nil
 	  confirm-nonexistent-file-or-buffer nil
-	  custom-file (expand-file-name (concat user-emacs-directory "custom.el"))
+	  custom-file (concat (expand-file-name user-emacs-directory) "custom.el")
 	  visual-line-fringe-indicators '(left-curly-arrow nil)
 	  uniquify-buffer-name-style 'reverse
 	  uniquify-separator "/"
