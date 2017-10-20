@@ -2,8 +2,7 @@
 (eval-when-compile (require 'cl-lib))
 
 (defgroup user-variables nil "User variables.")
-
-(defcustom user-config-directory "~/.config-scripts/" "Directory for user's configuration scripts." :type 'directory :group 'user-variables)
+(defcustom user-config-directory "~/.config-scripts/" "Directory for user's configuration files." :type 'directory :group 'user-variables)
 (defcustom user-projects-directory "~/Public/" "Directory for user's project files." :type 'directory :group 'user-variables)
 (defcustom user-documents-directory "~/Documents/" "Directory for user's files." :type 'directory :group 'user-variables)
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
