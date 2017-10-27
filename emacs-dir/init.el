@@ -175,6 +175,8 @@
 	  org-special-ctrl-a/e t
 	  org-special-ctrl-k t
 	  org-special-ctrl-o t
+	  org-ctrl-k-protect-subtree t
+	  org-yank-adjusted-subtrees t
 	  org-fontify-done-headline t
 	  org-src-fontify-natively 1
 	  org-src-tab-acts-natively 1
