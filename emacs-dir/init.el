@@ -291,10 +291,6 @@
 		  (complete-string nil)
 		(indent-for-tab-command)))))
 
-(defun previous-window ()
-  (interactive)
-  (other-window -1))
-
 (load-theme 'misterioso t)
 
 ;; user packages
@@ -336,7 +332,6 @@
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
 
-(global-set-key (kbd "C-x p") #'previous-window)
 (global-set-key (kbd "M-+") #'hs-toggle-hiding)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "TAB") #'smart-tab)
