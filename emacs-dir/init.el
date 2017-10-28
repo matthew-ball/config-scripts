@@ -147,7 +147,6 @@
 (require 'org-indent)
 (require 'ox-latex)
 (require 'ox-beamer)
-;;(require 'ox-odt)
 
 (add-to-list 'org-latex-classes
 			 '("paper"
@@ -185,7 +184,6 @@
 							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("P" "Project" entry (file+headline (expand-file-name user-notes-file) "Projects") "*** TODO %^{Description}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nDEADLINE: %^t\n" :empty-lines 1 :immediate-finish 1))
-	  ;;org-odt-preferred-output-format "docx"
 	  org-latex-default-class "article"
 	  org-latex-with-hyperref nil
 	  org-highlight-latex-and-related '(latex script entities)

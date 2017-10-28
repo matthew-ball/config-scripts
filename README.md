@@ -23,20 +23,27 @@ The following descriptions assume the previously mentioned linking process has b
 ## Bash
 The __~/bashrc__ file (default from an Ubuntu 17.10 install) sources alias definitions from the file __/.config-scripts/bash_aliases__.
 
-There is an alias for launching screen (primarily to reconnect to existing screen sessions).
+There is an alias for launching [screen](https://www.gnu.org/software/screen/) (primarily to reconnect to existing screen sessions).
 
-There is an alias to launch htop and show only the resources used by $USER.
+There is an alias to launch [htop](http://hisham.hm/htop/) and show only the resources used by **$USER**.
 
 The remaining aliases are focused around the [apt](https://wiki.debian.org/Apt) package manager; generally, they simplify the syntax and call the original command with **sudo**.
 
 ## TODO Remove bashrc from project
 
-## TODO remove Screenrc from project
+## TODO Remove screenrc from project
 
 ## Emacs
 The __/.config-scripts/emacs-dir/init.el__ file loads the following features and customisations during initialisation which affects the startup time significantly.
 
 The default, vanilla, emacs is somewhat lacking; features are enabled which serve little to no purpose, and features that would benefit the user are disabled. This configuration attempts to implement a set of "better defaults" for emacs.
+
+The following custom variables are defined for the group **user-variables**:
+ * _user-config-directory_
+ * _user-projects-directory_
+ * _user-documents-directory_
+ * _user-notes-file_
+ * _user-packages-list_
 
 The following features are disabled:
  * menu-bar-mode
