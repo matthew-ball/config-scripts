@@ -147,6 +147,7 @@
 (require 'org-indent)
 (require 'ox-latex)
 (require 'ox-beamer)
+(require 'ob-R)
 
 (add-to-list 'org-latex-classes
 			 '("paper"
@@ -198,6 +199,7 @@
 
 (org-babel-do-load-languages 'org-babel-do-load-languages '((emacs-lisp . t)
 															(sh . t)
+															(R . t)
 															(latex-mode . t)))
 
 (defun surrounded-by-p (char)
@@ -249,11 +251,13 @@
   (define-key org-mode-map (kbd "C-c u") #'org-underline-word)
   (define-key org-mode-map (kbd "C-c v") #'org-verbatim-word)
   (define-key org-mode-map (kbd "C-c t") #'org-teletype-word)
-  (define-key org-mode-map (kbd "C-c s") #'org-paper-skeleton))
+  (define-key org-mode-map (kbd "C-c s") #'org-paper-skeleton)
+  (define-key org-mode-map (kbd "C-c d") #'org-display-inline-images))
 
 (defun custom-org-mode ()
   (custom-org-bindings)
   (org-indent-mode)
+  (org-display-inline-images)
   (org-toggle-pretty-entities))
 
 (add-hook 'org-mode-hook #'custom-org-mode)
