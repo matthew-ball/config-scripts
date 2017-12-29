@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-	(ess slime haskell-mode markdown-mode diminish auto-complete yasnippet projectile browse-kill-ring undo-tree gist magit))))
+	(idle-highlight-mode company cider ess slime haskell-mode markdown-mode diminish yasnippet projectile browse-kill-ring undo-tree gist magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

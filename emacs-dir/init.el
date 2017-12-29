@@ -6,7 +6,7 @@
 (defcustom user-projects-directory "~/Public/" "Directory for user's project files." :type 'directory :group 'user-variables)
 (defcustom user-documents-directory "~/Documents/" "Directory for user's files." :type 'directory :group 'user-variables)
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
-(defcustom user-packages-list '(magit gist markdown-mode undo-tree browse-kill-ring yasnippet auto-complete diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist undo-tree browse-kill-ring yasnippet cider ess company idle-highlight-mode diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -45,6 +45,7 @@
 
 (setq-default tab-width 4
 			  show-trailing-whitespace 1
+			  indicate-empty-lines 1
 			  delete-old-versions t)
 
 (load custom-file t)
@@ -180,6 +181,7 @@
 	  org-fontify-done-headline t
 	  org-src-fontify-natively 1
 	  org-src-tab-acts-natively 1
+	  org-src-preserve-indentation 1
 	  org-tag-alist '(("NOTES" . ?n) ("TASKS" . ?t) ("PROJECTS" . ?p) ("UNIVERSITY" . ?u))
 	  org-capture-templates '(("N" "Note" entry (file+headline (expand-file-name user-notes-file) "Notes") "*** %^{Title}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
@@ -281,7 +283,7 @@
 
 (defun complete-string (source)
   (cond
-   ((fboundp #'auto-complete) (auto-complete source))
+   ((fboundp #'company-mode) (company-complete))
    (t (dabbrev-expand source))))
 
 (defun smart-tab ()
@@ -300,41 +302,53 @@
 ;; user packages
 (browse-kill-ring-default-keybindings)
 
-(ac-config-default)
-
 (add-hook 'text-mode-hook #'undo-tree-mode)
 (add-hook 'prog-mode-hook #'undo-tree-mode)
 
 (undo-tree-mode 1)
 (yas-global-mode 1)
-(global-auto-complete-mode 1)
+(global-company-mode 1)
+
+(defun custom-prog-mode ()
+  (idle-highlight-mode 1))
+
+(add-hook 'prog-mode-hook #'custom-prog-mode)
 
 (setq browse-kill-ring-highlight-inserted-item t
 	  undo-tree-visualizer-diff 1
 	  undo-tree-visualizer-timestamps 1
-	  yas-snippet-dirs `(,(concat (expand-file-name user-emacs-directory) "snippets"))
-	  yas-triggers-in-field 1)
+	  ;;yas-snippet-dirs `(,(concat (expand-file-name user-emacs-directory) "snippets"))
+	  yas-triggers-in-field 1
+	  cider-repl-use-pretty-printing t
+	  cider-repl-display-help-banner nil)
 
-(defun ac-add-yasnippet-source ()
-  (add-to-list 'ac-sources 'ac-source-yasnippet))
+(require 'company-yasnippet)
 
-(add-hook 'prog-mode-hook #'ac-add-yasnippet-source)
-(add-hook 'text-mode-hook #'auto-complete-mode)
+(defvar company-enable-yas t "Enable yasnippet for all `company-mode' backends.")
+
+(defun company-backend-with-yas (backend)
+  (if (or (not company-enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+      backend
+    (append (if (consp backend) backend (list backend))
+            '(:with company-yasnippet))))
+
+(setq company-backends (mapcar #'company-backend-with-yas company-backends))
 
 (require 'autorevert)
 (require 'with-editor)
 
 (diminish 'flyspell-mode)
+(diminish 'abbrev-mode)
 (diminish 'visual-line-mode)
 (diminish 'hs-minor-mode)
 (diminish 'eldoc-mode)
 (diminish 'org-indent-mode)
 (diminish 'yas-minor-mode)
-(diminish 'auto-complete-mode)
-(diminish 'abbrev-mode)
+(diminish 'company-mode)
 (diminish 'undo-tree-mode)
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
+(diminish 'idle-highlight-mode)
 
 (global-set-key (kbd "TAB") #'smart-tab)
 (global-set-key (kbd "C-c l") #'org-store-link)
