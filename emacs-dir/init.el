@@ -6,7 +6,7 @@
 (defcustom user-projects-directory "~/Public/" "Directory for user's project files." :type 'directory :group 'user-variables)
 (defcustom user-documents-directory "~/Documents/" "Directory for user's files." :type 'directory :group 'user-variables)
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
-(defcustom user-packages-list '(magit gist undo-tree browse-kill-ring yasnippet cider ess company idle-highlight-mode diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist undo-tree browse-kill-ring yasnippet projectile company idle-highlight-mode cider ess diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -308,6 +308,7 @@
 (undo-tree-mode 1)
 (yas-global-mode 1)
 (global-company-mode 1)
+(projectile-mode t)
 
 (defun custom-prog-mode ()
   (idle-highlight-mode 1))
