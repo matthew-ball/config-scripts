@@ -6,7 +6,7 @@
 (defcustom user-projects-directory "~/Public/" "Directory for user's project files." :type 'directory :group 'user-variables)
 (defcustom user-documents-directory "~/Documents/" "Directory for user's files." :type 'directory :group 'user-variables)
 (defcustom user-notes-file (concat (expand-file-name user-documents-directory) "notes.org") "File for user's notes." :type 'file :group 'user-variables)
-(defcustom user-packages-list '(magit gist undo-tree browse-kill-ring yasnippet projectile company idle-highlight-mode cider ess diminish) "List of user packages." :type '(repeat symbol) :group 'user-variables)
+(defcustom user-packages-list '(magit gist undo-tree browse-kill-ring yasnippet projectile company idle-highlight-mode cider ess diminish dashboard) "List of user packages." :type '(repeat symbol) :group 'user-variables)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -338,6 +338,12 @@
 (require 'autorevert)
 (require 'with-editor)
 
+(dashboard-setup-startup-hook)
+
+(setq dashboard-items '((recents . 10)
+						(projects . 5)
+						(agenda . 5)))
+
 (diminish 'flyspell-mode)
 (diminish 'abbrev-mode)
 (diminish 'visual-line-mode)
@@ -350,6 +356,7 @@
 (diminish 'auto-revert-mode)
 (diminish 'with-editor-mode)
 (diminish 'idle-highlight-mode)
+(diminish 'page-break-lines-mode)
 
 (global-set-key (kbd "TAB") #'smart-tab)
 (global-set-key (kbd "C-c l") #'org-store-link)
