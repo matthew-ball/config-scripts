@@ -148,11 +148,13 @@
 (require 'org-indent)
 (require 'ox-latex)
 (require 'ox-beamer)
+(require 'ox-odt)
 (require 'ob-R)
 
 (add-to-list 'org-latex-classes
 			 '("paper"
-			   "\\documentclass[12pt,a4paper,oneside]{paper}
+			   "\\documentclass[11pt,a4paper,oneside]{paper}
+\\usepackage[none]{hyphenat}
 \\setcounter{secnumdepth}{0}
 [EXTRA]"
 	       ("\\section{%s}" . "\\section*{%s}")
@@ -160,6 +162,16 @@
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(add-to-list 'org-latex-classes
+			 '("essay"
+			   "\\documentclass[11pt]{article}
+\\usepackage[none]{hyphenat}"
+			   ("\\section{%s}" . "\\section*{%s}")
+			   ("\\subsection{%s}" . "\\subsection*{%s}")
+			   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+			   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+			   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (setq org-return-follows-link 1
 	  org-completion-use-ido 1
@@ -187,13 +199,15 @@
 							  ("T" "Task" entry (file+headline (expand-file-name user-notes-file) "Tasks") "*** TODO %^{Description}\n%^{Text}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("P" "Project" entry (file+headline (expand-file-name user-notes-file) "Projects") "*** TODO %^{Description}\n\n" :empty-lines 1 :immediate-finish 1)
 							  ("U" "University" entry (file+headline (expand-file-name user-notes-file) "University") "*** TODO %^{Description} %^g\nDEADLINE: %^t\n" :empty-lines 1 :immediate-finish 1))
-	  org-latex-default-class "article"
+	  org-latex-default-class "essay"
+	  org-odt-preferred-output-format "docx"
 	  org-latex-with-hyperref nil
 	  org-highlight-latex-and-related '(latex script entities)
 	  org-export-with-toc nil
 	  org-export-with-tasks nil
 	  org-export-with-todo-keywords nil
-	  org-export-with-smart-quotes t)
+	  org-export-with-smart-quotes t
+	  org-footnote-auto-label nil)
 
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 (add-to-list 'org-latex-packages-alist '("" "color"))
@@ -254,7 +268,8 @@
   (define-key org-mode-map (kbd "C-c v") #'org-verbatim-word)
   (define-key org-mode-map (kbd "C-c t") #'org-teletype-word)
   (define-key org-mode-map (kbd "C-c s") #'org-paper-skeleton)
-  (define-key org-mode-map (kbd "C-c d") #'org-display-inline-images))
+  (define-key org-mode-map (kbd "C-c d") #'org-display-inline-images)
+  (define-key org-mode-map (kbd "C-c f") #'org-footnote-new))
 
 (defun custom-org-mode ()
   (custom-org-bindings)
