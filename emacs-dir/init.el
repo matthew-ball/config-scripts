@@ -338,6 +338,8 @@
 	  cider-repl-use-pretty-printing t
 	  cider-repl-display-help-banner nil)
 
+(add-to-list 'company-backends 'company-ispell)
+
 (require 'company-yasnippet)
 
 (defvar company-enable-yas t "Enable yasnippet for all `company-mode' backends.")
